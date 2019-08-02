@@ -25,7 +25,7 @@ noinst_HEADERS = Constant.h \
 	genomeLoci.h genomePosition.h \
 	genomeScore.h \
 	bcf_filter_arg.h \
-	bp2cm.h \
+	bp2cm.h cm2bp.h \
 	pbwt_build.h
 
 bin_PROGRAMS = bluebear
@@ -41,6 +41,7 @@ bluebear_SOURCES = bluebear.cpp \
 	cmd_vcf_ibs0_pairwise.cpp cmd_vcf_ibs0_baseline.cpp cmd_vcf_ibs0_unconditional.cpp \
 	cmd_vcf_ibs0_view.cpp cmd_vcf_ibs0_flanking.cpp \
 	cmd_vcf_raresharing.cpp \
-	pbwt_suffix.cpp pbwt_prefix.cpp
+	pbwt_suffix.cpp pbwt_prefix.cpp \
+	ibs0_phase.cpp
 
 bluebear_LDADD = $(ALL_LDFLAGS) $(HTSLIB_LIB) $(ALL_LIBS)

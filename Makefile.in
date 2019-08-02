@@ -115,7 +115,7 @@ am_bluebear_OBJECTS = bluebear.$(OBJEXT) Error.$(OBJEXT) \
 	cmd_vcf_ibs0_unconditional.$(OBJEXT) \
 	cmd_vcf_ibs0_view.$(OBJEXT) cmd_vcf_ibs0_flanking.$(OBJEXT) \
 	cmd_vcf_raresharing.$(OBJEXT) pbwt_suffix.$(OBJEXT) \
-	pbwt_prefix.$(OBJEXT)
+	pbwt_prefix.$(OBJEXT) ibs0_phase.$(OBJEXT)
 bluebear_OBJECTS = $(am_bluebear_OBJECTS)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -321,7 +321,7 @@ noinst_HEADERS = Constant.h \
 	genomeLoci.h genomePosition.h \
 	genomeScore.h \
 	bcf_filter_arg.h \
-	bp2cm.h \
+	bp2cm.h cm2bp.h \
 	pbwt_build.h
 
 bluebear_SOURCES = bluebear.cpp \
@@ -335,7 +335,8 @@ bluebear_SOURCES = bluebear.cpp \
 	cmd_vcf_ibs0_pairwise.cpp cmd_vcf_ibs0_baseline.cpp cmd_vcf_ibs0_unconditional.cpp \
 	cmd_vcf_ibs0_view.cpp cmd_vcf_ibs0_flanking.cpp \
 	cmd_vcf_raresharing.cpp \
-	pbwt_suffix.cpp pbwt_prefix.cpp
+	pbwt_suffix.cpp pbwt_prefix.cpp \
+	ibs0_phase.cpp
 
 bluebear_LDADD = $(ALL_LDFLAGS) $(HTSLIB_LIB) $(ALL_LIBS)
 all: config.h
@@ -459,6 +460,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/filter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/genome_interval.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hts_utils.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ibs0_phase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interval.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interval_tree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/params.Po@am__quote@

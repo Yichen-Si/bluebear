@@ -25,8 +25,6 @@ int32_t cmdVcfIBS0View(int32_t argc, char** argv) {
 
   double cm_bin_size = 0.002;
   double cm_max_ibs0_len = 10.0;
-  std::map<int32_t, double> lookup;
-  std::map<int32_t, std::vector<int32_t> > poshash;
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
@@ -72,7 +70,7 @@ int32_t cmdVcfIBS0View(int32_t argc, char** argv) {
 
 
   // Read map file; build bp2cm lookup table
-  bp2cmBuildMap(inMap, " ", lookup, poshash);
+  bp2cmMap bcmap(inMap, " ");
 
   // bcf reader
   std::vector<GenomeInterval> intervals;
@@ -311,7 +309,7 @@ int32_t cmdVcfIBS0View(int32_t argc, char** argv) {
           }
         	else if ( (byte >> (7-bit)) & 0x01 ) { // IBS0
             int32_t bin = (snoopy[pt] - prepos)/bin_size;
-            int32_t cm_bin = (bp2cm(lookup, poshash, snoopy[pt]) - bp2cm(lookup, poshash, prepos)) / cm_bin_size;
+            int32_t cm_bin = (bcmap.bp2cm(snoopy[pt]) - bcmap.bp2cm(prepos)) / cm_bin_size;
             cm_bin = std::min(cm_bin, cm_nbins);
             if (prepos == 0) { // Have not seen ibs0 yet
               rec += (std::to_string(snoopy[pt])+":0:0");

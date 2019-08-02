@@ -86,11 +86,11 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
     }
     pc.ForwardsAD_prefix(y, iv->pos+1);
     if (k % store_interval == 0) {
-      dout += (std::to_string(iv->rid) + '\t' + std::to_string(iv->pos+1));
+      dout += (bcf_hdr_id2name(odr.hdr, iv->rid) + '\t' + std::to_string(iv->pos+1));
       for (int32_t j = 0; j < M; ++j)
         dout += ('\t' + std::to_string(pc.d[j]));
       dout += '\n';
-      aout += (std::to_string(iv->rid) + '\t' + std::to_string(iv->pos+1));
+      aout += (bcf_hdr_id2name(odr.hdr, iv->rid) + '\t' + std::to_string(iv->pos+1));
       for (int32_t j = 0; j < M; ++j)
         aout += ('\t' + std::to_string(pc.a[j]));
       aout += '\n';
@@ -100,6 +100,8 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
     notice("Processing %d markers at %s:%d; snapshot at %d positions.", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, k/store_interval);
 
   }
+
+  delete [] y;
 
     // Write to file
     std::string outf = out + "_prefix.dmat";
@@ -114,19 +116,6 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

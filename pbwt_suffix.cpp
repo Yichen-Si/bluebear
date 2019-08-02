@@ -145,37 +145,53 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     // }
 
     // Build pbwt (suffix) for this block
+    // Output by row
+    std::string d_outf = out + "_" + reg + "_suffix.dmat";
+    htsFile* d_wf = hts_open(d_outf.c_str(), "w");
+    std::string a_outf = out + "_" + reg + "_suffix.amat";
+    htsFile* a_wf = hts_open(a_outf.c_str(), "w");
 
-    std::string dout = "", aout = "";
+    // std::string dout = "", aout = "";
     for (int32_t k = N-1; k >= 0; --k) {
       pc.ForwardsAD_suffix(gtmat[k], positions[k]);
 
       if (k % store_interval == 0) {
         // memcpy(dmat[k], pc.d, pc.M*sizeof(int32_t));
         // memcpy(amat[k], pc.a, pc.M*sizeof(int32_t));
+
+        std::string dout = "", aout = "";
         dout += (chrom + '\t' + std::to_string(positions[k]));
         for (int32_t j = 0; j < M; ++j)
           dout += ('\t' + std::to_string(pc.d[j]));
-        dout += '\n';
+        // dout += '\n';
+        hprintf(d_wf, "%s\n", dout.c_str());
         aout += (chrom + '\t' + std::to_string(positions[k]));
         for (int32_t j = 0; j < M; ++j)
           aout += ('\t' + std::to_string(pc.a[j]));
-        aout += '\n';
+        hprintf(a_wf, "%s\n", aout.c_str());
+
+        // aout += '\n';
       }
+    }
+    hts_close(d_wf);
+    hts_close(a_wf);
+
+    for (int32_t k = 0; k < N; ++k) {
+      delete [] gtmat[k];
     }
 
     // pbwtSuffix(pc, gtmat, positions, dmat, rmat);
 
-    // Write to file
-    std::string outf = out + "_" + reg + "_suffix.dmat";
-    htsFile* wf = hts_open(outf.c_str(), "w");
-    hprintf(wf, "%s", dout.c_str());
-    hts_close(wf);
+    // // Write to file
+    // std::string outf = out + "_" + reg + "_suffix.dmat";
+    // htsFile* wf = hts_open(outf.c_str(), "w");
+    // hprintf(wf, "%s", dout.c_str());
+    // hts_close(wf);
 
-    outf = out + "_" + reg + "_suffix.amat";
-    wf = hts_open(outf.c_str(), "w");
-    hprintf(wf, "%s", aout.c_str());
-    hts_close(wf);
+    // outf = out + "_" + reg + "_suffix.amat";
+    // wf = hts_open(outf.c_str(), "w");
+    // hprintf(wf, "%s", aout.c_str());
+    // hts_close(wf);
 
     // for (int32_t i = 0; i < N; ++i) {
     //   delete [] gtmat[i];
