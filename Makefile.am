@@ -41,6 +41,6 @@ bluebear_SOURCES = bluebear.cpp \
 	cmd_vcf_ibs0_pairwise.cpp cmd_vcf_ibs0_baseline.cpp cmd_vcf_ibs0_unconditional.cpp \
 	cmd_vcf_ibs0_view.cpp cmd_vcf_ibs0_flanking.cpp \
 	cmd_vcf_raresharing.cpp \
-	pbwt_suffix.cpp
+	pbwt_suffix.cpp pbwt_prefix.cpp
 
 bluebear_LDADD = $(ALL_LDFLAGS) $(HTSLIB_LIB) $(ALL_LIBS)

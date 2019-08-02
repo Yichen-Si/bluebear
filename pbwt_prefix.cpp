@@ -4,18 +4,18 @@
 
 #include "pbwt_build.h"
 
-void pbwtSuffix(pbwtCursor& pc, std::vector<bool*>& gtmat, std::vector<int32_t>& posvec, std::vector<int32_t*>& dmat, std::vector<int32_t*>& rmat) {
+void pbwtPrefix(pbwtCursor& pc, std::vector<bool*>& gtmat, std::vector<int32_t>& posvec, std::vector<int32_t*>& dmat, std::vector<int32_t*>& rmat) {
   int32_t N = (int32_t) posvec.size();
-  for (int32_t k = N-1; k >= 0; --k) {
-    pc.ForwardsAD_suffix(gtmat[k], posvec[k]);
+  for (int32_t k = 0; k < N; ++k) {
+    pc.ForwardsAD_prefix(gtmat[k], posvec[k]);
     memcpy(dmat[k], pc.d, pc.M*sizeof(int32_t));
     pc.ReverseA(rmat[k]);
   }
 }
 
 // Input bcf file
-// Output suffix pbwt by chunk
-int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
+// Output prefix pbwt by chunk
+int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   std::string inVcf, reg, out;
   int32_t chunksize = 100000;   // Read genotype by chunk
@@ -44,7 +44,7 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
   // std::string inVcf = "/net/wonderland/home/ycsi/IBD/ibs0/Data/test/test.10.bcf";
   // std::string reg = "chr20:3100000-3200000";
 
-  int32_t start = 0, end = 300000000;
+  int32_t start = 0, end = 100000000;
   std::vector<std::string> v;
   std::string chrom = "chr20";
   if (!reg.empty()) {
@@ -56,9 +56,9 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
   }
 
   int32_t nchunk = (end-start)/chunksize;
-  int32_t ck=nchunk;
+  int32_t ck = 0;
   int32_t st, ed;
-  for (ck = nchunk; ck >= 0; --ck) {
+  for (ck = 0; ck < nchunk; ++ck) {
     st = start + ck*chunksize;
     ed = st + chunksize;
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
@@ -76,16 +76,14 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     error("Invalid --region or unreadable --inVcf.");
   }
 
-  pbwtCursor pc(M, INT_MAX);
-  nchunk = ck;
+  pbwtCursor pc(M, 1);
 
-  notice("Started Reading VCF, identifying %d samples. Will procees in %d chunks and store snapshot every %d markers.", nsamples, nchunk+1, store_interval);
+  notice("Started Reading VCF, identifying %d samples. Will procees in %d chunks and store snapshot every %d markers.", nsamples, nchunk-ck, store_interval);
 
-  for (ck = nchunk; ck >= 0; --ck) {
+  for (; ck < nchunk; ++ck) {
 
     st = start + ck*chunksize;
     ed = st + chunksize;
-    if (st == end) continue;
     if (ed > end) ed = end;
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
     notice("Processing %s.", reg.c_str());
@@ -135,20 +133,10 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
       notice("Read %d markers, start extending pbwt for %s.", N, reg.c_str());
     }
 
-    // // Allocate space for pbwt matricies
-    // std::vector<int32_t*> dmat(N,NULL);
-    // std::vector<int32_t*> amat(N,NULL);
-    // // std::vector<int32_t*> rmat(N,NULL);
-    // for (int32_t i = 0; i < N; ++i) {
-    //   dmat[i] = new int32_t[M];
-    //   amat[i] = new int32_t[M];
-    // }
-
-    // Build pbwt (suffix) for this block
-
+    // Build pbwt for this block
     std::string dout = "", aout = "";
-    for (int32_t k = N-1; k >= 0; --k) {
-      pc.ForwardsAD_suffix(gtmat[k], positions[k]);
+    for (int32_t k = 0; k < N; ++k) {
+      pc.ForwardsAD_prefix(gtmat[k], positions[k]);
 
       if (k % store_interval == 0) {
         // memcpy(dmat[k], pc.d, pc.M*sizeof(int32_t));
@@ -164,15 +152,15 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
       }
     }
 
-    // pbwtSuffix(pc, gtmat, positions, dmat, rmat);
+    std::cout << "Finished " << std::endl;
 
     // Write to file
-    std::string outf = out + "_" + reg + "_suffix.dmat";
+    std::string outf = out + "_" + reg + "_prefix.dmat";
     htsFile* wf = hts_open(outf.c_str(), "w");
     hprintf(wf, "%s", dout.c_str());
     hts_close(wf);
 
-    outf = out + "_" + reg + "_suffix.amat";
+    outf = out + "_" + reg + "_prefix.amat";
     wf = hts_open(outf.c_str(), "w");
     hprintf(wf, "%s", aout.c_str());
     hts_close(wf);
@@ -183,10 +171,8 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     //   delete [] rmat[i];
     // }
 
-  }
-
   // // Print out test results. Sorted from the first position
-  // for (uint32_t i = 0; i < positions.size(); ++i) {
+  // for (uint32_t i = positions.size()-1; i > 0; --i) {
   //   for (int32_t j = 0; j < M; ++j) {
   //     std::cout << gtmat[i][pc.a[j]] << ' ';
   //   }
@@ -197,19 +183,7 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
   //   std::cout << pc.d[j]-positions[0] << ' ';
   // }
 
-
-  // // Print out test results. Sorted from the first position
-  // // Same as above, check the reverse index
-  // for (int32_t i = 0; i < 10; ++i) {
-  //   for (int32_t j = 0; j < M; ++j) {
-  //     for (int32_t k = 0; k < M; ++k) {
-  //       if (rmat[0][k] == j) {
-  //         std::cout << gtmat[i][k] << ' ';
-  //       }
-  //     }
-  //   }
-  //   std::cout << std::endl;
-  // }
+  }
 
   return 0;
 }

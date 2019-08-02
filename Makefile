@@ -114,7 +114,8 @@ am_bluebear_OBJECTS = bluebear.$(OBJEXT) Error.$(OBJEXT) \
 	cmd_vcf_ibs0_baseline.$(OBJEXT) \
 	cmd_vcf_ibs0_unconditional.$(OBJEXT) \
 	cmd_vcf_ibs0_view.$(OBJEXT) cmd_vcf_ibs0_flanking.$(OBJEXT) \
-	cmd_vcf_raresharing.$(OBJEXT) pbwt_suffix.$(OBJEXT)
+	cmd_vcf_raresharing.$(OBJEXT) pbwt_suffix.$(OBJEXT) \
+	pbwt_prefix.$(OBJEXT)
 bluebear_OBJECTS = $(am_bluebear_OBJECTS)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -334,7 +335,7 @@ bluebear_SOURCES = bluebear.cpp \
 	cmd_vcf_ibs0_pairwise.cpp cmd_vcf_ibs0_baseline.cpp cmd_vcf_ibs0_unconditional.cpp \
 	cmd_vcf_ibs0_view.cpp cmd_vcf_ibs0_flanking.cpp \
 	cmd_vcf_raresharing.cpp \
-	pbwt_suffix.cpp
+	pbwt_suffix.cpp pbwt_prefix.cpp
 
 bluebear_LDADD = $(ALL_LDFLAGS) $(HTSLIB_LIB) $(ALL_LIBS)
 all: config.h
@@ -461,6 +462,7 @@ include ./$(DEPDIR)/hts_utils.Po
 include ./$(DEPDIR)/interval.Po
 include ./$(DEPDIR)/interval_tree.Po
 include ./$(DEPDIR)/params.Po
+include ./$(DEPDIR)/pbwt_prefix.Po
 include ./$(DEPDIR)/pbwt_suffix.Po
 include ./$(DEPDIR)/utils.Po
 

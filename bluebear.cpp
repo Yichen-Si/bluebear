@@ -11,7 +11,9 @@ int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv);
 int32_t cmdVcfIBS0View(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
+
 int32_t pbwtBuildSuffix(int32_t argc, char** argv);
+int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 
 int32_t main(int32_t argc, char** argv) {
   commandList cl;
@@ -25,15 +27,15 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-rare-share",&cmdVcfRareShare, "Rare variants sharing matrix from BCF/VCF")
 
     LONG_COMMAND("pbwt-suffix",&pbwtBuildSuffix, "Build pbwt backwards from BCF/VCF")
+    LONG_COMMAND("pbwt-prefix",&pbwtBuildPrefix, "Build pbwt forwards from BCF/VCF")
 
   END_LONG_COMMANDS();
 
   cl.Add(new longCommands("Available Commands", longCommandlines));
 
   if ( argc < 2 ) {
-    // printf("[cramore] -- Fast analytic tools for analyzing high-throughput genomic data\n\n");
-    // fprintf(stderr, " Copyright (c) 2009-2017 by Hyun Min Kang and Adrian Tan\n");
-    // fprintf(stderr, " Licensed under the Apache License v2.0 http://www.apache.org/licenses/\n\n");
+    fprintf(stderr, " Copyright (c) 2009-2017 by Hyun Min Kang and Adrian Tan\n");
+    fprintf(stderr, " Licensed under the Apache License v2.0 http://www.apache.org/licenses/\n\n");
     fprintf(stderr, "To run a specific command      : %s [command] [options]\n",argv[0]);
     fprintf(stderr, "For detailed instructions, run : %s --help\n",argv[0]);
     cl.Status();
