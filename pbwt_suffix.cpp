@@ -59,8 +59,8 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
   int32_t ck=nchunk;
   int32_t st, ed;
   for (ck = nchunk; ck >= 0; --ck) {
-    st = start + ck*chunksize;
-    ed = st + chunksize;
+    st = start + ck*chunksize + 1;
+    ed = start + ck*chunksize + chunksize;
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
     std::vector<GenomeInterval> intervals;
     parse_intervals(intervals, "", reg);
@@ -83,8 +83,8 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
 
   for (ck = nchunk; ck >= 0; --ck) {
 
-    st = start + ck*chunksize;
-    ed = st + chunksize;
+    st = start + ck*chunksize + 1;
+    ed = start + ck*chunksize + chunksize;
     if (st == end) continue;
     if (ed > end) ed = end;
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
@@ -155,7 +155,7 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     for (int32_t k = N-1; k >= 0; --k) {
       pc.ForwardsAD_suffix(gtmat[k], positions[k]);
 
-      if (k % store_interval == 0) {
+      if (k == N-1 || k == 0 || k % store_interval == 0) {
         // memcpy(dmat[k], pc.d, pc.M*sizeof(int32_t));
         // memcpy(amat[k], pc.a, pc.M*sizeof(int32_t));
 

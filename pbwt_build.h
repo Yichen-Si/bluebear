@@ -1,7 +1,7 @@
 class pbwtCursor
 {
 
-private:
+protected:
   bool *y;
   int32_t *b, *e;
 
@@ -87,4 +87,24 @@ public:
     }
   }
 
+  void SwitchHapIndex(int32_t x, int32_t y) {
+    for (int32_t i = 0; i < std::max(x,y); ++i) {
+      if (a[i] == x)
+        a[i] = y;
+      if (a[i] == y)
+        a[i] = x;
+    }
+  }
+
+  int32_t FindIndex(int32_t x) {
+    for (int32_t i = 0; i < M; ++i) {
+      if (a[i] == x)
+        return i;
+    }
+    return -1;
+  }
+
 };
+
+
+

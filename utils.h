@@ -28,6 +28,7 @@
 #include <cstdio>
 #include <unistd.h>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -77,4 +78,15 @@ bool append_cwd(std::string& path);
 
 unsigned int str_hash(const char* s, unsigned int seed = 0);
 
+// New
+
+/**
+ * Get the last line of a file .
+ */
+
+std::string GetLastLine(const std::string& file);
+
 #endif
+
+
+

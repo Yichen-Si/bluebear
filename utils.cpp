@@ -170,3 +170,23 @@ unsigned int str_hash(const char* s, unsigned int seed)
   return hash;
 }
 
+std::string GetLastLine(const std::string& f) {
+    std::ifstream file(f);
+    file.seekg(-1, std::ios_base::end);
+    char c;
+    file.get(c);
+    while (c == '\n') {
+      file.seekg(-2,std::ios_base::cur);
+      file.get(c);
+    }
+    while (c != '\n') {
+      file.seekg(-2,std::ios_base::cur);
+      file.get(c);
+    }
+    std::string line;
+    std::getline(file, line);
+    return line;
+}
+
+
+

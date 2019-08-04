@@ -11,6 +11,7 @@ class bp2cmMap
     std::map<int32_t, double> lookup;
     std::map<int32_t, std::vector<int32_t> > poshash;
     int32_t binsize;
+    int32_t centromere_st, centromere_ed;
 
   bp2cmMap(const std::string &inMap, const char* sep,
         int32_t bp_col = 3, int32_t cm_col = 2,
@@ -41,7 +42,7 @@ class bp2cmMap
         poshash[kb] =  std::vector<int32_t>{it->first};
       }
       if (cst == 0) {
-        if (it->first - prepos > 500000) {
+        if (it->first - prepos > 200000) {
           cst = prepos; ced = it->first;
         } else {
           prepos = it->first;
@@ -80,6 +81,8 @@ class bp2cmMap
         }
       }
     }
+    centromere_st = cst;
+    centromere_ed = ced;
   }
 
   double bp2cm(int32_t pos) {
