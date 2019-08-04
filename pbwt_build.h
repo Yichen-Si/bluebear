@@ -88,11 +88,12 @@ public:
   }
 
   void SwitchHapIndex(int32_t x, int32_t y) {
-    for (int32_t i = 0; i < std::max(x,y); ++i) {
-      if (a[i] == x)
+    for (int32_t i = 0; i < M; ++i) {
+      if (a[i] == x) {
         a[i] = y;
-      if (a[i] == y)
+      } else if (a[i] == y) {
         a[i] = x;
+      }
     }
   }
 

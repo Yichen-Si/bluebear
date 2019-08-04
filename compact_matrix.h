@@ -8,7 +8,7 @@
 
 class byte_pair_operation {
 public:
-  uint8_t byte_pair_xor[65536];  
+  uint8_t byte_pair_xor[65536];
   byte_pair_operation() {
     int32_t i, j, k;
     for(i=0; i < 256; ++i) {
@@ -32,7 +32,7 @@ public:
       if ( byte_pair_xor[(x[i] << 8) + y[i]] ) return true;
     }
     return false;
-  }  
+  }
 };
 
 // row-wise stored 1-bit matrix
@@ -49,7 +49,7 @@ public:
   int32_t add_row_ints(int32_t* intarray);
   int32_t add_row_bytes(uint8_t* bytearray);
   int32_t add_row_bits(uint8_t* bitarray);
-  bool transpose();
+  bool transpose(bool verbose = 0);
   inline uint8_t* get_row_bits(int32_t irow) { return bytes + irow*nbytes_col; }
   inline uint8_t get_byte_at(int32_t irow, int32_t icol) { return ( ( bytes[irow*nbytes_col + (icol >> 3)] >> (icol & 0x03) ) & 0x01 ); }
   //void head(int32_t r, int32_t c);
