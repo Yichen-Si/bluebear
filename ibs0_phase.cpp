@@ -7,6 +7,8 @@
 #include "cm2bp.h"
 #include "bp2cm.h"
 
+#include <functional>
+
 int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
                        int32_t i, int32_t j,
                        bool reverse = 0, int32_t start = 0) {
@@ -45,7 +47,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   int32_t min_hom_gts = 1;
   int32_t nsamples=0, M=0;
   int32_t st, ck, ed, ibs_st, ibs_ck, ibs_ed, stugly;
-  int32_t chunk_size = 1000000;        // process suffix pbwt & ibs0 by chunk
+  int32_t chunk_size = 1000000;          // process suffix pbwt & ibs0 by chunk
 
   double  delta = 2.0;                   // thresholds
   int32_t lambda = 10000, gamma = 10000;
@@ -90,6 +92,14 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
 
   // To record flip
   std::vector<bool> flip(nsamples, 0);
+  // Will sort flip candidates by #involved pairs
+  typedef std::function<bool(std::pair<int32_t, std::vector<int32_t> >, std::pair<int32_t, std::vector<int32_t> >)> Comparator;
+  Comparator CompFn =
+    [](std::pair<int32_t, std::vector<int32_t> > elem1 ,std::pair<int32_t, std::vector<int32_t> > elem2) {
+      if ((elem1.second).size() == (elem2.second).size())
+        return elem1.first > elem2.first;
+      else
+        return (elem1.second).size() > (elem2.second).size();};
   // Output flip position
   std::vector<std::string> outlines;
   outf = out + "_flip.list";
@@ -108,7 +118,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   ibs_ck = 0;
 
   while (ibs_ck * chunk_size < gpmap.cm2bp(delta+pgmap.bp2cm(ed))) {
-    ibs_chunk_in_que.push_back(ibs_ck);
     ibs_st = ibs_ck * chunk_size + 1;
     ibs_ck++;
     ibs_ed = ibs_ck * chunk_size;
@@ -155,6 +164,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
     bmatRR_que.push_back (bmatRR);
     bmatAA_que.push_back (bmatAA);
     posvec_que.push_back (posvec);
+    ibs_chunk_in_que.push_back(ibs_ck-1);
   } // Finish initialize ibs0 lookup blocks
 
   // Initialize pbwt Cursor. Build prefix pbwt from begining.
@@ -163,8 +173,8 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
 
   std::ofstream wf(outf);
   while (ed < gpmap.maxpos) {
-if (st > (int32_t) 1e6)
-  break;
+// if (st > (int32_t) 3e6)
+//   break;
     // Read and build suffix pbwt by physical chunk
     // TODO: enable efficient random access &/ customizable chunk size
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
@@ -250,109 +260,42 @@ if (st > (int32_t) 1e6)
       dmat[i] = new int32_t[M];
       rmat[i] = new int32_t[M];
     }
-// int32_t avec[M];
     // Build suffix pbwt
     memcpy(dmat[N-1], sufpc.d, M*sizeof(int32_t));
     sufpc.ReverseA(rmat[N-1]);
     for (int32_t k = N-2; k >= 0; --k) {
       sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
       memcpy(dmat[k], sufpc.d, M*sizeof(int32_t));
-      // if (k == 4)
-        // memcpy(avec, sufpc.a, M*sizeof(int32_t));
       sufpc.ReverseA(rmat[k]);
     }
-
-// // Check suffix matrix:
-// notice("Checking suffix: \n");
-// for (int32_t it=0; it<M; it++) {
-//   for (int32_t jt=4; jt<14; jt++) {
-//     std::cout << gtmat[jt][avec[it]] << ' ';
-//   }
-//   std::cout<<'\n';
-// }
-// std::cout<<'\n';
-
     // Build prefix pbwt & detect switch
-    int32_t h11,h12,h21,h22; // (Reflecting current flips) index stored in prefix pbwt matrix
-    int32_t i_s, j_s, i_s_prime, j_s_prime; // index in suffix pbwt
+    int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
+    int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
+
+// std::cout<<"Start this block\n";
     for (int32_t k = 0; k < N-1; ++k) {
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
-if (positions[k] == 146289||positions[k] == 146330) {
-  std::cout << positions[k] << '\n';
-  std::cout << "a: ";
-  for (int32_t it=0; it<M; it++)
-    std::cout << prepc.a[it] << ' ';
-  std::cout << "\n";
-  std::cout << "g: ";
-  for (int32_t it=0; it<M; it++)
-    std::cout << gtmat[k-1][prepc.a[it]] << ' ';
-  std::cout << "\n";
-  std::cout << "g: ";
-  for (int32_t it=0; it<M; it++)
-    std::cout << gtmat[k][prepc.a[it]] << ' ';
-  std::cout << "\n";
-  std::cout << "d: ";
-  for (int32_t it=0; it<M; it++)
-    std::cout << prepc.a[it] << ":" <<  prepc.d[it] << ' ';
-  std::cout << "\n";
-}
-
-      std::set<int32_t> toswitch;
-
-// int32_t CHECKPT=20;
-// if (k == CHECKPT) {
-//   notice("Checking prefix: \n");
-//   int32_t avec[M];
-//   memcpy(avec, prepc.a, M*sizeof(int32_t));
-// std::cout<<'\n';
-// for (int32_t it=0; it<M; it++) {
-//   for (int32_t jt=CHECKPT-10; jt<=CHECKPT; jt++) {
-//     std::cout << gtmat[jt][avec[it]] << ' ';
-//   }
-//   std::cout<<'\n';
-// }
-// std::cout<<'\n';
-// for (int32_t it=0; it<nsamples; ++it) {
-//   if (flip[it]) {
-//     std::cout << "Flipped " << it << ";";
-//     for (int32_t jt = 0; jt < M; ++jt) {
-//       if (avec[jt] == it*2) {
-//         std::cout << jt<< ";";
-//         avec[jt] = it*2+1;}
-//       else if (avec[jt] == it*2+1) {
-//         avec[jt] = it*2;
-//         std::cout << jt<< ";";}
-//     }
-//     std::cout<<'\t';
-//   }
-// }
-// std::cout<<'\n';
-// for (int32_t it=0; it<M; it++) {
-//   for (int32_t jt=CHECKPT-10; jt<=CHECKPT; jt++) {
-//     std::cout << gtmat[jt][avec[it]] << ' ';
-//   }
-//   std::cout<<'\n';
-// }
-// std::cout<<'\n';
-// wf.close();
-// exit(EXIT_FAILURE);
-// }
-
+      std::vector<std::vector<int32_t> > fliprec;
+      // TODO: resolve multiple flips at one position
+      std::map<int32_t, std::vector<int32_t> > flipcandy;
       for (int32_t i = 0; i < M-1; ++i) {
-        h11 = prepc.a[i]; // Haplotype ID. In original input data.
+        h11 = prepc.a[i]; // Original Hap ID corresponding to row i
         h12 = h11 + 1 - 2 * (h11%2);
-        // h11 = (flip[h11/2]) ? (h11 + (h11%2 == 0) ? 1 : -1) : h11;
-        // h12 = h11 + 1 - 2 * (h11%2);
+        // hap11 = (flip[h11/2]) ? (h11 + (h11%2 == 0) ? 1 : -1) : h11;
         int32_t j = i+1;
         dij_p = prepc.d[j];
         // Check a few hap down
         while (j < M && dij_p < positions[k] - gamma) {
           h21 = prepc.a[j];
           h22 = h21 + 1 - 2 * (h21%2);
-          // h21 = (flip[h21/2]) ? (h21 + (h21%2 == 0) ? 1 : -1) : h21;
-          // h22 = h21 + 1 - 2 * (h21%2);
+          if (h11/2 == h21/2) { // Probably long homozygous sites
+            j++;
+            if (dij_p < prepc.d[j])
+              dij_p = prepc.d[j];
+            continue;
+          }
           if (gtmat[k+1][h11] != gtmat[k+1][h21]) { // If a match ends at k+1
             i_s = rmat[k+1][h11]; j_s = rmat[k+1][h21];
             i_s_prime = rmat[k+1][h12]; j_s_prime = rmat[k+1][h22];
@@ -374,14 +317,20 @@ if (positions[k] == 146289||positions[k] == 146330) {
             }
             int32_t flag = 0;
             if (dijp_s > dipj_s) { // Consider flip individual 2
+// std::cout << "II " << k << ' ' << i << ' ' << j << '\n';
               if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = k / 8;  // TODO this is not accurate
+// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << "Need next ibs0" << '\n';
+                int32_t bpos = k / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
+// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << bmatAA_que.size() << ' ' << ibs_ck_to_look << '\n';
+// std::cout << "II n " << k << ' ' << i << ' ' << j << " start from " << bpos << '\n';
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
                                                   h11/2, h21/2,0,bpos);
+// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << nextibs0 << '\n';
+
                 while (nextibs0 == -1 &&
                        ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
                   ibs_ck_to_look++;
@@ -389,8 +338,12 @@ if (positions[k] == 146289||positions[k] == 146330) {
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
+// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << nextibs0 << '\n';
+
                 nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
-                if (nextibs0 - positions[k] > lambda) { // Not too close to ibs0
+// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << nextibs0 << '\n';
+                if (nextibs0 == -1 || nextibs0 - positions[k] > lambda) {
+                  // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
                     flag = 2;
                   } else { // Need to check the previous ibs0
@@ -400,38 +353,35 @@ if (positions[k] == 146289||positions[k] == 146330) {
                                                       h11/2, h21/2,1,bpos);
                     while (previbs0 == -1 && ibs_ck_to_look > 0) {
                       ibs_ck_to_look--;
-                      nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
+                      previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                 bmatAA_que[ibs_ck_to_look],
                                                 h11/2, h21/2,1);
                     }
-                    previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
+// std::cout << "II p " << k << ' ' << i << ' ' << j << ' ' << previbs0 << '\n';
+                    if (previbs0 > 0)
+                      previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                     if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0)) {
                       flag = 3;
                     }
                   }
                 }
               }
+// std::cout << "II " << k << ' ' << i << ' ' << j << ' ' << flag << '\n';
               if (flag) { // Flip
-                flip[h21/2] = !flip[h21/2];
-                // POS, ID to flip, ID as ref,
-                // hap match before flipping & hap match after fipping
-                std::vector<int32_t> rec{positions[k],i,j,h21/2, h11/2,
-                  dij_p, dipj_s, dijp_s};
-                std::stringstream recline;
-                for (auto& v : rec)
-                  recline << v << '\t';
-                recline<< "Flip2 " << flag << '\t' << gtmat[k][h11]<<gtmat[k][h21] <<'\t'<<gtmat[k+1][h11]<<gtmat[k+1][h21]<<gtmat[k+1][h22] << '\n';
-                // recline.seekp(-1, std::ios::end);
-                // recline << '\n';
-                wf << recline.str();
-                toswitch.insert(h21/2);
-                // prepc.SwitchHapIndex(h21, h22);
+                fliprec.push_back(std::vector<int32_t> {positions[k],h21/2,h11/2,
+                                                       dij_p, dipj_s, dijp_s, flag});
+                if (flipcandy.find(h21/2) != flipcandy.end()) {
+                  flipcandy[h21/2].push_back(h11/2);
+                } else {
+                  flipcandy[h21/2] = std::vector<int32_t> {h11/2};
+                }
               }
             } else if (dijp_s < dipj_s) { // Consider flip individual 1
+// std::cout << "I " << k << ' ' << i << ' ' << j << '\n';
               if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = k / 8;  // TODO this is not accurate
+                int32_t bpos = k / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
@@ -444,7 +394,8 @@ if (positions[k] == 146289||positions[k] == 146330) {
                                             h11/2, h21/2,0);
                 }
                 nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
-                if (nextibs0 - positions[k] > lambda) { // Not too close to ibs0
+                if (nextibs0 == -1 || nextibs0 - positions[k] > lambda) {
+                  // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
                     flag = 2;
                   } else { // Need to check the previous ibs0
@@ -454,11 +405,12 @@ if (positions[k] == 146289||positions[k] == 146330) {
                                                       h11/2, h21/2,1,bpos);
                     while (previbs0 == -1 && ibs_ck_to_look > 0) {
                       ibs_ck_to_look--;
-                      nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
+                      previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                 bmatAA_que[ibs_ck_to_look],
                                                 h11/2, h21/2,1);
                     }
-                    previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
+                    if (previbs0 > 0)
+                      previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                     if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0)) {
                       flag = 3;
                     }
@@ -466,20 +418,13 @@ if (positions[k] == 146289||positions[k] == 146330) {
                 }
               }
               if (flag) { // Flip
-                flip[h11/2] = !flip[h11/2];
-                // KeepGoDown = 0;
-                std::vector<int32_t> rec{positions[k], i, j, h11/2, h21/2,
-                  dij_p, dijp_s, dipj_s};
-                std::stringstream recline;
-                for (auto& v : rec)
-                  recline << v << '\t';
-                recline<< "Flip1 " << flag << '\t' << gtmat[k][h11]<<gtmat[k][h21] <<'\t'<<gtmat[k+1][h11]<<gtmat[k+1][h21]<<gtmat[k+1][h12] << '\n';
-                // recline.seekp(-1, std::ios::end);
-                // recline << '\n';
-                wf << recline.str();
-                // prepc.SwitchHapIndex(h11, h12);
-                toswitch.insert(h11/2);
-                break;
+                fliprec.push_back(std::vector<int32_t> {positions[k],h11/2,h21/2,
+                                                        dij_p, dijp_s, dipj_s, flag});
+                if (flipcandy.find(h11/2) != flipcandy.end()) {
+                  flipcandy[h11/2].push_back(h21/2);
+                } else {
+                  flipcandy[h11/2] = std::vector<int32_t> {h21/2};
+                }
               }
             }
           }
@@ -488,15 +433,46 @@ if (positions[k] == 146289||positions[k] == 146330) {
             dij_p = prepc.d[j];
         } // End of searching switch of pairs involving row i
       } // End of searching for this column
-      if (toswitch.size() > 0) {
-        wf << "Flip happening: ";
-        for (auto it = toswitch.begin(); it != toswitch.end(); ++it) {
-          wf << *it << '\t';
-          prepc.SwitchHapIndex((*it)*2, (*it)*2+1);
+      // If multiple flips may occur, sort involved id by #occurence
+      if (flipcandy.size() > 0) {
+// std::cout << "Candy: " <<flipcandy.size()<<' ' << fliprec.size() << '\n';
+        std::set<int32_t> flipped;
+        if (flipcandy.size() > 1) {
+          std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
+          for (auto & id : IDToFlip) {
+            int32_t rm = (id.second).size();
+// std::cout << id.first << ";" << rm << ' ';
+            for (auto & id2 : id.second) {
+              if (flipped.find(id2) != flipped.end())
+                rm--;
+            }
+            if (rm) {
+              flipped.insert(id.first);
+            }
+          }
+// std::cout << "End of mate sizes\n";
+        } else {
+          flipped.insert(flipcandy.begin()->first);
         }
-      wf <<'\n';
+// for (auto & v : flipped)
+  // std::cout<<v<<' ';
+// std::cout<<"End of flipped\n";
+        for (auto & v : fliprec) {
+          if (flipped.find(v[1]) != flipped.end()) {
+// std::cout<<v[1]<<' ';
+            std::stringstream recline;
+            for (auto& w : v)
+              recline << w << '\t';
+            recline.seekp(-1, std::ios_base::end);
+            recline << '\n';
+            wf << recline.str();
+// std::cout<<recline.str();
+          }
+        }
+// std::cout<<"End of rec\n";
       }
     } // End of processing one block
+// std::cout<<"End one block\n";
     ck++;
     st = ck * chunk_size + 1;
     stugly = positions.back();
@@ -510,17 +486,17 @@ if (positions[k] == 146289||positions[k] == 146330) {
     for (auto& pt : rmat)
       delete [] pt;
     // Slide the window of ibs0 lookup
+    cur_ibs_ck++;
     while (pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0]).back()) > delta) {
       delete posvec_que[0]; posvec_que.erase(posvec_que.begin());
       delete bmatRR_que[0]; bmatRR_que.erase(bmatRR_que.begin());
       delete bmatAA_que[0]; bmatAA_que.erase(bmatAA_que.begin());
       ibs_chunk_in_que.erase(ibs_chunk_in_que.begin());
-      cur_ibs_ck++;
+      cur_ibs_ck--;
     }
     ibs_ck = ibs_chunk_in_que.back() + 1;
 
     while (pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) < delta) {
-      ibs_chunk_in_que.push_back(ibs_ck);
       ibs_st = ibs_ck * chunk_size + 1;
       ibs_ck++;
       ibs_ed = ibs_ck * chunk_size;
@@ -572,8 +548,19 @@ if (positions[k] == 146289||positions[k] == 146330) {
       bmatRR_que.push_back (bmatRR);
       bmatAA_que.push_back (bmatAA);
       posvec_que.push_back (posvec);
+      ibs_chunk_in_que.push_back(ibs_ck-1);
     } // Finish adding new ibs0 lookup blocks
+    // Check ibs0 blocks & current position
+// std::cout << ck << ' ' << st << ' ' << ed << '\n';
+// std::cout << cur_ibs_ck << " in " << ibs_chunk_in_que.size() << " or " << posvec_que.size() << '\n';
+// for (uint32_t it = 0; it < bmatRR_que.size(); ++it) {
+//   std::cout << ibs_chunk_in_que[it] << ' ';
+//   if (posvec_que[it]->size() > 0)
+//     std::cout << (*posvec_que[it])[0] << '-' << posvec_que[it]->back() << '\n';
+//   else std::cout << '\n';
+// }
   }
+  wf.close();
   return 0;
 }
 

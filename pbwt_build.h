@@ -87,7 +87,18 @@ public:
     }
   }
 
-  void SwitchHapIndex(int32_t x, int32_t y) {
+  void SwitchIndex(std::set<int32_t>& idset) {
+    int32_t ct = 2*idset.size();
+    for (int32_t i = 0; i < M; ++i) {
+      if (idset.find(a[i]/2) != idset.end()) {
+        a[i] += 1 - 2 * (a[i]%2);
+        ct--;
+        if (ct ==0) break;
+      }
+    }
+  }
+
+  void SwitchIndex_OnePair(int32_t x, int32_t y) {
     for (int32_t i = 0; i < M; ++i) {
       if (a[i] == x) {
         a[i] = y;
