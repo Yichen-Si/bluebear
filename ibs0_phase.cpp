@@ -40,7 +40,7 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
 
 int32_t IBS0Phase(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_suffix, out, reg;
-  std::string outf;
+  std::string outf,outf_s;
   std::string chrom="chr20";
   int32_t verbose = 1000;
   int32_t min_variant = 2;
@@ -49,8 +49,8 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   int32_t st, ck, ed, ibs_st, ibs_ck, ibs_ed, stugly;
   int32_t chunk_size = 1000000;          // process suffix pbwt & ibs0 by chunk
 
-  double  delta = 2.0;                   // thresholds
-  int32_t lambda = 10000, gamma = 10000;
+  double  delta = 3.0;                   // thresholds
+  int32_t lambda = 20000, gamma = 20000, diff = 5000;
 
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -100,9 +100,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
         return elem1.first > elem2.first;
       else
         return (elem1.second).size() > (elem2.second).size();};
-  // Output flip position
-  std::vector<std::string> outlines;
-  outf = out + "_flip.list";
 
   ck = 0;
   st = ck * chunk_size + 1;
@@ -171,13 +168,16 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   // TODO: start from a close snapshot
   pbwtCursor prepc(M, gpmap.minpos-1);
 
-  std::ofstream wf(outf);
   while (ed < gpmap.maxpos) {
 // if (st > (int32_t) 3e6)
 //   break;
     // Read and build suffix pbwt by physical chunk
     // TODO: enable efficient random access &/ customizable chunk size
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
+    outf = out + "_flip_"+reg+".list";
+    std::ofstream wf(outf, std::ios::trunc);
+    outf_s = out + "_flip_"+reg+"_short.list";
+    std::ofstream wfs(outf_s, std::ios::trunc);
     std::string line;
     std::string sfile = path_suffix + "_" + reg + "_suffix.amat";
     // Read the last snp in this chunk. should be stored as a checkpoint
@@ -272,8 +272,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
     int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
-
-// std::cout<<"Start this block\n";
     for (int32_t k = 0; k < N-1; ++k) {
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
@@ -316,21 +314,15 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                 dijp_s = dmat[k+1][it];
             }
             int32_t flag = 0;
-            if (dijp_s > dipj_s) { // Consider flip individual 2
-// std::cout << "II " << k << ' ' << i << ' ' << j << '\n';
+            if (dijp_s - dipj_s > diff) { // Consider flip individual 2
               if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << "Need next ibs0" << '\n';
                 int32_t bpos = k / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
-// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << bmatAA_que.size() << ' ' << ibs_ck_to_look << '\n';
-// std::cout << "II n " << k << ' ' << i << ' ' << j << " start from " << bpos << '\n';
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
                                                   h11/2, h21/2,0,bpos);
-// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << nextibs0 << '\n';
-
                 while (nextibs0 == -1 &&
                        ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
                   ibs_ck_to_look++;
@@ -338,10 +330,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << nextibs0 << '\n';
-
                 nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
-// std::cout << "II n " << k << ' ' << i << ' ' << j << ' ' << nextibs0 << '\n';
                 if (nextibs0 == -1 || nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
@@ -357,7 +346,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                                                 bmatAA_que[ibs_ck_to_look],
                                                 h11/2, h21/2,1);
                     }
-// std::cout << "II p " << k << ' ' << i << ' ' << j << ' ' << previbs0 << '\n';
                     if (previbs0 > 0)
                       previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                     if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0)) {
@@ -366,7 +354,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                   }
                 }
               }
-// std::cout << "II " << k << ' ' << i << ' ' << j << ' ' << flag << '\n';
               if (flag) { // Flip
                 fliprec.push_back(std::vector<int32_t> {positions[k],h21/2,h11/2,
                                                        dij_p, dipj_s, dijp_s, flag});
@@ -376,8 +363,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                   flipcandy[h21/2] = std::vector<int32_t> {h11/2};
                 }
               }
-            } else if (dijp_s < dipj_s) { // Consider flip individual 1
-// std::cout << "I " << k << ' ' << i << ' ' << j << '\n';
+            } else if (dipj_s - dijp_s > diff) { // Consider flip individual 1
               if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
@@ -435,13 +421,11 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
       } // End of searching for this column
       // If multiple flips may occur, sort involved id by #occurence
       if (flipcandy.size() > 0) {
-// std::cout << "Candy: " <<flipcandy.size()<<' ' << fliprec.size() << '\n';
         std::set<int32_t> flipped;
         if (flipcandy.size() > 1) {
           std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
           for (auto & id : IDToFlip) {
             int32_t rm = (id.second).size();
-// std::cout << id.first << ";" << rm << ' ';
             for (auto & id2 : id.second) {
               if (flipped.find(id2) != flipped.end())
                 rm--;
@@ -450,29 +434,37 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
               flipped.insert(id.first);
             }
           }
-// std::cout << "End of mate sizes\n";
         } else {
           flipped.insert(flipcandy.begin()->first);
         }
-// for (auto & v : flipped)
-  // std::cout<<v<<' ';
-// std::cout<<"End of flipped\n";
+        std::map<int32_t, std::vector<int32_t> > finalrec;
+        for (auto & v : flipped) {
+          finalrec[v] = std::vector<int32_t>{0,v,0,0};
+        }
         for (auto & v : fliprec) {
           if (flipped.find(v[1]) != flipped.end()) {
-// std::cout<<v[1]<<' ';
+            finalrec[v[1]][0] = v[0];
+            finalrec[v[1]][2]++;
+            if (v[5]-v[4] > finalrec[v[1]][3])
+              finalrec[v[1]][3] = v[5]-v[4];
             std::stringstream recline;
             for (auto& w : v)
               recline << w << '\t';
             recline.seekp(-1, std::ios_base::end);
             recline << '\n';
             wf << recline.str();
-// std::cout<<recline.str();
           }
         }
-// std::cout<<"End of rec\n";
+        for (auto & v : flipped) {
+          std::stringstream recline;
+          for (auto& w : finalrec[v])
+            recline << w << '\t';
+          recline.seekp(-1, std::ios_base::end);
+          recline << '\n';
+          wfs << recline.str();
+        }
       }
     } // End of processing one block
-// std::cout<<"End one block\n";
     ck++;
     st = ck * chunk_size + 1;
     stugly = positions.back();
@@ -550,17 +542,9 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
       posvec_que.push_back (posvec);
       ibs_chunk_in_que.push_back(ibs_ck-1);
     } // Finish adding new ibs0 lookup blocks
-    // Check ibs0 blocks & current position
-// std::cout << ck << ' ' << st << ' ' << ed << '\n';
-// std::cout << cur_ibs_ck << " in " << ibs_chunk_in_que.size() << " or " << posvec_que.size() << '\n';
-// for (uint32_t it = 0; it < bmatRR_que.size(); ++it) {
-//   std::cout << ibs_chunk_in_que[it] << ' ';
-//   if (posvec_que[it]->size() > 0)
-//     std::cout << (*posvec_que[it])[0] << '-' << posvec_que[it]->back() << '\n';
-//   else std::cout << '\n';
-// }
-  }
-  wf.close();
+    wf.close();
+    wfs.close();
+  } // Finish processing one chunk
   return 0;
 }
 
