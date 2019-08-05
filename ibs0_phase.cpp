@@ -8,6 +8,7 @@
 #include "bp2cm.h"
 
 #include <functional>
+#include <iomanip>
 
 int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
                        int32_t i, int32_t j,
@@ -41,6 +42,7 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
 int32_t IBS0Phase(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_suffix, out, reg;
   std::string outf,outf_s;
+  int32_t detailed = 0;
   std::string chrom="chr20";
   int32_t verbose = 1000;
   int32_t min_variant = 2;
@@ -50,7 +52,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   int32_t chunk_size = 1000000;          // process suffix pbwt & ibs0 by chunk
 
   double  delta = 3.0;                   // thresholds
-  int32_t lambda = 20000, gamma = 20000, diff = 5000;
+  int32_t lambda = 20000, gamma = 20000, diff = 5000, nmatch = 10000;
 
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -70,15 +72,22 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
     LONG_DOUBLE_PARAM("delta",&delta, "no-ibs0 threshold (in cM) to be a proxy of IBD")
     LONG_INT_PARAM("lambda",&lambda,"Length (in bp) to the end of no-ibs0 that is not trusted")
     LONG_INT_PARAM("gamma",&gamma,"Length (in bp) of matched prefix that is requred to begin searching")
+    LONG_INT_PARAM("min-diff",&diff,"The minimal difference of new matches (in bp) between flipping two individuals for a flip to be recorded")
+    LONG_INT_PARAM("min-improve",&nmatch,"The minimal improve of matching (in bp) for a flip to be recorded")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
     LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
+    LONG_INT_PARAM("detailed",&detailed,"If detailed info for each pair is to be written (0/1)")
 
   END_LONG_PARAMS();
   pl.Add(new longParams("Available Options", longParameters));
   pl.Read(argc, argv);
   pl.Status();
+
+std::ostringstream parm;
+parm << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch;
+notice("Parameter setting: %s.", parm.str().c_str());
 
   // Translate between genetic & physical position.
   cm2bpMap gpmap(inMap, " ");
@@ -91,7 +100,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   hts_close(fp);
 
   // To record flip
-  std::vector<bool> flip(nsamples, 0);
+  // std::vector<bool> flip(nsamples, 0);
   // Will sort flip candidates by #involved pairs
   typedef std::function<bool(std::pair<int32_t, std::vector<int32_t> >, std::pair<int32_t, std::vector<int32_t> >)> Comparator;
   Comparator CompFn =
@@ -174,10 +183,14 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
     // Read and build suffix pbwt by physical chunk
     // TODO: enable efficient random access &/ customizable chunk size
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
-    outf = out + "_flip_"+reg+".list";
+    outf = out + "_flip_" + parm.str() + "_" + reg + ".list";
     std::ofstream wf(outf, std::ios::trunc);
-    outf_s = out + "_flip_"+reg+"_short.list";
+    if (!detailed) { // Temporary
+      wf.close(); remove(outf.c_str());
+    }
+    outf_s = out + "_flip_"+ parm.str() + "_" +reg+"_short.list";
     std::ofstream wfs(outf_s, std::ios::trunc);
+
     std::string line;
     std::string sfile = path_suffix + "_" + reg + "_suffix.amat";
     // Read the last snp in this chunk. should be stored as a checkpoint
@@ -314,7 +327,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                 dijp_s = dmat[k+1][it];
             }
             int32_t flag = 0;
-            if (dijp_s - dipj_s > diff) { // Consider flip individual 2
+            if (dijp_s - dipj_s > diff && dijp_s - positions[k] > nmatch) { // Consider flip individual 2
               if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
@@ -363,7 +376,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
                   flipcandy[h21/2] = std::vector<int32_t> {h11/2};
                 }
               }
-            } else if (dipj_s - dijp_s > diff) { // Consider flip individual 1
+            } else if (dipj_s - dijp_s > diff && dipj_s - positions[k] > nmatch) { // Consider flip individual 1
               if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
@@ -447,12 +460,14 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
             finalrec[v[1]][2]++;
             if (v[5]-v[4] > finalrec[v[1]][3])
               finalrec[v[1]][3] = v[5]-v[4];
-            std::stringstream recline;
-            for (auto& w : v)
-              recline << w << '\t';
-            recline.seekp(-1, std::ios_base::end);
-            recline << '\n';
-            wf << recline.str();
+            if (detailed) {
+              std::stringstream recline;
+              for (auto& w : v)
+                recline << w << '\t';
+              recline.seekp(-1, std::ios_base::end);
+              recline << '\n';
+              wf << recline.str();
+            }
           }
         }
         for (auto & v : flipped) {
@@ -542,8 +557,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
       posvec_que.push_back (posvec);
       ibs_chunk_in_que.push_back(ibs_ck-1);
     } // Finish adding new ibs0 lookup blocks
-    wf.close();
-    wfs.close();
   } // Finish processing one chunk
   return 0;
 }
