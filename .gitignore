@@ -30,19 +30,11 @@
 *.exe
 *.out
 *.app
-<<<<<<< HEAD
-
-autom4te.cache/
-autom4te.cache/*
-*~
-
-.deps/
-.deps/*
-*.Po
 
 test/
 test/*
 
-blurbear
-=======
->>>>>>> 560acfa6347e3d7e74a5544b0c8afa37d856374c
+bin/
+bin/*
+
+
