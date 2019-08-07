@@ -37,4 +37,7 @@ test/*
 bin/
 bin/*
 
+.deps/
+.deps/*
+
 

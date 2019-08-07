@@ -100,8 +100,7 @@ notice("Parameter setting: %s.", parm.str().c_str());
   hts_close(fp);
 
   // To record flip
-  // std::vector<bool> flip(nsamples, 0);
-  // Will sort flip candidates by #involved pairs
+  // Will first sort flip candidates by #involved pairs
   typedef std::function<bool(std::pair<int32_t, std::vector<int32_t> >, std::pair<int32_t, std::vector<int32_t> >)> Comparator;
   Comparator CompFn =
     [](std::pair<int32_t, std::vector<int32_t> > elem1 ,std::pair<int32_t, std::vector<int32_t> > elem2) {
@@ -434,28 +433,26 @@ notice("Parameter setting: %s.", parm.str().c_str());
       } // End of searching for this column
       // If multiple flips may occur, sort involved id by #occurence
       if (flipcandy.size() > 0) {
-        std::set<int32_t> flipped;
+        std::map<int32_t, std::vector<int32_t> > finalrec;
+        std::vector<bool> flipped(M, 0);
         if (flipcandy.size() > 1) {
           std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
           for (auto & id : IDToFlip) {
             int32_t rm = (id.second).size();
             for (auto & id2 : id.second) {
-              if (flipped.find(id2) != flipped.end())
+              if (flipped[id2])
                 rm--;
             }
             if (rm) {
-              flipped.insert(id.first);
+              flipped[id.first] = 1;
+              finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
             }
           }
         } else {
-          flipped.insert(flipcandy.begin()->first);
-        }
-        std::map<int32_t, std::vector<int32_t> > finalrec;
-        for (auto & v : flipped) {
-          finalrec[v] = std::vector<int32_t>{0,v,0,0};
+          flipped[flipcandy.begin()->first] = 1;
         }
         for (auto & v : fliprec) {
-          if (flipped.find(v[1]) != flipped.end()) {
+          if (flipped[v[1]]) {
             finalrec[v[1]][0] = v[0];
             finalrec[v[1]][2]++;
             if (v[5]-v[4] > finalrec[v[1]][3])
@@ -470,9 +467,9 @@ notice("Parameter setting: %s.", parm.str().c_str());
             }
           }
         }
-        for (auto & v : flipped) {
+        for (auto & v : finalrec) {
           std::stringstream recline;
-          for (auto& w : finalrec[v])
+          for (auto& w : v.second)
             recline << w << '\t';
           recline.seekp(-1, std::ios_base::end);
           recline << '\n';

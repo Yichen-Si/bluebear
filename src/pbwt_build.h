@@ -87,13 +87,10 @@ public:
     }
   }
 
-  void SwitchIndex(std::set<int32_t>& idset) {
-    int32_t ct = 2*idset.size();
+  void SwitchIndex(std::vector<bool>& indi) {
     for (int32_t i = 0; i < M; ++i) {
-      if (idset.find(a[i]/2) != idset.end()) {
+      if (indi[a[i]]) {
         a[i] += 1 - 2 * (a[i]%2);
-        ct--;
-        if (ct ==0) break;
       }
     }
   }
