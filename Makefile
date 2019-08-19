@@ -747,6 +747,33 @@ src/reference_sequence.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/reference_sequence.cpp.s
 .PHONY : src/reference_sequence.cpp.s
 
+src/test_hts.o: src/test_hts.cpp.o
+
+.PHONY : src/test_hts.o
+
+# target to build an object file
+src/test_hts.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/test_hts.cpp.o
+.PHONY : src/test_hts.cpp.o
+
+src/test_hts.i: src/test_hts.cpp.i
+
+.PHONY : src/test_hts.i
+
+# target to preprocess a source file
+src/test_hts.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/test_hts.cpp.i
+.PHONY : src/test_hts.cpp.i
+
+src/test_hts.s: src/test_hts.cpp.s
+
+.PHONY : src/test_hts.s
+
+# target to generate assembly for a file
+src/test_hts.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/test_hts.cpp.s
+.PHONY : src/test_hts.cpp.s
+
 src/tsv_reader.o: src/tsv_reader.cpp.o
 
 .PHONY : src/tsv_reader.o
@@ -879,6 +906,9 @@ help:
 	@echo "... src/reference_sequence.o"
 	@echo "... src/reference_sequence.i"
 	@echo "... src/reference_sequence.s"
+	@echo "... src/test_hts.o"
+	@echo "... src/test_hts.i"
+	@echo "... src/test_hts.s"
 	@echo "... src/tsv_reader.o"
 	@echo "... src/tsv_reader.i"
 	@echo "... src/tsv_reader.s"

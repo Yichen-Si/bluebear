@@ -89,7 +89,7 @@ public:
 
   void SwitchIndex(std::vector<bool>& indi) {
     for (int32_t i = 0; i < M; ++i) {
-      if (indi[a[i]]) {
+      if (indi[a[i]/2]) {
         a[i] += 1 - 2 * (a[i]%2);
       }
     }

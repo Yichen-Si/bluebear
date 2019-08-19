@@ -612,9 +612,33 @@ CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.provides: CMakeFiles/bluebe
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/test_hts.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/test_hts.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/test_hts.cpp
+
+CMakeFiles/bluebear.dir/src/test_hts.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/test_hts.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/test_hts.cpp > CMakeFiles/bluebear.dir/src/test_hts.cpp.i
+
+CMakeFiles/bluebear.dir/src/test_hts.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/test_hts.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/test_hts.cpp -o CMakeFiles/bluebear.dir/src/test_hts.cpp.s
+
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides: CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/test_hts.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: src/tsv_reader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/tsv_reader.cpp
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.i: cmake_force
@@ -638,7 +662,7 @@ CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o.provides.build: CMakeFiles/bluebear
 
 CMakeFiles/bluebear.dir/src/utils.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/utils.cpp.o: src/utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/bluebear.dir/src/utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/bluebear.dir/src/utils.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/utils.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/utils.cpp
 
 CMakeFiles/bluebear.dir/src/utils.cpp.i: cmake_force
@@ -685,6 +709,7 @@ bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o" \
 "CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o" \
 "CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o" \
+"CMakeFiles/bluebear.dir/src/test_hts.cpp.o" \
 "CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o" \
 "CMakeFiles/bluebear.dir/src/utils.cpp.o"
 
@@ -714,12 +739,13 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/params.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/test_hts.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/utils.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/build.make
 bin/bluebear: ../htslib/libhts.a
 bin/bluebear: CMakeFiles/bluebear.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking CXX executable bin/bluebear"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking CXX executable bin/bluebear"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bluebear.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -750,6 +776,7 @@ CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/params.cpp.o.requi
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/utils.cpp.o.requires
 

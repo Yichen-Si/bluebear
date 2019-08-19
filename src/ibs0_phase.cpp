@@ -41,9 +41,10 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
 
 int32_t IBS0Phase(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_suffix, out, reg;
-  std::string outf,outf_s;
+  std::string outf,outf_s,outVcf;
   int32_t detailed = 0;
   std::string chrom="chr20";
+  std::string mode ="b";
   int32_t verbose = 1000;
   int32_t min_variant = 2;
   int32_t min_hom_gts = 1;
@@ -77,6 +78,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
+    LONG_STRING_PARAM("mode", &mode, "Output format of flipped bcf/vcf (b/bu/z)")
     LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
     LONG_INT_PARAM("detailed",&detailed,"If detailed info for each pair is to be written (0/1)")
 
@@ -85,21 +87,15 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   pl.Read(argc, argv);
   pl.Status();
 
-std::ostringstream parm;
-parm << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch;
-notice("Parameter setting: %s.", parm.str().c_str());
+  std::ostringstream parm;
+  parm << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch;
+  notice("Parameter setting: %s.", parm.str().c_str());
 
   // Translate between genetic & physical position.
   cm2bpMap gpmap(inMap, " ");
   bp2cmMap pgmap(inMap, " ");
 
-  htsFile *fp = hts_open(inVcf.c_str(),"r");
-  bcf_hdr_t *hdr = bcf_hdr_read(fp);
-  nsamples = hdr->n[BCF_DT_SAMPLE];
-  M = nsamples * 2;
-  hts_close(fp);
-
-  // To record flip
+  // For recording flip
   // Will first sort flip candidates by #involved pairs
   typedef std::function<bool(std::pair<int32_t, std::vector<int32_t> >, std::pair<int32_t, std::vector<int32_t> >)> Comparator;
   Comparator CompFn =
@@ -108,6 +104,24 @@ notice("Parameter setting: %s.", parm.str().c_str());
         return elem1.first > elem2.first;
       else
         return (elem1.second).size() > (elem2.second).size();};
+
+  // Output flipped bcf/vcf
+  outVcf = out + ".flipped.bcf";
+  if (mode=="z")
+    outVcf = out + ".flipped.vcf.gz";
+  mode = "w" + mode;
+  htsFile *wbcf = hts_open(outVcf.c_str(),mode.c_str());
+
+  // Copy header & get sample size
+  htsFile *fp = hts_open(inVcf.c_str(),"r");
+  bcf_hdr_t *hdr = bcf_hdr_read(fp);
+  bcf_hdr_write(wbcf, hdr);
+  nsamples = hdr->n[BCF_DT_SAMPLE];
+  M = nsamples * 2;
+  hts_close(fp);
+
+  // If the current position is flipped
+  bool flip_abs[nsamples] = {0};
 
   ck = 0;
   st = ck * chunk_size + 1;
@@ -284,11 +298,27 @@ notice("Parameter setting: %s.", parm.str().c_str());
     int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
+    odr.jump_to_interval(intervals[0]);
+    bcf_clear(iv);
     for (int32_t k = 0; k < N-1; ++k) {
+      // Output current position
+      odr.read(iv);
+      if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
+        error("Cannot find the field GT.");
+      }
+      int32_t y[M];
+      for (int32_t it = 0; it < nsamples; ++it) {
+        y[it*2] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2+1]) : bcf_gt_phased(gtmat[k][it*2]);
+        y[it*2+1] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2]) : bcf_gt_phased(gtmat[k][it*2+1]);
+      }
+      if(bcf_update_genotypes(odr.hdr, iv, y, M)) {
+        error("Cannot update GT.");
+      }
+      bcf_write(wbcf, odr.hdr, iv);
+
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       std::vector<std::vector<int32_t> > fliprec;
-      // TODO: resolve multiple flips at one position
       std::map<int32_t, std::vector<int32_t> > flipcandy;
       for (int32_t i = 0; i < M-1; ++i) {
         h11 = prepc.a[i]; // Original Hap ID corresponding to row i
@@ -434,7 +464,7 @@ notice("Parameter setting: %s.", parm.str().c_str());
       // If multiple flips may occur, sort involved id by #occurence
       if (flipcandy.size() > 0) {
         std::map<int32_t, std::vector<int32_t> > finalrec;
-        std::vector<bool> flipped(M, 0);
+        std::vector<bool> flipped(nsamples, 0);
         if (flipcandy.size() > 1) {
           std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
           for (auto & id : IDToFlip) {
@@ -450,6 +480,7 @@ notice("Parameter setting: %s.", parm.str().c_str());
           }
         } else {
           flipped[flipcandy.begin()->first] = 1;
+          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0};
         }
         for (auto & v : fliprec) {
           if (flipped[v[1]]) {
@@ -474,6 +505,11 @@ notice("Parameter setting: %s.", parm.str().c_str());
           recline.seekp(-1, std::ios_base::end);
           recline << '\n';
           wfs << recline.str();
+        }
+        prepc.SwitchIndex(flipped);
+        for (int32_t it = 0; it < nsamples; ++it) {
+          if (flipped[it])
+            flip_abs[it] = !flip_abs[it];
         }
       }
     } // End of processing one block
@@ -555,6 +591,7 @@ notice("Parameter setting: %s.", parm.str().c_str());
       ibs_chunk_in_que.push_back(ibs_ck-1);
     } // Finish adding new ibs0 lookup blocks
   } // Finish processing one chunk
+  hts_close(wbcf);
   return 0;
 }
 

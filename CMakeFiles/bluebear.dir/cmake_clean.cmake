@@ -22,6 +22,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o"
   "CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
   "CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o"
+  "CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
   "CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
   "CMakeFiles/bluebear.dir/src/utils.cpp.o"
   "bin/bluebear.pdb"

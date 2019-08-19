@@ -4,7 +4,7 @@
 #include "compact_matrix.h"
 #include <bitset>
 
-// goal -- for a given chunk (e.g. 100kb)
+// goal -- for a given chunk
 //         ind IBS0 and shared rare allele for each pair of individual
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv) {
   std::string inVcf;
@@ -184,7 +184,7 @@ int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv) {
 
         if ( ac <= max_rare_ac && geno == 1 ) {
           // If it is a rare variant, 1 labels carriers
-          gtAA[i] = 1;
+          gtAA[i] = 1; gtRR[i] = 1;
         }
       }
     }
@@ -218,14 +218,6 @@ int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv) {
 
   notice("Searching for potential IBD segments amoung the first %d samples..", nsamples);
   int32_t nibds = 0, k = 0;
-  std::vector<int32_t> byte2cnt;
-  for(int32_t i=0; i < 256; ++i) {
-    int32_t sum = 0;
-    for(int32_t j=0; j < 8; ++j) {
-      if ( ( (0x00ff & i) >> j ) & 0x01 ) ++sum;
-    }
-    byte2cnt.push_back(sum);
-  }
 
   //return 0;
 
@@ -245,15 +237,12 @@ int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv) {
       int32_t rarest = max_rare_ac + 1;
       for(k=0; k < bmatRR.nbytes_col; ++k) {
         uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
+        uint8_t rarebyte = ( iRR[k] & jRR[k] ) & ( iAA[k] & jAA[k] );
+        if (!byte && !rarebyte) {continue;}
         for (int32_t bit=0; bit<8 && k*8+bit<bmatRR.ncol; ++bit) {
           int32_t pt = k*8+bit;
           if (mac[pt] <= max_rare_ac) { // rare variant
-        // std::bitset<8> x(iAA[k] & jAA[k]);
-        // std::cout << "Rare " << x << '\t' << k << '\t' << bit << '\n';
             if ( ((iAA[k]>>(7-bit)) & 0x01) & ((jAA[k]>>(7-bit)) & 0x01) ) { // share rare allele
-              // std::bitset<8> iaa(iAA[k]);
-              // std::bitset<8> jaa(iAA[k]);
-              // std::cout << iaa << '\t' << jaa << '\t' << k << '\t' << bit << '\n';
               if (mac[pt] < rarest)
                 rarest = mac[pt];
               for(int32_t it=0; it<2; it++) { // record imediate 2 ibs0
@@ -268,9 +257,6 @@ int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv) {
             else {continue;}
         }
       	else if ( (byte >> (7-bit)) & 0x01 ) { // IBS0
-          // std::bitset<8> x(byte);
-          // std::cout << x << '\t' << k << '\t' << bit << '\n';
-          // std::cout<<std::to_string(snoopy[pt]) << std::endl;
           if ( nibs0 < 2 ) {
             rec.push_back(std::to_string(snoopy[pt])+":0");
           }
