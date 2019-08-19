@@ -632,6 +632,20 @@ functional
 iomanip
 -
 
+/net/wonderland/home/ycsi/tool/bluebear/src/trio_phase.cpp
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+compact_matrix.h
+/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+algorithm
+-
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+
 /net/wonderland/home/ycsi/tool/bluebear/src/tsv_reader.cpp
 tsv_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/tsv_reader.h

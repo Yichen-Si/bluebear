@@ -16,6 +16,7 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv);
 int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 
 int32_t IBS0Phase(int32_t argc, char** argv);
+int32_t trioSwitchDetect(int32_t argc, char** argv);
 
 int32_t test(int32_t argc, char** argv);
 
@@ -34,6 +35,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("pbwt-prefix",&pbwtBuildPrefix, "Build pbwt forwards from BCF/VCF")
 
     LONG_COMMAND("ibs0-phase",&IBS0Phase, "Find switch error in phased BCF/VCF")
+    LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
 
     LONG_COMMAND("test",&test, "Test")
 

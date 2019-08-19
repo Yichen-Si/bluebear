@@ -774,6 +774,33 @@ src/test_hts.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/test_hts.cpp.s
 .PHONY : src/test_hts.cpp.s
 
+src/trio_phase.o: src/trio_phase.cpp.o
+
+.PHONY : src/trio_phase.o
+
+# target to build an object file
+src/trio_phase.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/trio_phase.cpp.o
+.PHONY : src/trio_phase.cpp.o
+
+src/trio_phase.i: src/trio_phase.cpp.i
+
+.PHONY : src/trio_phase.i
+
+# target to preprocess a source file
+src/trio_phase.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/trio_phase.cpp.i
+.PHONY : src/trio_phase.cpp.i
+
+src/trio_phase.s: src/trio_phase.cpp.s
+
+.PHONY : src/trio_phase.s
+
+# target to generate assembly for a file
+src/trio_phase.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/trio_phase.cpp.s
+.PHONY : src/trio_phase.cpp.s
+
 src/tsv_reader.o: src/tsv_reader.cpp.o
 
 .PHONY : src/tsv_reader.o
@@ -909,6 +936,9 @@ help:
 	@echo "... src/test_hts.o"
 	@echo "... src/test_hts.i"
 	@echo "... src/test_hts.s"
+	@echo "... src/trio_phase.o"
+	@echo "... src/trio_phase.i"
+	@echo "... src/trio_phase.s"
 	@echo "... src/tsv_reader.o"
 	@echo "... src/tsv_reader.i"
 	@echo "... src/tsv_reader.s"

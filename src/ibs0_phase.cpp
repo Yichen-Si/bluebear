@@ -53,7 +53,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   int32_t chunk_size = 1000000;          // process suffix pbwt & ibs0 by chunk
 
   double  delta = 3.0;                   // thresholds
-  int32_t lambda = 20000, gamma = 20000, diff = 5000, nmatch = 10000;
+  int32_t lambda = 20000, gamma = 20000, diff = 5000, nmatch = 50000;
 
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -88,7 +88,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   pl.Status();
 
   std::ostringstream parm;
-  parm << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch;
+  parm << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch/1000;
   notice("Parameter setting: %s.", parm.str().c_str());
 
   // Translate between genetic & physical position.
@@ -106,9 +106,9 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
         return (elem1.second).size() > (elem2.second).size();};
 
   // Output flipped bcf/vcf
-  outVcf = out + ".flipped.bcf";
+  outVcf = out + "_" + parm.str() + "_flipped.bcf";
   if (mode=="z")
-    outVcf = out + ".flipped.vcf.gz";
+    outVcf = out + "_" + parm.str() + "_flipped.vcf.gz";
   mode = "w" + mode;
   htsFile *wbcf = hts_open(outVcf.c_str(),mode.c_str());
 
