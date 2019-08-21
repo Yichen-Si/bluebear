@@ -244,7 +244,11 @@ int32_t trioSwitchDetect(int32_t argc, char** argv) {
   if (n_samples > 0 && nsamples > n_samples)
     nsamples = n_samples;
 
-  outf = out + ".switch.pos";
+  outf = out;
+  if ( !reg.empty() ) {
+    outf += ("_" + reg);
+  }
+  outf += "_switch.pos";
   htsFile* wf = hts_open(outf.c_str(), "w");
   for(int32_t i=0; i < nsamples; ++i) {
     int32_t pre_config = -1, config = 0;
@@ -264,7 +268,7 @@ int32_t trioSwitchDetect(int32_t argc, char** argv) {
       config = (c1[k] & pAA[k]) ^ (c2[k] & mAA[k]) ^ (c2[k] & pRR[k]) ^ (c1[k] & mRR[k]);
       for (int32_t bit=0; bit<8 && k*8+bit<bmatHap.ncol; ++bit) {
         int32_t pt = k*8+bit;
-        if ((byte >> (7-bit)) & 0x01) { // Child is het
+        if ((byte >> (7-bit)) & 0x01) { // Informative
           if (pre_config < 0) {
             pre_config = (config>>(7-bit) & 0x01);
             st = pre_config;

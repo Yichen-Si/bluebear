@@ -46,6 +46,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
   std::string chrom="chr20";
   std::string mode ="b";
   int32_t verbose = 1000;
+  int32_t max_flip = 3;
   int32_t min_variant = 2;
   int32_t min_hom_gts = 1;
   int32_t nsamples=0, M=0;
@@ -75,6 +76,7 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
     LONG_INT_PARAM("gamma",&gamma,"Length (in bp) of matched prefix that is requred to begin searching")
     LONG_INT_PARAM("min-diff",&diff,"The minimal difference of new matches (in bp) between flipping two individuals for a flip to be recorded")
     LONG_INT_PARAM("min-improve",&nmatch,"The minimal improve of matching (in bp) for a flip to be recorded")
+    LONG_INT_PARAM("max-flip",&max_flip,"Maximal #flips per site")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -476,6 +478,9 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
             if (rm) {
               flipped[id.first] = 1;
               finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
+              if ((int32_t) finalrec.size() >= max_flip) {
+                break;
+              }
             }
           }
         } else {
