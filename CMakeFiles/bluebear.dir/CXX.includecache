@@ -236,6 +236,18 @@ fstream
 math.h
 -
 
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+compact_matrix.h
+/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_baseline.cpp
 bcf_filter_arg.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
@@ -301,6 +313,14 @@ bcf_filter_arg.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
 cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sfs.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
 bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
 
@@ -459,6 +479,16 @@ hts_utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
 Error.h
 /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/hap_ibd_pbwt.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+pbwt_build.h
+/net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.cpp
 hts_utils.h

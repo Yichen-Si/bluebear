@@ -10,10 +10,17 @@ int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv);
 int32_t cmdVcfIBS0View(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
+int32_t cmdVcfIBS0full(int32_t argc, char** argv);
+
+int32_t cmdIBS0Bridge(int32_t argc, char** argv);
+
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
+int32_t cmdVcfSFS(int32_t argc, char** argv);
 
 int32_t pbwtBuildSuffix(int32_t argc, char** argv);
 int32_t pbwtBuildPrefix(int32_t argc, char** argv);
+int32_t hapIBDpbwtLeft(int32_t argc, char** argv);
+int32_t hapIBDpbwtRight(int32_t argc, char** argv);
 
 int32_t IBS0Phase(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
@@ -29,10 +36,21 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length (null distribution) from BCF/VCF")
+    LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
+
+    LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
+
+
+
     LONG_COMMAND("vcf-rare-share",&cmdVcfRareShare, "Rare variants sharing matrix from BCF/VCF")
+
+    LONG_COMMAND("folded-sfs",&cmdVcfSFS, "Folded SFS from BCF/VCF")
 
     LONG_COMMAND("pbwt-suffix",&pbwtBuildSuffix, "Build pbwt backwards from BCF/VCF")
     LONG_COMMAND("pbwt-prefix",&pbwtBuildPrefix, "Build pbwt forwards from BCF/VCF")
+
+    LONG_COMMAND("hap-ibd-left",&hapIBDpbwtLeft, "Haplotype matching length preceeding a shared rare allele from BCF/VCF")
+    LONG_COMMAND("hap-ibd-right",&hapIBDpbwtRight, "Haplotype matching length succeeding a shared rare allele from BCF/VCF")
 
     LONG_COMMAND("ibs0-phase",&IBS0Phase, "Find switch error in phased BCF/VCF")
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")

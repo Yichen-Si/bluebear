@@ -234,6 +234,33 @@ src/bluebear.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bluebear.cpp.s
 .PHONY : src/bluebear.cpp.s
 
+src/cmd_vcf_ibs0.o: src/cmd_vcf_ibs0.cpp.o
+
+.PHONY : src/cmd_vcf_ibs0.o
+
+# target to build an object file
+src/cmd_vcf_ibs0.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.o
+.PHONY : src/cmd_vcf_ibs0.cpp.o
+
+src/cmd_vcf_ibs0.i: src/cmd_vcf_ibs0.cpp.i
+
+.PHONY : src/cmd_vcf_ibs0.i
+
+# target to preprocess a source file
+src/cmd_vcf_ibs0.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.i
+.PHONY : src/cmd_vcf_ibs0.cpp.i
+
+src/cmd_vcf_ibs0.s: src/cmd_vcf_ibs0.cpp.s
+
+.PHONY : src/cmd_vcf_ibs0.s
+
+# target to generate assembly for a file
+src/cmd_vcf_ibs0.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.s
+.PHONY : src/cmd_vcf_ibs0.cpp.s
+
 src/cmd_vcf_ibs0_baseline.o: src/cmd_vcf_ibs0_baseline.cpp.o
 
 .PHONY : src/cmd_vcf_ibs0_baseline.o
@@ -396,6 +423,33 @@ src/cmd_vcf_raresharing.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.s
 .PHONY : src/cmd_vcf_raresharing.cpp.s
 
+src/cmd_vcf_sfs.o: src/cmd_vcf_sfs.cpp.o
+
+.PHONY : src/cmd_vcf_sfs.o
+
+# target to build an object file
+src/cmd_vcf_sfs.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o
+.PHONY : src/cmd_vcf_sfs.cpp.o
+
+src/cmd_vcf_sfs.i: src/cmd_vcf_sfs.cpp.i
+
+.PHONY : src/cmd_vcf_sfs.i
+
+# target to preprocess a source file
+src/cmd_vcf_sfs.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.i
+.PHONY : src/cmd_vcf_sfs.cpp.i
+
+src/cmd_vcf_sfs.s: src/cmd_vcf_sfs.cpp.s
+
+.PHONY : src/cmd_vcf_sfs.s
+
+# target to generate assembly for a file
+src/cmd_vcf_sfs.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
+.PHONY : src/cmd_vcf_sfs.cpp.s
+
 src/commands.o: src/commands.cpp.o
 
 .PHONY : src/commands.o
@@ -530,6 +584,33 @@ src/genotype_concordance.s: src/genotype_concordance.cpp.s
 src/genotype_concordance.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.s
 .PHONY : src/genotype_concordance.cpp.s
+
+src/hap_ibd_pbwt.o: src/hap_ibd_pbwt.cpp.o
+
+.PHONY : src/hap_ibd_pbwt.o
+
+# target to build an object file
+src/hap_ibd_pbwt.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o
+.PHONY : src/hap_ibd_pbwt.cpp.o
+
+src/hap_ibd_pbwt.i: src/hap_ibd_pbwt.cpp.i
+
+.PHONY : src/hap_ibd_pbwt.i
+
+# target to preprocess a source file
+src/hap_ibd_pbwt.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.i
+.PHONY : src/hap_ibd_pbwt.cpp.i
+
+src/hap_ibd_pbwt.s: src/hap_ibd_pbwt.cpp.s
+
+.PHONY : src/hap_ibd_pbwt.s
+
+# target to generate assembly for a file
+src/hap_ibd_pbwt.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.s
+.PHONY : src/hap_ibd_pbwt.cpp.s
 
 src/hts_utils.o: src/hts_utils.cpp.o
 
@@ -876,6 +957,9 @@ help:
 	@echo "... src/bluebear.o"
 	@echo "... src/bluebear.i"
 	@echo "... src/bluebear.s"
+	@echo "... src/cmd_vcf_ibs0.o"
+	@echo "... src/cmd_vcf_ibs0.i"
+	@echo "... src/cmd_vcf_ibs0.s"
 	@echo "... src/cmd_vcf_ibs0_baseline.o"
 	@echo "... src/cmd_vcf_ibs0_baseline.i"
 	@echo "... src/cmd_vcf_ibs0_baseline.s"
@@ -894,6 +978,9 @@ help:
 	@echo "... src/cmd_vcf_raresharing.o"
 	@echo "... src/cmd_vcf_raresharing.i"
 	@echo "... src/cmd_vcf_raresharing.s"
+	@echo "... src/cmd_vcf_sfs.o"
+	@echo "... src/cmd_vcf_sfs.i"
+	@echo "... src/cmd_vcf_sfs.s"
 	@echo "... src/commands.o"
 	@echo "... src/commands.i"
 	@echo "... src/commands.s"
@@ -909,6 +996,9 @@ help:
 	@echo "... src/genotype_concordance.o"
 	@echo "... src/genotype_concordance.i"
 	@echo "... src/genotype_concordance.s"
+	@echo "... src/hap_ibd_pbwt.o"
+	@echo "... src/hap_ibd_pbwt.i"
+	@echo "... src/hap_ibd_pbwt.s"
 	@echo "... src/hts_utils.o"
 	@echo "... src/hts_utils.i"
 	@echo "... src/hts_utils.s"

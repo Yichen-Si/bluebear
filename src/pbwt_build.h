@@ -95,6 +95,32 @@ public:
     }
   }
 
+  int32_t Dist_pref(int32_t i, int32_t j) {
+    if (i > j) {
+      int32_t tmp = j; j = i; i = tmp;
+    }
+    int32_t dist = d[i+1];
+    for (int32_t it = i+1; it <= j; ++it) {
+      if (d[it] > dist) {
+        dist = d[it];
+      }
+    }
+    return dist;
+  }
+
+  int32_t Dist_suff(int32_t i, int32_t j) {
+    if (i > j) {
+      int32_t tmp = j; j = i; i = tmp;
+    }
+    int32_t dist = d[i+1];
+    for (int32_t it = i+1; it <= j; ++it) {
+      if (d[it] < dist) {
+        dist = d[it];
+      }
+    }
+    return dist;
+  }
+
   void SwitchIndex_OnePair(int32_t x, int32_t y) {
     for (int32_t i = 0; i < M; ++i) {
       if (a[i] == x) {
