@@ -516,9 +516,33 @@ CMakeFiles/bluebear.dir/src/hts_utils.cpp.o.provides: CMakeFiles/bluebear.dir/sr
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/hts_utils.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/ibs0.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/ibs0.cpp.o: src/ibs0.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.cpp
+
+CMakeFiles/bluebear.dir/src/ibs0.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.cpp > CMakeFiles/bluebear.dir/src/ibs0.cpp.i
+
+CMakeFiles/bluebear.dir/src/ibs0.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.cpp -o CMakeFiles/bluebear.dir/src/ibs0.cpp.s
+
+CMakeFiles/bluebear.dir/src/ibs0.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/ibs0.cpp.o.provides: CMakeFiles/bluebear.dir/src/ibs0.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/ibs0.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o: src/ibs0_phase.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.i: cmake_force
@@ -540,9 +564,57 @@ CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o.provides: CMakeFiles/bluebear.dir/s
 CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: src/ibs0_phase_backward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_backward.cpp
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.provides: CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o
+
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: src/ibs0_phase_forward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_forward.cpp
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.provides: CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/interval.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/interval.cpp.o: src/interval.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/bluebear.dir/src/interval.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/bluebear.dir/src/interval.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/interval.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/interval.cpp
 
 CMakeFiles/bluebear.dir/src/interval.cpp.i: cmake_force
@@ -566,7 +638,7 @@ CMakeFiles/bluebear.dir/src/interval.cpp.o.provides.build: CMakeFiles/bluebear.d
 
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.o: src/interval_tree.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/bluebear.dir/src/interval_tree.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/bluebear.dir/src/interval_tree.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/interval_tree.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.cpp
 
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.i: cmake_force
@@ -590,7 +662,7 @@ CMakeFiles/bluebear.dir/src/interval_tree.cpp.o.provides.build: CMakeFiles/blueb
 
 CMakeFiles/bluebear.dir/src/params.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/params.cpp.o: src/params.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/bluebear.dir/src/params.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/bluebear.dir/src/params.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/params.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/params.cpp
 
 CMakeFiles/bluebear.dir/src/params.cpp.i: cmake_force
@@ -614,7 +686,7 @@ CMakeFiles/bluebear.dir/src/params.cpp.o.provides.build: CMakeFiles/bluebear.dir
 
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: src/pbwt_prefix.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_prefix.cpp
 
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.i: cmake_force
@@ -638,7 +710,7 @@ CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o.provides.build: CMakeFiles/bluebea
 
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: src/pbwt_suffix.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_suffix.cpp
 
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.i: cmake_force
@@ -660,9 +732,33 @@ CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o.provides: CMakeFiles/bluebear.dir/
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: src/pt2interval.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/bluebear.dir/src/pt2interval.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pt2interval.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/pt2interval.cpp
+
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/pt2interval.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/pt2interval.cpp > CMakeFiles/bluebear.dir/src/pt2interval.cpp.i
+
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/pt2interval.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/pt2interval.cpp -o CMakeFiles/bluebear.dir/src/pt2interval.cpp.s
+
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.provides: CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/pt2interval.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: src/reference_sequence.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/reference_sequence.cpp
 
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.i: cmake_force
@@ -686,7 +782,7 @@ CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/test_hts.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/test_hts.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/test_hts.cpp
 
 CMakeFiles/bluebear.dir/src/test_hts.cpp.i: cmake_force
@@ -710,7 +806,7 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides.build: CMakeFiles/bluebear.d
 
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: src/trio_phase.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/bluebear.dir/src/trio_phase.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/bluebear.dir/src/trio_phase.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/trio_phase.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/trio_phase.cpp
 
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.i: cmake_force
@@ -734,7 +830,7 @@ CMakeFiles/bluebear.dir/src/trio_phase.cpp.o.provides.build: CMakeFiles/bluebear
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: src/tsv_reader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/tsv_reader.cpp
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.i: cmake_force
@@ -758,7 +854,7 @@ CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o.provides.build: CMakeFiles/bluebear
 
 CMakeFiles/bluebear.dir/src/utils.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/utils.cpp.o: src/utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/bluebear.dir/src/utils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/bluebear.dir/src/utils.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/utils.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/utils.cpp
 
 CMakeFiles/bluebear.dir/src/utils.cpp.i: cmake_force
@@ -801,12 +897,16 @@ bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o" \
 "CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o" \
 "CMakeFiles/bluebear.dir/src/hts_utils.cpp.o" \
+"CMakeFiles/bluebear.dir/src/ibs0.cpp.o" \
 "CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o" \
+"CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o" \
+"CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o" \
 "CMakeFiles/bluebear.dir/src/interval.cpp.o" \
 "CMakeFiles/bluebear.dir/src/interval_tree.cpp.o" \
 "CMakeFiles/bluebear.dir/src/params.cpp.o" \
 "CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o" \
 "CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o" \
+"CMakeFiles/bluebear.dir/src/pt2interval.cpp.o" \
 "CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o" \
 "CMakeFiles/bluebear.dir/src/test_hts.cpp.o" \
 "CMakeFiles/bluebear.dir/src/trio_phase.cpp.o" \
@@ -835,12 +935,16 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/genome_interval.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/hts_utils.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/interval.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/interval_tree.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/params.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/pt2interval.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/test_hts.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/trio_phase.cpp.o
@@ -849,7 +953,7 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/utils.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/build.make
 bin/bluebear: ../htslib/libhts.a
 bin/bluebear: CMakeFiles/bluebear.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX executable bin/bluebear"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Linking CXX executable bin/bluebear"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bluebear.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -876,12 +980,16 @@ CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/genome_interval.cp
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/hts_utils.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/interval.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/interval_tree.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/params.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/trio_phase.cpp.o.requires

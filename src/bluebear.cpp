@@ -13,6 +13,7 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
 int32_t cmdVcfIBS0full(int32_t argc, char** argv);
 
 int32_t cmdIBS0Bridge(int32_t argc, char** argv);
+int32_t mapPt2Interval(int32_t argc, char** argv);
 
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
 int32_t cmdVcfSFS(int32_t argc, char** argv);
@@ -24,6 +25,9 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv);
 
 int32_t IBS0Phase(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
+
+int32_t IBS0PhaseForward(int32_t argc, char** argv);
+int32_t IBS0PhaseBackward(int32_t argc, char** argv);
 
 int32_t test(int32_t argc, char** argv);
 
@@ -40,6 +44,7 @@ int32_t main(int32_t argc, char** argv) {
 
     LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 
+    LONG_COMMAND("pt-to-interval",&mapPt2Interval, "Map points to intervals, both indexed by the carriers.")
 
 
     LONG_COMMAND("vcf-rare-share",&cmdVcfRareShare, "Rare variants sharing matrix from BCF/VCF")
@@ -54,6 +59,10 @@ int32_t main(int32_t argc, char** argv) {
 
     LONG_COMMAND("ibs0-phase",&IBS0Phase, "Find switch error in phased BCF/VCF")
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
+
+    // Testing
+    LONG_COMMAND("ibs0-phase-forward",&IBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
+    LONG_COMMAND("ibs0-phase-backward",&IBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
 
     LONG_COMMAND("test",&test, "Test")
 

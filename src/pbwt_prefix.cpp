@@ -21,6 +21,7 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
   int32_t verbose = 10000;
   int32_t store_interval = 1000; // Store snapshot of pbwt
   int32_t nsamples=0, M=0;
+  int32_t chunksize = 1000000;
 
   paramList pl;
   BEGIN_LONG_PARAMS(longParameters)
@@ -29,6 +30,7 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
+    LONG_INT_PARAM("chunk-size",&chunksize, "Output by chunk")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -42,8 +44,12 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   // bcf reader
   std::vector<GenomeInterval> intervals;
+  std::vector<std::string> v;
+  std::string chrom = "chr20";
   if ( !reg.empty() ) {
     parse_intervals(intervals, "", reg);
+    split(v, ":-", reg);
+    chrom = v[0];
   }
   BCFOrderedReader odr(inVcf, intervals);
   bcf1_t* iv = bcf_init();
@@ -63,11 +69,33 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   notice("Started Reading VCF, identifying %d samples. Will store snapshot every %d markers.", nsamples, store_interval);
 
+  int32_t ck = 0, k_in_ck = 0;
+  std::string sub = chrom + ":" + std::to_string(ck*chunksize+1) + "-" + std::to_string((ck+1)*chunksize);
+  std::string d_outf = out + "_" + sub + "_prefix.dmat";
+  std::string a_outf = out + "_" + sub + "_prefix.amat";
+  std::ofstream d_wf, a_wf;
+  d_wf.open(d_outf);
+  a_wf.open(a_outf);
   // read marker
   for (int32_t k=0; odr.read(iv); ++k) {
 
     if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
       error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+    }
+
+    if (iv->pos+1 > (ck+1) * chunksize) { // Set up a new output file
+      while (iv->pos+1 > (ck+2) * chunksize) { // Centromere
+        ck++;
+      }
+      d_wf.close();
+      a_wf.close();
+      ck++;
+      k_in_ck = 0;
+      sub = chrom + ":" + std::to_string(ck*chunksize+1) + "-" + std::to_string((ck+1)*chunksize);
+      d_outf = out + "_" + sub + "_prefix.dmat";
+      a_outf = out + "_" + sub + "_prefix.amat";
+      d_wf.open(d_outf);
+      a_wf.open(a_outf);
     }
 
     for (int32_t i = 0; i <  nsamples; ++i) {
@@ -85,34 +113,29 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
       }
     }
     pc.ForwardsAD_prefix(y, iv->pos+1);
-    if (k % store_interval == 0) {
-      dout += (bcf_hdr_id2name(odr.hdr, iv->rid) + '\t' + std::to_string(iv->pos+1));
+    if (k_in_ck == 0 || k_in_ck % store_interval == 0) {
+
+      d_wf << chrom << '\t' << iv->pos+1;
       for (int32_t j = 0; j < M; ++j)
-        dout += ('\t' + std::to_string(pc.d[j]));
-      dout += '\n';
-      aout += (bcf_hdr_id2name(odr.hdr, iv->rid) + '\t' + std::to_string(iv->pos+1));
+        d_wf << '\t' << pc.d[j];
+      d_wf << '\n';
+
+      a_wf << chrom << '\t' << iv->pos+1;
       for (int32_t j = 0; j < M; ++j)
-        aout += ('\t' + std::to_string(pc.a[j]));
-      aout += '\n';
+        a_wf << '\t' << pc.a[j];
+      a_wf << '\n';
     }
 
+    k_in_ck ++;
+
     if ( k % verbose == 0 )
-    notice("Processing %d markers at %s:%d; snapshot at %d positions.", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, k/store_interval);
+    notice("Processed %d markers at chunk %d: %s:%d; snapshot at %d positions.", k, ck, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, k/store_interval);
 
   }
+  d_wf.close();
+  a_wf.close();
 
   delete [] y;
-
-    // Write to file
-    std::string outf = out + "_prefix.dmat";
-    htsFile* wf = hts_open(outf.c_str(), "w");
-    hprintf(wf, "%s", dout.c_str());
-    hts_close(wf);
-
-    outf = out + "_prefix.amat";
-    wf = hts_open(outf.c_str(), "w");
-    hprintf(wf, "%s", aout.c_str());
-    hts_close(wf);
 
   return 0;
 }

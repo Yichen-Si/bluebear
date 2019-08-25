@@ -135,70 +135,34 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
       notice("Read %d markers, start extending pbwt for %s.", N, reg.c_str());
     }
 
-    // // Allocate space for pbwt matricies
-    // std::vector<int32_t*> dmat(N,NULL);
-    // std::vector<int32_t*> amat(N,NULL);
-    // // std::vector<int32_t*> rmat(N,NULL);
-    // for (int32_t i = 0; i < N; ++i) {
-    //   dmat[i] = new int32_t[M];
-    //   amat[i] = new int32_t[M];
-    // }
-
     // Build pbwt (suffix) for this block
     // Output by row
     std::string d_outf = out + "_" + reg + "_suffix.dmat";
-    htsFile* d_wf = hts_open(d_outf.c_str(), "w");
     std::string a_outf = out + "_" + reg + "_suffix.amat";
-    htsFile* a_wf = hts_open(a_outf.c_str(), "w");
-
-    // std::string dout = "", aout = "";
+    std::ofstream d_wf, a_wf;
+    d_wf.open(d_outf);
+    a_wf.open(a_outf);
     for (int32_t k = N-1; k >= 0; --k) {
       pc.ForwardsAD_suffix(gtmat[k], positions[k]);
 
       if (k == N-1 || k == 0 || k % store_interval == 0) {
-        // memcpy(dmat[k], pc.d, pc.M*sizeof(int32_t));
-        // memcpy(amat[k], pc.a, pc.M*sizeof(int32_t));
-
-        std::string dout = "", aout = "";
-        dout += (chrom + '\t' + std::to_string(positions[k]));
+        d_wf << chrom << '\t' << positions[k];
         for (int32_t j = 0; j < M; ++j)
-          dout += ('\t' + std::to_string(pc.d[j]));
-        // dout += '\n';
-        hprintf(d_wf, "%s\n", dout.c_str());
-        aout += (chrom + '\t' + std::to_string(positions[k]));
-        for (int32_t j = 0; j < M; ++j)
-          aout += ('\t' + std::to_string(pc.a[j]));
-        hprintf(a_wf, "%s\n", aout.c_str());
+          d_wf << '\t' << pc.d[j];
+        d_wf << '\n';
 
-        // aout += '\n';
+        a_wf << chrom << '\t' << positions[k];
+        for (int32_t j = 0; j < M; ++j)
+          a_wf << '\t' << pc.a[j];
+        a_wf << '\n';
       }
     }
-    hts_close(d_wf);
-    hts_close(a_wf);
+    d_wf.close();
+    a_wf.close();
 
     for (int32_t k = 0; k < N; ++k) {
       delete [] gtmat[k];
     }
-
-    // pbwtSuffix(pc, gtmat, positions, dmat, rmat);
-
-    // // Write to file
-    // std::string outf = out + "_" + reg + "_suffix.dmat";
-    // htsFile* wf = hts_open(outf.c_str(), "w");
-    // hprintf(wf, "%s", dout.c_str());
-    // hts_close(wf);
-
-    // outf = out + "_" + reg + "_suffix.amat";
-    // wf = hts_open(outf.c_str(), "w");
-    // hprintf(wf, "%s", aout.c_str());
-    // hts_close(wf);
-
-    // for (int32_t i = 0; i < N; ++i) {
-    //   delete [] gtmat[i];
-    //   delete [] dmat[i];
-    //   delete [] rmat[i];
-    // }
-
   }
 
   // // Print out test results. Sorted from the first position

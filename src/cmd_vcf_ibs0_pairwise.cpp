@@ -242,7 +242,7 @@ int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv) {
         for (int32_t bit=0; bit<8 && k*8+bit<bmatRR.ncol; ++bit) {
           int32_t pt = k*8+bit;
           if (mac[pt] <= max_rare_ac) { // rare variant
-            if ( ((iAA[k]>>(7-bit)) & 0x01) & ((jAA[k]>>(7-bit)) & 0x01) ) { // share rare allele
+            if ( (rarebyte >> (7-bit)) & 0x01 ) { // share rare allele
               if (mac[pt] < rarest)
                 rarest = mac[pt];
               for(int32_t it=0; it<2; it++) { // record imediate 2 ibs0

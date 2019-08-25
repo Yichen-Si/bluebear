@@ -639,6 +639,33 @@ src/hts_utils.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/hts_utils.cpp.s
 .PHONY : src/hts_utils.cpp.s
 
+src/ibs0.o: src/ibs0.cpp.o
+
+.PHONY : src/ibs0.o
+
+# target to build an object file
+src/ibs0.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0.cpp.o
+.PHONY : src/ibs0.cpp.o
+
+src/ibs0.i: src/ibs0.cpp.i
+
+.PHONY : src/ibs0.i
+
+# target to preprocess a source file
+src/ibs0.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0.cpp.i
+.PHONY : src/ibs0.cpp.i
+
+src/ibs0.s: src/ibs0.cpp.s
+
+.PHONY : src/ibs0.s
+
+# target to generate assembly for a file
+src/ibs0.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0.cpp.s
+.PHONY : src/ibs0.cpp.s
+
 src/ibs0_phase.o: src/ibs0_phase.cpp.o
 
 .PHONY : src/ibs0_phase.o
@@ -665,6 +692,60 @@ src/ibs0_phase.s: src/ibs0_phase.cpp.s
 src/ibs0_phase.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.s
 .PHONY : src/ibs0_phase.cpp.s
+
+src/ibs0_phase_backward.o: src/ibs0_phase_backward.cpp.o
+
+.PHONY : src/ibs0_phase_backward.o
+
+# target to build an object file
+src/ibs0_phase_backward.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o
+.PHONY : src/ibs0_phase_backward.cpp.o
+
+src/ibs0_phase_backward.i: src/ibs0_phase_backward.cpp.i
+
+.PHONY : src/ibs0_phase_backward.i
+
+# target to preprocess a source file
+src/ibs0_phase_backward.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i
+.PHONY : src/ibs0_phase_backward.cpp.i
+
+src/ibs0_phase_backward.s: src/ibs0_phase_backward.cpp.s
+
+.PHONY : src/ibs0_phase_backward.s
+
+# target to generate assembly for a file
+src/ibs0_phase_backward.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s
+.PHONY : src/ibs0_phase_backward.cpp.s
+
+src/ibs0_phase_forward.o: src/ibs0_phase_forward.cpp.o
+
+.PHONY : src/ibs0_phase_forward.o
+
+# target to build an object file
+src/ibs0_phase_forward.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o
+.PHONY : src/ibs0_phase_forward.cpp.o
+
+src/ibs0_phase_forward.i: src/ibs0_phase_forward.cpp.i
+
+.PHONY : src/ibs0_phase_forward.i
+
+# target to preprocess a source file
+src/ibs0_phase_forward.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i
+.PHONY : src/ibs0_phase_forward.cpp.i
+
+src/ibs0_phase_forward.s: src/ibs0_phase_forward.cpp.s
+
+.PHONY : src/ibs0_phase_forward.s
+
+# target to generate assembly for a file
+src/ibs0_phase_forward.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s
+.PHONY : src/ibs0_phase_forward.cpp.s
 
 src/interval.o: src/interval.cpp.o
 
@@ -800,6 +881,33 @@ src/pbwt_suffix.s: src/pbwt_suffix.cpp.s
 src/pbwt_suffix.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.s
 .PHONY : src/pbwt_suffix.cpp.s
+
+src/pt2interval.o: src/pt2interval.cpp.o
+
+.PHONY : src/pt2interval.o
+
+# target to build an object file
+src/pt2interval.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/pt2interval.cpp.o
+.PHONY : src/pt2interval.cpp.o
+
+src/pt2interval.i: src/pt2interval.cpp.i
+
+.PHONY : src/pt2interval.i
+
+# target to preprocess a source file
+src/pt2interval.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/pt2interval.cpp.i
+.PHONY : src/pt2interval.cpp.i
+
+src/pt2interval.s: src/pt2interval.cpp.s
+
+.PHONY : src/pt2interval.s
+
+# target to generate assembly for a file
+src/pt2interval.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/pt2interval.cpp.s
+.PHONY : src/pt2interval.cpp.s
 
 src/reference_sequence.o: src/reference_sequence.cpp.o
 
@@ -1002,9 +1110,18 @@ help:
 	@echo "... src/hts_utils.o"
 	@echo "... src/hts_utils.i"
 	@echo "... src/hts_utils.s"
+	@echo "... src/ibs0.o"
+	@echo "... src/ibs0.i"
+	@echo "... src/ibs0.s"
 	@echo "... src/ibs0_phase.o"
 	@echo "... src/ibs0_phase.i"
 	@echo "... src/ibs0_phase.s"
+	@echo "... src/ibs0_phase_backward.o"
+	@echo "... src/ibs0_phase_backward.i"
+	@echo "... src/ibs0_phase_backward.s"
+	@echo "... src/ibs0_phase_forward.o"
+	@echo "... src/ibs0_phase_forward.i"
+	@echo "... src/ibs0_phase_forward.s"
 	@echo "... src/interval.o"
 	@echo "... src/interval.i"
 	@echo "... src/interval.s"
@@ -1020,6 +1137,9 @@ help:
 	@echo "... src/pbwt_suffix.o"
 	@echo "... src/pbwt_suffix.i"
 	@echo "... src/pbwt_suffix.s"
+	@echo "... src/pt2interval.o"
+	@echo "... src/pt2interval.i"
+	@echo "... src/pt2interval.s"
 	@echo "... src/reference_sequence.o"
 	@echo "... src/reference_sequence.i"
 	@echo "... src/reference_sequence.s"
