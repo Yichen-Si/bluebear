@@ -370,8 +370,9 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-                nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
-                if (nextibs0 == -1 || nextibs0 - positions[k] > lambda) {
+                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
+
+                if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
                     flag = 2;
@@ -388,7 +389,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                     }
                     if (previbs0 > 0)
                       previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
-                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0)) {
+                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
                   }
@@ -419,8 +420,9 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-                nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
-                if (nextibs0 == -1 || nextibs0 - positions[k] > lambda) {
+                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
+
+                if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
                     flag = 2;
@@ -437,7 +439,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                     }
                     if (previbs0 > 0)
                       previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
-                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0)) {
+                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
                   }
