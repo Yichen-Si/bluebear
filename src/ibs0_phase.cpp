@@ -442,6 +442,9 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
         if (flipcandy.size() > 1) {
           std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
           for (auto & id : IDToFlip) {
+            if ((int32_t) finalrec.size() >= max_flip) {
+              break;
+            }
             int32_t rm = (id.second).size();
             for (auto & id2 : id.second) {
               if (flipped[id2])
@@ -450,9 +453,6 @@ int32_t IBS0Phase(int32_t argc, char** argv) {
             if (rm) {
               flipped[id.first] = 1;
               finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
-              if ((int32_t) finalrec.size() >= max_flip) {
-                break;
-              }
             }
           }
         } else {

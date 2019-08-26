@@ -98,11 +98,16 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
   hts_close(fp);
 
   // If the current position is flipped
-  bool flip_abs[nsamples] = {0};
+ int32_t flip_abs[nsamples] = {0};
 
   ck = start_pos/chunk_size; // Chunk in terms of chunk_size
   st = ck * chunk_size + 1;
   ed = st + chunk_size - 1;
+  while (st > pgmap.centromere_st && ed < pgmap.centromere_ed ) {
+    ck--;
+    st = ck * chunk_size + 1;
+    ed = st + chunk_size - 1;
+  }
   edugly = ed;
 
   // Initialize ibs0 lookup blocks. By 1Mb.
@@ -120,13 +125,11 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
     ibs_ed = ibs_st - 1;
     ibs_st = std::max(ibs_ck * chunk_size, gpmap.minpos);
   }
-// std::cout << "initial ibs_ck " << ibs_ck << '\n';
   // Forward
   while (ibs_st < gpmap.maxpos &&  pgmap.bp2cm(ibs_st) - pgmap.bp2cm(start_pos) < delta) {
     ibs_ed = std::min(ibs_ed, gpmap.maxpos);
     reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
     if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0) > 0) {
-// std::cout << "Added " << reg << '\n';
       ibs_chunk_in_que.push_back(ibs_ck);
     }
     if (ibs_ck == start_pos/chunk_size) {
@@ -136,16 +139,12 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
     ibs_st = ibs_ck * chunk_size;
     ibs_ed = ibs_st + chunk_size - 1;
   } // Finish initialize ibs0 lookup blocks
-// std::cout << "initial ibs0 blocks " << ibs_chunk_in_que.size() << '\t' << cur_ibs_ck << '\n';
-// std::cout << "Currently in " << (*posvec_que[cur_ibs_ck])[0] << '\t' << posvec_que[cur_ibs_ck]->back() << '\n';
 
   // Initialize backward pbwt
   // Read the last snp in this chunk. should be stored as a checkpoint
   reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
   std::string line;
   std::string sfile = path_pbwt + "_" + reg + "_suffix.amat";
-
-// std::cout << "initialize prefix pbwt amat " << sfile << '\n';
 
   std::ifstream sf(sfile);
   std::getline(sf, line);
@@ -159,8 +158,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
 
   sfile = path_pbwt + "_" + reg + "_suffix.dmat";
 
-// std::cout << "initialize prefix pbwt dmat " << sfile << '\n';
-
   sf.open(sfile);
   std::getline(sf, line);
   sf.close();
@@ -170,8 +167,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
     d[i- OFFSET] = std::stoi(wvec[i]);
 
   pbwtCursor sufpc(M, a, d);
-
-// std::cout << "initialize prefix pbwt at " << wvec[1] << '\n';
 
   while (edugly > gpmap.minpos) {
     // Read and build prefix pbwt by physical chunk
@@ -227,6 +222,10 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
       notice("Read %d markers, start processing %s.", N, reg.c_str());
     }
 
+    // To record if the current position is flipped. For output
+    // TODO. Need better ouput
+    // std::vector<std::vector<int32_t> > flip_mat(N);
+
     // Set up output for this block
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
     std::ofstream wf;
@@ -239,7 +238,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
 
     // Read the first snp in this chunk. should be stored as a checkpoint
     sfile = path_pbwt + "_" + reg + "_prefix.amat";
-// std::cout << "Read prefix amat: " << sfile << '\n';
     sf.open(sfile);
     std::getline(sf, line);
     sf.close();
@@ -249,7 +247,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
       a[i- OFFSET] = std::stoi(wvec[i]);
 
     sfile = path_pbwt + "_" + reg + "_prefix.dmat";
-// std::cout << "Read prefix dmat: " << sfile << '\n';
     sf.open(sfile);
     std::getline(sf, line);
     sf.close();
@@ -274,7 +271,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
       memcpy(dmat[k], prepc.d, M*sizeof(int32_t));
       prepc.ReverseA(rmat[k]);
     }
-// std::cout << "Built suffix matrix\n";
     // Build suffix pbwt & detect switch
     int32_t h11,h12,h21,h22; // (Reflecting plips so far) index stored in suffix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
@@ -283,6 +279,14 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
     for (int32_t k = N-1; k > 0; --k) {
       // Sorted after and include position k
       sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
+      // gtmat[k] is no longer needed. Update to reflect flipped stat
+      for (int32_t it = 0; it < nsamples; ++it) {
+        if (flip_abs[it] && (gtmat[k][it*2] != gtmat[k][it*2+1]) ) {
+          gtmat[k][it*2] = !gtmat[k][it*2];
+          gtmat[k][it*2+1] = !gtmat[k][it*2+1];
+        }
+      }
+      if (positions[k]>start_pos) {continue;} // Start_pos & after should not be flipped
       std::vector<std::vector<int32_t> > fliprec;
       std::map<int32_t, std::vector<int32_t> > flipcandy;
       for (int32_t i = 0; i < M-1; ++i) {
@@ -321,7 +325,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
                 dijp_s = dmat[k-1][it];
             }
             int32_t flag = 0;
-// std::cout << "Compare: " << dipj_s << '\t' << dijp_s << '\t' << positions[k] <<'\t' << dij_p << '\n';
             if (dipj_s - dijp_s > diff && positions[k] - dijp_s > nmatch) { // Consider flip individual 2
               if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(dijp_s) > delta) {
                 flag = 1;
@@ -362,9 +365,8 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
                   }
                 }
               }
-// std::cout << "Considered II " << flag  << '\n';
               if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k],h21/2,h11/2,
+                fliprec.push_back(std::vector<int32_t> {positions[k-1],h21/2,h11/2,
                                                        dij_p, dipj_s, dijp_s, flag});
                 if (flipcandy.find(h21/2) != flipcandy.end()) {
                   flipcandy[h21/2].push_back(h11/2);
@@ -412,9 +414,8 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
                   }
                 }
               }
-// std::cout << "Considered I " << flag  << '\n';
               if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k],h11/2,h21/2,
+                fliprec.push_back(std::vector<int32_t> {positions[k-1],h11/2,h21/2,
                                                         dij_p, dijp_s, dipj_s, flag});
                 if (flipcandy.find(h11/2) != flipcandy.end()) {
                   flipcandy[h11/2].push_back(h21/2);
@@ -436,6 +437,9 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
         if (flipcandy.size() > 1) {
           std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
           for (auto & id : IDToFlip) {
+            if ((int32_t) finalrec.size() >= max_flip) {
+              break;
+            }
             int32_t rm = (id.second).size();
             for (auto & id2 : id.second) {
               if (flipped[id2])
@@ -444,9 +448,6 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
             if (rm) {
               flipped[id.first] = 1;
               finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
-              if ((int32_t) finalrec.size() >= max_flip) {
-                break;
-              }
             }
           }
         } else {
@@ -479,17 +480,21 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
         }
         sufpc.SwitchIndex(flipped);
         for (int32_t it = 0; it < nsamples; ++it) {
-          if (flipped[it])
-            flip_abs[it] = !flip_abs[it];
+          if (flipped[it]) {
+            flip_abs[it] = 1-flip_abs[it];
+          }
+          // if (flip_abs[it] == 1) {
+          //   flip_mat[k-1].push_back(it);
+          // }
         }
       }
     } // End of processing one block
 
     wfs.close();
-      // Output this block
-    if (ed > start_pos) {
+      // Output this block. Up till and NOT including start_pos
+    if (edugly > start_pos-2) {
       // If it is the first block, skip sites after the starting position.
-      reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(start_pos);
+      reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(start_pos-2);
       parse_intervals(intervals, "", reg);
     }
     odr.jump_to_interval(intervals[0]);
@@ -499,8 +504,8 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
     int32_t k = 1;
     while(odr.read(iv)) {
       for (int32_t it = 0; it < nsamples; ++it) {
-        y[it*2] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2+1]) : bcf_gt_phased(gtmat[k][it*2]);
-        y[it*2+1] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2]) : bcf_gt_phased(gtmat[k][it*2+1]);
+        y[it*2] = bcf_gt_phased(gtmat[k][it*2]);
+        y[it*2+1] = bcf_gt_phased(gtmat[k][it*2+1]);
       }
       if(bcf_update_genotypes(odr.hdr, iv, y, M)) {
         error("Cannot update GT.");
@@ -522,23 +527,19 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
     for (auto& pt : rmat)
       delete [] pt;
     // Slide the window of ibs0 lookup
-// std::cout << st << '\t' << ed << '\t' << ibs_chunk_in_que.size() << '\n';
-// std::cout << ibs_chunk_in_que[0] << '\t' << ibs_chunk_in_que.back() << '\n';
     cur_ibs_ck--;
-    while ((int32_t) ibs_chunk_in_que.size()-1 > cur_ibs_ck &&
+    while ((int32_t) ibs_chunk_in_que.size()-1 > std::max(0,cur_ibs_ck) &&
            pgmap.bp2cm((*posvec_que.back()).back()) - pgmap.bp2cm(edugly) > delta) {
-// std::cout << pgmap.bp2cm(edugly) << '\t' << pgmap.bp2cm((*posvec_que.back()).back()) << '\n';
-
+// std::cout << "Delete\t" << (*posvec_que.back())[0] << '-' << (*posvec_que.back()).back() << '\t' <<  pgmap.bp2cm((*posvec_que.back()).back()) << '\t' << pgmap.bp2cm(edugly) << '\n';
       delete posvec_que.back(); posvec_que.pop_back();
       delete bmatRR_que.back(); bmatRR_que.pop_back();
       delete bmatAA_que.back(); bmatAA_que.pop_back();
       ibs_chunk_in_que.pop_back();
-// std::cout << "After\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
     }
+// std::cout << "After\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
     ibs_ck = ibs_chunk_in_que[0] - 1;
     ibs_st = ibs_ck * chunk_size + 1;
     ibs_ed = (ibs_ck+1) * chunk_size;
-// std::cout << "Try block " << ibs_st << '\t' << ibs_ed << '\n';
     while (ibs_ed > gpmap.minpos && pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0])[0]) < delta) {
 // std::cout << "Check\t" << ibs_st << '\t' <<  ibs_ed << '\n';
       if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
@@ -558,7 +559,11 @@ int32_t IBS0PhaseBackward(int32_t argc, char** argv) {
       ibs_st = ibs_ck * chunk_size + 1;
       ibs_ed = (ibs_ck+1) * chunk_size;
     } // Finish adding new ibs0 lookup blocks
+
 // std::cout << "Finish adding new ibs0 lookup blocks\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
+// if (cur_ibs_ck >= 0)
+  // std::cout << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
+
   } // Finish processing one chunk
   hts_close(wbcf);
   return 0;

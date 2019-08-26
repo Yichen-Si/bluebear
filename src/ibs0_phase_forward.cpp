@@ -102,8 +102,13 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
 
   ck = start_pos/chunk_size; // Chunk in terms of chunk_size
   st = ck * chunk_size + 1;
-  stugly = st;
   ed = st + chunk_size - 1;
+  while (st > pgmap.centromere_st && ed < pgmap.centromere_ed ) {
+    ck++;
+    st = ck * chunk_size + 1;
+    ed = st + chunk_size - 1;
+  }
+  stugly = st;
 
   // Initialize ibs0 lookup blocks. By 1Mb.
   // Number of blocks stored determined by genetic distance
@@ -172,7 +177,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
 
   while (st < gpmap.maxpos) {
 
-
 // if (st > (int32_t) 3e6)
 //   break;
     // Read and build suffix pbwt by physical chunk
@@ -208,7 +212,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
         }
       } // Finish reading one SNP
 
-      if (iv->pos+1 < start_pos) {
+      if (iv->pos < start_pos) { // Start_pos & before is not flipped
         prepc.ForwardsAD_prefix(y, iv->pos+1);
         continue;
       }
@@ -391,7 +395,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                 }
               }
               if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k],h21/2,h11/2,
+                fliprec.push_back(std::vector<int32_t> {positions[k+1],h21/2,h11/2,
                                                        dij_p, dipj_s, dijp_s, flag});
                 if (flipcandy.find(h21/2) != flipcandy.end()) {
                   flipcandy[h21/2].push_back(h11/2);
@@ -440,7 +444,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                 }
               }
               if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k],h11/2,h21/2,
+                fliprec.push_back(std::vector<int32_t> {positions[k+1],h11/2,h21/2,
                                                         dij_p, dijp_s, dipj_s, flag});
                 if (flipcandy.find(h11/2) != flipcandy.end()) {
                   flipcandy[h11/2].push_back(h21/2);
@@ -462,6 +466,9 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
         if (flipcandy.size() > 1) {
           std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
           for (auto & id : IDToFlip) {
+            if ((int32_t) finalrec.size() >= max_flip) {
+              break;
+            }
             int32_t rm = (id.second).size();
             for (auto & id2 : id.second) {
               if (flipped[id2])
@@ -470,9 +477,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
             if (rm) {
               flipped[id.first] = 1;
               finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
-              if ((int32_t) finalrec.size() >= max_flip) {
-                break;
-              }
             }
           }
         } else {
