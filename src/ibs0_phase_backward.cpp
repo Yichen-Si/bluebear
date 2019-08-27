@@ -368,7 +368,7 @@ bool flip_abs[nsamples] = {0};
               }
               if (flag) { // Flip
                 fliprec.push_back(std::vector<int32_t> {positions[k-1],h21/2,h11/2,
-                                                       dij_p, dipj_s, dijp_s, flag});
+                                                        dij_p, dipj_s, dijp_s, flag});
                 if (flipcandy.find(h21/2) != flipcandy.end()) {
                   flipcandy[h21/2].push_back(h11/2);
                 } else {
@@ -376,7 +376,7 @@ bool flip_abs[nsamples] = {0};
                 }
               }
             } else if (dijp_s - dipj_s > diff && positions[k] - dipj_s > nmatch) { // Consider flip individual 1
-              if (pgmap.bp2cm(dij_p-pgmap.bp2cm(dipj_s)) > delta) {
+              if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(dipj_s) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
                 int32_t bpos = k / 8;  // This is not exact
