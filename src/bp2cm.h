@@ -12,6 +12,9 @@ class bp2cmMap
     std::map<int32_t, std::vector<int32_t> > poshash;
     int32_t binsize;
     int32_t centromere_st, centromere_ed;
+    int32_t minpos, maxpos;
+    double maxcm;
+
 
   bp2cmMap(const std::string &inMap, const char* sep,
         int32_t bp_col = 3, int32_t cm_col = 2,
@@ -28,6 +31,10 @@ class bp2cmMap
         lookup[std::stoi(words[bp_col])] = std::stod(words[cm_col]);
       }
     }
+    minpos = lookup.begin()->first;
+    maxpos = std::stoi(words[bp_col]);
+    maxcm  = std::stod(words[cm_col]);
+// std::cout << minpos <<'\t' << maxpos << '\t' << maxcm << '\n';
     int32_t kb = 0;
     while (kb <= lookup.begin()->first / binsize) {
       poshash[kb] = std::vector<int32_t>{lookup.begin()->first};
@@ -88,8 +95,11 @@ class bp2cmMap
   double bp2cm(int32_t pos) {
     int32_t kb = pos/binsize;
     int32_t mindist = INT_MAX;
-    if (poshash.find(kb) == poshash.end()) {
-      return( lookup.rbegin()->second );
+    if (pos < minpos) {
+      return 0.0;
+    }
+    if (pos > maxpos) {
+      return maxcm;
     }
     double cm = 0.0;
     for (auto&& rec : poshash[kb]) {

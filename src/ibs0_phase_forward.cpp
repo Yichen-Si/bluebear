@@ -116,31 +116,29 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   std::vector<std::vector<int32_t>* > posvec_que;
   std::vector<int32_t> ibs_chunk_in_que;
   int32_t cur_ibs_ck = 0; // Currently processed position locates in which block
-  ibs_ck = 0;
-  ibs_st = std::max(start_pos + ibs_ck * chunk_size, gpmap.minpos);
-  ibs_ed = start_pos + (ibs_ck+1) * chunk_size - 1;
+  ibs_ck = start_pos/chunk_size;
+  ibs_st = ibs_ck * chunk_size;
+  ibs_ed = (ibs_ck+1) * chunk_size-1;
   // Find the starting point for storing ibs0 look up
-  while (ibs_ed > gpmap.minpos &&  pgmap.bp2cm(start_pos) - pgmap.bp2cm(ibs_st) < delta) {
+  while (ibs_ck > 0 && pgmap.bp2cm(start_pos) - pgmap.bp2cm(ibs_st) < delta) {
     ibs_ck--;
     ibs_ed = ibs_st - 1;
-    ibs_st = std::max(start_pos + ibs_ck * chunk_size, gpmap.minpos);
+    ibs_st = std::max(ibs_ck * chunk_size, gpmap.minpos);
   }
-// std::cout << "initial ibs_ck " << ibs_ck << '\n';
   // Forward
-  while (ibs_st < gpmap.maxpos &&  pgmap.bp2cm(ibs_ed) - pgmap.bp2cm(start_pos) < delta) {
-    if (ibs_ck == 0) {
-      cur_ibs_ck = (int32_t) ibs_chunk_in_que.size();
-    }
+  while (ibs_st < gpmap.maxpos &&  pgmap.bp2cm(ibs_st) - pgmap.bp2cm(start_pos) < delta) {
     ibs_ed = std::min(ibs_ed, gpmap.maxpos);
     reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-    if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts) > 0) {
-      ibs_chunk_in_que.push_back(ibs_st/chunk_size);
+    if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0) > 0) {
+      ibs_chunk_in_que.push_back(ibs_ck);
+    }
+    if (ibs_ck == start_pos/chunk_size) {
+      cur_ibs_ck = (int32_t) ibs_chunk_in_que.size() - 1;
     }
     ibs_ck++;
-    ibs_st = start_pos + ibs_ck * chunk_size;
+    ibs_st = ibs_ck * chunk_size;
     ibs_ed = ibs_st + chunk_size - 1;
   } // Finish initialize ibs0 lookup blocks
-// std::cout << "initial ibs0 blocks " << ibs_chunk_in_que.size() << '\t' << cur_ibs_ck << '\n';
   // Initialize forward pbwt
   // Read the first snp in this chunk. should be stored as a checkpoint
   reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
@@ -371,7 +369,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                                             h11/2, h21/2,0);
                 }
                 nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
-
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
@@ -421,7 +418,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                                             h11/2, h21/2,0);
                 }
                 nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
-
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
@@ -533,7 +529,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     cur_ibs_ck++;
 // std::cout << st << '\t' << ed << '\t' << ibs_chunk_in_que.size() << '\n';
 
-    while (ibs_chunk_in_que.size() > 1 && pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0]).back()) > delta) {
+    while (ibs_chunk_in_que.size() > 1 && pgmap.bp2cm(stugly) - pgmap.bp2cm(posvec_que[0]->back()) > delta) {
 // std::cout << pgmap.bp2cm(st) << '\t' << pgmap.bp2cm((*posvec_que[0]).back()) << '\n';
       delete posvec_que[0]; posvec_que.erase(posvec_que.begin());
       delete bmatRR_que[0]; bmatRR_que.erase(bmatRR_que.begin());
@@ -563,7 +559,12 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       ibs_st = ibs_ck * chunk_size + 1;
       ibs_ed = (ibs_ck+1) * chunk_size;
     } // Finish adding new ibs0 lookup blocks
-// std::cout << "Finish adding new ibs0 lookup blocks\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\t' << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
+
+// std::cout << "Finish adding new ibs0 lookup blocks\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
+// std::cout << "First pos: " << (*posvec_que[0])[0] << ';' << pgmap.bp2cm((*posvec_que[0])[0]) << "\tNext st: " << pgmap.bp2cm(st) << "\tLast: " << posvec_que.back()->back() << ';' << pgmap.bp2cm(posvec_que.back()->back()) << "\tNext ed: " <<  pgmap.bp2cm(ed) << '\n';
+// if (cur_ibs_ck >= 0)
+//   std::cout << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
+
   } // Finish processing one chunk
   hts_close(wbcf);
   return 0;

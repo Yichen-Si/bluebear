@@ -342,7 +342,7 @@ bool flip_abs[nsamples] = {0};
                 }
                 if (previbs0 > 0)
                   previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
-                if (previbs0 == -1 || positions[k] - previbs0 > lambda) {
+                if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
                     flag = 2;
@@ -358,8 +358,9 @@ bool flip_abs[nsamples] = {0};
                                                 bmatAA_que[ibs_ck_to_look],
                                                 h11/2, h21/2,0);
                     }
-                    nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
-                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
+                    if (nextibs0 > 0)
+                      nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
+                    if (nextibs0 == -1 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
                   }
@@ -391,7 +392,7 @@ bool flip_abs[nsamples] = {0};
                 }
                 if (previbs0 > 0)
                   previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
-                if (previbs0 == -1 || positions[k] - previbs0 > lambda) {
+                if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
                     flag = 2;
@@ -407,8 +408,9 @@ bool flip_abs[nsamples] = {0};
                                                 bmatAA_que[ibs_ck_to_look],
                                                 h11/2, h21/2,0);
                     }
-                    nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
-                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
+                    if (nextibs0 > 0)
+                      nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
+                    if (nextibs0 == -1 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
                   }
@@ -526,7 +528,7 @@ bool flip_abs[nsamples] = {0};
     // Slide the window of ibs0 lookup
     cur_ibs_ck--;
     while ((int32_t) ibs_chunk_in_que.size()-1 > std::max(0,cur_ibs_ck) &&
-           pgmap.bp2cm((*posvec_que.back()).back()) - pgmap.bp2cm(edugly) > delta) {
+           pgmap.bp2cm((*posvec_que.back())[0]) - pgmap.bp2cm(edugly) > delta) {
 // std::cout << "Delete\t" << (*posvec_que.back())[0] << '-' << (*posvec_que.back()).back() << '\t' <<  pgmap.bp2cm((*posvec_que.back()).back()) << '\t' << pgmap.bp2cm(edugly) << '\n';
       delete posvec_que.back(); posvec_que.pop_back();
       delete bmatRR_que.back(); bmatRR_que.pop_back();
@@ -558,8 +560,9 @@ bool flip_abs[nsamples] = {0};
     } // Finish adding new ibs0 lookup blocks
 
 // std::cout << "Finish adding new ibs0 lookup blocks\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
+// std::cout << "First pos: " << (*posvec_que[0])[0] << ';' << pgmap.bp2cm((*posvec_que[0])[0]) << "\tNext st: " << pgmap.bp2cm(st) << "\tLast: " << posvec_que.back()->back() << ';' << pgmap.bp2cm(posvec_que.back()->back()) << "\tNext ed: " <<  pgmap.bp2cm(edugly) << '\n';
 // if (cur_ibs_ck >= 0)
-  // std::cout << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
+//   std::cout << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
 
   } // Finish processing one chunk
   hts_close(wbcf);
