@@ -171,12 +171,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
 
   pbwtCursor prepc(M, a, d);
 
-// std::cout << "initialize prefix pbwt at " << wvec[1] << '\n';
-
   while (st < gpmap.maxpos) {
-
-// if (st > (int32_t) 3e6)
-//   break;
     // Read and build suffix pbwt by physical chunk
     // TODO: enable efficient random access &/ customizable chunk size
 
@@ -289,6 +284,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
+    int32_t bitpos = 0;
     if (stugly < start_pos) {
     // If it is the first block, skip sites before the starting position.
       reg = chrom + ":" + std::to_string(start_pos) + "-" + std::to_string(ed);
@@ -312,6 +308,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       }
       bcf_write(wbcf, odr.hdr, iv);
 
+      while ((*posvec_que[cur_ibs_ck])[bitpos] < positions[k]) {bitpos++;}
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       std::vector<std::vector<int32_t> > fliprec;
@@ -356,7 +353,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = k / 8;  // This is not exact
+                int32_t bpos = bitpos / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
@@ -368,10 +365,11 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
+                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : posvec_que[ibs_ck_to_look]->back();
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
+// std::cout << dij_p << '\t' << nextibs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(nextibs0) << '\n';
                     flag = 2;
                   } else { // Need to check the previous ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -405,7 +403,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = k / 8;  // This is not exact
+                int32_t bpos = bitpos / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
@@ -417,10 +415,11 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : gpmap.maxpos;
+                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : posvec_que[ibs_ck_to_look]->back();
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
+// std::cout << dij_p << '\t' << nextibs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(nextibs0) << '\n';
                     flag = 2;
                   } else { // Need to check the previous ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -474,12 +473,12 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
             }
             if (rm) {
               flipped[id.first] = 1;
-              finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
+              finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0, 0,0,0};
             }
           }
         } else {
           flipped[flipcandy.begin()->first] = 1;
-          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0};
+          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0, 0,0,0};
         }
         for (auto & v : fliprec) {
           if (flipped[v[1]]) {
@@ -487,6 +486,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
             finalrec[v[1]][2]++;
             if (v[5]-v[4] > finalrec[v[1]][3])
               finalrec[v[1]][3] = v[5]-v[4];
+            finalrec[v[1]][3+v.back()]++;
             if (detailed) {
               std::stringstream recline;
               for (auto& w : v)
@@ -560,8 +560,10 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       ibs_ed = (ibs_ck+1) * chunk_size;
     } // Finish adding new ibs0 lookup blocks
 
+// if (pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0])[0]) < delta || pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) < delta) {
 // std::cout << "Finish adding new ibs0 lookup blocks\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
-// std::cout << "First pos: " << (*posvec_que[0])[0] << ';' << pgmap.bp2cm((*posvec_que[0])[0]) << "\tNext st: " << pgmap.bp2cm(st) << "\tLast: " << posvec_que.back()->back() << ';' << pgmap.bp2cm(posvec_que.back()->back()) << "\tNext ed: " <<  pgmap.bp2cm(ed) << '\n';
+// std::cout << "First pos: " << (*posvec_que[0])[0] << ' ' << pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0])[0]) << "\tLast: " << posvec_que.back()->back() << ' ' << pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) << '\n';
+// }
 // if (cur_ibs_ck >= 0)
 //   std::cout << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
 

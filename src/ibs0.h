@@ -8,7 +8,7 @@
 
 int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
                        int32_t i, int32_t j,
-                       bool reverse = 0, int32_t start = 0);
+                       bool reverse = 0, int32_t start = -1);
 
 int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
                    std::vector<bitmatrix*>& bmatRR_que,

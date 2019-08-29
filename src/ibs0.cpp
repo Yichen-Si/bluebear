@@ -9,15 +9,15 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   uint8_t* jAA = bmatAA->get_row_bits(j);
   int32_t k;
   if (reverse) {
-    if (!start)
-      start = bmatRR->nbytes_col-1;
+    start = (start < 0) ? (bmatRR->nbytes_col-1) : start;
     for(k=start; k >= 0; --k) {
       if ( ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] ) ) { // IBS0 exists
         break;
       }
     }
-    return k * 8 + 7;
+    return std::min(k * 8 + 7, bmatRR->ncol-1);
   } else {
+    start = (start < 0) ? 0 : start;
     for(k=start; k < bmatRR->nbytes_col; ++k) {
       if ( ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] ) ) { // IBS0 exists
         break;

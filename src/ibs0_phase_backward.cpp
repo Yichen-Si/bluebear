@@ -222,10 +222,6 @@ bool flip_abs[nsamples] = {0};
       notice("Read %d markers, start processing %s.", N, reg.c_str());
     }
 
-    // To record if the current position is flipped. For output
-    // TODO. Need better ouput
-    // std::vector<std::vector<int32_t> > flip_mat(N);
-
     // Set up output for this block
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
     std::ofstream wf;
@@ -275,7 +271,7 @@ bool flip_abs[nsamples] = {0};
     int32_t h11,h12,h21,h22; // (Reflecting flips so far) index stored in suffix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
-
+    int32_t bitpos = posvec_que[cur_ibs_ck]->size() - 1;
     for (int32_t k = N-1; k > 0; --k) {
       // Sorted after and include position k
       sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
@@ -286,6 +282,7 @@ bool flip_abs[nsamples] = {0};
           gtmat[k][it*2+1] = !gtmat[k][it*2+1];
         }
       }
+      while ((*posvec_que[cur_ibs_ck])[bitpos] > positions[k]) {bitpos--;}
       if (positions[k]>start_pos) {continue;} // Start_pos & after should not be flipped
       std::vector<std::vector<int32_t> > fliprec;
       std::map<int32_t, std::vector<int32_t> > flipcandy;
@@ -329,7 +326,7 @@ bool flip_abs[nsamples] = {0};
               if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(dijp_s) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = k / 8;  // This is not exact
+                int32_t bpos = bitpos / 8; // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
@@ -340,11 +337,18 @@ bool flip_abs[nsamples] = {0};
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,1);
                 }
+// if (previbs0 <= 0 || (ibs_ck_to_look == cur_ibs_ck && previbs0 >= k) ) {
+//   std::cout << "II " << previbs0 - k << '\t' << previbs0<< '\t' << k << '\t' << bpos << '\t' << (*posvec_que[ibs_ck_to_look]).size() << '\n';
+// }
                 if (previbs0 > 0)
                   previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
+// if (previbs0 <= 0) {
+//   std::cout << "III " << previbs0 << '\t' << ibs_ck_to_look << '\t' << (*posvec_que[ibs_ck_to_look])[0] << '\t' << posvec_que[ibs_ck_to_look]->back() << '\n';
+// }
                 if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
+// std::cout << dij_p << '\t' << previbs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(previbs0) << '\n';
                     flag = 2;
                   } else { // Need to check the next ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -379,7 +383,7 @@ bool flip_abs[nsamples] = {0};
               if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(dipj_s) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = k / 8;  // This is not exact
+                int32_t bpos = bitpos / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
@@ -395,6 +399,7 @@ bool flip_abs[nsamples] = {0};
                 if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
+// std::cout << dij_p << '\t' << previbs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(previbs0) << '\n';
                     flag = 2;
                   } else { // Need to check the next ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -449,19 +454,20 @@ bool flip_abs[nsamples] = {0};
             }
             if (rm) {
               flipped[id.first] = 1;
-              finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0};
+              finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0, 0,0,0};
             }
           }
         } else {
           flipped[flipcandy.begin()->first] = 1;
-          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0};
+          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0, 0,0,0};
         }
         for (auto & v : fliprec) {
           if (flipped[v[1]]) {
             finalrec[v[1]][0] = v[0];
-            finalrec[v[1]][2]++;
+            finalrec[v[1]][2]++;      // Number of comparisons suggesting this flip
             if (v[4]-v[5] > finalrec[v[1]][3])
               finalrec[v[1]][3] = v[4]-v[5];
+            finalrec[v[1]][3+v.back()]++; // Count the number of each types of flip among those comparisons
             if (detailed) {
               std::stringstream recline;
               for (auto& w : v)
@@ -559,8 +565,10 @@ bool flip_abs[nsamples] = {0};
       ibs_ed = (ibs_ck+1) * chunk_size;
     } // Finish adding new ibs0 lookup blocks
 
+// if (pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0])[0]) < delta || pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) < delta) {
 // std::cout << "Finish adding new ibs0 lookup blocks\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
-// std::cout << "First pos: " << (*posvec_que[0])[0] << ';' << pgmap.bp2cm((*posvec_que[0])[0]) << "\tNext st: " << pgmap.bp2cm(st) << "\tLast: " << posvec_que.back()->back() << ';' << pgmap.bp2cm(posvec_que.back()->back()) << "\tNext ed: " <<  pgmap.bp2cm(edugly) << '\n';
+// std::cout << "First pos: " << (*posvec_que[0])[0] << ' ' << pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0])[0]) << "\tLast: " << posvec_que.back()->back() << ' ' << pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) << '\n';
+// }
 // if (cur_ibs_ck >= 0)
 //   std::cout << (*posvec_que[cur_ibs_ck])[0] << '\t' << (*posvec_que[cur_ibs_ck]).back() << '\n';
 
