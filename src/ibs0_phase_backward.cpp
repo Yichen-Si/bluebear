@@ -157,7 +157,6 @@ bool flip_abs[nsamples] = {0};
     a[i- OFFSET] = std::stoi(wvec[i]);
 
   sfile = path_pbwt + "_" + reg + "_suffix.dmat";
-
   sf.open(sfile);
   std::getline(sf, line);
   sf.close();
@@ -204,6 +203,7 @@ bool flip_abs[nsamples] = {0};
       gtmat.push_back(y);
       positions.push_back(iv->pos+1);
     } // Finish reading all haplotypes in this chunk
+std::cout<<"Last pos " <<  positions.back() << '\n';
     int32_t N = positions.size();
     if ( N < min_variant ) {
       if (N > 0) {
@@ -260,9 +260,7 @@ bool flip_abs[nsamples] = {0};
       rmat[i] = new int32_t[M];
     }
     // Build prefix pbwt
-    memcpy(dmat[0], prepc.d, M*sizeof(int32_t));
-    prepc.ReverseA(rmat[0]);
-    for (int32_t k = 1; k < N; ++k) {
+    for (int32_t k = 0; k < N; ++k) {
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       memcpy(dmat[k], prepc.d, M*sizeof(int32_t));
       prepc.ReverseA(rmat[k]);
@@ -337,18 +335,11 @@ bool flip_abs[nsamples] = {0};
                                             bmatAA_que[ibs_ck_to_look],
                                             h11/2, h21/2,1);
                 }
-// if (previbs0 <= 0 || (ibs_ck_to_look == cur_ibs_ck && previbs0 >= k) ) {
-//   std::cout << "II " << previbs0 - k << '\t' << previbs0<< '\t' << k << '\t' << bpos << '\t' << (*posvec_que[ibs_ck_to_look]).size() << '\n';
-// }
                 if (previbs0 > 0)
                   previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
-// if (previbs0 <= 0) {
-//   std::cout << "III " << previbs0 << '\t' << ibs_ck_to_look << '\t' << (*posvec_que[ibs_ck_to_look])[0] << '\t' << posvec_que[ibs_ck_to_look]->back() << '\n';
-// }
                 if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
-// std::cout << dij_p << '\t' << previbs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(previbs0) << '\n';
                     flag = 2;
                   } else { // Need to check the next ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -399,7 +390,6 @@ bool flip_abs[nsamples] = {0};
                 if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
-// std::cout << dij_p << '\t' << previbs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(previbs0) << '\n';
                     flag = 2;
                   } else { // Need to check the next ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -533,20 +523,18 @@ bool flip_abs[nsamples] = {0};
       delete [] pt;
     // Slide the window of ibs0 lookup
     cur_ibs_ck--;
+
     while ((int32_t) ibs_chunk_in_que.size()-1 > std::max(0,cur_ibs_ck) &&
            pgmap.bp2cm((*posvec_que.back())[0]) - pgmap.bp2cm(edugly) > delta) {
-// std::cout << "Delete\t" << (*posvec_que.back())[0] << '-' << (*posvec_que.back()).back() << '\t' <<  pgmap.bp2cm((*posvec_que.back()).back()) << '\t' << pgmap.bp2cm(edugly) << '\n';
       delete posvec_que.back(); posvec_que.pop_back();
       delete bmatRR_que.back(); bmatRR_que.pop_back();
       delete bmatAA_que.back(); bmatAA_que.pop_back();
       ibs_chunk_in_que.pop_back();
     }
-// std::cout << "After\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
     ibs_ck = ibs_chunk_in_que[0] - 1;
     ibs_st = ibs_ck * chunk_size + 1;
     ibs_ed = (ibs_ck+1) * chunk_size;
     while (ibs_ed > gpmap.minpos && pgmap.bp2cm(st) - pgmap.bp2cm((*posvec_que[0])[0]) < delta) {
-// std::cout << "Check\t" << ibs_st << '\t' <<  ibs_ed << '\n';
       if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
         ibs_ck--;
         ibs_st = ibs_ck * chunk_size + 1;

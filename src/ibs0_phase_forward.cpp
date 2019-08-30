@@ -144,9 +144,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
   std::string line;
   std::string sfile = path_pbwt + "_" + reg + "_prefix.amat";
-
-// std::cout << "initialize prefix pbwt amat " << sfile << '\n';
-
   std::ifstream sf(sfile);
   std::getline(sf, line);
   sf.close();
@@ -158,9 +155,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     a[i- OFFSET] = std::stoi(wvec[i]);
 
   sfile = path_pbwt + "_" + reg + "_prefix.dmat";
-
-// std::cout << "initialize prefix pbwt dmat " << sfile << '\n';
-
   sf.open(sfile);
   std::getline(sf, line);
   sf.close();
@@ -243,7 +237,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
 
     // Read the last snp in this chunk. should be stored as a checkpoint
     sfile = path_pbwt + "_" + reg + "_suffix.amat";
-// std::cout << "Read suffix amat: " << sfile << '\n';
     sf.open(sfile);
     std::getline(sf, line);
     sf.close();
@@ -253,8 +246,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       a[i- OFFSET] = std::stoi(wvec[i]);
 
     sfile = path_pbwt + "_" + reg + "_suffix.dmat";
-// std::cout << "Read suffix dmat: " << sfile << '\n';
-
     sf.open(sfile);
     std::getline(sf, line);
     sf.close();
@@ -272,14 +263,11 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       rmat[i] = new int32_t[M];
     }
     // Build suffix pbwt
-    memcpy(dmat[N-1], sufpc.d, M*sizeof(int32_t));
-    sufpc.ReverseA(rmat[N-1]);
-    for (int32_t k = N-2; k >= 0; --k) {
+    for (int32_t k = N-1; k >= 0; --k) {
       sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
       memcpy(dmat[k], sufpc.d, M*sizeof(int32_t));
       sufpc.ReverseA(rmat[k]);
     }
-// std::cout << "Built suffix matrix\n";
     // Build prefix pbwt & detect switch
     int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
@@ -316,7 +304,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       for (int32_t i = 0; i < M-1; ++i) {
         h11 = prepc.a[i]; // Original Hap ID corresponding to row i
         h12 = h11 + 1 - 2 * (h11%2);
-        // hap11 = (flip[h11/2]) ? (h11 + (h11%2 == 0) ? 1 : -1) : h11;
         int32_t j = i+1;
         dij_p = prepc.d[j];
         // Check a few hap down
@@ -369,7 +356,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
-// std::cout << dij_p << '\t' << nextibs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(nextibs0) << '\n';
                     flag = 2;
                   } else { // Need to check the previous ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -392,7 +378,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               }
               if (flag) { // Flip
                 fliprec.push_back(std::vector<int32_t> {positions[k+1],h21/2,h11/2,
-                                                       dij_p, dipj_s, dijp_s, flag});
+                                                       dij_p, dipj_s, dijp_s, flag, h21, flip_abs[h21/2],flip_abs[h11/2]});
                 if (flipcandy.find(h21/2) != flipcandy.end()) {
                   flipcandy[h21/2].push_back(h11/2);
                 } else {
@@ -419,7 +405,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
-// std::cout << dij_p << '\t' << nextibs0 << '\t' << pgmap.bp2cm(dij_p) << '\t' << pgmap.bp2cm(nextibs0) << '\n';
                     flag = 2;
                   } else { // Need to check the previous ibs0
                     ibs_ck_to_look = cur_ibs_ck;
@@ -442,7 +427,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               }
               if (flag) { // Flip
                 fliprec.push_back(std::vector<int32_t> {positions[k+1],h11/2,h21/2,
-                                                        dij_p, dijp_s, dipj_s, flag});
+                                                        dij_p, dijp_s, dipj_s, flag, h11, flip_abs[h11/2],flip_abs[h21/2] });
                 if (flipcandy.find(h11/2) != flipcandy.end()) {
                   flipcandy[h11/2].push_back(h21/2);
                 } else {
@@ -486,7 +471,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
             finalrec[v[1]][2]++;
             if (v[5]-v[4] > finalrec[v[1]][3])
               finalrec[v[1]][3] = v[5]-v[4];
-            finalrec[v[1]][3+v.back()]++;
+            finalrec[v[1]][3+v[6]]++;
             if (detailed) {
               std::stringstream recline;
               for (auto& w : v)
@@ -527,22 +512,18 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       delete [] pt;
     // Slide the window of ibs0 lookup
     cur_ibs_ck++;
-// std::cout << st << '\t' << ed << '\t' << ibs_chunk_in_que.size() << '\n';
 
     while (ibs_chunk_in_que.size() > 1 && pgmap.bp2cm(stugly) - pgmap.bp2cm(posvec_que[0]->back()) > delta) {
-// std::cout << pgmap.bp2cm(st) << '\t' << pgmap.bp2cm((*posvec_que[0]).back()) << '\n';
       delete posvec_que[0]; posvec_que.erase(posvec_que.begin());
       delete bmatRR_que[0]; bmatRR_que.erase(bmatRR_que.begin());
       delete bmatAA_que[0]; bmatAA_que.erase(bmatAA_que.begin());
       ibs_chunk_in_que.erase(ibs_chunk_in_que.begin());
       cur_ibs_ck--;
-// std::cout << "After\t" << ibs_chunk_in_que.size() << '\t' <<  cur_ibs_ck << '\n';
     }
     ibs_ck = ibs_chunk_in_que.back() + 1;
     ibs_st = ibs_ck * chunk_size + 1;
     ibs_ed = (ibs_ck+1) * chunk_size;
     while (pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) < delta) {
-// std::cout << "Check\t" << ibs_st << '\t' <<  ibs_ed << '\n';
       if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
         ibs_ck++;
         ibs_st = ibs_ck * chunk_size + 1;
