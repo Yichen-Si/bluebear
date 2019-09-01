@@ -68,14 +68,15 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
     error("[E:%s:%d %s] --in-vcf, --in-pos, --map, --pbwt-path, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
 
-  // Read the position - id file
+  // Read the position - id file // Assume sorted by position
   std::fstream rf(inPos,std::ios::in);
-  std::map<int32_t, int32_t> poslist;
+  std::vector<std::vector<int32_t> > poslist;
   int32_t pos, id;
   int32_t start, end;
-  while (rf >> pos >> id) {
-    poslist[pos] = id;
+  while ( rf >> pos >> id ) {
+    poslist.push_back(std::vector<int32_t> {pos,id});
   }
+  notice("Read %d position-id pairs. From %d to %d.", poslist.size(), poslist[0][0], poslist.back()[0]);
 
   // Translate between genetic & physical position.
   bp2cmMap pgmap(inMap, " ");
@@ -97,8 +98,8 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
   M = nsamples * 2;
   hts_close(fp);
   if (reg.empty()) {
-    start = poslist.begin()->first;
-    end   = poslist.rbegin()->first;
+    start = poslist[0][0];
+    end   = poslist.back()[0];
   } else {
     std::vector<std::string> v;
     split(v, ":-", reg);
@@ -151,9 +152,9 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
   reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
   IBS0lookup ibs0finder(inVcf, reg, pgmap, delta, ibs0_chunk, min_hom_gts);
 
-  auto iter = poslist.begin();
+  uint32_t iter = 0;
   bool flag = 0;
-  pos = iter->first;
+  pos = poslist[iter][0];
 
   while (st < pgmap.maxpos) {
     // Read and build suffix pbwt by physical chunk
@@ -251,7 +252,6 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
     }
 
     // Build prefix pbwt
-    int32_t ibd = 0, ibs = 0, besthap, bestibs;
     int32_t id1, id2; // individual id
     int32_t i_s, j_s, i_p, j_p;
     int32_t dijp, dijs;
@@ -266,118 +266,132 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
       }
       while (positions[k] > pos) {
         iter++;
-        if (iter == poslist.end())
+        if (iter >= poslist.size())
           break;
-        pos = iter->first;
+        pos = poslist[iter][0];
       }
-      if (iter == poslist.end()) {
+      if (iter >= poslist.size()) {
         break;
       }
-      id1 = iter->second;
-      switchpt pt;
-      pt.pos=pos;
-      pt.id =id1;
       int32_t rvec[M]; // Map haplotype id to row in suffix matrix
       for (int32_t it = 0; it < M; ++it) {
         rvec[amat[k][it]] = it;
       }
-      for (int32_t h = id1*2; h <= id1*2+1; ++h) {
-        i_p = prepc.FindIndex(h);
-        i_s = rvec[h];
 
-        // Left
-        if (i_p == M-1 || prepc.d[i_p] < prepc.d[i_p+1]) {
-          j_p = i_p-1;
-          dijp = prepc.d[i_p];
-        } else {
-          j_p = i_p+1;
-          dijp = prepc.d[i_p+1];
-        }
-        id2 = prepc.a[j_p]/2;
-        j_s = rvec[prepc.a[j_p]];
-        refhap* lh = new refhap;
-        lh->hapid = prepc.a[j_p];
-        int32_t s_i = std::min(i_s,j_s);
-        int32_t s_j = std::max(i_s,j_s);
-        dijs = dmat[k][s_i+1];
-        for (int32_t it = s_i+1; it <= s_j; ++it) {
-          dijs = std::min(dijs,dmat[k][it]);
-        }
-        lh->hap = dijs - dijp;
-        lh->id=id2;
-        int32_t r0 = ibs0finder.FindIBS0(id1,id2,pos,0);
-        int32_t l0 = ibs0finder.FindIBS0(id1,id2,pos,1);
-        lh->trunc = (r0 < 0 || l0 < 0);
-        r0 = (r0 < 0) ? (ibs0finder.posvec_que.back())->back() : r0;
-        l0 = (l0 < 0) ? ibs0finder.start_que[0] : l0;
-        lh->ibs = r0 - l0;
-        if (ibd < lh->hap) {
-          besthap = lh->hapid;
-          ibd = lh->hap;
-        }
-        if (ibs < lh->ibs) {
-          bestibs = lh->hapid;
-          ibs = lh->ibs;
-        }
-        pt.reflist[lh->hapid]=lh;
-        if (detailed) {
-          fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h,id2,lh->hapid, dijp,dijs,l0,r0);
-        }
+      while (pos == positions[k]) {
+        int32_t ibd = 0, ibs = 0, besthap, bestibs;
+std::cout << k << '\t' << iter << '\t' << positions[k] << '\t' << pos << '\n';
+        id1 = poslist[iter][1];
+        switchpt pt;
+        pt.pos=pos;
+        pt.id =id1;
+        for (int32_t h = id1*2; h <= id1*2+1; ++h) {
+          i_p = prepc.FindIndex(h);
+          i_s = rvec[h];
 
-        // Right
-        if (i_s == M-1 || dmat[k][i_s] > dmat[k][i_s+1]) {
-          j_s = i_s-1;
-          dijs = dmat[k][i_s];
-        } else {
-          j_s = i_s+1;
-          dijs = dmat[k][i_s+1];
+          // Left
+          if (i_p == M-1 || prepc.d[i_p] < prepc.d[i_p+1]) {
+            j_p = i_p-1;
+            dijp = prepc.d[i_p];
+          } else {
+            j_p = i_p+1;
+            dijp = prepc.d[i_p+1];
+          }
+          id2 = prepc.a[j_p]/2;
+          j_s = rvec[prepc.a[j_p]];
+          refhap* lh = new refhap;
+          lh->hapid = prepc.a[j_p];
+          int32_t s_i = std::min(i_s,j_s);
+          int32_t s_j = std::max(i_s,j_s);
+          dijs = dmat[k][s_i+1];
+          for (int32_t it = s_i+1; it <= s_j; ++it) {
+            dijs = std::min(dijs,dmat[k][it]);
+          }
+          lh->hap = dijs - dijp;
+          lh->id=id2;
+          int32_t r0 = ibs0finder.FindIBS0(id1,id2,pos,0);
+          int32_t l0 = ibs0finder.FindIBS0(id1,id2,pos,1);
+          lh->trunc = (r0 < 0 || l0 < 0);
+          r0 = (r0 < 0) ? (ibs0finder.posvec_que.back())->back() : r0;
+          l0 = (l0 < 0) ? ibs0finder.start_que[0] : l0;
+          lh->ibs = r0 - l0;
+          if (ibd < lh->hap) {
+            besthap = lh->hapid;
+            ibd = lh->hap;
+          } else if (ibd == lh->hap && lh->ibs > pt.reflist[besthap]->ibs) {
+            besthap = lh->hapid;
+          }
+          if (ibs < lh->ibs) {
+            bestibs = lh->hapid;
+            ibs = lh->ibs;
+          } else if (ibs == lh->ibs && lh->hap > pt.reflist[bestibs]->hap) {
+            bestibs = lh->hapid;
+          }
+          pt.reflist[lh->hapid]=lh;
+          if (detailed) {
+            fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h%2,id2,lh->hapid%2, dijp,dijs,l0,r0);
+          }
+          // Right
+          if (i_s == M-1 || dmat[k][i_s] > dmat[k][i_s+1]) {
+            j_s = i_s-1;
+            dijs = dmat[k][i_s];
+          } else {
+            j_s = i_s+1;
+            dijs = dmat[k][i_s+1];
+          }
+          id2 = amat[k][j_s]/2;
+          if (pt.reflist.find(amat[k][j_s]) != pt.reflist.end() || id2 == id1) {
+            continue;
+          }
+          j_p = prepc.FindIndex(amat[k][j_s]);
+          refhap* rh = new refhap;
+          rh->hapid = amat[k][j_s];
+          int32_t p_i = std::min(i_p,j_p);
+          int32_t p_j = std::max(i_p,j_p);
+          dijp = prepc.d[s_i+1];
+          for (int32_t it = p_i+1; it <= p_j; ++it) {
+            dijp = std::max(dijp,prepc.d[it]);
+          }
+          rh->hap = dijs - dijp;
+          rh->id=id2;
+          r0 = ibs0finder.FindIBS0(id1,id2,pos,0);
+          l0 = ibs0finder.FindIBS0(id1,id2,pos,1);
+          rh->trunc = (r0 || l0);
+          r0 = (r0 < 0) ? (ibs0finder.posvec_que.back())->back() : r0;
+          l0 = (l0 < 0) ? ibs0finder.start_que[0] : l0;
+          rh->ibs = r0 - l0;
+          if (ibd < rh->hap) {
+            besthap = rh->hapid;
+            ibd = rh->hap;
+          } else if (ibd == rh->hap && rh->ibs > pt.reflist[besthap]->ibs) {
+            besthap = rh->hapid;
+          }
+          if (ibs < rh->ibs) {
+            bestibs = rh->hapid;
+            ibs = rh->ibs;
+          } else if (ibs == rh->ibs && rh->hap > pt.reflist[bestibs]->hap) {
+            bestibs = rh->hapid;
+          }
+          pt.reflist[rh->hapid]=rh;
+          if (detailed) {
+            fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h%2,id2,rh->hapid%2, dijp,dijs,l0,r0);
+          }
         }
-        id2 = amat[k][j_s]/2;
-        if (pt.reflist.find(amat[k][j_s]) != pt.reflist.end() || id2 == id1) {
-          continue;
+        fprintf(wfs, "%d\t%d\t%d\t%d\t%d\t%d\n", pos, id1,
+                pt.reflist[besthap]->hap, pt.reflist[besthap]->ibs,
+                pt.reflist[bestibs]->hap, pt.reflist[bestibs]->ibs);
+        for (auto it : pt.reflist)
+          delete it.second;
+        iter++;
+        if (iter >= poslist.size()) {
+          flag = 1;
+          break;
         }
-        j_p = prepc.FindIndex(amat[k][j_s]);
-        refhap* rh = new refhap;
-        rh->hapid = amat[k][j_s];
-        int32_t p_i = std::min(i_p,j_p);
-        int32_t p_j = std::max(i_p,j_p);
-        dijp = prepc.d[s_i+1];
-        for (int32_t it = p_i+1; it <= p_j; ++it) {
-          dijp = std::max(dijp,prepc.d[it]);
-        }
-        rh->hap = dijs - dijp;
-        rh->id=id2;
-        r0 = ibs0finder.FindIBS0(id1,id2,pos,0);
-        l0 = ibs0finder.FindIBS0(id1,id2,pos,1);
-        rh->trunc = (r0 || l0);
-        r0 = (r0 < 0) ? (ibs0finder.posvec_que.back())->back() : r0;
-        l0 = (l0 < 0) ? ibs0finder.start_que[0] : l0;
-        rh->ibs = r0 - l0;
-        if (ibd < rh->hap) {
-          besthap = rh->hapid;
-          ibd = rh->hap;
-        }
-        if (ibs < rh->ibs) {
-          bestibs = rh->hapid;
-          ibs = rh->ibs;
-        }
-        pt.reflist[rh->hapid]=rh;
-        if (detailed) {
-          fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h,id2,rh->hapid, dijp,dijs,l0,r0);
-        }
+        pos = poslist[iter][0];
       }
-      fprintf(wfs, "%d\t%d\t%d\t%d\t%d\t%d\n", pos, id1,
-              pt.reflist[besthap]->hap, pt.reflist[besthap]->ibs,
-              pt.reflist[bestibs]->hap, pt.reflist[bestibs]->ibs);
-      for (auto it : pt.reflist)
-        delete it.second;
       k++;
-      iter++;
-      if (iter == poslist.end()) {
-        flag = 1;
+      if (flag)
         break;
-      }
-      pos = iter->first;
     } // Finish processing one chunk
     // Free memory used by the suffix pbwt
     for (auto& pt : dmat)
