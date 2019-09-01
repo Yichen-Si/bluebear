@@ -110,7 +110,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   }
   stugly = st;
 
-  // Initialize ibs0 lookup blocks. By 1Mb.
+  // Initialize ibs0 lookup blocks
   // Number of blocks stored determined by genetic distance
   std::vector<bitmatrix*> bmatRR_que, bmatAA_que;
   std::vector<std::vector<int32_t>* > posvec_que;
@@ -272,7 +272,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
-    int32_t bitpos = 0;
     if (stugly < start_pos) {
     // If it is the first block, skip sites before the starting position.
       reg = chrom + ":" + std::to_string(start_pos) + "-" + std::to_string(ed);
@@ -296,7 +295,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       }
       bcf_write(wbcf, odr.hdr, iv);
 
-      while ((*posvec_que[cur_ibs_ck])[bitpos] < positions[k]) {bitpos++;}
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       std::vector<std::vector<int32_t> > fliprec;
@@ -340,19 +338,20 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = bitpos / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
-                                                  h11/2, h21/2,0,bpos);
+                                                  posvec_que[ibs_ck_to_look],
+                                                  h11/2, h21/2,0,positions[k]);
                 while (nextibs0 == -1 &&
                        ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
                   ibs_ck_to_look++;
                   nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                             bmatAA_que[ibs_ck_to_look],
+                                            posvec_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : posvec_que[ibs_ck_to_look]->back();
+                nextibs0 = (nextibs0 > 0) ? nextibs0 : posvec_que[ibs_ck_to_look]->back();
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
@@ -361,15 +360,15 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                     ibs_ck_to_look = cur_ibs_ck;
                     int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                       bmatAA_que[ibs_ck_to_look],
-                                                      h11/2, h21/2,1,bpos);
+                                                      posvec_que[ibs_ck_to_look],
+                                                      h11/2, h21/2,1,positions[k]);
                     while (previbs0 == -1 && ibs_ck_to_look > 0) {
                       ibs_ck_to_look--;
                       previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                 bmatAA_que[ibs_ck_to_look],
+                                                posvec_que[ibs_ck_to_look],
                                                 h11/2, h21/2,1);
                     }
-                    if (previbs0 > 0)
-                      previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                     if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
@@ -389,19 +388,20 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = bitpos / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
-                                                  h11/2, h21/2,0,bpos);
+                                                  posvec_que[ibs_ck_to_look],
+                                                  h11/2, h21/2,0,positions[k]);
                 while (nextibs0 == -1 &&
                        ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
                   ibs_ck_to_look++;
                   nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                             bmatAA_que[ibs_ck_to_look],
+                                            posvec_que[ibs_ck_to_look],
                                             h11/2, h21/2,0);
                 }
-                nextibs0 = (nextibs0 > 0) ? (*posvec_que[ibs_ck_to_look])[nextibs0] : posvec_que[ibs_ck_to_look]->back();
+                nextibs0 = (nextibs0 > 0) ? nextibs0 : posvec_que[ibs_ck_to_look]->back();
                 if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
@@ -410,15 +410,15 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                     ibs_ck_to_look = cur_ibs_ck;
                     int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                       bmatAA_que[ibs_ck_to_look],
-                                                      h11/2, h21/2,1,bpos);
+                                                      posvec_que[ibs_ck_to_look],
+                                                      h11/2, h21/2,1,positions[k]);
                     while (previbs0 == -1 && ibs_ck_to_look > 0) {
                       ibs_ck_to_look--;
                       previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                 bmatAA_que[ibs_ck_to_look],
+                                                posvec_que[ibs_ck_to_look],
                                                 h11/2, h21/2,1);
                     }
-                    if (previbs0 > 0)
-                      previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                     if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }

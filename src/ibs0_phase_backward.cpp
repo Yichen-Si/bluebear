@@ -203,7 +203,6 @@ bool flip_abs[nsamples] = {0};
       gtmat.push_back(y);
       positions.push_back(iv->pos+1);
     } // Finish reading all haplotypes in this chunk
-std::cout<<"Last pos " <<  positions.back() << '\n';
     int32_t N = positions.size();
     if ( N < min_variant ) {
       if (N > 0) {
@@ -269,7 +268,6 @@ std::cout<<"Last pos " <<  positions.back() << '\n';
     int32_t h11,h12,h21,h22; // (Reflecting flips so far) index stored in suffix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
-    int32_t bitpos = posvec_que[cur_ibs_ck]->size() - 1;
     for (int32_t k = N-1; k > 0; --k) {
       // Sorted after and include position k
       sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
@@ -280,7 +278,6 @@ std::cout<<"Last pos " <<  positions.back() << '\n';
           gtmat[k][it*2+1] = !gtmat[k][it*2+1];
         }
       }
-      while ((*posvec_que[cur_ibs_ck])[bitpos] > positions[k]) {bitpos--;}
       if (positions[k]>start_pos) {continue;} // Start_pos & after should not be flipped
       std::vector<std::vector<int32_t> > fliprec;
       std::map<int32_t, std::vector<int32_t> > flipcandy;
@@ -324,19 +321,18 @@ std::cout<<"Last pos " <<  positions.back() << '\n';
               if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(dijp_s) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = bitpos / 8; // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
-                                                  h11/2, h21/2,1,bpos);
+                                                  posvec_que[ibs_ck_to_look],
+                                                  h11/2, h21/2,1,positions[k]);
                 while (previbs0 == -1 && ibs_ck_to_look > 0) {
                   ibs_ck_to_look--;
                   previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                             bmatAA_que[ibs_ck_to_look],
+                                            posvec_que[ibs_ck_to_look],
                                             h11/2, h21/2,1);
                 }
-                if (previbs0 > 0)
-                  previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                 if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
@@ -345,16 +341,16 @@ std::cout<<"Last pos " <<  positions.back() << '\n';
                     ibs_ck_to_look = cur_ibs_ck;
                     int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                       bmatAA_que[ibs_ck_to_look],
-                                                      h11/2, h21/2,0,bpos);
+                                                      posvec_que[ibs_ck_to_look],
+                                                      h11/2, h21/2,0,positions[k]);
                     while (nextibs0 == -1 &&
                            ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
                       ibs_ck_to_look++;
                       nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                 bmatAA_que[ibs_ck_to_look],
+                                                posvec_que[ibs_ck_to_look],
                                                 h11/2, h21/2,0);
                     }
-                    if (nextibs0 > 0)
-                      nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
                     if (nextibs0 == -1 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
@@ -374,19 +370,18 @@ std::cout<<"Last pos " <<  positions.back() << '\n';
               if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(dipj_s) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t bpos = bitpos / 8;  // This is not exact
                 int32_t ibs_ck_to_look = cur_ibs_ck;
                 int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                   bmatAA_que[ibs_ck_to_look],
-                                                  h11/2, h21/2,1,bpos);
+                                                  posvec_que[ibs_ck_to_look],
+                                                  h11/2, h21/2,1,positions[k]);
                 while (previbs0 == -1 && ibs_ck_to_look > 0) {
                   ibs_ck_to_look--;
                   previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                             bmatAA_que[ibs_ck_to_look],
+                                            posvec_que[ibs_ck_to_look],
                                             h11/2, h21/2,1);
                 }
-                if (previbs0 > 0)
-                  previbs0 = (*posvec_que[ibs_ck_to_look])[previbs0];
                 if (positions[k] - previbs0 > lambda) {
                   // Not too close to the previous ibs0
                   if (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
@@ -395,16 +390,16 @@ std::cout<<"Last pos " <<  positions.back() << '\n';
                     ibs_ck_to_look = cur_ibs_ck;
                     int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                       bmatAA_que[ibs_ck_to_look],
-                                                      h11/2, h21/2,0,bpos);
+                                                      posvec_que[ibs_ck_to_look],
+                                                      h11/2, h21/2,0,positions[k]);
                     while (nextibs0 == -1 &&
                            ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
                       ibs_ck_to_look++;
                       nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
                                                 bmatAA_que[ibs_ck_to_look],
+                                                posvec_que[ibs_ck_to_look],
                                                 h11/2, h21/2,0);
                     }
-                    if (nextibs0 > 0)
-                      nextibs0 = (*posvec_que[ibs_ck_to_look])[nextibs0];
                     if (nextibs0 == -1 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }

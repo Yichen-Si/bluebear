@@ -111,6 +111,18 @@ class bp2cmMap
     return cm;
   }
 
+  bool in_centro(int32_t pos) {
+    return (pos > centromere_st && pos < centromere_ed);
+  }
+
+  bool in_centro(int32_t start, int32_t end) {
+    return (start > centromere_st && end < centromere_ed);
+  }
+
+  bool overlap_centro(int32_t start, int32_t end) {
+    return ((start > centromere_st && start < centromere_ed) || (end > centromere_st && end < centromere_ed));
+  }
+
 };
 
 #endif

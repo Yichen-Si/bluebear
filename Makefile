@@ -639,6 +639,33 @@ src/hts_utils.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/hts_utils.cpp.s
 .PHONY : src/hts_utils.cpp.s
 
+src/ibd_around_pt.o: src/ibd_around_pt.cpp.o
+
+.PHONY : src/ibd_around_pt.o
+
+# target to build an object file
+src/ibd_around_pt.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o
+.PHONY : src/ibd_around_pt.cpp.o
+
+src/ibd_around_pt.i: src/ibd_around_pt.cpp.i
+
+.PHONY : src/ibd_around_pt.i
+
+# target to preprocess a source file
+src/ibd_around_pt.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.i
+.PHONY : src/ibd_around_pt.cpp.i
+
+src/ibd_around_pt.s: src/ibd_around_pt.cpp.s
+
+.PHONY : src/ibd_around_pt.s
+
+# target to generate assembly for a file
+src/ibd_around_pt.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.s
+.PHONY : src/ibd_around_pt.cpp.s
+
 src/ibs0.o: src/ibs0.cpp.o
 
 .PHONY : src/ibs0.o
@@ -665,33 +692,6 @@ src/ibs0.s: src/ibs0.cpp.s
 src/ibs0.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0.cpp.s
 .PHONY : src/ibs0.cpp.s
-
-src/ibs0_phase.o: src/ibs0_phase.cpp.o
-
-.PHONY : src/ibs0_phase.o
-
-# target to build an object file
-src/ibs0_phase.cpp.o:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.o
-.PHONY : src/ibs0_phase.cpp.o
-
-src/ibs0_phase.i: src/ibs0_phase.cpp.i
-
-.PHONY : src/ibs0_phase.i
-
-# target to preprocess a source file
-src/ibs0_phase.cpp.i:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.i
-.PHONY : src/ibs0_phase.cpp.i
-
-src/ibs0_phase.s: src/ibs0_phase.cpp.s
-
-.PHONY : src/ibs0_phase.s
-
-# target to generate assembly for a file
-src/ibs0_phase.cpp.s:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_phase.cpp.s
-.PHONY : src/ibs0_phase.cpp.s
 
 src/ibs0_phase_backward.o: src/ibs0_phase_backward.cpp.o
 
@@ -1110,12 +1110,12 @@ help:
 	@echo "... src/hts_utils.o"
 	@echo "... src/hts_utils.i"
 	@echo "... src/hts_utils.s"
+	@echo "... src/ibd_around_pt.o"
+	@echo "... src/ibd_around_pt.i"
+	@echo "... src/ibd_around_pt.s"
 	@echo "... src/ibs0.o"
 	@echo "... src/ibs0.i"
 	@echo "... src/ibs0.s"
-	@echo "... src/ibs0_phase.o"
-	@echo "... src/ibs0_phase.i"
-	@echo "... src/ibs0_phase.s"
 	@echo "... src/ibs0_phase_backward.o"
 	@echo "... src/ibs0_phase_backward.i"
 	@echo "... src/ibs0_phase_backward.s"
