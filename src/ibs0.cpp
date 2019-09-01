@@ -31,6 +31,34 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   bpos = (ptr > 0) ? ((ptr + 1) >> 3) : 0;
   k = bpos;
 
+  // Process the block closest to / containing the starting pos
+  bool flag = 0;
+  uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
+  if (byte) {
+    if (reverse) {
+      for (int32_t bit=7; bit>=0; --bit) {
+        int32_t pt = k*8+bit;
+        if ( (byte >> (7-bit)) & 0x01 ) {
+          flag = (*posvec)[pt] <= start;
+          if (flag) {
+            return (*posvec)[pt];
+          }
+        }
+      }
+    }
+    else {
+      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
+        int32_t pt = k*8+bit;
+        if ( (byte >> (7-bit)) & 0x01 ) {
+          flag = (*posvec)[pt] >= start;
+          if (flag) {
+            return (*posvec)[pt];
+          }
+        }
+      }
+    }
+  }
+
   if (reverse && bpos > 0) {
     bpos--;
     for(k=bpos; k >= 0; --k) {
@@ -52,16 +80,27 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
       return -1;
   }
 
-  // Process the block closest to / containing the starting pos
-  bool flag = 0;
-  uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
+  // Find the position of IBS0
+  flag = 0;
+  byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
   if (byte) {
-    for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-      int32_t pt = k*8+bit;
-      if ( (byte >> (7-bit)) & 0x01 ) {
-        flag = ((*posvec)[pt] >= start && (!reverse)) || ((*posvec)[pt] <= start && reverse);
-        if (flag) {
-          return (*posvec)[pt];
+    if (reverse) {
+      for (int32_t bit=7; bit>=0; --bit) {
+        int32_t pt = k*8+bit;
+        if ( (byte >> (7-bit)) & 0x01 ) {
+          flag = (*posvec)[pt] <= start;
+          if (flag)
+            return (*posvec)[pt];
+        }
+      }
+    }
+    else {
+      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
+        int32_t pt = k*8+bit;
+        if ( (byte >> (7-bit)) & 0x01 ) {
+          flag = (*posvec)[pt] >= start;
+          if (flag)
+            return (*posvec)[pt];
         }
       }
     }
@@ -226,9 +265,22 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
   }
   int32_t k = (int32_t) start_que.size() - 1;
   while (start_que[k] > pos && k > 0) {k--;}
-
-  return IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
-                        i, j, reverse, pos);
+  int32_t ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
+                                i, j, reverse, pos);
+  if (reverse) {
+    while (ibs0 < 0 && k > 0) {
+      k--;
+      ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
+                            i, j, reverse);
+    }
+  } else {
+    while(ibs0 < 0 && k < (int32_t) start_que.size() - 1) {
+      k++;
+      ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
+                            i, j, reverse);
+    }
+  }
+  return ibs0;
 }
 
 // Update to delete & add blocks to cover a new region

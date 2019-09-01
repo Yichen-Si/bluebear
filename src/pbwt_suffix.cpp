@@ -76,8 +76,8 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     error("Invalid --region or unreadable --inVcf.");
   }
 
-  pbwtCursor pc(M, INT_MAX);
   nchunk = ck;
+  pbwtCursor pc(M, start + (ck+1) * chunksize + 1);
 
   notice("Started Reading VCF, identifying %d samples. Will procees in %d chunks and store snapshot every %d markers.", nsamples, nchunk+1, store_interval);
 
@@ -165,31 +165,25 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     }
   }
 
-  // // Print out test results. Sorted from the first position
-  // for (uint32_t i = 0; i < positions.size(); ++i) {
-  //   for (int32_t j = 0; j < M; ++j) {
-  //     std::cout << gtmat[i][pc.a[j]] << ' ';
-  //   }
-  //   std::cout << std::endl;
-  // }
-  // std::cout << std::endl;
-  // for (int32_t j = 0; j < M; ++j) {
-  //   std::cout << pc.d[j]-positions[0] << ' ';
-  // }
 
-
-  // // Print out test results. Sorted from the first position
-  // // Same as above, check the reverse index
-  // for (int32_t i = 0; i < 10; ++i) {
-  //   for (int32_t j = 0; j < M; ++j) {
-  //     for (int32_t k = 0; k < M; ++k) {
-  //       if (rmat[0][k] == j) {
-  //         std::cout << gtmat[i][k] << ' ';
-  //       }
-  //     }
-  //   }
-  //   std::cout << std::endl;
-  // }
+// // Print out test results. Sorted from the first position
+// for (uint32_t i = 0; positions[i] <= pc.d[1]; ++i) {
+//   int32_t ac = 0;
+//   for (int32_t j = 0; j < 10; ++j) {
+//     ac += gtmat[i][pc.a[j]];
+//   }
+//   if (ac == 0) {continue;}
+//   std::cout << positions[i]-positions[0] << '\t';
+//   for (int32_t j = 0; j < 10; ++j) {
+//     std::cout << gtmat[i][pc.a[j]] << ' ';
+//   }
+//   std::cout << std::endl;
+// }
+// std::cout << std::endl;
+// for (int32_t j = 0; j < M; ++j) {
+//   std::cout << pc.d[j]-positions[0] << ' ';
+// }
+// std::cout << std::endl;
 
   return 0;
 }

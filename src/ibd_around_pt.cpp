@@ -52,6 +52,7 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("delta",&delta, "Maximal no-ibs0 to look for on each side")
+    LONG_INT_PARAM("min-ac",&min_ac, "Minimal AC to be considered")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -137,7 +138,7 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
       }
       ac += (y[2*i] + y[2*i+1]);
     } // Finish reading one SNP
-    if (ac > min_ac)
+    if (ac >= min_ac)
       prepc.ForwardsAD_prefix(y, iv->pos+1);
   } // Finish reading all haplotypes before the first position
 
@@ -189,7 +190,7 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
         }
         ac += (y[2*i] + y[2*i+1]);
       } // Finish reading one SNP
-      if (ac <= min_ac)
+      if (ac < min_ac)
         continue;
       gtmat.push_back(y);
       positions.push_back(iv->pos+1);
@@ -255,7 +256,7 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
     int32_t i_s, j_s, i_p, j_p;
     int32_t dijp, dijs;
     int32_t k = 0;
-    while (k <= N-1 && pos <= ed) {
+    while (k <= N-1) {
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       delete [] gtmat[k];
@@ -272,7 +273,6 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
       if (iter == poslist.end()) {
         break;
       }
-std::cout << k << '\t' << pos << '\t' << positions[k] << std::endl;
       id1 = iter->second;
       switchpt pt;
       pt.pos=pos;
@@ -283,18 +283,15 @@ std::cout << k << '\t' << pos << '\t' << positions[k] << std::endl;
       }
       for (int32_t h = id1*2; h <= id1*2+1; ++h) {
         i_p = prepc.FindIndex(h);
-        i_s = rvec[i_p];
+        i_s = rvec[h];
 
         // Left
-        if (i_p == M-1 || prepc.d[i_p] > prepc.d[i_p+1]) {
+        if (i_p == M-1 || prepc.d[i_p] < prepc.d[i_p+1]) {
           j_p = i_p-1;
           dijp = prepc.d[i_p];
         } else {
           j_p = i_p+1;
           dijp = prepc.d[i_p+1];
-        }
-        if (pt.reflist.find(prepc.a[j_p]) != pt.reflist.end() || prepc.a[j_p]/2 == id1) {
-          continue;
         }
         id2 = prepc.a[j_p]/2;
         j_s = rvec[prepc.a[j_p]];
@@ -310,7 +307,7 @@ std::cout << k << '\t' << pos << '\t' << positions[k] << std::endl;
         lh->id=id2;
         int32_t r0 = ibs0finder.FindIBS0(id1,id2,pos,0);
         int32_t l0 = ibs0finder.FindIBS0(id1,id2,pos,1);
-        lh->trunc = (r0 || l0);
+        lh->trunc = (r0 < 0 || l0 < 0);
         r0 = (r0 < 0) ? (ibs0finder.posvec_que.back())->back() : r0;
         l0 = (l0 < 0) ? ibs0finder.start_que[0] : l0;
         lh->ibs = r0 - l0;
@@ -324,7 +321,7 @@ std::cout << k << '\t' << pos << '\t' << positions[k] << std::endl;
         }
         pt.reflist[lh->hapid]=lh;
         if (detailed) {
-          fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h/2,prepc.a[j_p], dijp,dijs,l0,r0);
+          fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h,id2,lh->hapid, dijp,dijs,l0,r0);
         }
 
         // Right
@@ -335,10 +332,10 @@ std::cout << k << '\t' << pos << '\t' << positions[k] << std::endl;
           j_s = i_s+1;
           dijs = dmat[k][i_s+1];
         }
-        if (pt.reflist.find(amat[k][j_s]) != pt.reflist.end()) {
+        id2 = amat[k][j_s]/2;
+        if (pt.reflist.find(amat[k][j_s]) != pt.reflist.end() || id2 == id1) {
           continue;
         }
-        id2 = amat[k][j_s]/2;
         j_p = prepc.FindIndex(amat[k][j_s]);
         refhap* rh = new refhap;
         rh->hapid = amat[k][j_s];
@@ -366,7 +363,7 @@ std::cout << k << '\t' << pos << '\t' << positions[k] << std::endl;
         }
         pt.reflist[rh->hapid]=rh;
         if (detailed) {
-          fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h/2,prepc.a[j_p], dijp,dijs,l0,r0);
+          fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",id1,h,id2,rh->hapid, dijp,dijs,l0,r0);
         }
       }
       fprintf(wfs, "%d\t%d\t%d\t%d\t%d\t%d\n", pos, id1,
