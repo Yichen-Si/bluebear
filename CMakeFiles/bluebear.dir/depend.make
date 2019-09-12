@@ -626,14 +626,18 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/vcfutils.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/Error.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_filter_arg.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_ordered_reader.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bp2cm.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/cm2bp.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/compact_matrix.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/cramore.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/filter.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/genome_interval.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/ibs0.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/pbwt_build.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/test_hts.cpp
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/utils.h
 

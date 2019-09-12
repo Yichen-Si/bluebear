@@ -119,8 +119,8 @@ class bp2cmMap
     return (start > centromere_st && end < centromere_ed);
   }
 
-  bool overlap_centro(int32_t start, int32_t end) {
-    return ((start > centromere_st && start < centromere_ed) || (end > centromere_st && end < centromere_ed));
+  int32_t overlap_centro(int32_t start, int32_t end) {
+    return std::max(std::min(centromere_ed, end) - std::max(centromere_st, start), 0);
   }
 
 };

@@ -32,28 +32,21 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   k = bpos;
 
   // Process the block closest to / containing the starting pos
-  bool flag = 0;
   uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
   if (byte) {
     if (reverse) {
       for (int32_t bit=7; bit>=0; --bit) {
         int32_t pt = k*8+bit;
-        if ( (byte >> (7-bit)) & 0x01 ) {
-          flag = (*posvec)[pt] <= start;
-          if (flag) {
-            return (*posvec)[pt];
-          }
+        if ( ((byte << bit) & 0x01) && ((*posvec)[pt] <= start) ) {
+          return (*posvec)[pt];
         }
       }
     }
     else {
       for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
         int32_t pt = k*8+bit;
-        if ( (byte >> (7-bit)) & 0x01 ) {
-          flag = (*posvec)[pt] >= start;
-          if (flag) {
-            return (*posvec)[pt];
-          }
+        if ( ((byte >> (7-bit)) & 0x01) && ((*posvec)[pt] >= start) ) {
+          return (*posvec)[pt];
         }
       }
     }
@@ -81,26 +74,21 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   }
 
   // Find the position of IBS0
-  flag = 0;
   byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
   if (byte) {
     if (reverse) {
       for (int32_t bit=7; bit>=0; --bit) {
         int32_t pt = k*8+bit;
-        if ( (byte >> (7-bit)) & 0x01 ) {
-          flag = (*posvec)[pt] <= start;
-          if (flag)
-            return (*posvec)[pt];
+        if ( ((byte << bit) & 0x01) && ((*posvec)[pt] <= start) ) {
+          return (*posvec)[pt];
         }
       }
     }
     else {
       for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
         int32_t pt = k*8+bit;
-        if ( (byte >> (7-bit)) & 0x01 ) {
-          flag = (*posvec)[pt] >= start;
-          if (flag)
-            return (*posvec)[pt];
+        if ( ((byte >> (7-bit)) & 0x01) && ((*posvec)[pt] >= start) ) {
+          return (*posvec)[pt];
         }
       }
     }

@@ -11,6 +11,28 @@
 #include <functional>
 #include <iomanip>
 
+class Candidate {
+public:
+  int32_t id;
+  std::vector<int32_t> supporter;
+  std::vector<int32_t> extension;
+
+  Candidate(int32_t id1, int32_t id2, int32_t l) : id(id1) {
+    supporter.push_back(id2);
+    extension.push_back(l);
+  }
+};
+
+inline bool MoreSupporters(Candidate* x, Candidate* y) {
+  return (x->supporter.size() > y->supporter.size());
+}
+
+inline bool LongerExtension(Candidate* x, Candidate* y) {
+  std::sort(x->extension.begin(), x->extension.end());
+  std::sort(y->extension.begin(), y->extension.end());
+  return (x->extension.back() > y->extension.back());
+}
+
 int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_pbwt, out, reg;
   std::string outf,outf_s,outVcf;
@@ -71,16 +93,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   cm2bpMap gpmap(inMap, " ");
   bp2cmMap pgmap(inMap, " ");
   notice("Will proceed until the last position in linkage map: %d.", gpmap.maxpos);
-
-  // For recording flip
-  // Will first sort flip candidates by #involved pairs
-  typedef std::function<bool(std::pair<int32_t, std::vector<int32_t> >, std::pair<int32_t, std::vector<int32_t> >)> Comparator;
-  Comparator CompFn =
-    [](std::pair<int32_t, std::vector<int32_t> > elem1 ,std::pair<int32_t, std::vector<int32_t> > elem2) {
-      if ((elem1.second).size() == (elem2.second).size())
-        return elem1.first > elem2.first;
-      else
-        return (elem1.second).size() > (elem2.second).size();};
 
   // Output flipped bcf/vcf
   outVcf = out + "_" + parm.str() + "_flipped_startfrom_" + std::to_string(start_pos) + "_forward.bcf";
@@ -298,7 +310,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       std::vector<std::vector<int32_t> > fliprec;
-      std::map<int32_t, std::vector<int32_t> > flipcandy;
+      std::map<int32_t, Candidate *> flipcandy;
       for (int32_t i = 0; i < M-1; ++i) {
         h11 = prepc.a[i]; // Original Hap ID corresponding to row i
         h12 = h11 + 1 - 2 * (h11%2);
@@ -379,9 +391,11 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                 fliprec.push_back(std::vector<int32_t> {positions[k+1],h21/2,h11/2,
                                                        dij_p, dipj_s, dijp_s, flag, h21, flip_abs[h21/2],flip_abs[h11/2]});
                 if (flipcandy.find(h21/2) != flipcandy.end()) {
-                  flipcandy[h21/2].push_back(h11/2);
+                  flipcandy[h21/2]->supporter.push_back(h11/2);
+                  flipcandy[h21/2]->extension.push_back(dijp_s-positions[k]);
                 } else {
-                  flipcandy[h21/2] = std::vector<int32_t> {h11/2};
+                  Candidate* candy = new Candidate(h21/2,h11/2,dijp_s-positions[k]);
+                  flipcandy[h21/2] = candy;
                 }
               }
             } else if (dipj_s - dijp_s > diff && dipj_s - positions[k] > nmatch) { // Consider flip individual 1
@@ -429,9 +443,11 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
                 fliprec.push_back(std::vector<int32_t> {positions[k+1],h11/2,h21/2,
                                                         dij_p, dijp_s, dipj_s, flag, h11, flip_abs[h11/2],flip_abs[h21/2] });
                 if (flipcandy.find(h11/2) != flipcandy.end()) {
-                  flipcandy[h11/2].push_back(h21/2);
+                  flipcandy[h11/2]->supporter.push_back(h21/2);
+                  flipcandy[h11/2]->extension.push_back(dipj_s-positions[k]);
                 } else {
-                  flipcandy[h11/2] = std::vector<int32_t> {h21/2};
+                  Candidate* candy = new Candidate(h11/2,h21/2,dipj_s-positions[k]);
+                  flipcandy[h11/2] = candy;
                 }
               }
             }
@@ -441,24 +457,28 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
             dij_p = prepc.d[j];
         } // End of searching switch of pairs involving row i
       } // End of searching for this column
-      // If multiple flips may occur, sort involved id by #occurence
+      // If multiple flips occur
       if (flipcandy.size() > 0) {
         std::map<int32_t, std::vector<int32_t> > finalrec;
         std::vector<bool> flipped(nsamples, 0);
         if (flipcandy.size() > 1) {
-          std::set<std::pair<int32_t, std::vector<int32_t> >, Comparator> IDToFlip(flipcandy.begin(), flipcandy.end(), CompFn);
-          for (auto & id : IDToFlip) {
+          std::vector<Candidate*> toflip;
+          for (auto & v : flipcandy) {
+            toflip.push_back(v.second);
+          }
+          std::sort(toflip.begin(), toflip.end(), LongerExtension);
+          for (auto & v : toflip) {
             if ((int32_t) finalrec.size() >= max_flip) {
               break;
             }
-            int32_t rm = (id.second).size();
-            for (auto & id2 : id.second) {
+            int32_t rm = (v->supporter).size();
+            for (auto & id2 : v->supporter) {
               if (flipped[id2])
                 rm--;
             }
             if (rm) {
-              flipped[id.first] = 1;
-              finalrec[id.first] = std::vector<int32_t>{0,id.first,0,0, 0,0,0};
+              flipped[v->id] = 1;
+              finalrec[v->id] = std::vector<int32_t>{0,v->id,0,0, 0,0,0};
             }
           }
         } else {
@@ -494,6 +514,9 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
         for (int32_t it = 0; it < nsamples; ++it) {
           if (flipped[it])
             flip_abs[it] = !flip_abs[it];
+        }
+        for (auto & v : flipcandy) {
+          delete v.second;
         }
       }
     } // End of processing one block

@@ -721,6 +721,14 @@ bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
 compact_matrix.h
 /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+pbwt_build.h
+/net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
+cm2bp.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cm2bp.h
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
 functional
 -
 iomanip
