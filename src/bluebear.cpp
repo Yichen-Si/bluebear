@@ -29,6 +29,8 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
 int32_t IBS0PhaseForward(int32_t argc, char** argv);
 int32_t IBS0PhaseBackward(int32_t argc, char** argv);
+int32_t RareIBS0PhaseForward(int32_t argc, char** argv);
+int32_t RareIBS0PhaseBackward(int32_t argc, char** argv);
 
 int32_t test(int32_t argc, char** argv);
 
@@ -63,6 +65,10 @@ int32_t main(int32_t argc, char** argv) {
     // LONG_COMMAND("ibs0-phase",&IBS0Phase, "Find switch error in phased BCF/VCF")
     LONG_COMMAND("ibs0-phase-forward",&IBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
     LONG_COMMAND("ibs0-phase-backward",&IBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
+
+    LONG_COMMAND("rare-ibs0-phase-forward",&RareIBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
+    LONG_COMMAND("rare-ibs0-phase-backward",&RareIBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
+
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
 
     LONG_COMMAND("test",&test, "Test")

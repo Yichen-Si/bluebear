@@ -35,7 +35,7 @@ inline bool LongerExtension(Candidate* x, Candidate* y) {
 
 int32_t test(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_pbwt, out, reg;
-  std::string outf,outf_s;
+  std::string outf,outf_s,outVcf;
   int32_t detailed = 0;
   std::string chrom="chr20";
   std::string mode ="b";
@@ -44,11 +44,14 @@ int32_t test(int32_t argc, char** argv) {
   int32_t min_variant = 2;
   int32_t min_hom_gts = 1;
   int32_t nsamples=0, M=0;
-  int32_t st, ck, ed, ibs_st, ibs_ck, ibs_ed, stugly;
-  int32_t chunk_size = 1000000;          // process suffix pbwt & ibs0 by chunk
+  int32_t st, ck, ed, stugly;
+  int32_t pbwt_chunk = 1000000;          // process suffix pbwt & ibs0 by chunk
+  int32_t ibs0_chunk = 500000;
   int32_t start_pos = 0; // Starting position
 
   double  delta = 3.0;                   // thresholds
+  double  mafcut = 0.05;
+  int32_t rare_ac = 5;
   int32_t lambda = 20000, gamma = 20000, diff = 5000, nmatch = 50000;
 
   int32_t* p_gt = NULL;
@@ -67,6 +70,8 @@ int32_t test(int32_t argc, char** argv) {
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_DOUBLE_PARAM("delta",&delta, "no-ibs0 threshold (in cM) to be a proxy of IBD")
+    LONG_DOUBLE_PARAM("mafcut",&mafcut, "Sample minor allele frequency for considering flipping")
+    LONG_INT_PARAM("rare-ac",&rare_ac,"Rare allele sharing as evidence for IBD")
     LONG_INT_PARAM("lambda",&lambda,"Length (in bp) to the end of no-ibs0 that is not trusted")
     LONG_INT_PARAM("gamma",&gamma,"Length (in bp) of matched prefix that is requred to begin searching")
     LONG_INT_PARAM("min-diff",&diff,"The minimal difference of new matches (in bp) between flipping two individuals for a flip to be recorded")
@@ -86,7 +91,7 @@ int32_t test(int32_t argc, char** argv) {
   pl.Status();
 
   std::ostringstream parm;
-  parm << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch/1000;
+  parm << max_flip << '-' << (int32_t) (mafcut*100) << '-' << std::fixed << std::setprecision(1) << delta << '-' << lambda/1000 << '-' << gamma/1000 << '-' << diff/1000 << '-' << nmatch/1000;
   notice("Parameter setting: %s.", parm.str().c_str());
 
   // Translate between genetic & physical position.
@@ -94,58 +99,41 @@ int32_t test(int32_t argc, char** argv) {
   bp2cmMap pgmap(inMap, " ");
   notice("Will proceed until the last position in linkage map: %d.", gpmap.maxpos);
 
+  // Output flipped bcf/vcf
+  outVcf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_fw.bcf";
+  if (mode=="z")
+    outVcf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_fw.vcf.gz";
+  mode = "w" + mode;
+  htsFile *wbcf = hts_open(outVcf.c_str(),mode.c_str());
+
   // Copy header & get sample size
   htsFile *fp = hts_open(inVcf.c_str(),"r");
   bcf_hdr_t *hdr = bcf_hdr_read(fp);
+  bcf_hdr_write(wbcf, hdr);
   nsamples = hdr->n[BCF_DT_SAMPLE];
   M = nsamples * 2;
   hts_close(fp);
 
   // If the current position is flipped
-  // bool flip_abs[nsamples] = {0};
+  bool flip_abs[nsamples] = {0};
 
-  ck = start_pos/chunk_size; // Chunk in terms of chunk_size
-  st = ck * chunk_size + 1;
-  ed = st + chunk_size - 1;
+  ck = start_pos/pbwt_chunk; // Chunk in terms of pbwt_chunk
+  st = ck * pbwt_chunk + 1;
+  ed = st + pbwt_chunk - 1;
   while (st > pgmap.centromere_st && ed < pgmap.centromere_ed ) {
     ck++;
-    st = ck * chunk_size + 1;
-    ed = st + chunk_size - 1;
+    st = ck * pbwt_chunk + 1;
+    ed = st + pbwt_chunk - 1;
   }
   stugly = st;
 
   // Initialize ibs0 lookup blocks
-  // Number of blocks stored determined by genetic distance
-  std::vector<bitmatrix*> bmatRR_que, bmatAA_que;
-  std::vector<std::vector<int32_t>* > posvec_que;
-  std::vector<int32_t> ibs_chunk_in_que;
-  int32_t cur_ibs_ck = 0; // Currently processed position locates in which block
-  ibs_ck = start_pos/chunk_size;
-  ibs_st = ibs_ck * chunk_size;
-  ibs_ed = (ibs_ck+1) * chunk_size-1;
-  // Find the starting point for storing ibs0 look up
-  while (ibs_ck > 0 && pgmap.bp2cm(start_pos) - pgmap.bp2cm(ibs_st) < delta) {
-    ibs_ck--;
-    ibs_ed = ibs_st - 1;
-    ibs_st = std::max(ibs_ck * chunk_size, gpmap.minpos);
-  }
-  // Forward
-  while (ibs_st < gpmap.maxpos &&  pgmap.bp2cm(ibs_st) - pgmap.bp2cm(start_pos) < delta) {
-    ibs_ed = std::min(ibs_ed, gpmap.maxpos);
-    reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-    if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0) > 0) {
-      ibs_chunk_in_que.push_back(ibs_ck);
-    }
-    if (ibs_ck == start_pos/chunk_size) {
-      cur_ibs_ck = (int32_t) ibs_chunk_in_que.size() - 1;
-    }
-    ibs_ck++;
-    ibs_st = ibs_ck * chunk_size;
-    ibs_ed = ibs_st + chunk_size - 1;
-  } // Finish initialize ibs0 lookup blocks
+  reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
+  RareIBS0lookup ibs0finder(inVcf, reg, pgmap, delta, rare_ac, ibs0_chunk, min_hom_gts);
+  notice("Initilized ibs0 lookup (%.1f cM, %d blocks).", delta, ibs0finder.start_que.size());
+
   // Initialize forward pbwt
   // Read the first snp in this chunk. should be stored as a checkpoint
-  reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
   std::string line;
   std::string sfile = path_pbwt + "_" + reg + "_prefix.amat";
   std::ifstream sf(sfile);
@@ -175,6 +163,7 @@ int32_t test(int32_t argc, char** argv) {
 
     // Read genotype matrix
     reg = chrom + ":" + std::to_string(stugly) + "-" + std::to_string(ed);
+    ibs0finder.Update(reg);
     std::vector<GenomeInterval> intervals;
     parse_intervals(intervals, "", reg);
     BCFOrderedReader odr(inVcf, intervals);
@@ -182,12 +171,14 @@ int32_t test(int32_t argc, char** argv) {
 
     std::vector<bool*> gtmat;
     std::vector<int32_t> positions;
+    std::vector<double> mafs;
 
     for (int32_t k=0; odr.read(iv); ++k) { // Read haplotypes
       if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
         error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
       }
       bool *y = new bool[M];
+      int32_t ac = 0;
       for (int32_t i = 0; i <  nsamples; ++i) {
         int32_t g1 = p_gt[2*i];
         int32_t g2 = p_gt[2*i+1];
@@ -201,15 +192,18 @@ int32_t test(int32_t argc, char** argv) {
         } else {
           y[2*i+1] = (bcf_gt_allele(g2) > 0);
         }
+        ac += (y[2*i] + y[2*i+1]);
       } // Finish reading one SNP
 
       if (iv->pos < start_pos) { // Start_pos & before is not flipped
         prepc.ForwardsAD_prefix(y, iv->pos+1);
+        bcf_write(wbcf, odr.hdr, iv);
         continue;
       }
 
       gtmat.push_back(y);
       positions.push_back(iv->pos+1);
+      mafs.push_back(ac*1.0/M);
     } // Finish reading all haplotypes in this chunk
     int32_t N = positions.size();
     if ( N < min_variant ) {
@@ -218,9 +212,9 @@ int32_t test(int32_t argc, char** argv) {
           prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
       }
       ck++;
-      st = ck * chunk_size + 1;
+      st = ck * pbwt_chunk + 1;
       stugly = st;
-      ed = st + chunk_size - 1;
+      ed = st + pbwt_chunk - 1;
       for (auto& pt : gtmat)
         delete [] pt;
       notice("Observed only %d informative markers. Skipping the region %s", N, reg.c_str());
@@ -233,10 +227,10 @@ int32_t test(int32_t argc, char** argv) {
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
     std::ofstream wf;
     if (detailed) {
-      outf = out + "_flip_" + parm.str() + "_startfrom_" + std::to_string(start_pos) + "_forward_" + reg + ".list";
+      outf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_fw_" + reg + ".list";
       wf.open(outf, std::ios::trunc);
     }
-    outf_s = out + "_flip_"+ parm.str() + "_startfrom_" + std::to_string(start_pos) + "_forward_" +reg+"_short.list";
+    outf_s = out + "_"+ parm.str() + "_st_" + std::to_string(start_pos) + "_fw_" +reg+"_short.list";
     std::ofstream wfs(outf_s, std::ios::trunc);
 
     // Read the last snp in this chunk. should be stored as a checkpoint
@@ -284,6 +278,20 @@ int32_t test(int32_t argc, char** argv) {
     odr.jump_to_interval(intervals[0]);
     bcf_clear(iv);
     for (int32_t k = 0; k < N-1; ++k) {
+      // Output current position
+      odr.read(iv);
+      if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
+        error("Cannot find the field GT.");
+      }
+      int32_t y[M];
+      for (int32_t it = 0; it < nsamples; ++it) {
+        y[it*2] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2+1]) : bcf_gt_phased(gtmat[k][it*2]);
+        y[it*2+1] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2]) : bcf_gt_phased(gtmat[k][it*2+1]);
+      }
+      if(bcf_update_genotypes(odr.hdr, iv, y, M)) {
+        error("Cannot update GT.");
+      }
+      bcf_write(wbcf, odr.hdr, iv);
 
       // Sorted upto and include position k
       prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
@@ -304,7 +312,8 @@ int32_t test(int32_t argc, char** argv) {
               dij_p = prepc.d[j];
             continue;
           }
-          if (gtmat[k+1][h11] != gtmat[k+1][h21]) { // If a match ends at k+1
+          if (gtmat[k+1][h11] != gtmat[k+1][h21] && mafs[k+1] < mafcut) {
+          // If a match ends at k+1 && maf < mafcut
             i_s = rmat[k+1][h11]; j_s = rmat[k+1][h21];
             i_s_prime = rmat[k+1][h12]; j_s_prime = rmat[k+1][h22];
             // If flip individual 1
@@ -327,39 +336,28 @@ int32_t test(int32_t argc, char** argv) {
             if (dijp_s - dipj_s > diff && dijp_s - positions[k] > nmatch) { // Consider flip individual 2
               if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
-              } else {        // Need to evaluate no-ibs0
-                int32_t ibs_ck_to_look = cur_ibs_ck;
-                int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                                  bmatAA_que[ibs_ck_to_look],
-                                                  posvec_que[ibs_ck_to_look],
-                                                  h11/2, h21/2,0,positions[k]);
-                while (nextibs0 == -1 &&
-                       ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
-                  ibs_ck_to_look++;
-                  nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                            bmatAA_que[ibs_ck_to_look],
-                                            posvec_que[ibs_ck_to_look],
-                                            h11/2, h21/2,0);
-                }
-                nextibs0 = (nextibs0 > 0) ? nextibs0 : posvec_que[ibs_ck_to_look]->back();
-                if (nextibs0 - positions[k] > lambda) {
+              } else { // Need to evaluate no-ibs0
+                // Check if they share rare allele
+                int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
+                int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
+// if (nextrare >= 0)
+//   std::cout << "Next rare: " <<  nextrare << '\n';
+                if (nextrare > 0 && (nextibs0 < 0 || nextibs0 > nextrare)) {
+                  flag = 2;
+                } else if (nextibs0 < 0) {
+                  flag = 3;
+                } else if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
-                    flag = 2;
+                    flag = 3;
                   } else { // Need to check the previous ibs0
-                    ibs_ck_to_look = cur_ibs_ck;
-                    int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                                      bmatAA_que[ibs_ck_to_look],
-                                                      posvec_que[ibs_ck_to_look],
-                                                      h11/2, h21/2,1,positions[k]);
-                    while (previbs0 == -1 && ibs_ck_to_look > 0) {
-                      ibs_ck_to_look--;
-                      previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                                bmatAA_que[ibs_ck_to_look],
-                                                posvec_que[ibs_ck_to_look],
-                                                h11/2, h21/2,1);
-                    }
-                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
+                    int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
+                    int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
+// if (prevrare >= 0)
+//   std::cout << "Previous rare: " <<  prevrare << '\n';
+                    if (prevrare > 0 && (previbs0 < 0 || previbs0 < prevrare)) {
+                      flag = 2;
+                    } else if (previbs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
                   }
@@ -380,38 +378,23 @@ int32_t test(int32_t argc, char** argv) {
               if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
                 flag = 1;
               } else {        // Need to evaluate no-ibs0
-                int32_t ibs_ck_to_look = cur_ibs_ck;
-                int32_t nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                                  bmatAA_que[ibs_ck_to_look],
-                                                  posvec_que[ibs_ck_to_look],
-                                                  h11/2, h21/2,0,positions[k]);
-                while (nextibs0 == -1 &&
-                       ibs_ck_to_look < ((int32_t) bmatRR_que.size())-1) {
-                  ibs_ck_to_look++;
-                  nextibs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                            bmatAA_que[ibs_ck_to_look],
-                                            posvec_que[ibs_ck_to_look],
-                                            h11/2, h21/2,0);
-                }
-                nextibs0 = (nextibs0 > 0) ? nextibs0 : posvec_que[ibs_ck_to_look]->back();
-                if (nextibs0 - positions[k] > lambda) {
+                // Check if they share rare allele
+                int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
+                int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
+                if (nextrare > 0 && (nextibs0 < 0 || nextibs0 > nextrare)) {
+                  flag = 2;
+                } else if (nextibs0 < 0) {
+                  flag = 3;
+                } else if (nextibs0 - positions[k] > lambda) {
                   // Not too close to ibs0
                   if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
-                    flag = 2;
+                    flag = 3;
                   } else { // Need to check the previous ibs0
-                    ibs_ck_to_look = cur_ibs_ck;
-                    int32_t previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                                      bmatAA_que[ibs_ck_to_look],
-                                                      posvec_que[ibs_ck_to_look],
-                                                      h11/2, h21/2,1,positions[k]);
-                    while (previbs0 == -1 && ibs_ck_to_look > 0) {
-                      ibs_ck_to_look--;
-                      previbs0 = IBS0inOneBlock(bmatRR_que[ibs_ck_to_look],
-                                                bmatAA_que[ibs_ck_to_look],
-                                                posvec_que[ibs_ck_to_look],
-                                                h11/2, h21/2,1);
-                    }
-                    if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
+                    int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
+                    int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
+                    if (prevrare > 0 && (previbs0 < 0 || previbs0 < prevrare)) {
+                      flag = 2;
+                    } else if (previbs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
                       flag = 3;
                     }
                   }
@@ -456,12 +439,12 @@ int32_t test(int32_t argc, char** argv) {
             }
             if (rm) {
               flipped[v->id] = 1;
-              finalrec[v->id] = std::vector<int32_t>{0,v->id,0,0};
+              finalrec[v->id] = std::vector<int32_t>{0,v->id,0,0, 0,0,0};
             }
           }
         } else {
           flipped[flipcandy.begin()->first] = 1;
-          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0};
+          finalrec[flipcandy.begin()->first] = std::vector<int32_t>{0,flipcandy.begin()->first,0,0, 0,0,0};
         }
         for (auto & v : fliprec) {
           if (flipped[v[1]]) {
@@ -469,6 +452,7 @@ int32_t test(int32_t argc, char** argv) {
             finalrec[v[1]][2]++;
             if (v[5]-v[4] > finalrec[v[1]][3])
               finalrec[v[1]][3] = v[5]-v[4];
+            finalrec[v[1]][3+v[6]]++;
             if (detailed) {
               std::stringstream recline;
               for (auto& w : v)
@@ -487,7 +471,11 @@ int32_t test(int32_t argc, char** argv) {
           recline << '\n';
           wfs << recline.str();
         }
-        // prepc.SwitchIndex(flipped);
+        prepc.SwitchIndex(flipped);
+        for (int32_t it = 0; it < nsamples; ++it) {
+          if (flipped[it])
+            flip_abs[it] = !flip_abs[it];
+        }
         for (auto & v : flipcandy) {
           delete v.second;
         }
@@ -495,9 +483,9 @@ int32_t test(int32_t argc, char** argv) {
     } // End of processing one block
     wfs.close();
     ck++;
-    st = ck * chunk_size + 1;
+    st = ck * pbwt_chunk + 1;
     stugly = positions.back();
-    ed = st + chunk_size - 1;
+    ed = st + pbwt_chunk - 1;
     // Free memory of gt matrix
     for (auto& pt : gtmat)
       delete [] pt;
@@ -506,37 +494,8 @@ int32_t test(int32_t argc, char** argv) {
       delete [] pt;
     for (auto& pt : rmat)
       delete [] pt;
-    // Slide the window of ibs0 lookup
-    cur_ibs_ck++;
-
-    while (ibs_chunk_in_que.size() > 1 && pgmap.bp2cm(stugly) - pgmap.bp2cm(posvec_que[0]->back()) > delta) {
-      delete posvec_que[0]; posvec_que.erase(posvec_que.begin());
-      delete bmatRR_que[0]; bmatRR_que.erase(bmatRR_que.begin());
-      delete bmatAA_que[0]; bmatAA_que.erase(bmatAA_que.begin());
-      ibs_chunk_in_que.erase(ibs_chunk_in_que.begin());
-      cur_ibs_ck--;
-    }
-    ibs_ck = ibs_chunk_in_que.back() + 1;
-    ibs_st = ibs_ck * chunk_size + 1;
-    ibs_ed = (ibs_ck+1) * chunk_size;
-    while (pgmap.bp2cm(posvec_que.back()->back()) - pgmap.bp2cm(ed) < delta) {
-      if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
-        ibs_ck++;
-        ibs_st = ibs_ck * chunk_size + 1;
-        ibs_ed = (ibs_ck+1) * chunk_size;
-        continue;
-      }
-      if (ibs_st > gpmap.maxpos)
-        break;
-      reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-      if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts) > 0){
-        ibs_chunk_in_que.push_back(ibs_st/chunk_size);
-      }
-      ibs_ck++;
-      ibs_st = ibs_ck * chunk_size + 1;
-      ibs_ed = (ibs_ck+1) * chunk_size;
-    } // Finish adding new ibs0 lookup blocks
   } // Finish processing one chunk
+  hts_close(wbcf);
   return 0;
 }
 

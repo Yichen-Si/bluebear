@@ -16,10 +16,12 @@ public:
   int32_t id;
   std::vector<int32_t> supporter;
   std::vector<int32_t> extension;
+  bool flag; // Priority / Must in.
 
-  Candidate(int32_t id1, int32_t id2, int32_t l) : id(id1) {
+  Candidate(int32_t id1, int32_t id2, int32_t l, int32_t type) : id(id1) {
     supporter.push_back(id2);
     extension.push_back(l);
+    flag = flag || type;
   }
 };
 
@@ -28,12 +30,16 @@ inline bool MoreSupporters(Candidate* x, Candidate* y) {
 }
 
 inline bool LongerExtension(Candidate* x, Candidate* y) {
-  std::sort(x->extension.begin(), x->extension.end());
-  std::sort(y->extension.begin(), y->extension.end());
-  return (x->extension.back() > y->extension.back());
+  if (x->flag == y->flag) {
+    std::sort(x->extension.begin(), x->extension.end());
+    std::sort(y->extension.begin(), y->extension.end());
+    return (x->extension.back() > y->extension.back());
+  } else {
+    return x->flag;
+  }
 }
 
-int32_t IBS0PhaseForward(int32_t argc, char** argv) {
+int32_t RareIBS0PhaseForward(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_pbwt, out, reg;
   std::string outf,outf_s,outVcf;
   int32_t detailed = 0;
@@ -312,8 +318,8 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               dij_p = prepc.d[j];
             continue;
           }
-          if (gtmat[k+1][h11] != gtmat[k+1][h21] && mafs[k+1] < mafcut) {
-          // If a match ends at k+1 && maf < mafcut
+          if (gtmat[k+1][h11] != gtmat[k+1][h21]) {
+          // If a match ends at k+1
             i_s = rmat[k+1][h11]; j_s = rmat[k+1][h21];
             i_s_prime = rmat[k+1][h12]; j_s_prime = rmat[k+1][h22];
             // If flip individual 1
@@ -332,85 +338,57 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
               if (dmat[k+1][it] < dijp_s)
                 dijp_s = dmat[k+1][it];
             }
-            int32_t flag = 0;
-            if (dijp_s - dipj_s > diff && dijp_s - positions[k] > nmatch) {
-            // Consider flip individual 2
-              if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
-                flag = 1;
-              } else { // Need to evaluate no-ibs0
-                // Check if they share rare allele
-                int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
-                int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
-// if (nextrare >= 0)
-//   std::cout << "Next rare: " <<  nextrare << '\n';
-                if (nextrare > 0 && (nextibs0 < 0 || nextibs0 > nextrare)) {
-                  flag = 2;
-                } else if (nextibs0 < 0) {
-                  flag = 3;
-                } else if (nextibs0 - positions[k] > lambda) {
-                  // Not too close to ibs0
-                  if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
+            int32_t thewho, theother, thelong, theshort;
+            if (dijp_s > dipj_s) { // Flip individual 2
+              thelong  = dijp_s; theshort = dipj_s;
+              thewho   = h21/2; theother = h11/2;
+            } else {              // Flip individual 1
+              theshort = dijp_s; thelong  = dipj_s;
+              theother = h21/2; thewho   = h11/2;
+            }
+            if (thelong - theshort > diff && thelong - positions[k] > nmatch) {
+              int32_t flag = 0;
+              int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
+              int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
+              int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
+              int32_t previbs0 = 0;
+              if (nextrare > 0 || prevrare > 0) { // Conditional on rare allele sharing
+                if (nextrare > 0 ) {
+                  if  (nextibs0 < 0 || (nextibs0 > nextrare)) {
+                    flag = 2;
+                  } else if (mafs[k+1] < mafcut &&
+                             nextibs0 - pgmap.bp2cm(dij_p) > delta) {
                     flag = 3;
-                  } else { // Need to check the previous ibs0
-                    int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
-                    int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
-// if (prevrare >= 0)
-//   std::cout << "Previous rare: " <<  prevrare << '\n';
-                    if (prevrare > 0 && (previbs0 < 0 || previbs0 < prevrare)) {
-                      flag = 2;
-                    } else if (previbs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
-                      flag = 3;
-                    }
+                  }
+                }
+                if (flag != 2 && prevrare > 0) {
+                  previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
+                  if (previbs0 < 0 || previbs0 < prevrare) {
+                    flag = 2;
+                  } else if (mafs[k+1] < mafcut &&
+                             pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
+                    flag = 3;
                   }
                 }
               }
-              if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k+1],h21/2,h11/2,
-                                                       dij_p, dipj_s, dijp_s, flag});
-                if (flipcandy.find(h21/2) != flipcandy.end()) {
-                  flipcandy[h21/2]->supporter.push_back(h11/2);
-                  flipcandy[h21/2]->extension.push_back(dijp_s-positions[k]);
-                } else {
-                  Candidate* candy = new Candidate(h21/2,h11/2,dijp_s-positions[k]);
-                  flipcandy[h21/2] = candy;
-                }
-              }
-            } else if (dipj_s - dijp_s > diff && dipj_s - positions[k] > nmatch) {
-            // Consider flip individual 1
-              if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
-                flag = 1;
-              } else {        // Need to evaluate no-ibs0
-                // Check if they share rare allele
-                int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
-                int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
-                if (nextrare > 0 && (nextibs0 < 0 || nextibs0 > nextrare)) {
-                  flag = 2;
-                } else if (nextibs0 < 0) {
-                  flag = 3;
-                } else if (nextibs0 - positions[k] > lambda) {
-                  // Not too close to ibs0
-                  if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
-                    flag = 3;
-                  } else { // Need to check the previous ibs0
-                    int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
-                    int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
-                    if (prevrare > 0 && (previbs0 < 0 || previbs0 < prevrare)) {
-                      flag = 2;
-                    } else if (previbs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
-                      flag = 3;
-                    }
-                  }
+              if (!flag && mafs[k+1] < mafcut) { // Conditional on maf & ibs0
+                if (nextibs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {flag = 3;}
+                if (!flag && pgmap.bp2cm(thelong) - pgmap.bp2cm(dij_p) > delta) {flag = 1;}
+                if (!flag) {
+                  if (previbs0 == 0)
+                    previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
+                  if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {flag = 3;}
                 }
               }
               if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k+1],h11/2,h21/2,
-                                                        dij_p, dijp_s, dipj_s, flag});
-                if (flipcandy.find(h11/2) != flipcandy.end()) {
-                  flipcandy[h11/2]->supporter.push_back(h21/2);
-                  flipcandy[h11/2]->extension.push_back(dipj_s-positions[k]);
+                fliprec.push_back(std::vector<int32_t> {positions[k+1],thewho,theother,
+                                                        dij_p, theshort, thelong, flag});
+                if (flipcandy.find(thewho) != flipcandy.end()) {
+                  flipcandy[thewho]->supporter.push_back(theother);
+                  flipcandy[thewho]->extension.push_back(thelong-positions[k]);
                 } else {
-                  Candidate* candy = new Candidate(h11/2,h21/2,dipj_s-positions[k]);
-                  flipcandy[h11/2] = candy;
+                  Candidate* candy = new Candidate(thewho,theother,thelong-positions[k],(flag == 2));
+                  flipcandy[thewho] = candy;
                 }
               }
             }
@@ -422,16 +400,18 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       } // End of searching for this column
       // If multiple flips occur
       if (flipcandy.size() > 0) {
+        int32_t adj_max_flip = max_flip;
         std::map<int32_t, std::vector<int32_t> > finalrec;
         std::vector<bool> flipped(nsamples, 0);
         if (flipcandy.size() > 1) {
           std::vector<Candidate*> toflip;
           for (auto & v : flipcandy) {
+            if (v.second->flag) {adj_max_flip++;}
             toflip.push_back(v.second);
           }
           std::sort(toflip.begin(), toflip.end(), LongerExtension);
           for (auto & v : toflip) {
-            if ((int32_t) finalrec.size() >= max_flip) {
+            if ((int32_t) finalrec.size() >= adj_max_flip) {
               break;
             }
             int32_t rm = (v->supporter).size();

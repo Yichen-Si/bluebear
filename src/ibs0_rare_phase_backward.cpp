@@ -16,10 +16,12 @@ public:
   int32_t id;
   std::vector<int32_t> supporter;
   std::vector<int32_t> extension;
+  bool flag; // Priority / Must in.
 
-  Candidate(int32_t id1, int32_t id2, int32_t l) : id(id1) {
+  Candidate(int32_t id1, int32_t id2, int32_t l, int32_t type) : id(id1) {
     supporter.push_back(id2);
     extension.push_back(l);
+    flag = flag || type;
   }
 };
 
@@ -28,12 +30,16 @@ inline bool MoreSupporters(Candidate* x, Candidate* y) {
 }
 
 inline bool LongerExtension(Candidate* x, Candidate* y) {
-  std::sort(x->extension.begin(), x->extension.end());
-  std::sort(y->extension.begin(), y->extension.end());
-  return (x->extension.back() > y->extension.back());
+  if (x->flag == y->flag) {
+    std::sort(x->extension.begin(), x->extension.end());
+    std::sort(y->extension.begin(), y->extension.end());
+    return (x->extension.back() > y->extension.back());
+  } else {
+    return x->flag;
+  }
 }
 
-int32_t IBS0PhaseForward(int32_t argc, char** argv) {
+int32_t RareIBS0PhaseBackward(int32_t argc, char** argv) {
   std::string inVcf, inMap, path_pbwt, out, reg;
   std::string outf,outf_s,outVcf;
   int32_t detailed = 0;
@@ -44,8 +50,8 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   int32_t min_variant = 2;
   int32_t min_hom_gts = 1;
   int32_t nsamples=0, M=0;
-  int32_t st, ck, ed, stugly;
-  int32_t pbwt_chunk = 1000000;          // process suffix pbwt & ibs0 by chunk
+  int32_t st, ck, ed, edugly;
+  int32_t chunk_size = 1000000;          // process suffix pbwt & ibs0 by chunk
   int32_t ibs0_chunk = 500000;
   int32_t start_pos = 0; // Starting position
 
@@ -97,12 +103,12 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   // Translate between genetic & physical position.
   cm2bpMap gpmap(inMap, " ");
   bp2cmMap pgmap(inMap, " ");
-  notice("Will proceed until the last position in linkage map: %d.", gpmap.maxpos);
+  notice("Will proceed until the first position in linkage map: %d.", gpmap.minpos);
 
   // Output flipped bcf/vcf
-  outVcf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_fw.bcf";
+  outVcf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_bw.bcf";
   if (mode=="z")
-    outVcf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_fw.vcf.gz";
+    outVcf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_bw.vcf.gz";
   mode = "w" + mode;
   htsFile *wbcf = hts_open(outVcf.c_str(),mode.c_str());
 
@@ -117,25 +123,27 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   // If the current position is flipped
   bool flip_abs[nsamples] = {0};
 
-  ck = start_pos/pbwt_chunk; // Chunk in terms of pbwt_chunk
-  st = ck * pbwt_chunk + 1;
-  ed = st + pbwt_chunk - 1;
+  ck = start_pos/chunk_size; // Chunk in terms of chunk_size
+  st = ck * chunk_size + 1;
+  ed = st + chunk_size - 1;
   while (st > pgmap.centromere_st && ed < pgmap.centromere_ed ) {
-    ck++;
-    st = ck * pbwt_chunk + 1;
-    ed = st + pbwt_chunk - 1;
+    ck--;
+    st = ck * chunk_size + 1;
+    ed = st + chunk_size - 1;
   }
-  stugly = st;
+  edugly = ed;
 
   // Initialize ibs0 lookup blocks
   reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
   RareIBS0lookup ibs0finder(inVcf, reg, pgmap, delta, rare_ac, ibs0_chunk, min_hom_gts);
   notice("Initilized ibs0 lookup (%.1f cM, %d blocks).", delta, ibs0finder.start_que.size());
 
-  // Initialize forward pbwt
-  // Read the first snp in this chunk. should be stored as a checkpoint
+  // Initialize backward pbwt
+  // Read the last snp in this chunk. should be stored as a checkpoint
+  reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
   std::string line;
-  std::string sfile = path_pbwt + "_" + reg + "_prefix.amat";
+  std::string sfile = path_pbwt + "_" + reg + "_suffix.amat";
+
   std::ifstream sf(sfile);
   std::getline(sf, line);
   sf.close();
@@ -146,7 +154,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   for (uint32_t i =  OFFSET; i < wvec.size(); ++i)
     a[i- OFFSET] = std::stoi(wvec[i]);
 
-  sfile = path_pbwt + "_" + reg + "_prefix.dmat";
+  sfile = path_pbwt + "_" + reg + "_suffix.dmat";
   sf.open(sfile);
   std::getline(sf, line);
   sf.close();
@@ -155,14 +163,14 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
   for (uint32_t i =  OFFSET; i < wvec.size(); ++i)
     d[i- OFFSET] = std::stoi(wvec[i]);
 
-  pbwtCursor prepc(M, a, d);
+  pbwtCursor sufpc(M, a, d);
 
-  while (st < gpmap.maxpos) {
-    // Read and build suffix pbwt by physical chunk
+  while (edugly > gpmap.minpos) {
+    // Read and build prefix pbwt by physical chunk
     // TODO: enable efficient random access &/ customizable chunk size
 
     // Read genotype matrix
-    reg = chrom + ":" + std::to_string(stugly) + "-" + std::to_string(ed);
+    reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(edugly);
     ibs0finder.Update(reg);
     std::vector<GenomeInterval> intervals;
     parse_intervals(intervals, "", reg);
@@ -194,13 +202,6 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
         }
         ac += (y[2*i] + y[2*i+1]);
       } // Finish reading one SNP
-
-      if (iv->pos < start_pos) { // Start_pos & before is not flipped
-        prepc.ForwardsAD_prefix(y, iv->pos+1);
-        bcf_write(wbcf, odr.hdr, iv);
-        continue;
-      }
-
       gtmat.push_back(y);
       positions.push_back(iv->pos+1);
       mafs.push_back(ac*1.0/M);
@@ -208,13 +209,13 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     int32_t N = positions.size();
     if ( N < min_variant ) {
       if (N > 0) {
-        for (int32_t k = 0; k < N; ++ k)
-          prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
+        for (int32_t k = N-1; k >= 0; --k)
+          sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
       }
-      ck++;
-      st = ck * pbwt_chunk + 1;
-      stugly = st;
-      ed = st + pbwt_chunk - 1;
+      ck--;
+      st = ck * chunk_size + 1;
+      ed = st + chunk_size - 1;
+      edugly = ed;
       for (auto& pt : gtmat)
         delete [] pt;
       notice("Observed only %d informative markers. Skipping the region %s", N, reg.c_str());
@@ -227,14 +228,14 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
     std::ofstream wf;
     if (detailed) {
-      outf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_fw_" + reg + ".list";
+      outf = out + "_" + parm.str() + "_st_" + std::to_string(start_pos) + "_bw_" + reg + ".list";
       wf.open(outf, std::ios::trunc);
     }
-    outf_s = out + "_"+ parm.str() + "_st_" + std::to_string(start_pos) + "_fw_" +reg+"_short.list";
+    outf_s = out + "_"+ parm.str() + "_st_" + std::to_string(start_pos) + "_bw_" +reg+"_short.list";
     std::ofstream wfs(outf_s, std::ios::trunc);
 
-    // Read the last snp in this chunk. should be stored as a checkpoint
-    sfile = path_pbwt + "_" + reg + "_suffix.amat";
+    // Read the first snp in this chunk. should be stored as a checkpoint
+    sfile = path_pbwt + "_" + reg + "_prefix.amat";
     sf.open(sfile);
     std::getline(sf, line);
     sf.close();
@@ -243,7 +244,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     for (uint32_t i =  OFFSET; i < wvec.size(); ++i)
       a[i- OFFSET] = std::stoi(wvec[i]);
 
-    sfile = path_pbwt + "_" + reg + "_suffix.dmat";
+    sfile = path_pbwt + "_" + reg + "_prefix.dmat";
     sf.open(sfile);
     std::getline(sf, line);
     sf.close();
@@ -251,7 +252,7 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
     for (uint32_t i =  OFFSET; i < wvec.size(); ++i)
       d[i- OFFSET] = std::stoi(wvec[i]);
 
-    pbwtCursor sufpc(M, a, d);
+    pbwtCursor prepc(M, a, d);
 
     // Allocate space for pbwt matricies
     std::vector<int32_t*> dmat(N,NULL);
@@ -260,178 +261,141 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
       dmat[i] = new int32_t[M];
       rmat[i] = new int32_t[M];
     }
-    // Build suffix pbwt
-    for (int32_t k = N-1; k >= 0; --k) {
-      sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
-      memcpy(dmat[k], sufpc.d, M*sizeof(int32_t));
-      sufpc.ReverseA(rmat[k]);
+    // Build prefix pbwt
+    for (int32_t k = 0; k < N; ++k) {
+      prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
+      memcpy(dmat[k], prepc.d, M*sizeof(int32_t));
+      prepc.ReverseA(rmat[k]);
     }
-    // Build prefix pbwt & detect switch
-    int32_t h11,h12,h21,h22; // (Reflecting lips so far) index stored in prefix pbwt
+    // Build suffix pbwt & detect switch
+    int32_t h11,h12,h21,h22; // (Reflecting flips so far) index stored in suffix pbwt
     int32_t i_s, j_s, i_s_prime, j_s_prime; // row num in suffix pbwt
     int32_t dij_p, dipj_s, dijp_s; // absolute position, from pbwt divergence matrix
-    if (stugly < start_pos) {
-    // If it is the first block, skip sites before the starting position.
-      reg = chrom + ":" + std::to_string(start_pos) + "-" + std::to_string(ed);
-      parse_intervals(intervals, "", reg);
-    }
-    odr.jump_to_interval(intervals[0]);
-    bcf_clear(iv);
-    for (int32_t k = 0; k < N-1; ++k) {
-      // Output current position
-      odr.read(iv);
-      if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
-        error("Cannot find the field GT.");
-      }
-      int32_t y[M];
+    for (int32_t k = N-1; k > 0; --k) {
+      // Sorted after and include position k
+      sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
+      // gtmat[k] is no longer needed. Update to reflect flipped stat
       for (int32_t it = 0; it < nsamples; ++it) {
-        y[it*2] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2+1]) : bcf_gt_phased(gtmat[k][it*2]);
-        y[it*2+1] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2]) : bcf_gt_phased(gtmat[k][it*2+1]);
+        if (flip_abs[it] && (gtmat[k][it*2] != gtmat[k][it*2+1]) ) {
+          gtmat[k][it*2] = !gtmat[k][it*2];
+          gtmat[k][it*2+1] = !gtmat[k][it*2+1];
+        }
       }
-      if(bcf_update_genotypes(odr.hdr, iv, y, M)) {
-        error("Cannot update GT.");
-      }
-      bcf_write(wbcf, odr.hdr, iv);
-
-      // Sorted upto and include position k
-      prepc.ForwardsAD_prefix(gtmat[k], positions[k]);
+      if (positions[k]>start_pos) {
+        bcf_write(wbcf, odr.hdr, iv);
+        continue;
+        } // Start_pos & after should not be flipped
       std::vector<std::vector<int32_t> > fliprec;
       std::map<int32_t, Candidate *> flipcandy;
       for (int32_t i = 0; i < M-1; ++i) {
-        h11 = prepc.a[i]; // Original Hap ID corresponding to row i
+        h11 = sufpc.a[i]; // Original Hap ID corresponding to row i
         h12 = h11 + 1 - 2 * (h11%2);
         int32_t j = i+1;
-        dij_p = prepc.d[j];
+        dij_p = sufpc.d[j];
         // Check a few hap down
-        while (j < M && dij_p < positions[k] - gamma) {
-          h21 = prepc.a[j];
+        while (j < M && dij_p > positions[k] + gamma) {
+          h21 = sufpc.a[j];
           h22 = h21 + 1 - 2 * (h21%2);
           if (h11/2 == h21/2) { // Probably long homozygous sites
             j++;
-            if (prepc.d[j] > dij_p)
-              dij_p = prepc.d[j];
+            if (sufpc.d[j] < dij_p)
+              dij_p = sufpc.d[j];
             continue;
           }
-          if (gtmat[k+1][h11] != gtmat[k+1][h21] && mafs[k+1] < mafcut) {
-          // If a match ends at k+1 && maf < mafcut
-            i_s = rmat[k+1][h11]; j_s = rmat[k+1][h21];
-            i_s_prime = rmat[k+1][h12]; j_s_prime = rmat[k+1][h22];
+          if (gtmat[k-1][h11] != gtmat[k-1][h21]) {
+          // If a match ends at k-1
+            i_s = rmat[k-1][h11]; j_s = rmat[k-1][h21];
+            i_s_prime = rmat[k-1][h12]; j_s_prime = rmat[k-1][h22];
             // If flip individual 1
             int32_t lower = std::min(i_s_prime, j_s);
             int32_t upper = std::max(i_s_prime, j_s);
-            dipj_s = dmat[k+1][lower + 1];
+            dipj_s = dmat[k-1][lower + 1];
             for (int32_t it = lower + 1; it <= upper; ++it) { // Evaluate d_i'j+
-              if (dmat[k+1][it] < dipj_s)
-                dipj_s = dmat[k+1][it];
+              if (dmat[k-1][it] > dipj_s)
+                dipj_s = dmat[k-1][it];
             }
             // If flip individual 2
             lower = std::min(i_s, j_s_prime);
             upper = std::max(i_s, j_s_prime);
-            dijp_s = dmat[k+1][lower + 1];
+            dijp_s = dmat[k-1][lower + 1];
             for (int32_t it = lower + 1; it <= upper; ++it) { // Evaluate d_ij'+
-              if (dmat[k+1][it] < dijp_s)
-                dijp_s = dmat[k+1][it];
+              if (dmat[k-1][it] > dijp_s)
+                dijp_s = dmat[k-1][it];
             }
-            int32_t flag = 0;
-            if (dijp_s - dipj_s > diff && dijp_s - positions[k] > nmatch) {
-            // Consider flip individual 2
-              if (pgmap.bp2cm(dijp_s) - pgmap.bp2cm(dij_p) > delta) {
-                flag = 1;
-              } else { // Need to evaluate no-ibs0
-                // Check if they share rare allele
-                int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
-                int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
-// if (nextrare >= 0)
-//   std::cout << "Next rare: " <<  nextrare << '\n';
-                if (nextrare > 0 && (nextibs0 < 0 || nextibs0 > nextrare)) {
-                  flag = 2;
-                } else if (nextibs0 < 0) {
-                  flag = 3;
-                } else if (nextibs0 - positions[k] > lambda) {
-                  // Not too close to ibs0
-                  if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
+            int32_t thewho, theother, thelong, theshort;
+            if (dijp_s < dipj_s) { // Flip individual 2
+              thelong  = dijp_s; theshort = dipj_s;
+              thewho   = h21/2; theother = h11/2;
+            } else {              // Flip individual 1
+              theshort = dijp_s; thelong  = dipj_s;
+              theother = h21/2; thewho   = h11/2;
+            }
+            if (theshort - thelong > diff && positions[k] - thelong > nmatch) {
+              int32_t flag = 0;
+              int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
+              int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
+              int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
+              int32_t nextibs0 = 0;
+              if (nextrare > 0 || prevrare > 0) { // Conditional on rare allele sharing
+                if (prevrare > 0) {
+                  if (previbs0 < 0 || previbs0 < prevrare) {
+                    flag = 2;
+                  } else if (mafs[k-1] < mafcut &&
+                             pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta) {
                     flag = 3;
-                  } else { // Need to check the previous ibs0
-                    int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
-                    int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
-// if (prevrare >= 0)
-//   std::cout << "Previous rare: " <<  prevrare << '\n';
-                    if (prevrare > 0 && (previbs0 < 0 || previbs0 < prevrare)) {
-                      flag = 2;
-                    } else if (previbs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
-                      flag = 3;
-                    }
+                  }
+                }
+                if (flag != 2 && nextrare > 0) {
+                  nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
+                  if  (nextibs0 < 0 || (nextibs0 > nextrare)) {
+                    flag = 2;
+                  } else if (mafs[k-1] < mafcut &&
+                             pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
+                    flag = 3;
                   }
                 }
               }
-              if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k+1],h21/2,h11/2,
-                                                       dij_p, dipj_s, dijp_s, flag});
-                if (flipcandy.find(h21/2) != flipcandy.end()) {
-                  flipcandy[h21/2]->supporter.push_back(h11/2);
-                  flipcandy[h21/2]->extension.push_back(dijp_s-positions[k]);
-                } else {
-                  Candidate* candy = new Candidate(h21/2,h11/2,dijp_s-positions[k]);
-                  flipcandy[h21/2] = candy;
-                }
-              }
-            } else if (dipj_s - dijp_s > diff && dipj_s - positions[k] > nmatch) {
-            // Consider flip individual 1
-              if (pgmap.bp2cm(dipj_s) - pgmap.bp2cm(dij_p) > delta) {
-                flag = 1;
-              } else {        // Need to evaluate no-ibs0
-                // Check if they share rare allele
-                int32_t nextrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],0);
-                int32_t nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
-                if (nextrare > 0 && (nextibs0 < 0 || nextibs0 > nextrare)) {
-                  flag = 2;
-                } else if (nextibs0 < 0) {
-                  flag = 3;
-                } else if (nextibs0 - positions[k] > lambda) {
-                  // Not too close to ibs0
-                  if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(dij_p) > delta) {
-                    flag = 3;
-                  } else { // Need to check the previous ibs0
-                    int32_t prevrare = ibs0finder.FindRare(h11/2,h21/2,positions[k],1);
-                    int32_t previbs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],1);
-                    if (prevrare > 0 && (previbs0 < 0 || previbs0 < prevrare)) {
-                      flag = 2;
-                    } else if (previbs0 < 0 || pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {
-                      flag = 3;
-                    }
-                  }
+              if (!flag && mafs[k-1] < mafcut) { // Conditional on maf & ibs0
+                if (previbs0 < 0 || (pgmap.bp2cm(dij_p) - pgmap.bp2cm(previbs0) > delta)) {flag= 3;}
+                if (pgmap.bp2cm(dij_p)-pgmap.bp2cm(thelong) > delta) {flag = 1;}
+                if (!flag) {
+                  if (nextrare == 0)
+                    nextibs0 = ibs0finder.FindIBS0(h11/2,h21/2,positions[k],0);
+                  if (pgmap.bp2cm(nextibs0) - pgmap.bp2cm(previbs0) > delta) {flag = 3;}
                 }
               }
               if (flag) { // Flip
-                fliprec.push_back(std::vector<int32_t> {positions[k+1],h11/2,h21/2,
-                                                        dij_p, dijp_s, dipj_s, flag});
-                if (flipcandy.find(h11/2) != flipcandy.end()) {
-                  flipcandy[h11/2]->supporter.push_back(h21/2);
-                  flipcandy[h11/2]->extension.push_back(dipj_s-positions[k]);
+                fliprec.push_back(std::vector<int32_t> {positions[k+1],thewho,theother,
+                                                        dij_p, theshort, thelong, flag});
+                if (flipcandy.find(thewho) != flipcandy.end()) {
+                  flipcandy[thewho]->supporter.push_back(theother);
+                  flipcandy[thewho]->extension.push_back(positions[k]-thelong);
                 } else {
-                  Candidate* candy = new Candidate(h11/2,h21/2,dipj_s-positions[k]);
-                  flipcandy[h11/2] = candy;
+                  Candidate* candy = new Candidate(thewho,theother,positions[k]-thelong,(flag == 2));
+                  flipcandy[thewho] = candy;
                 }
               }
             }
           }
           j++;
-          if (prepc.d[j] > dij_p)
-            dij_p = prepc.d[j];
+          if (sufpc.d[j] < dij_p)
+            dij_p = sufpc.d[j];
         } // End of searching switch of pairs involving row i
       } // End of searching for this column
       // If multiple flips occur
       if (flipcandy.size() > 0) {
+        int32_t adj_max_flip = max_flip;
         std::map<int32_t, std::vector<int32_t> > finalrec;
         std::vector<bool> flipped(nsamples, 0);
         if (flipcandy.size() > 1) {
           std::vector<Candidate*> toflip;
           for (auto & v : flipcandy) {
+            if (v.second->flag) {adj_max_flip++;}
             toflip.push_back(v.second);
           }
           std::sort(toflip.begin(), toflip.end(), LongerExtension);
           for (auto & v : toflip) {
-            if ((int32_t) finalrec.size() >= max_flip) {
+            if ((int32_t) finalrec.size() >= adj_max_flip) {
               break;
             }
             int32_t rm = (v->supporter).size();
@@ -451,10 +415,10 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
         for (auto & v : fliprec) {
           if (flipped[v[1]]) {
             finalrec[v[1]][0] = v[0];
-            finalrec[v[1]][2]++;
-            if (v[5]-v[4] > finalrec[v[1]][3])
-              finalrec[v[1]][3] = v[5]-v[4];
-            finalrec[v[1]][3+v[6]]++;
+            finalrec[v[1]][2]++;      // Number of comparisons suggesting this flip
+            if (v[4]-v[5] > finalrec[v[1]][3])
+              finalrec[v[1]][3] = v[4]-v[5];
+            finalrec[v[1]][3+v[6]]++; // Count the number of each types of flip among those comparisons
             if (detailed) {
               std::stringstream recline;
               for (auto& w : v)
@@ -473,21 +437,43 @@ int32_t IBS0PhaseForward(int32_t argc, char** argv) {
           recline << '\n';
           wfs << recline.str();
         }
-        prepc.SwitchIndex(flipped);
+        sufpc.SwitchIndex(flipped);
         for (int32_t it = 0; it < nsamples; ++it) {
-          if (flipped[it])
+          if (flipped[it]) {
             flip_abs[it] = !flip_abs[it];
-        }
-        for (auto & v : flipcandy) {
-          delete v.second;
+          }
         }
       }
     } // End of processing one block
+
     wfs.close();
-    ck++;
-    st = ck * pbwt_chunk + 1;
-    stugly = positions.back();
-    ed = st + pbwt_chunk - 1;
+    // Output this block. Up till and NOT including start_pos
+    if (edugly > start_pos-2) {
+      // If it is the first block, skip sites after the starting position.
+      reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(start_pos-2);
+      parse_intervals(intervals, "", reg);
+    }
+    odr.jump_to_interval(intervals[0]);
+    bcf_clear(iv);
+    int32_t y[M];
+    odr.read(iv);
+    int32_t k = 1;
+    while(odr.read(iv)) {
+      for (int32_t it = 0; it < nsamples; ++it) {
+        y[it*2] = bcf_gt_phased(gtmat[k][it*2]);
+        y[it*2+1] = bcf_gt_phased(gtmat[k][it*2+1]);
+      }
+      if(bcf_update_genotypes(odr.hdr, iv, y, M)) {
+        error("Cannot update GT.");
+      }
+      if (bcf_write(wbcf, odr.hdr, iv))
+        error("Error in writing bcf.");
+      k++;
+    }
+    ck--;
+    st = ck * chunk_size + 1;
+    edugly = positions[0];
+    ed = st + chunk_size - 1;
     // Free memory of gt matrix
     for (auto& pt : gtmat)
       delete [] pt;

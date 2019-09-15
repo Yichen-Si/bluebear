@@ -48,7 +48,10 @@ set(ibs0phase_SOURCES src/bluebear.cpp
     src/ibs0_phase_forward.cpp
     src/hap_ibd_pbwt.cpp
     src/ibd_around_pt.cpp
-    src/test_hts.cpp)
+    src/test_hts.cpp
+    src/ibs0rare.cpp
+    src/ibs0_rare_phase_backward.cpp
+    src/ibs0_rare_phase_forward.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h
     src/Error.h

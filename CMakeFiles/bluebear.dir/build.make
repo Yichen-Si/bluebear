@@ -876,6 +876,78 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides: CMakeFiles/bluebear.dir/src
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/test_hts.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: src/ibs0rare.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0rare.cpp
+
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/ibs0rare.cpp > CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i
+
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/ibs0rare.cpp -o CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s
+
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.provides: CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o
+
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: src/ibs0_rare_phase_backward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_phase_backward.cpp
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.provides: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o
+
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: src/ibs0_rare_phase_forward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_phase_forward.cpp
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.provides: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o
+
+
 # Object files for target bluebear
 bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/bluebear.cpp.o" \
@@ -911,7 +983,10 @@ bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o" \
 "CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o" \
 "CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o" \
-"CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
+"CMakeFiles/bluebear.dir/src/test_hts.cpp.o" \
+"CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o" \
+"CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o" \
+"CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o"
 
 # External object files for target bluebear
 bluebear_EXTERNAL_OBJECTS =
@@ -950,10 +1025,13 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/test_hts.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/build.make
 bin/bluebear: ../htslib/libhts.a
 bin/bluebear: CMakeFiles/bluebear.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Linking CXX executable bin/bluebear"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Linking CXX executable bin/bluebear"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bluebear.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -995,6 +1073,9 @@ CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0_phase_forward
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.requires
 
 .PHONY : CMakeFiles/bluebear.dir/requires
 
