@@ -3,12 +3,13 @@
 #include "bcf_ordered_reader.h"
 
 #include "pbwt_build.h"
+#include "ibs0.h"
 
 // Input bcf file
 // Matched haplotype length preceeding a shared rare variant
 int32_t hapIBDpbwtLeft(int32_t argc, char** argv) {
 
-  std::string inVcf, reg, out, outf;
+  std::string inVcf, inMap, reg, out, outf, chrom;
   int32_t verbose = 10000;
   int32_t max_ac  = 3;     // Max AC for anchor IBD.
   int32_t min_ac  = 4;     // Ignore the phase of AC <= min_AC.
@@ -18,7 +19,9 @@ int32_t hapIBDpbwtLeft(int32_t argc, char** argv) {
   BEGIN_LONG_PARAMS(longParameters)
     LONG_PARAM_GROUP("Input Sites", NULL)
     LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("map",&inMap, "Input genetic map")
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
+    LONG_STRING_PARAM("chr",&chrom,"Chromosome")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("max-ac",&max_ac, "Max. AC as anchor for IBD")
@@ -60,9 +63,19 @@ int32_t hapIBDpbwtLeft(int32_t argc, char** argv) {
 
   notice("Started Reading VCF, identifying %d samples.", nsamples);
 
+  bp2cmMap pgmap(inMap, " ");
+  int32_t ck = 0, win = 1000000;
+  double delta = 5.0;
+  reg = chrom+":"+std::to_string(ck*win+1)+"-"+std::to_string((ck+1)*win);
+  IBS0lookup ibs0finder(inVcf, reg, pgmap, delta, win, 1);
+
   // read marker
   for (int32_t k=0; odr.read(iv); ++k) {
-
+    if (iv->pos+1 > (ck+1)*win) {
+      ck++;
+      reg = chrom+":"+std::to_string(ck*win+1)+"-"+std::to_string((ck+1)*win);
+      ibs0finder.Update(reg);
+    }
     if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
       error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
     }
@@ -107,11 +120,15 @@ int32_t hapIBDpbwtLeft(int32_t argc, char** argv) {
         for (int32_t j = i+1; j < n_ac; j++) {
           h21 = rvec[j * 2 + hapcarry[j]];
           h22 = rvec[j * 2 + 1 - hapcarry[j]];
+          int32_t l0 = ibs0finder.FindIBS0(idlist[i],idlist[j],iv->pos+1,1);
+          bool trunc = l0 < 0;
+          if (l0 < 0) {l0 = ibs0finder.start_que[0];}
+          l0 = iv->pos+1 - l0;
           d11 = iv->pos+1 - pc.Dist_pref(h11,h21);
           d12 = iv->pos+1 - pc.Dist_pref(h11,h22);
           d21 = iv->pos+1 - pc.Dist_pref(h12,h21);
           d22 = iv->pos+1 - pc.Dist_pref(h12,h22);
-          hprintf(wf,"%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\n", iv->pos+1, n_ac, odr.hdr->id[BCF_DT_SAMPLE][idlist[i]].key, odr.hdr->id[BCF_DT_SAMPLE][idlist[j]].key, d11,d12,d21,d22);
+          hprintf(wf,"%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n", iv->pos+1, n_ac, odr.hdr->id[BCF_DT_SAMPLE][idlist[i]].key, odr.hdr->id[BCF_DT_SAMPLE][idlist[j]].key, d11,d12,d21,d22,l0,trunc);
         }
       }
     }
@@ -154,7 +171,7 @@ int32_t hapIBDpbwtLeft(int32_t argc, char** argv) {
 // Matched haplotype length succeeding a shared rare variant
 int32_t hapIBDpbwtRight(int32_t argc, char** argv) {
 
-  std::string inVcf, reg, out, outf, chrom;
+  std::string inVcf, inMap, reg, out, outf, chrom;
   int32_t verbose = 10000;
   int32_t max_ac  = 3;     // Max AC for anchor IBD.
   int32_t min_ac  = 3;     // Ignore the phase of AC <= min_AC.
@@ -167,6 +184,7 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv) {
   BEGIN_LONG_PARAMS(longParameters)
     LONG_PARAM_GROUP("Input Sites", NULL)
     LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("map",&inMap, "Input genetic map")
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
@@ -225,6 +243,14 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv) {
   outf = out + ".right.list";
   htsFile* wf = hts_open(outf.c_str(), "w");
 
+  ed = end;
+  st = ed - chunksize + 1;
+  reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
+  int32_t win = 1000000;
+  double delta = 5.0;
+  bp2cmMap pgmap(inMap, " ");
+  IBS0lookup ibs0finder(inVcf, reg, pgmap, delta, win, 1);
+
   // Have to read by chunk
   for (ck = 0; ck <= nchunk; ++ck) {
 
@@ -233,6 +259,7 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv) {
     if (ed <= start) {break;}
     if (st < start) st = start;
     reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
+    ibs0finder.Update(reg);
     notice("Processing %s.", reg.c_str());
     std::vector<GenomeInterval> intervals;
     parse_intervals(intervals, "", reg);
@@ -319,13 +346,17 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv) {
           h11 = rvec[i * 2 + hapcarry[i]];
           h12 = rvec[h11 + 1 - 2 * (h11 % 2)];
           for (int32_t j = i+1; j < mac[k]; j++) {
+            int32_t r0 = ibs0finder.FindIBS0(idlist[i],idlist[j],positions[k],0);
+            bool trunc = r0 < 0;
+            if (r0 < 0) {r0 = ibs0finder.posvec_que.back()->back();}
+            r0 = r0 - positions[k];
             h21 = rvec[j * 2 + hapcarry[j]];
             h22 = rvec[h21 + 1 - 2 * (h21 % 2)];
             d11 = pc.Dist_suff(h11,h21) - positions[k];
             d12 = pc.Dist_suff(h11,h22) - positions[k];
             d21 = pc.Dist_suff(h12,h21) - positions[k];
             d22 = pc.Dist_suff(h12,h22) - positions[k];
-            hprintf(wf,"%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\n", positions[k], mac[k], odr.hdr->id[BCF_DT_SAMPLE][idlist[i]].key, odr.hdr->id[BCF_DT_SAMPLE][idlist[j]].key, d11,d12,d21,d22);
+            hprintf(wf,"%d\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n", positions[k], mac[k], odr.hdr->id[BCF_DT_SAMPLE][idlist[i]].key, odr.hdr->id[BCF_DT_SAMPLE][idlist[j]].key, d11,d12,d21,d22,r0,trunc);
           }
         }
       }

@@ -27,10 +27,13 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv);
 
 // int32_t IBS0Phase(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
+int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
 int32_t IBS0PhaseForward(int32_t argc, char** argv);
 int32_t IBS0PhaseBackward(int32_t argc, char** argv);
 int32_t RareIBS0PhaseForward(int32_t argc, char** argv);
 int32_t RareIBS0PhaseBackward(int32_t argc, char** argv);
+int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv);
+int32_t RareOnlyIBS0PhaseBackward(int32_t argc, char** argv);
 
 int32_t test(int32_t argc, char** argv);
 
@@ -69,7 +72,11 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("rare-ibs0-phase-forward",&RareIBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
     LONG_COMMAND("rare-ibs0-phase-backward",&RareIBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
 
+    LONG_COMMAND("rare-phase-forward",&RareOnlyIBS0PhaseForward, "Based on shared rare allele, proceed froward to find switch error in phased BCF/VCF")
+    LONG_COMMAND("rare-phase-backward",&RareOnlyIBS0PhaseBackward, "Based on shared rare allele, proceed backward to find switch error in phased BCF/VCF")
+
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
+    LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")
 
     LONG_COMMAND("test",&test, "Test")
 

@@ -357,11 +357,14 @@ CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
  /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
  /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
  /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
  /net/wonderland/home/ycsi/tool/bluebear/src/filter.h
  /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/hap_ibd_pbwt.cpp
  /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
  /net/wonderland/home/ycsi/tool/bluebear/src/params.h
@@ -500,6 +503,68 @@ CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
  /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
  /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_forward.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/params.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o
+ ../htslib/include/htslib/bgzf.h
+ ../htslib/include/htslib/faidx.h
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kseq.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/tbx.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cm2bp.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/filter.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_only_phase_backward.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/params.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o
+ ../htslib/include/htslib/bgzf.h
+ ../htslib/include/htslib/faidx.h
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kseq.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/tbx.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cm2bp.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/filter.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_rare_only_phase_forward.cpp
  /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
  /net/wonderland/home/ycsi/tool/bluebear/src/params.h
