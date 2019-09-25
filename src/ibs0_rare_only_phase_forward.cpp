@@ -142,7 +142,7 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv) {
   hts_close(fp);
 
   // If the current position is flipped
-  int8_t flip_abs[nsamples] = {0}; // 0/1/2/3. 2: blipped to 0; 3: blipped to 1;
+  bool flip_abs[nsamples] = {0};
 
   ck = start_pos/pbwt_chunk; // Chunk in terms of pbwt_chunk
   st = ck * pbwt_chunk + 1;
@@ -318,15 +318,9 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv) {
       }
       int32_t y[M];
       std::vector<bool> flipped(nsamples, 0);
-      bool blip = 0;
       for (int32_t it = 0; it < nsamples; ++it) {
-        y[it*2] = (flip_abs[it] % 2 == 1) ? bcf_gt_phased(gtmat[k][it*2+1]) : bcf_gt_phased(gtmat[k][it*2]);
-        y[it*2+1] = (flip_abs[it] % 2 == 1) ? bcf_gt_phased(gtmat[k][it*2]) : bcf_gt_phased(gtmat[k][it*2+1]);
-        if (flip_abs[it] > 1) {
-          blip = 1;
-          flip_abs[it]  = 3 - flip_abs[it];
-          flipped[it] = 1;
-        }
+        y[it*2] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2+1]) : bcf_gt_phased(gtmat[k][it*2]);
+        y[it*2+1] = (flip_abs[it]) ? bcf_gt_phased(gtmat[k][it*2]) : bcf_gt_phased(gtmat[k][it*2+1]);
       }
       if(bcf_update_genotypes(odr.hdr, iv, y, M)) {
         error("Cannot update GT.");
@@ -339,8 +333,6 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv) {
       std::map<int32_t, Candidate *> flipcandy;
       for (int32_t i = 0; i < M-1; ++i) {
         h11 = prepc.a[i]; // Original Hap ID corresponding to row i
-        if (flipped[h11/2])
-          continue;
         h12 = h11 + 1 - 2 * (h11%2);
         int32_t j = i+1;
         dij_p = prepc.d[j];
@@ -348,7 +340,7 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv) {
         while (j < M && dij_p < positions[k] - gamma) {
           h21 = prepc.a[j];
           h22 = h21 + 1 - 2 * (h21%2);
-          if (flipped[h21/2] || h11/2 == h21/2) {
+          if (h11/2 == h21/2) {
             j++;
             if (prepc.d[j] > dij_p)
               dij_p = prepc.d[j];
@@ -520,9 +512,10 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv) {
         }
         for (auto & v : finalrec) {
           if (v.second[7] == 2) {
-            flip_abs[v.first] = 3 - flip_abs[v.first];
+            gtmat[k+1][v.first*2]=!gtmat[k+1][v.first*2];
+            gtmat[k+1][v.first*2+1]=!gtmat[k+1][v.first*2+1];
           } else {
-            flip_abs[v.first] = 1 - flip_abs[v.first];
+            flip_abs[v.first] = !flip_abs[v.first];
           }
           std::stringstream recline;
           for (auto& w : v.second)
@@ -534,8 +527,6 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv) {
         for (auto & v : flipcandy) {
           delete v.second;
         }
-      }
-      if (flipcandy.size() > 0 || blip) {
         prepc.SwitchIndex(flipped);
       }
     } // End of processing one block

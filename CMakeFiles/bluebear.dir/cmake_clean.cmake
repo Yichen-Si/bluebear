@@ -38,6 +38,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o"
+  "CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"
 )

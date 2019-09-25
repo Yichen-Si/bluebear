@@ -517,12 +517,12 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
 //   std::cout << iv_c->pos << '\t' << c1 << c2 << '\t' << bcf_gt_allele(g11) << bcf_gt_allele(g12) << '\t' << bcf_gt_allele(g21) << bcf_gt_allele(g22) << '\n';
 // }
         if (prehet[i] == switchpos[i].back()) { // Blip
-          wfb << iv_c->pos << '\t' << prehet[i] << '\t' << i << '\n';
+          wfb << prehet[i] << '\t' << iv_c->pos+1 << '\t' << i << '\n';
         }
-        switchpos[i].push_back(iv_c->pos);
+        switchpos[i].push_back(iv_c->pos+1);
         preconfig[i] = config;
       }
-      prehet[i] = iv_c->pos;
+      prehet[i] = iv_c->pos+1;
     }
     nVariant++;
   }

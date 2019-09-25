@@ -693,6 +693,33 @@ src/ibs0.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0.cpp.s
 .PHONY : src/ibs0.cpp.s
 
+src/ibs0_blip_forward.o: src/ibs0_blip_forward.cpp.o
+
+.PHONY : src/ibs0_blip_forward.o
+
+# target to build an object file
+src/ibs0_blip_forward.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o
+.PHONY : src/ibs0_blip_forward.cpp.o
+
+src/ibs0_blip_forward.i: src/ibs0_blip_forward.cpp.i
+
+.PHONY : src/ibs0_blip_forward.i
+
+# target to preprocess a source file
+src/ibs0_blip_forward.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.i
+.PHONY : src/ibs0_blip_forward.cpp.i
+
+src/ibs0_blip_forward.s: src/ibs0_blip_forward.cpp.s
+
+.PHONY : src/ibs0_blip_forward.s
+
+# target to generate assembly for a file
+src/ibs0_blip_forward.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.s
+.PHONY : src/ibs0_blip_forward.cpp.s
+
 src/ibs0_phase_backward.o: src/ibs0_phase_backward.cpp.o
 
 .PHONY : src/ibs0_phase_backward.o
@@ -1251,6 +1278,9 @@ help:
 	@echo "... src/ibs0.o"
 	@echo "... src/ibs0.i"
 	@echo "... src/ibs0.s"
+	@echo "... src/ibs0_blip_forward.o"
+	@echo "... src/ibs0_blip_forward.i"
+	@echo "... src/ibs0_blip_forward.s"
 	@echo "... src/ibs0_phase_backward.o"
 	@echo "... src/ibs0_phase_backward.i"
 	@echo "... src/ibs0_phase_backward.s"
