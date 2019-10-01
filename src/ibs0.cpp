@@ -28,6 +28,9 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
     }
   }
 
+  if (start < 0 && !reverse) {start = (*posvec)[0];}
+  if (start < 0 &&  reverse) {start = posvec->back();}
+
   bpos = (ptr > 0) ? ((ptr + 1) >> 3) : 0;
   k = bpos;
 
@@ -35,9 +38,9 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
   if (byte) {
     if (reverse) {
-      for (int32_t bit=7; bit>=0; --bit) {
+      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
         int32_t pt = k*8+bit;
-        if ( ((byte << bit) & 0x01) && ((*posvec)[pt] <= start) ) {
+        if ( ((byte >> bit) & 0x01) && ((*posvec)[pt] <= start) ) {
           return (*posvec)[pt];
         }
       }
@@ -58,9 +61,9 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
       if ( ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] ) ) { // IBS0 exists
         break;
       }
-      if (k == -1)
-        return -1;
     }
+    if (k == -1)
+      return -1;
   }
   if ((!reverse) && bpos < bmatRR->ncol-1) {
     bpos++;
@@ -77,9 +80,9 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
   if (byte) {
     if (reverse) {
-      for (int32_t bit=7; bit>=0; --bit) {
+      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
         int32_t pt = k*8+bit;
-        if ( ((byte << bit) & 0x01) && ((*posvec)[pt] <= start) ) {
+        if ( ((byte >> bit) & 0x01) && ((*posvec)[pt] <= start) ) {
           return (*posvec)[pt];
         }
       }

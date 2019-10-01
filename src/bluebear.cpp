@@ -12,6 +12,8 @@ int32_t cmdVcfIBS0View(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
 int32_t cmdVcfIBS0full(int32_t argc, char** argv);
 
+int32_t IBS0PairwiseScan(int32_t argc, char** argv);
+
 int32_t cmdIBS0Bridge(int32_t argc, char** argv);
 int32_t mapPt2Interval(int32_t argc, char** argv);
 
@@ -36,6 +38,7 @@ int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv);
 int32_t RareOnlyIBS0PhaseBackward(int32_t argc, char** argv);
 
 int32_t RareBlipOnlyForward(int32_t argc, char** argv);
+int32_t RareBlipOnlyStats(int32_t argc, char** argv);
 
 int32_t test(int32_t argc, char** argv);
 
@@ -49,6 +52,8 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length (null distribution) from BCF/VCF")
     LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
+
+    LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
 
     LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 
@@ -78,6 +83,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("rare-phase-backward",&RareOnlyIBS0PhaseBackward, "Based on shared rare allele, proceed backward to find switch error in phased BCF/VCF")
 
     LONG_COMMAND("rare-blip",&RareBlipOnlyForward, "Based on shared rare allele and haplotype matching, proceed froward to detect blip in phased BCF/VCF")
+    LONG_COMMAND("rare-blip-stats",&RareBlipOnlyStats, "Statistics of ibd around rare variants for detecting blip in phased BCF/VCF")
 
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
     LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")

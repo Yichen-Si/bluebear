@@ -31,12 +31,14 @@ set(ibs0phase_SOURCES src/bluebear.cpp
     src/tsv_reader.cpp
     src/utils.cpp
     src/compact_matrix.cpp
+    src/bp2cm.cpp
     src/cmd_vcf_ibs0_baseline.cpp
     src/cmd_vcf_ibs0.cpp
     src/cmd_vcf_ibs0_flanking.cpp
     src/cmd_vcf_ibs0_pairwise.cpp
     src/cmd_vcf_ibs0_unconditional.cpp
     src/cmd_vcf_ibs0_view.cpp
+    src/ibs0_pairwise_scan.cpp
     src/cmd_vcf_raresharing.cpp
     src/cmd_vcf_sfs.cpp
     src/pbwt_prefix.cpp

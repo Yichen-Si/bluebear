@@ -222,10 +222,16 @@ commands.h
 utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.cpp
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+
 /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
 utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 fstream
+-
+algorithm
 -
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cm2bp.h
@@ -597,6 +603,24 @@ functional
 -
 iomanip
 -
+
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0_pairwise_scan.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+compact_matrix.h
+/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+iomanip
+-
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/ibs0_phase_backward.cpp
 cramore.h

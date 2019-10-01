@@ -234,6 +234,33 @@ src/bluebear.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bluebear.cpp.s
 .PHONY : src/bluebear.cpp.s
 
+src/bp2cm.o: src/bp2cm.cpp.o
+
+.PHONY : src/bp2cm.o
+
+# target to build an object file
+src/bp2cm.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bp2cm.cpp.o
+.PHONY : src/bp2cm.cpp.o
+
+src/bp2cm.i: src/bp2cm.cpp.i
+
+.PHONY : src/bp2cm.i
+
+# target to preprocess a source file
+src/bp2cm.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bp2cm.cpp.i
+.PHONY : src/bp2cm.cpp.i
+
+src/bp2cm.s: src/bp2cm.cpp.s
+
+.PHONY : src/bp2cm.s
+
+# target to generate assembly for a file
+src/bp2cm.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bp2cm.cpp.s
+.PHONY : src/bp2cm.cpp.s
+
 src/cmd_vcf_ibs0.o: src/cmd_vcf_ibs0.cpp.o
 
 .PHONY : src/cmd_vcf_ibs0.o
@@ -719,6 +746,33 @@ src/ibs0_blip_forward.s: src/ibs0_blip_forward.cpp.s
 src/ibs0_blip_forward.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.s
 .PHONY : src/ibs0_blip_forward.cpp.s
+
+src/ibs0_pairwise_scan.o: src/ibs0_pairwise_scan.cpp.o
+
+.PHONY : src/ibs0_pairwise_scan.o
+
+# target to build an object file
+src/ibs0_pairwise_scan.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o
+.PHONY : src/ibs0_pairwise_scan.cpp.o
+
+src/ibs0_pairwise_scan.i: src/ibs0_pairwise_scan.cpp.i
+
+.PHONY : src/ibs0_pairwise_scan.i
+
+# target to preprocess a source file
+src/ibs0_pairwise_scan.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.i
+.PHONY : src/ibs0_pairwise_scan.cpp.i
+
+src/ibs0_pairwise_scan.s: src/ibs0_pairwise_scan.cpp.s
+
+.PHONY : src/ibs0_pairwise_scan.s
+
+# target to generate assembly for a file
+src/ibs0_pairwise_scan.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.s
+.PHONY : src/ibs0_pairwise_scan.cpp.s
 
 src/ibs0_phase_backward.o: src/ibs0_phase_backward.cpp.o
 
@@ -1227,6 +1281,9 @@ help:
 	@echo "... src/bluebear.o"
 	@echo "... src/bluebear.i"
 	@echo "... src/bluebear.s"
+	@echo "... src/bp2cm.o"
+	@echo "... src/bp2cm.i"
+	@echo "... src/bp2cm.s"
 	@echo "... src/cmd_vcf_ibs0.o"
 	@echo "... src/cmd_vcf_ibs0.i"
 	@echo "... src/cmd_vcf_ibs0.s"
@@ -1281,6 +1338,9 @@ help:
 	@echo "... src/ibs0_blip_forward.o"
 	@echo "... src/ibs0_blip_forward.i"
 	@echo "... src/ibs0_blip_forward.s"
+	@echo "... src/ibs0_pairwise_scan.o"
+	@echo "... src/ibs0_pairwise_scan.i"
+	@echo "... src/ibs0_pairwise_scan.s"
 	@echo "... src/ibs0_phase_backward.o"
 	@echo "... src/ibs0_phase_backward.i"
 	@echo "... src/ibs0_phase_backward.s"
