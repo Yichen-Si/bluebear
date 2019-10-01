@@ -1,8 +1,9 @@
 #include "bp2cm.h"
 
 bp2cmMap::bp2cmMap(const std::string &inMap, const char* sep,
-      int32_t bp_col, int32_t cm_col,
-      int32_t _binsize) : binsize(_binsize) {
+                   int32_t cst, int32_t ced,
+                   int32_t bp_col, int32_t cm_col,
+                   int32_t _binsize) : binsize(_binsize) {
 
   std::map<int32_t, double> lookup;
   std::map<int32_t, std::vector<int32_t> > poshash;
@@ -10,7 +11,8 @@ bp2cmMap::bp2cmMap(const std::string &inMap, const char* sep,
   std::ifstream mfile (inMap);
   std::string line;
   std::vector<std::string> words;
-  int32_t prepos = 0, cst = 0, ced = 0;
+  int32_t prepos = 0;
+  double precm = 0.0;
 
   if (mfile.is_open()) {
     while(std::getline(mfile, line)) {
@@ -35,15 +37,21 @@ bp2cmMap::bp2cmMap(const std::string &inMap, const char* sep,
     } else {
       poshash[kb] =  std::vector<int32_t>{it->first};
     }
-    if (cst == 0) {
-      if (kb > 500 && it->first - prepos > 200000) {
+    if (cst < 0) {
+      if (prepos > minpos && it->first - prepos > 200000 && it->second-precm < 1e-8) { // chr1-21
         cst = prepos; ced = it->first;
+      } else if (minpos > 1e06) { // chr22
+        cst = 10864561;
+        ced = 12915808;
+        std::cout << "Warning: chr 22 " << cst <<'\t' <<ced << '\n';
       } else {
         prepos = it->first;
+        precm  = it->second;
       }
     }
   }
-// std::cout << cst <<'\t'<<ced << '\n';
+std::cout << "Centromere: " << cst <<'\t' <<ced << '\n';
+
   int32_t MAX = maxpos + binsize;
   for (kb = 0; kb < MAX/binsize; kb++) {
     if (poshash.find(kb) == poshash.end()) {
@@ -115,8 +123,8 @@ double bp2cmMap::bp2cm(int32_t pos) {
       mindist = std::abs(rec.first-pos);
     }
   }
-if (cm <1e-6)
-  std::cout<< "Wrong: " << mindist << '\t' << cm << '\n';
+  if (cm <1e-6)
+    std::cout<< "Warning: " << pos << '\t' << mindist << '\t' << cm << '\n';
   return cm;
 }
 

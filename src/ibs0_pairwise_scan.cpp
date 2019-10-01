@@ -57,26 +57,36 @@ void clear() {
 
 struct interval {
   int32_t id1, id2;
+  int32_t st, ed;
   double cm;
-  interval(int32_t _x, int32_t _y, double _l) : id1(_x), id2(_y), cm(_l) {}
+  interval(int32_t _x, int32_t _y, int32_t _st, int32_t _ed, double _l) :
+  id1(_x), id2(_y), st(_st), ed(_ed), cm(_l) {}
 };
 
 class RareVariant {
 public:
   int32_t ac;
   std::vector<interval> ibs0pair;
+  int32_t ovst = -1, oved = -1; // st & ed of the overlap region
 
 RareVariant(int32_t _ac) : ac(_ac) {}
-bool Add(int32_t id1, int32_t id2, double cm) {
-  interval rec(id1,id2,cm);
+bool Add(int32_t id1, int32_t id2, int32_t st, int32_t ed, double cm) {
+  interval rec(id1,id2,st,ed,cm);
   ibs0pair.push_back(rec);
-  if (((int32_t) ibs0pair.size()) >= ac*(ac-1)/2) {
+  if (ovst < 0 || oved < 0) {
+    ovst = st; oved = ed;
+  } else {
+    ovst = std::max(ovst, st);
+    oved = std::min(oved, ed);
+  }
+  if ( ((int32_t) ibs0pair.size()) >= (ac*(ac-1)/2) ) {
     return 1;
   } else {
     return 0;
   }
 }
 void Organize() {
+  // Sort individual pairs by id, so the output can be re-shaped to a matrix
   std::sort(ibs0pair.begin(), ibs0pair.end(),
            [](const interval& a, const interval& b) {
            return a.id1 < b.id1;});
@@ -98,6 +108,7 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
   int32_t n_samples = 0;
   int32_t start, end;
   int32_t leftover = 20, maxoutreach = 3000000;
+  int32_t cst = -1, ced = -1;
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
@@ -114,14 +125,16 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
     LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
     LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
     LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+    LONG_INT_PARAM("centromere-st",&cst, "Start position of centromere")
+    LONG_INT_PARAM("centromere-ed",&ced, "End position of centromere")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("min-hom",&min_hom_gts, "Minimum number of homozygous genotypes to be counted for IBS0")
     LONG_INT_PARAM("batch-size",&batch_size, "Size of batches (in # of samples) to calculate the no-IBS0 pairs")
     LONG_INT_PARAM("min-variant",&min_variant, "Minimum number of variants to present to have output file")
-    // For testing
     LONG_INT_PARAM("left-over",&leftover, "Stop when only x pairs are left")
     LONG_INT_PARAM("out-reach",&maxoutreach, "How far to look forward & backward")
+    // For testing
     LONG_INT_PARAM("num-samples",&n_samples, "Number of samples to test")
 
     LONG_INT_PARAM("max-rare",&max_rare_ac, "Maximal minor allele count to be considered as anchor for IBD")
@@ -144,7 +157,7 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
   }
 
   // Genetic map
-  bp2cmMap pgmap(inMap, " ");
+  bp2cmMap pgmap(inMap, " ", cst, ced);
 
   // Output
   std::ofstream wf;
@@ -363,10 +376,13 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
                 const auto & mtr = snplist.find(v->rarepos[it]);
                 if (mtr != snplist.end()) {
                   RareVariant * ptr = mtr->second;
-                  if (ptr->Add(i,j,lcm)) {
+                  if (ptr->Add(i,j,v->st,snoopy[pt],lcm)) {
                     // Output this rare variant
                     ptr->Organize();
                     wf << v->rarepos[it] << '\t' << v->rareac[it] << '\t';
+                    wf << ptr->ovst << '\t' << ptr->oved << '\t';
+                    wf << std::fixed << std::setprecision(3) <<
+                    pgmap.bp2cm(ptr->oved)-pgmap.bp2cm(ptr->ovst) << '\t';
                     for (auto & x : ptr->ibs0pair) {
                       wf << std::fixed << std::setprecision(3) << x.cm << ',';
                     }
@@ -489,12 +505,16 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
             if (mtr != snplist.end()) {
               RareVariant * ptr = mtr->second;
               // RareVariant * ptr = snplist[v->rarepos[it]];
-              if (ptr->Add(i,j,lcm)) {
+              if (ptr->Add(i,j,previbs0,v->ed,lcm)) {
                 // Output this rare variant
                 ptr->Organize();
                 wf << v->rarepos[it] << '\t' << v->rareac[it] << '\t';
-                for (auto & x : ptr->ibs0pair)
+                wf << ptr->ovst << '\t' << ptr->oved << '\t';
+                wf << std::fixed << std::setprecision(3) <<
+                pgmap.bp2cm(ptr->oved)-pgmap.bp2cm(ptr->ovst) << '\t';
+                for (auto & x : ptr->ibs0pair) {
                   wf << std::fixed << std::setprecision(3) << x.cm << ',';
+                }
                 wf << '\n';
                 delete ptr;
                 snplist.erase(v->rarepos[it]);
@@ -576,10 +596,13 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
               const auto & mtr = snplist.find(v->rarepos[it]);
               if (mtr != snplist.end()) {
                 RareVariant * ptr = mtr->second;
-                if (ptr->Add(id1,id2,lcm)) {
+                if (ptr->Add(id1,id2,v->st,iv->pos+1,lcm)) {
                   // Output this rare variant
                   ptr->Organize();
                   wf << v->rarepos[it] << '\t' << v->rareac[it] << '\t';
+                  wf << ptr->ovst << '\t' << ptr->oved << '\t';
+                  wf << std::fixed << std::setprecision(3) <<
+                  pgmap.bp2cm(ptr->oved)-pgmap.bp2cm(ptr->ovst) << '\t';
                   for (auto & x : ptr->ibs0pair) {
                     wf << std::fixed << std::setprecision(3) << x.cm << ',';
                   }
@@ -631,6 +654,7 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
     RareVariant * ptr = v.second;
     ptr->Organize();
     wf << v.first << '\t' << ptr->ac << '\t';
+    wf << ptr->ovst << '\t' << ptr->oved << '\t';
     for (auto & x : ptr->ibs0pair)
       wf << x.id1 << ',' << x.id2 << ',' << std::fixed << std::setprecision(3) << x.cm << ';';
     wf << '\n';

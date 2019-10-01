@@ -17,8 +17,9 @@ class bp2cmMap
 
 
   bp2cmMap(const std::string &inMap, const char* sep,
-        int32_t bp_col = 3, int32_t cm_col = 2,
-        int32_t _binsize=1000);
+           int32_t cst = -1, int32_t ced = -1,
+           int32_t bp_col = 3, int32_t cm_col = 2,
+           int32_t _binsize=1000);
 
   double bp2cm(int32_t pos);
 
