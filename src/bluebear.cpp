@@ -5,6 +5,9 @@
 KHASH_MAP_INIT_STR(vdict, bcf_idinfo_t)
 typedef khash_t(vdict) vdict_t;
 
+int32_t KmerCount(int32_t argc, char** argv);
+int32_t cmdVcfAddContexte(int32_t argc, char** argv);
+
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv);
@@ -46,6 +49,9 @@ int32_t main(int32_t argc, char** argv) {
   commandList cl;
 
   BEGIN_LONG_COMMANDS(longCommandlines)
+    LONG_COMMAND("kmer-count",&KmerCount, "Count total occurence of kmers from fasta file (by chr)")
+    LONG_COMMAND("kmer-anno",&cmdVcfAddContexte, "Add kmer context and CpG info to VCF/BCF")
+
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")

@@ -2,7 +2,7 @@
 #include "bcf_filter_arg.h"
 #include "bcf_ordered_reader.h"
 
-// goal -- get Folded SFS
+// Goal -- get Folded SFS
 
 int32_t cmdVcfSFS(int32_t argc, char** argv) {
   std::string inVcf, out, outf, reg;
@@ -172,4 +172,5 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
 
   return 0;
 }
+
 

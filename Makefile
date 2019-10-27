@@ -261,6 +261,33 @@ src/bp2cm.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bp2cm.cpp.s
 .PHONY : src/bp2cm.cpp.s
 
+src/cmd_vcf_annotate_context.o: src/cmd_vcf_annotate_context.cpp.o
+
+.PHONY : src/cmd_vcf_annotate_context.o
+
+# target to build an object file
+src/cmd_vcf_annotate_context.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o
+.PHONY : src/cmd_vcf_annotate_context.cpp.o
+
+src/cmd_vcf_annotate_context.i: src/cmd_vcf_annotate_context.cpp.i
+
+.PHONY : src/cmd_vcf_annotate_context.i
+
+# target to preprocess a source file
+src/cmd_vcf_annotate_context.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.i
+.PHONY : src/cmd_vcf_annotate_context.cpp.i
+
+src/cmd_vcf_annotate_context.s: src/cmd_vcf_annotate_context.cpp.s
+
+.PHONY : src/cmd_vcf_annotate_context.s
+
+# target to generate assembly for a file
+src/cmd_vcf_annotate_context.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.s
+.PHONY : src/cmd_vcf_annotate_context.cpp.s
+
 src/cmd_vcf_ibs0.o: src/cmd_vcf_ibs0.cpp.o
 
 .PHONY : src/cmd_vcf_ibs0.o
@@ -1017,6 +1044,33 @@ src/interval_tree.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/interval_tree.cpp.s
 .PHONY : src/interval_tree.cpp.s
 
+src/kmer_count.o: src/kmer_count.cpp.o
+
+.PHONY : src/kmer_count.o
+
+# target to build an object file
+src/kmer_count.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/kmer_count.cpp.o
+.PHONY : src/kmer_count.cpp.o
+
+src/kmer_count.i: src/kmer_count.cpp.i
+
+.PHONY : src/kmer_count.i
+
+# target to preprocess a source file
+src/kmer_count.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/kmer_count.cpp.i
+.PHONY : src/kmer_count.cpp.i
+
+src/kmer_count.s: src/kmer_count.cpp.s
+
+.PHONY : src/kmer_count.s
+
+# target to generate assembly for a file
+src/kmer_count.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/kmer_count.cpp.s
+.PHONY : src/kmer_count.cpp.s
+
 src/params.o: src/params.cpp.o
 
 .PHONY : src/params.o
@@ -1284,6 +1338,9 @@ help:
 	@echo "... src/bp2cm.o"
 	@echo "... src/bp2cm.i"
 	@echo "... src/bp2cm.s"
+	@echo "... src/cmd_vcf_annotate_context.o"
+	@echo "... src/cmd_vcf_annotate_context.i"
+	@echo "... src/cmd_vcf_annotate_context.s"
 	@echo "... src/cmd_vcf_ibs0.o"
 	@echo "... src/cmd_vcf_ibs0.i"
 	@echo "... src/cmd_vcf_ibs0.s"
@@ -1368,6 +1425,9 @@ help:
 	@echo "... src/interval_tree.o"
 	@echo "... src/interval_tree.i"
 	@echo "... src/interval_tree.s"
+	@echo "... src/kmer_count.o"
+	@echo "... src/kmer_count.i"
+	@echo "... src/kmer_count.s"
 	@echo "... src/params.o"
 	@echo "... src/params.i"
 	@echo "... src/params.s"

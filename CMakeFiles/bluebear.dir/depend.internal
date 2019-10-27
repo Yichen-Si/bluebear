@@ -79,6 +79,33 @@ CMakeFiles/bluebear.dir/src/bp2cm.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.cpp
  /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
  /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o
+ ../htslib/include/htslib/bgzf.h
+ ../htslib/include/htslib/faidx.h
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kseq.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/tbx.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_annotate_context.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/filter.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/params.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.o
  ../htslib/include/htslib/bgzf.h
  ../htslib/include/htslib/faidx.h
@@ -740,6 +767,26 @@ CMakeFiles/bluebear.dir/src/interval_tree.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.cpp
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
+CMakeFiles/bluebear.dir/src/kmer_count.cpp.o
+ ../htslib/include/htslib/bgzf.h
+ ../htslib/include/htslib/faidx.h
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kseq.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/kmer_count.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/params.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/params.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/Constant.h
  /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
@@ -854,18 +901,14 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
  /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
  /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
- /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
- /net/wonderland/home/ycsi/tool/bluebear/src/cm2bp.h
- /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
  /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
  /net/wonderland/home/ycsi/tool/bluebear/src/filter.h
  /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
- /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
  /net/wonderland/home/ycsi/tool/bluebear/src/params.h
- /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
  /net/wonderland/home/ycsi/tool/bluebear/src/test_hts.cpp
  /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o

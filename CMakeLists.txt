@@ -29,6 +29,7 @@ set(ibs0phase_SOURCES src/bluebear.cpp
     src/interval_tree.cpp
     src/reference_sequence.cpp
     src/tsv_reader.cpp
+    src/cmd_vcf_annotate_context.cpp
     src/utils.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp
@@ -56,7 +57,8 @@ set(ibs0phase_SOURCES src/bluebear.cpp
     src/ibs0_rare_phase_forward.cpp
     src/ibs0_rare_only_phase_backward.cpp
     src/ibs0_rare_only_phase_forward.cpp
-    src/ibs0_blip_forward.cpp)
+    src/ibs0_blip_forward.cpp
+    src/kmer_count.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h
     src/Error.h

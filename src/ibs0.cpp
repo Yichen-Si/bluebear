@@ -39,7 +39,7 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   if (byte) {
     if (reverse) {
       for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-        int32_t pt = k*8+bit;
+        int32_t pt = k*8+(7-bit);
         if ( ((byte >> bit) & 0x01) && ((*posvec)[pt] <= start) ) {
           return (*posvec)[pt];
         }
@@ -81,7 +81,7 @@ int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
   if (byte) {
     if (reverse) {
       for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-        int32_t pt = k*8+bit;
+        int32_t pt = k*8+(7-bit);
         if ( ((byte >> bit) & 0x01) && ((*posvec)[pt] <= start) ) {
           return (*posvec)[pt];
         }

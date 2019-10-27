@@ -242,6 +242,9 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
   // First pass.
   // Read markers with both homozygotes. Find indiv. pairs sharing rare allele.
   for(int32_t k=0; odr.read(iv); ++k) {
+    if (snoopy.size() > 0 && iv->pos+1 == snoopy.back()) {
+      continue;
+    }
     // periodic message to user
     if ( k % verbose == 0 )
       notice("Processing %d markers at %s:%d. Recorded %d rare variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
@@ -304,9 +307,11 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
         }
       }
     }
-    if ( (ac > max_rare_ac) && (( gcs[0] < min_hom_gts ) || ( gcs[2] < min_hom_gts )) ) {
+    if ( (ac > max_rare_ac) && (( gcs[0] < min_hom_gts ) ||
+                                ( gcs[2] < min_hom_gts )) ) {
       continue;
-    } else if (ac <= max_rare_ac && ac != gcs[1]+gcs[2]) {
+    } else if ((ac <= max_rare_ac && ac != gcs[1]+gcs[2]) ||
+               (ac > max_rare_ac && ac != gcs[1]+2*gcs[2])) {
       continue;
     } else {
       bmatRR.add_row_bytes(gtRR);
@@ -655,6 +660,8 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
     ptr->Organize();
     wf << v.first << '\t' << ptr->ac << '\t';
     wf << ptr->ovst << '\t' << ptr->oved << '\t';
+    wf << std::fixed << std::setprecision(3) <<
+          pgmap.bp2cm(ptr->oved)-pgmap.bp2cm(ptr->ovst) << '\t';
     for (auto & x : ptr->ibs0pair)
       wf << x.id1 << ',' << x.id2 << ',' << std::fixed << std::setprecision(3) << x.cm << ';';
     wf << '\n';

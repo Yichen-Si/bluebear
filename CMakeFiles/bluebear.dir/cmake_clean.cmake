@@ -13,6 +13,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/interval_tree.cpp.o"
   "CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o"
   "CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o"
   "CMakeFiles/bluebear.dir/src/utils.cpp.o"
   "CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o"
   "CMakeFiles/bluebear.dir/src/bp2cm.cpp.o"
@@ -41,6 +42,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o"
+  "CMakeFiles/bluebear.dir/src/kmer_count.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"
 )
