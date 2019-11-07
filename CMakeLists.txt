@@ -15,8 +15,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 add_subdirectory(src)
 
-set(ibs0phase_SOURCES src/bluebear.cpp
-    src/Error.cpp
+set(ibs0phase_SOURCES src/Error.cpp
     src/commands.cpp
     src/params.cpp
     src/hts_utils.cpp
@@ -58,7 +57,9 @@ set(ibs0phase_SOURCES src/bluebear.cpp
     src/ibs0_rare_only_phase_backward.cpp
     src/ibs0_rare_only_phase_forward.cpp
     src/ibs0_blip_forward.cpp
-    src/kmer_count.cpp)
+    src/kmer_count.cpp
+    src/cmd_vcf_triallelic.cpp
+    src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h
     src/Error.h

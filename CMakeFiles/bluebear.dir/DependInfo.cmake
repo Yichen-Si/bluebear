@@ -18,6 +18,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_view.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_raresharing.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sfs.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o"
+  "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_triallelic.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/commands.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/commands.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/filter.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/filter.cpp.o"

@@ -143,12 +143,6 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
       notice("Processing %d markers at %s:%d.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1);
     if (bcf_get_info_int32(odr->hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
     if (bcf_get_info_int32(odr->hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
-    char* als = (iv->d).als;
-    int32_t altct = 0;
-    for (uint32_t it = 0; it < (sizeof(als)/sizeof(als[0])); ++it) {
-      if (isgraph(als[it]) && als[it] != ' ')
-        altct++;
-    }
 
     bcf1_t* nv = bcf_dup(iv);
     ac = info_ac[0]; an = info_an[0];
@@ -156,7 +150,7 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
     refcpg = "F";
     majcpg = "F";
 
-    if (altct == 2) { // SNP
+    if (bcf_is_snp(iv)) { // SNP
       if (ctx[mpt]=='C' && ctx[mpt+1]=='G') { // Ref CpG
         refcpg = "T";
       }

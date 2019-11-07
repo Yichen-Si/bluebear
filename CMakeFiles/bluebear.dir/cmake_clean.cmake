@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "CMakeFiles/bluebear.dir/src/Error.cpp.o"
   "CMakeFiles/bluebear.dir/src/commands.cpp.o"
   "CMakeFiles/bluebear.dir/src/params.cpp.o"
@@ -43,6 +42,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o"
   "CMakeFiles/bluebear.dir/src/kmer_count.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o"
+  "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"
 )

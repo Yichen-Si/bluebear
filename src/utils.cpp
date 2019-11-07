@@ -168,8 +168,12 @@ unsigned int str_hash(const char* s, unsigned int seed)
     hash = hash * 101  +  *s++;
   }
   return hash;
-}
+};
 
+
+/**
+ * Get the last line of a file .
+ */
 std::string GetLastLine(const std::string& f) {
     std::ifstream file(f);
     file.seekg(-1, std::ios_base::end);
@@ -186,7 +190,46 @@ std::string GetLastLine(const std::string& f) {
     std::string line;
     std::getline(file, line);
     return line;
-}
+};
+
+
+/**
+ * Generate all possible k-mer from an alphabet.
+ */
+void EnumerateMotif(std::vector<char>& alphabet, int32_t k, std::vector<std::string >& res) {
+  uint32_t n = alphabet.size();
+  if (k == 1) {
+    for (uint32_t i = 0; i < n; ++i) {
+      std::string tmp(1,alphabet[i]);
+      res.push_back(tmp);
+    }
+    return;
+  }
+  std::vector<std::string > sres;
+  EnumerateMotif(alphabet, k-1, sres);
+  for (uint32_t i = 0; i < n; ++i) {
+    std::vector<std::string > nres = sres;
+    for (uint32_t j = 0; j < nres.size(); j++) {
+      nres[j] += alphabet[i];
+    }
+    res.insert(res.end(), nres.begin(), nres.end());
+  }
+  return;
+};
+
+int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::string >& res) {
+  EnumerateMotif(alphabet,k,res);
+  return res.size();
+};
+
+
+
+
+
+
+
+
+
 
 
 

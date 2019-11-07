@@ -504,6 +504,33 @@ src/cmd_vcf_sfs.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
 .PHONY : src/cmd_vcf_sfs.cpp.s
 
+src/cmd_vcf_triallelic.o: src/cmd_vcf_triallelic.cpp.o
+
+.PHONY : src/cmd_vcf_triallelic.o
+
+# target to build an object file
+src/cmd_vcf_triallelic.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o
+.PHONY : src/cmd_vcf_triallelic.cpp.o
+
+src/cmd_vcf_triallelic.i: src/cmd_vcf_triallelic.cpp.i
+
+.PHONY : src/cmd_vcf_triallelic.i
+
+# target to preprocess a source file
+src/cmd_vcf_triallelic.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.i
+.PHONY : src/cmd_vcf_triallelic.cpp.i
+
+src/cmd_vcf_triallelic.s: src/cmd_vcf_triallelic.cpp.s
+
+.PHONY : src/cmd_vcf_triallelic.s
+
+# target to generate assembly for a file
+src/cmd_vcf_triallelic.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.s
+.PHONY : src/cmd_vcf_triallelic.cpp.s
+
 src/commands.o: src/commands.cpp.o
 
 .PHONY : src/commands.o
@@ -1365,6 +1392,9 @@ help:
 	@echo "... src/cmd_vcf_sfs.o"
 	@echo "... src/cmd_vcf_sfs.i"
 	@echo "... src/cmd_vcf_sfs.s"
+	@echo "... src/cmd_vcf_triallelic.o"
+	@echo "... src/cmd_vcf_triallelic.i"
+	@echo "... src/cmd_vcf_triallelic.s"
 	@echo "... src/commands.o"
 	@echo "... src/commands.i"
 	@echo "... src/commands.s"

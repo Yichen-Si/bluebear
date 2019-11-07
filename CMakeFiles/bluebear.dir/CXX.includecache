@@ -341,6 +341,18 @@ bcf_filter_arg.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
 bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_triallelic.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/commands.cpp
 commands.h
@@ -394,6 +406,8 @@ cstring
 getopt.h
 -
 cstdio
+-
+cstdlib
 -
 vector
 -

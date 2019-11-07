@@ -3,6 +3,7 @@
 
 #include <getopt.h>
 #include <cstdio>
+#include <cstdlib>
 #include <vector>
 #include <algorithm>
 #include <utility>

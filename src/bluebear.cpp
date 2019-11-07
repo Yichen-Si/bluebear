@@ -7,6 +7,8 @@ typedef khash_t(vdict) vdict_t;
 
 int32_t KmerCount(int32_t argc, char** argv);
 int32_t cmdVcfAddContexte(int32_t argc, char** argv);
+int32_t KmerSFS(int32_t argc, char** argv);
+int32_t MultiAllelicSites(int32_t argc, char** argv);
 
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv);
@@ -52,6 +54,10 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("kmer-count",&KmerCount, "Count total occurence of kmers from fasta file (by chr)")
     LONG_COMMAND("kmer-anno",&cmdVcfAddContexte, "Add kmer context and CpG info to VCF/BCF")
 
+    LONG_COMMAND("folded-sfs",&cmdVcfSFS, "Folded SFS from BCF/VCF")
+    LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")
+    LONG_COMMAND("triallelic",&MultiAllelicSites, "Find tri-allelic sites from BCF/VCF")
+
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
@@ -67,8 +73,6 @@ int32_t main(int32_t argc, char** argv) {
 
 
     LONG_COMMAND("vcf-rare-share",&cmdVcfRareShare, "Rare variants sharing matrix from BCF/VCF")
-
-    LONG_COMMAND("folded-sfs",&cmdVcfSFS, "Folded SFS from BCF/VCF")
 
     LONG_COMMAND("pbwt-suffix",&pbwtBuildSuffix, "Build pbwt backwards from BCF/VCF")
     LONG_COMMAND("pbwt-prefix",&pbwtBuildPrefix, "Build pbwt forwards from BCF/VCF")

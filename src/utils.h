@@ -83,8 +83,13 @@ unsigned int str_hash(const char* s, unsigned int seed = 0);
 /**
  * Get the last line of a file .
  */
-
 std::string GetLastLine(const std::string& file);
+
+/**
+ * Generate all possible k-mer from an alphabet.
+ */
+void EnumerateMotif(std::vector<char>& alphabet, int32_t k, std::vector<std::string >& res);
+int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::string >& res);
 
 #endif
 
