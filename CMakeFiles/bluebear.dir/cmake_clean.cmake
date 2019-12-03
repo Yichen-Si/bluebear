@@ -43,6 +43,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o"
   "CMakeFiles/bluebear.dir/src/kmer_count.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o"
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"

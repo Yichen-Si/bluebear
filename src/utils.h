@@ -40,8 +40,10 @@
 #include <climits>
 #include <vector>
 #include <map>
+#include <set>
 #include <queue>
 
+#include <random>
 #include "htslib/kstring.h"
 #include "htslib/khash.h"
 #include "htslib/hts.h"
@@ -90,6 +92,11 @@ std::string GetLastLine(const std::string& file);
  */
 void EnumerateMotif(std::vector<char>& alphabet, int32_t k, std::vector<std::string >& res);
 int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::string >& res);
+
+/**
+ * Sample without replacement.
+ */
+void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rng, int32_t base = 1);
 
 #endif
 

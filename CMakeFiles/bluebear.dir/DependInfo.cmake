@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/bluebear.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/bp2cm.cpp.o"
+  "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_ibs0_add_control.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_annotate_context.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_baseline.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_baseline.cpp.o"

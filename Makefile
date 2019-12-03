@@ -261,6 +261,33 @@ src/bp2cm.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bp2cm.cpp.s
 .PHONY : src/bp2cm.cpp.s
 
+src/cmd_ibs0_add_control.o: src/cmd_ibs0_add_control.cpp.o
+
+.PHONY : src/cmd_ibs0_add_control.o
+
+# target to build an object file
+src/cmd_ibs0_add_control.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o
+.PHONY : src/cmd_ibs0_add_control.cpp.o
+
+src/cmd_ibs0_add_control.i: src/cmd_ibs0_add_control.cpp.i
+
+.PHONY : src/cmd_ibs0_add_control.i
+
+# target to preprocess a source file
+src/cmd_ibs0_add_control.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.i
+.PHONY : src/cmd_ibs0_add_control.cpp.i
+
+src/cmd_ibs0_add_control.s: src/cmd_ibs0_add_control.cpp.s
+
+.PHONY : src/cmd_ibs0_add_control.s
+
+# target to generate assembly for a file
+src/cmd_ibs0_add_control.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.s
+.PHONY : src/cmd_ibs0_add_control.cpp.s
+
 src/cmd_vcf_annotate_context.o: src/cmd_vcf_annotate_context.cpp.o
 
 .PHONY : src/cmd_vcf_annotate_context.o
@@ -1365,6 +1392,9 @@ help:
 	@echo "... src/bp2cm.o"
 	@echo "... src/bp2cm.i"
 	@echo "... src/bp2cm.s"
+	@echo "... src/cmd_ibs0_add_control.o"
+	@echo "... src/cmd_ibs0_add_control.i"
+	@echo "... src/cmd_ibs0_add_control.s"
 	@echo "... src/cmd_vcf_annotate_context.o"
 	@echo "... src/cmd_vcf_annotate_context.i"
 	@echo "... src/cmd_vcf_annotate_context.s"

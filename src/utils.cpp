@@ -222,6 +222,27 @@ int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::strin
   return res.size();
 };
 
+/**
+ * Sample without replacement.
+ */
+void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rng, int32_t base) {
+  if (base == 0) {
+    for (int32_t r = N - k - 1; r < N-1; ++r) {
+      int32_t v = std::uniform_int_distribution<>(0, r)(rng);
+      if (!chosen.insert(v).second) {
+        chosen.insert(r+1);
+      }
+    }
+  } else {
+    for (int32_t r = N - k; r < N; ++r) {
+      int32_t v = std::uniform_int_distribution<>(1, r)(rng);
+      if (!chosen.insert(v).second) {
+        chosen.insert(r+1);
+      }
+    }
+  }
+};
+
 
 
 
