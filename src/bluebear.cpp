@@ -45,6 +45,7 @@ int32_t RareOnlyIBS0PhaseBackward(int32_t argc, char** argv);
 int32_t RareBlipOnlyForward(int32_t argc, char** argv);
 int32_t RareBlipOnlyStats(int32_t argc, char** argv);
 
+int32_t IBS0AddPMDistr(int32_t argc, char** argv);
 int32_t IBS0AddNoncarrierControl(int32_t argc, char** argv);
 int32_t IBS0AddOutgroupControl(int32_t argc, char** argv);
 
@@ -101,6 +102,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
     LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")
 
+LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
 LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
 LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
 

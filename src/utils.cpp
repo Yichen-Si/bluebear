@@ -1,26 +1,3 @@
-/* The MIT License
-
-   Copyright (c) 2013 Adrian Tan <atks@umich.edu>
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in
-   all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-   THE SOFTWARE.
-*/
-
 #include "utils.h"
 
 /**
@@ -243,7 +220,32 @@ void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rn
   }
 };
 
-
+void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::vector<int32_t> & avoid, std::mt19937& rng, int32_t base) {
+  if (base == 0) {
+    for (int32_t r = N - k - 1; r < N-avoid.size()-1; ++r) {
+      int32_t v = std::uniform_int_distribution<>(0, r)(rng);
+      if (!chosen.insert(v).second) {
+        chosen.insert(r+1);
+      }
+    }
+  } else {
+    for (int32_t r = N - k; r < N; ++r) {
+      int32_t v = std::uniform_int_distribution<>(1, r)(rng);
+      if (!chosen.insert(v).second) {
+        chosen.insert(r+1);
+      }
+    }
+  }
+  int32_t ct = 1 - base;
+  for (auto & v : avoid) {
+    auto it = chosen.find(v);
+    if (it != chosen.end()) {
+      chosen.erase(it);
+      chosen.insert(N-ct);
+    }
+    ct++;
+  }
+};
 
 
 

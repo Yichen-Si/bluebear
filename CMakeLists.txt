@@ -60,6 +60,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/kmer_count.cpp
     src/cmd_vcf_triallelic.cpp
     src/cmd_ibs0_add_control.cpp
+    src/ibs0_between_group_control.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h
