@@ -6,7 +6,7 @@ public:
   bcf1_t* iv;
   int32_t ac;
   int32_t **ibs0mat; // ac x ac matrix of ibs0 pos; upper-right; lower-left
-  std::mat<int32_t, uint32_t> id_index; // abs id -> index in ibs0mat
+  std::map<int32_t, uint32_t> id_index; // abs id -> index in ibs0mat
   std::vector<int32_t> id_list;
   std::vector<int32_t> subset1,subset2;
   int32_t AvgDist = 0;
@@ -15,7 +15,7 @@ public:
   int32_t finished = 0; // Count number of pairs with both ibs0 found
 
 RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
-  ibs0mat = new *int32_t[ac];
+  ibs0mat = new int32_t*[ac];
   for (int32_t i = 0; i < ac; ++i) {
     ibs0mat[i] = new int32_t[ac]{0};
   }
@@ -41,7 +41,7 @@ void Add_id(std::vector<int32_t>& idvec) {
 }
 
 bool Add(int32_t id1, int32_t id2, int32_t st, int32_t ed) {
-  int32_t i, j, tmp;
+  int32_t i=0, j=0, tmp=0;
   try {
     i = id_index.at(id1);
     j = id_index.at(id2);
@@ -107,10 +107,10 @@ bool Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t direction) {
 
 // Build a tree. TODO: this is slow
 void Organize(bp2cmMap& pgmap) {
-  int32_t pt1, pt2, m=ac;
-  vector<vector<int32_t>* > nodelist(m);
+  int32_t pt1=0, pt2=1, m=ac;
+  std::vector<std::vector<int32_t>* > nodelist(m);
   for (int32_t it = 0; it < m; ++it) {
-    nodelist[it] = new vector<int32_t> {it};
+    nodelist[it] = new std::vector<int32_t> {it};
   }
   for (int32_t i = 0; i < m - 2; i++) { // m-2 merging events
     int32_t maxsim = 0;
@@ -138,7 +138,7 @@ void Organize(bp2cmMap& pgmap) {
       pt1 = m-i-1;
     }
     else {
-      vector<int32_t>* tmp = nodelist[m-i-1];
+      std::vector<int32_t>* tmp = nodelist[m-i-1];
       nodelist[m-i-1] = nodelist[pt1];
       nodelist[pt1] = tmp;
     }

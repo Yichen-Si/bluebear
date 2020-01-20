@@ -13,15 +13,16 @@
 //         rare variants from the given region
 int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   std::string inVcf, inMap, chrom, reg, oreg;
-  std::string out, outf;
+  std::string out;
   int32_t min_hom_gts = 1;
-  int32_t verbose = 10000;
+  int32_t verbose = 1000;
   int32_t min_variant = 1;
   int32_t max_rare_ac = 10;
   int32_t start, end;
-  int32_t leftover = 20, maxoutreach = 3000000;
+  int32_t leftover = 20;
   int32_t cst = -1, ced = -1;
   int32_t ck_len = 500000;
+  int32_t bp_limit = 3000000;
   double  cm_limit =2.0;
 
   bcf_vfilter_arg vfilt;
@@ -46,7 +47,8 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     LONG_INT_PARAM("min-hom",&min_hom_gts, "Minimum number of homozygous genotypes to be counted for IBS0")
     LONG_INT_PARAM("min-variant",&min_variant, "Minimum number of variants to present to have output file")
     LONG_INT_PARAM("left-over",&leftover, "Stop when only x pairs are left")
-    LONG_INT_PARAM("out-reach",&maxoutreach, "How far to look forward & backward")
+    LONG_INT_PARAM("out-reach-bp",&bp_limit, "How far to look forward & backward (bp)")
+    LONG_DOUBLE_PARAM("out-reach-cm",&cm_limit, "How far to look forward & backward (cm)")
 
     LONG_INT_PARAM("max-rare",&max_rare_ac, "Maximal minor allele count to be considered as anchor for IBD")
 
@@ -86,41 +88,43 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
 
   // bcf writer (site only)
   BCFOrderedWriter odw(out.c_str(),0);
-  bcf_hdr_t* hnull = bcf_hdr_subset(odr->hdr, 0, 0, 0);
+  bcf_hdr_t* hnull = bcf_hdr_subset(odr.hdr, 0, 0, 0);
   bcf_hdr_remove(hnull, BCF_HL_FMT, NULL);
   odw.set_hdr(hnull);
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "BiCluster" ) < 0 ) {
+  char buffer[65536];
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "BiCluster" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=BiCluster,Number=1,Type=String,Description=\"Sizes of the two subtree\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "LeftSet" ) < 0 ) {
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "LeftSet" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=LeftSet,Number=1,Type=String,Description=\"Individual ID in one subset\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "RightSet" ) < 0 ) {
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "RightSet" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=RightSet,Number=1,Type=String,Description=\"Individual ID in another subset\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "Carriers" ) < 0 ) {
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "Carriers" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=Carriers,Number=1,Type=String,Description=\"Individual ID carrying the rare allele\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "AvgDist_bp" ) < 0 ) {
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AvgDist_bp" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=AvgDist_bp,Number=1,Type=Integer,Description=\"Average no-IBS0 length between two clusters, in bp\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "AvgDist_cM" ) < 0 ) {
-    sprintf(buffer,"##INFO=<ID=AvgDist_cm,Number=1,Type=Float,Description=\"Average no-IBS0 length between two clusters, in cM\">\n");
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AvgDist_cM" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=AvgDist_cM,Number=1,Type=Float,Description=\"Average no-IBS0 length between two clusters, in cM\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "LeftIBS0" ) < 0 ) {
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "LeftIBS0" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=LeftIBS0,Number=1,Type=String,Description=\"Pairwise IBS0 position to the left\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "RightIBS0" ) < 0 ) {
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "RightIBS0" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=RightIBS0,Number=1,Type=String,Description=\"Pairwise IBS0 position to the right\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
+  odw.write_hdr();
 
   // handle filter string
   std::string filter_str;
@@ -165,10 +169,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
 
   IBS0lookup ibs0finder(inVcf, reg, pgmap, cm_limit, ck_len, 1);
 
-  uint8_t* gtRR = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
-  uint8_t* gtAA = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
-
-  std::map<int32_t, std::map<int32_t, RareVariant*> > idpair;
+  // std::map<int32_t, std::map<int32_t, RareVariant*> > idpair;
   std::map<int32_t, RareVariant*> snplist;
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -213,11 +214,10 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
     if (info_ac[0] < 2) {continue;}
     if (bcf_get_info_int32(odr.hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
-    int32_t ifflip = 0, ac = 0, an = 0;
+    int32_t ac = 0, an = 0;
     ac = info_ac[0]; an = info_an[0];
     if (ac > an/2) {
       ac = an - ac;
-      ifflip = 1;
     }
     if (ac < 2 || ac > max_rare_ac) {continue;}
 
@@ -236,7 +236,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       }
     } // Found carriers (have to be het)
     // TODO: here we ignore rare varaiants with any hom carrier
-    if (carry.size() != ac) {continue;}
+    if ((int32_t) carry.size() != ac) {continue;}
 
     // Creat a new RareVariant record
     pos = iv->pos+1;
@@ -264,23 +264,23 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       std::stringstream ss;
       std::string sstr;
       ss << rare->subset1.size() << "," << (ac - rare->subset1.size());
-      bcf_update_info_string(odw->hdr, nv, "BiCluster", ss.str().c_str());
+      bcf_update_info_string(odw.hdr, nv, "BiCluster", ss.str().c_str());
 
       ss.str(std::string());
       for (auto & v : rare->subset1)
         ss << v << ',';
       sstr = ss.str(); sstr.pop_back();
-      bcf_update_info_string(odw->hdr, nv, "LeftSet", sstr.c_str());
+      bcf_update_info_string(odw.hdr, nv, "LeftSet", sstr.c_str());
       ss.str(std::string());
       for (auto & v : rare->subset2)
         ss << v << ',';
       sstr = ss.str(); sstr.pop_back();
-      bcf_update_info_string(odw->hdr, nv, "RightSet", sstr.c_str());
+      bcf_update_info_string(odw.hdr, nv, "RightSet", sstr.c_str());
       ss.str(std::string());
       for (auto & v : rare->id_list) // Redundant
         ss << v << ',';
       sstr = ss.str(); sstr.pop_back();
-      bcf_update_info_string(odw->hdr, nv, "Carriers", sstr.c_str());
+      bcf_update_info_string(odw.hdr, nv, "Carriers", sstr.c_str());
 
       bcf_update_info_int32(odw.hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
       bcf_update_info_float(odw.hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
@@ -288,20 +288,20 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       ss.str(std::string());
       for (int32_t i = 0; i < ac-1; ++i) {
         for (int32_t j = i+1; j < ac; ++j) {
-          ss << rare->ibs0mat[j][i] << ','
+          ss << rare->ibs0mat[j][i] << ',';
         }
       }
       sstr = ss.str(); sstr.pop_back();
-      bcf_update_info_string(odw->hdr, nv, "LeftIBS0", sstr.c_str());
+      bcf_update_info_string(odw.hdr, nv, "LeftIBS0", sstr.c_str());
 
       ss.str(std::string());
       for (int32_t i = 0; i < ac-1; ++i) {
         for (int32_t j = i+1; j < ac; ++j) {
-          ss << rare->ibs0mat[i][j] << ','
+          ss << rare->ibs0mat[i][j] << ',';
         }
       }
       sstr = ss.str(); sstr.pop_back();
-      bcf_update_info_string(odw->hdr, nv, "RightIBS0", sstr.c_str());
+      bcf_update_info_string(odw.hdr, nv, "RightIBS0", sstr.c_str());
 
       odw.write(nv);
       delete rare;
@@ -312,8 +312,8 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     nVariant++;
 
   }
-  notice("Finished first pass. Processed %d rare variants across %d samples; finished %d.", mac.size(), nVariant, nsamples, nFinished);
-
+  notice("Finished first pass. Processed %d rare variants across %d samples; finished %d.", nVariant, nsamples, nFinished);
+  odw.close();
 
   return 0;
 }

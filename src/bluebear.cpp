@@ -71,7 +71,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
 
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
-    LONG_COMMAND("ibs0-scan",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
+    LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 
     LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 

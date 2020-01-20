@@ -274,6 +274,28 @@ bcf_ordered_writer.h
 hts_utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
 
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+bcf_ordered_writer.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
+compact_matrix.h
+/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
+iomanip
+-
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+rare_variant_ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0.cpp
 cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
@@ -915,6 +937,8 @@ cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
 utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/reference_sequence.cpp
 reference_sequence.h
