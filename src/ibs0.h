@@ -56,14 +56,16 @@ public:
 
   // Update to delete & add blocks to cover a new region
   int32_t Update (const std::string &_reg);
-
-  ~IBS0lookup() {
+  int32_t Update_Fixed (const std::string &_reg);
+  void Clear() {
     for (uint32_t it = 0; it < start_que.size(); ++it) {
       delete bmatAA_que[it];
       delete bmatRR_que[it];
       delete posvec_que[it];
     }
   }
+
+  ~IBS0lookup() {Clear();}
 
 };
 
