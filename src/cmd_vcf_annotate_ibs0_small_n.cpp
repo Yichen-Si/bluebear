@@ -169,7 +169,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
 
   IBS0lookup ibs0finder(inVcf, reg, pgmap, cm_limit, ck_len, 1);
 
-  // std::map<int32_t, std::map<int32_t, RareVariant*> > idpair;
+  std::map< std::pair<int32_t, int32_t>, std::vector<RareVariant*> > idpair;
   std::map<int32_t, RareVariant*> snplist;
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -252,9 +252,22 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       for (int32_t j = i+1; j < ac; ++j) {
         int32_t r = ibs0finder.FindIBS0(carry[i],carry[j],pos,0);
         int32_t l = ibs0finder.FindIBS0(carry[i],carry[j],pos,1);
-        if (l < 0) {l = ibs0finder.start_que[0];} // Temp
-        if (r < 0) {r = ibs0finder.posvec_que.back()->back();} // Temp
-        fin = rare->Add(carry[i], carry[j], l, r);
+        // if (l < 0) {l = ibs0finder.start_que[0];} // Temp
+        // if (r < 0) {r = ibs0finder.posvec_que.back()->back();} // Temp
+        if (l > 0 && r > 0)
+          fin = rare->Add(carry[i], carry[j], l, r);
+        else if (l > 0)
+          fin = rare->Add_half(carry[i], carry[j], l, 1);
+        else if (r > 0)
+          fin = rare->Add_half(carry[i], carry[j], r, 2);
+        if (l < 0 || r < 0) {
+          std::pair<int32_t, int32_t> kpair(carry[i],carry[j]);
+          auto ptr = idpair.find(kpair);
+          if (ptr != idpair.end())
+            ptr->second.push_back(rare);
+          else
+            idpair[kpair] = std::vector<RareVariant*>{rare};
+        }
       }
     }
     if (fin) {
@@ -313,6 +326,37 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
 
   }
   notice("Finished first pass. Processed %d rare variants across %d samples; finished %d.", nVariant, nsamples, nFinished);
+
+  // Look backward
+  int32_t wed = end;
+  int32_t wst = start;
+  str::string wreg;
+  while (snplist.size() > 0 && wst > 0) {
+    wed = wst - 1;
+    wst = wed - ck_len + 2;
+    wreg = chrom + ":" + std::to_string(wst) + "-" + std::to_string(wed);
+    ibs0finder.Update_Fixed(wreg);
+    for (auto & itr : idpair) {
+      int32_t l = ibs0finder.FindIBS0(itr->first.first,itr->first.second,wed,1);
+      if (l > 0) {
+        for (auto & ptr : itr->second) {
+          fin = ptr->Add_half(itr->first.first,itr->first.second,l,1);
+          if (fin) {
+            // Output
+            // Delete the record
+            snplist.erase(ptr->iv->pos+1); // map
+            itr->second.erase(ptr);        // vector
+            delete ptr;
+          }
+        }
+        if (itr->second.size() == 0)
+          idpair.erase(itr);
+      }
+    }
+  }
+
+
+
   odw.close();
 
   return 0;

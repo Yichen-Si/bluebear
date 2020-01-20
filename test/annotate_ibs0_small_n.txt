@@ -1,0 +1,9 @@
+
+// Example test command for annotating ibs0 (small scale)
+
+command time -v /net/wonderland/home/ycsi/tool/bluebear/bin/bluebear anno-ibs0-small --in-vcf /net/wonderland/home/ycsi/IBD/ibs0/Data/topmed/vcf/minDP10/topmed.EUR.8k.chr20.gtonly.minDP10.filtered.rehdr.bcf --region chr20:10000000-10100000 --map /net/wonderland/home/ycsi/Data/Map/plink.chr20.GRCh38.map --max-rare 10 --out-reach-cm 2.0 --out /net/wonderland/home/ycsi/IBD/ibs0/Data/test/ibs0anno.sites.vcf --verbose 1000
+
+// Example command for annotating sequence context
+// Take a while... 8k chr20 63.36s
+command time -v /net/wonderland/home/ycsi/tool/bluebear/bin/bluebear kmer-anno --in-vcf /net/wonderland/home/ycsi/IBD/ibs0/Data/topmed/vcf/minDP10/topmed.EUR.8k.chr20.gtonly.minDP10.filtered.rehdr.bcf --in-fasta /net/wonderland/home/ycsi/Data/Ref/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --out /net/wonderland/home/ycsi/IBD/ibs0/Data/test/ibs0anno.ctx.sites.vcf --chr chr20 --kmer 9
+

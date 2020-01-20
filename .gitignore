@@ -31,8 +31,8 @@
 *.out
 *.app
 
-test/
-test/*
+# test/
+# test/*
 
 bin/
 bin/*
