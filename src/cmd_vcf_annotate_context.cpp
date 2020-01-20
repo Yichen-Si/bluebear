@@ -145,6 +145,9 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
     if (bcf_get_info_int32(odr->hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
 
     bcf1_t* nv = bcf_dup(iv);
+    bcf_unpack(nv, BCF_UN_ALL);
+    if (!withGT)
+      bcf_subset(odw.hdr, nv, 0, 0);
     ac = info_ac[0]; an = info_an[0];
     ctx = fa_kmer(fai, val, iv->pos, kmer);
     refcpg = "F";
