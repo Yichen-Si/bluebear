@@ -18,6 +18,7 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
 int32_t cmdVcfIBS0full(int32_t argc, char** argv);
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
+int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv);
 
 int32_t cmdIBS0Bridge(int32_t argc, char** argv);
 int32_t mapPt2Interval(int32_t argc, char** argv);
@@ -70,6 +71,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
 
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
+    LONG_COMMAND("ibs0-scan",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 
     LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 
