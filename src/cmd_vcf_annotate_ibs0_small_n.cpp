@@ -49,7 +49,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   int32_t min_variant = 1;
   int32_t max_rare_ac = 10;
   int32_t start, end;
-  int32_t leftover = 20;
+  int32_t leftover = 0;
   int32_t cst = -1, ced = -1;
   int32_t ck_len = 500000;
   int32_t bp_limit = 1000000;
@@ -77,7 +77,9 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     LONG_INT_PARAM("min-hom",&min_hom_gts, "Minimum number of homozygous genotypes to be counted for IBS0")
     LONG_INT_PARAM("min-variant",&min_variant, "Minimum number of variants to present to have output file")
     LONG_INT_PARAM("left-over",&leftover, "Stop when only x pairs are left")
-    LONG_INT_PARAM("out-reach-bp",&bp_limit, "The length of window to store common (0/1/2) variants (bp)")
+    LONG_INT_PARAM("bp-limit",&bp_limit, "The length of window to store common (0/1/2) variants (bp)")
+    LONG_INT_PARAM("max-left-over",&leftover, "Allowing some variants to remain unfinished")
+
     // LONG_DOUBLE_PARAM("out-reach-cm",&cm_limit, "How far to look forward & backward (cm)")
 
     LONG_INT_PARAM("max-rare",&max_rare_ac, "Maximal minor allele count to be considered as anchor for IBD")
@@ -323,7 +325,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   int32_t wst = bound1;
   int32_t pct = 0, fin = 0;
   std::string wreg;
-  while (idpair_l.size() > 0 && wst > pgmap.minpos) {
+  while (idpair_l.size() > 0 && snplist.size() > leftover && wst > pgmap.minpos) {
     pct = 0;
     wed = wst - 1;
     wst = std::max(wed - bp_limit, 0);
@@ -359,7 +361,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     }
     notice("Looking backward. Found %d more end points in %s; %d pairs still miss left ibs0; %d rare variants left.", pct, wreg.c_str(), idpair_l.size(), nVariant-nFinished);
   }
-  if (idpair_l.size() > 0) {
+  if (wst <= pgmap.minpos) {
     auto itr = idpair_l.cbegin();
     while (itr != idpair_l.cend()) {
       int32_t l = pgmap.minpos;
@@ -385,7 +387,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   // Look forward
   wed = bound2;
   wst = bound1;
-  while (idpair_r.size() > 0 && wst < pgmap.maxpos) {
+  while (idpair_r.size() > 0 && snplist.size() > leftover && wst < pgmap.maxpos) {
     pct = 0;
     wst = wed + 1;
     wed = wst + bp_limit;
@@ -421,7 +423,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     }
     notice("Looking forward. Found %d more end points in %s; %d pairs still miss right ibs0; %d rare variants left.", pct, wreg.c_str(), idpair_r.size(), nVariant-nFinished);
   }
-  if (idpair_r.size() > 0) {
+  if (wst >= pgmap.maxpos) {
     auto itr = idpair_r.cbegin();
     while (itr != idpair_r.cend()) {
       int32_t r = pgmap.maxpos;
@@ -443,6 +445,13 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       itr = idpair_r.erase(itr);
     }
   }
+
+  // Output those unfinished variants
+  if (snplist.size() > 0) {
+    for (auto ptr : snplist)
+      odw.write(ptr.second->iv);
+  }
+
 
   odw.close();
 
