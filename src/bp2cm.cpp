@@ -123,8 +123,6 @@ double bp2cmMap::bp2cm(int32_t pos) {
       mindist = std::abs(rec.first-pos);
     }
   }
-  if (cm <1e-6)
-    std::cout<< "Warning: " << pos << '\t' << mindist << '\t' << cm << '\n';
   return cm;
 }
 

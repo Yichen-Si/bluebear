@@ -10,7 +10,7 @@ public:
   std::vector<int32_t> id_list;
   std::vector<int32_t> subset1,subset2;
   int32_t AvgDist = 0;
-  double AvgDist_cm = 0.0;
+  float AvgDist_cm = 0.0;
   int32_t ovst = -1, oved = -1; // st & ed of the overlap region
   int32_t finished = 0; // Count number of pairs with both ibs0 found
 
@@ -69,7 +69,7 @@ bool Add(int32_t id1, int32_t id2, int32_t st, int32_t ed) {
 }
 
 bool Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t direction) {
-  int32_t i, j, tmp;
+  int32_t i = 0, j = 0, tmp = 0;
   try {
     i = id_index.at(id1);
     j = id_index.at(id2);

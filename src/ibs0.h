@@ -58,11 +58,15 @@ public:
   int32_t Update (const std::string &_reg);
   int32_t Update_Fixed (const std::string &_reg);
   void Clear() {
-    for (uint32_t it = 0; it < start_que.size(); ++it) {
+    for (uint32_t it = 0; it < bmatAA_que.size(); ++it) {
       delete bmatAA_que[it];
       delete bmatRR_que[it];
       delete posvec_que[it];
     }
+    bmatAA_que.clear();
+    bmatRR_que.clear();
+    posvec_que.clear();
+    start_que.clear();
   }
 
   ~IBS0lookup() {Clear();}
