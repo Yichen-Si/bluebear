@@ -3,6 +3,7 @@
 #include "bcf_ordered_reader.h"
 #include "bcf_ordered_writer.h"
 #include "hts_utils.h"
+#include "gmap.h"
 
 // struct Faival {
 //   int64_t len, offset, line_blen, line_len;
@@ -67,15 +68,24 @@
 
 
 int32_t test(int32_t argc, char** argv) {
+
+  std::string inMap;
+  int32_t pos = 1000000, st = 15000000, ed = 16000000;
   // std::string inVcf, inFa, chrom, out;
   // int32_t kmer = 7;
   // int64_t verbose = 50000;
   // bool withGT = false;
 
-  // paramList pl;
-  // BEGIN_LONG_PARAMS(longParameters)
-  //   LONG_PARAM_GROUP("Input", NULL)
-  //   LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF file to annotate")
+  paramList pl;
+  BEGIN_LONG_PARAMS(longParameters)
+    LONG_PARAM_GROUP("Input", NULL)
+    LONG_STRING_PARAM("in-map",&inMap, "Input map file")
+    LONG_INT_PARAM("pos",&pos, "POS")
+    LONG_INT_PARAM("st",&st, "ST")
+    LONG_INT_PARAM("ed",&ed, "ED")
+
+    // LONG_PARAM_GROUP("Additional Options", NULL)
+    // LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF file to annotate")
   //   LONG_STRING_PARAM("in-fasta",&inFa, "Input Fasta file")
   //   LONG_STRING_PARAM("chr",&chrom,"Chromosome to process")
 
@@ -86,99 +96,19 @@ int32_t test(int32_t argc, char** argv) {
   //   LONG_STRING_PARAM("out", &out, "Output VCF/BCF file")
   //   LONG_PARAM("with-GT", &withGT, "If GT field is included in input VCF/BCF and should be written to output VCF/BCF")
 
-  // END_LONG_PARAMS();
-  // pl.Add(new longParams("Available Options", longParameters));
-  // pl.Read(argc, argv);
-  // pl.Status();
+  END_LONG_PARAMS();
+  pl.Add(new longParams("Available Options", longParameters));
+  pl.Read(argc, argv);
+  pl.Status();
 
-  // if ( inVcf.empty() || inFa.empty() || chrom.empty() || out.empty() ) {
-  //   error("[E:%s:%d %s] --in-vcf, --in-fasta, --chr, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
-  // }
+  gMap pgmap(inMap, " ", "19");
+  std::cout << pgmap.minpos << '\t' << pgmap.maxpos << '\n';
+  std::cout << pgmap.maxcm  << '\t' << pgmap.ctrcm  << '\n';
+  std::cout << pgmap.centromere_st << '\t' << pgmap.centromere_ed << '\n';
+  std::cout << pgmap.bp2cm(pos) << '\n';
+  std::cout << pgmap.bpinterval2cm(st,ed) << '\n';
 
-  // faidx_t *fai = fai_load(inFa.c_str());
-  // // Read .fai index
-  // std::string fnfai = inFa + ".fai";
-  // FaReader findx(fnfai);
-  // Faival *val = findx.FindFaiVal(chrom);
-  // if (val == NULL) {
-  //   error("Cannot find fai index for this chromosome");
-  // }
-  // notice("Initialized reader of fasta file. Index info: %ld\t%ld\t%ld\t%ld\n ", val->len, val->offset, val->line_blen, val->line_len);
-
-
-  // // setup input & output BCF/VCF file
-  // std::vector<GenomeInterval> intervals;
-  // BCFOrderedReader* odr = new BCFOrderedReader(inVcf, intervals);
-  // bcf1_t* iv = bcf_init();
-
-  // BCFOrderedWriter odw(out.c_str(),0);
-  // if (withGT) {
-  //   odw.set_hdr(odr->hdr);
-  // } else {
-  //   bcf_hdr_t* hnull = bcf_hdr_subset(odr->hdr, 0, 0, 0);
-  //   bcf_hdr_remove(hnull, BCF_HL_FMT, NULL);
-  //   odw.set_hdr(hnull);
-  // }
-
-  // char buffer[65536];
-  // // check the existence of header and create one if needed
-  // if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "CpG") < 0 ) {
-  //   sprintf(buffer,"##INFO=<ID=CpG,Number=0,Type=String,Description=\"If the variant is at a CpG site with the ref/major allele being the C\">\n");
-  //   bcf_hdr_append(odw.hdr, buffer);
-  // }
-  // if ( bcf_hdr_id2int(odr->hdr, BCF_DT_ID, "CONTEXT") < 0 ) {
-  //   sprintf(buffer,"##INFO=<ID=CONTEXT,Number=1,Type=String,Description=\"Nucleotide context from 5\'to 3\': %d bases motif around a variant\">\n", kmer);
-  //   bcf_hdr_append(odw.hdr, buffer);
-  // }
-  // odw.write_hdr();
-
-  // // Process each variant and retrieve kmer context
-  // int32_t k = 0, vb = 0;
-  // int32_t mpt = kmer/2;
-  // int32_t *info_ac = NULL, *info_an = NULL;
-  // int32_t n_ac = 0, n_an = 0, ac, an;
-  // std::string ctx, cpg, refcpg, majcpg;
-  // for(; odr->read(iv); ++k) {
-  //   // if (k > 100) {break;}
-  //   if ( k % verbose == 0 )
-  //     notice("Processing %d markers at %s:%d.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1);
-  //   if (bcf_get_info_int32(odr->hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
-  //   if (bcf_get_info_int32(odr->hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
-  //   char* als = (iv->d).als;
-  //   int32_t altct = 0;
-  //   for (int32_t it = 0; it < (sizeof(als)/sizeof(als[0])); ++it) {
-  //     if (isgraph(als[it]) && als[it] != ' ')
-  //       altct++;
-  //   }
-
-  //   bcf1_t* nv = bcf_dup(iv);
-  //   ac = info_ac[0]; an = info_an[0];
-  //   ctx = fa_kmer(fai, val, iv->pos, kmer);
-  //   refcpg = "F";
-  //   majcpg = "F";
-
-  //   if (altct == 2) { // SNP
-  //     if (ctx[mpt]=='C' && ctx[mpt+1]=='G') { // Ref CpG
-  //       refcpg = "T";
-  //     }
-  //     if (ac <= an/2) { // Ref == Major
-  //       majcpg = refcpg;
-  //     } else {
-  //       if ((iv->d).allele[1][0]=='C' && ctx[mpt+1]=='G') { // Major CpG
-  //         majcpg="T";
-  //       }
-  //     }
-  //   }
-
-  //   cpg = refcpg+majcpg;
-  //   bcf_update_info_string(odw.hdr, nv, "CpG", cpg.c_str());
-  //   bcf_update_info_string(odw.hdr, nv, "CONTEXT", ctx.c_str());
-  //   odw.write(nv);
-  //   bcf_destroy(nv);
-  // }
-
-  // odw.close();
-  // return 0;
+  return 0;
 }
 
 

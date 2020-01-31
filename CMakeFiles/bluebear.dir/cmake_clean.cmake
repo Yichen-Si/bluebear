@@ -46,6 +46,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o"
+  "CMakeFiles/bluebear.dir/src/gmap.cpp.o"
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"

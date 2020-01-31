@@ -466,6 +466,19 @@ CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/genotype_concordance.h
  /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
  /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/gmap.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o
  ../htslib/include/htslib/bgzf.h
  ../htslib/include/htslib/faidx.h
@@ -1020,6 +1033,7 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
  /net/wonderland/home/ycsi/tool/bluebear/src/filter.h
  /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
  /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h

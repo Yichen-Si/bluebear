@@ -62,6 +62,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_ibs0_add_control.cpp
     src/ibs0_between_group_control.cpp
     src/cmd_vcf_annotate_ibs0_small_n.cpp
+    src/gmap.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h
@@ -93,7 +94,8 @@ set(ibs0phase_HEADERS src/cramore.h
     src/pbwt_build.h
     src/bp2cm.h
     src/ibs0.h
-    src/rare_variant_ibs0.h)
+    src/rare_variant_ibs0.h
+    src/gmap.h)
 
 add_executable(bluebear ${ibs0phase_SOURCES} ${ibs0phase_HEADERS})
 target_link_libraries(bluebear ${CMAKE_SOURCE_DIR}/../htslib/libhts.a dl pthread lzma z bz2 curl crypto)

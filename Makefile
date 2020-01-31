@@ -720,6 +720,33 @@ src/genotype_concordance.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.s
 .PHONY : src/genotype_concordance.cpp.s
 
+src/gmap.o: src/gmap.cpp.o
+
+.PHONY : src/gmap.o
+
+# target to build an object file
+src/gmap.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/gmap.cpp.o
+.PHONY : src/gmap.cpp.o
+
+src/gmap.i: src/gmap.cpp.i
+
+.PHONY : src/gmap.i
+
+# target to preprocess a source file
+src/gmap.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/gmap.cpp.i
+.PHONY : src/gmap.cpp.i
+
+src/gmap.s: src/gmap.cpp.s
+
+.PHONY : src/gmap.s
+
+# target to generate assembly for a file
+src/gmap.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/gmap.cpp.s
+.PHONY : src/gmap.cpp.s
+
 src/hap_ibd_pbwt.o: src/hap_ibd_pbwt.cpp.o
 
 .PHONY : src/hap_ibd_pbwt.o
@@ -1497,6 +1524,9 @@ help:
 	@echo "... src/genotype_concordance.o"
 	@echo "... src/genotype_concordance.i"
 	@echo "... src/genotype_concordance.s"
+	@echo "... src/gmap.o"
+	@echo "... src/gmap.i"
+	@echo "... src/gmap.s"
 	@echo "... src/hap_ibd_pbwt.o"
 	@echo "... src/hap_ibd_pbwt.i"
 	@echo "... src/hap_ibd_pbwt.s"

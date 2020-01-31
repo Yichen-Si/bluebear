@@ -554,6 +554,18 @@ hts_utils.h
 Error.h
 /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
 
+/net/wonderland/home/ycsi/tool/bluebear/src/gmap.cpp
+gmap.h
+/net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+fstream
+-
+algorithm
+-
+
 /net/wonderland/home/ycsi/tool/bluebear/src/hap_ibd_pbwt.cpp
 cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
@@ -961,6 +973,8 @@ bcf_ordered_writer.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
 hts_utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+gmap.h
+/net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/trio_phase.cpp
 bcf_filter_arg.h

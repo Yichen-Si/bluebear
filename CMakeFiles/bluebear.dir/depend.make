@@ -466,6 +466,19 @@ CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: src/genotype_concordance
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: src/hts_utils.h
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: src/utils.h
 
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/hts.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/hts_defs.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/hts_endian.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/kstring.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/sam.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/vcf.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: ../htslib/include/htslib/vcfutils.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: src/gmap.cpp
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: src/gmap.h
+CMakeFiles/bluebear.dir/src/gmap.cpp.o: src/utils.h
+
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/faidx.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/hts.h
@@ -1019,6 +1032,7 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_ordered_writer.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/cramore.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/filter.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/genome_interval.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/gmap.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/hts_utils.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval_tree.h

@@ -43,7 +43,6 @@ bp2cmMap::bp2cmMap(const std::string &inMap, const char* sep,
       } else if (minpos > 1e06) { // chr22
         cst = 10864561;
         ced = 12915808;
-        std::cout << "Warning: chr 22 " << cst <<'\t' <<ced << '\n';
       } else {
         prepos = it->first;
         precm  = it->second;
