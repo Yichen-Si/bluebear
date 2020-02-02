@@ -227,6 +227,8 @@ bp2cm.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
 utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 fstream
@@ -285,12 +287,8 @@ bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
 bcf_ordered_writer.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
-compact_matrix.h
-/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
 iomanip
 -
-bp2cm.h
-/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
 ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
 rare_variant_ibs0.h
@@ -342,6 +340,24 @@ bcf_ordered_reader.h
 compact_matrix.h
 /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
 bitset
+-
+
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_short.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+bcf_ordered_writer.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+rare_variant_ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+stdio.h
 -
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_unconditional.cpp
@@ -553,18 +569,6 @@ hts_utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
 Error.h
 /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
-
-/net/wonderland/home/ycsi/tool/bluebear/src/gmap.cpp
-gmap.h
-/net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
-
-/net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
-utils.h
-/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
-fstream
--
-algorithm
--
 
 /net/wonderland/home/ycsi/tool/bluebear/src/hap_ibd_pbwt.cpp
 cramore.h
@@ -973,8 +977,10 @@ bcf_ordered_writer.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
 hts_utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
-gmap.h
-/net/wonderland/home/ycsi/tool/bluebear/src/gmap.h
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/trio_phase.cpp
 bcf_filter_arg.h

@@ -10,12 +10,13 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv);
 int32_t KmerSFS(int32_t argc, char** argv);
 int32_t MultiAllelicSites(int32_t argc, char** argv);
 
-int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv);
-int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv);
-int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv);
+int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
+int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
+int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0View(int32_t argc, char** argv);
-int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
-int32_t cmdVcfIBS0full(int32_t argc, char** argv);
+int32_t cmdVcfIBS0Flank(int32_t argc, char** argv); // zz
+int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
+int32_t RandomPairIBS0(int32_t argc, char** argv);
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv);
@@ -63,12 +64,14 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")
     LONG_COMMAND("triallelic",&MultiAllelicSites, "Find tri-allelic sites from BCF/VCF")
 
+    // Temperary ibs0 tests
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length (null distribution) from BCF/VCF")
     LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
+    LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
 
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")

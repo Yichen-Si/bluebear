@@ -1,175 +1,8 @@
 #include "ibs0.h"
+#include "ibs0finder.h"
 
-int32_t IBS0inOneBlock(bitmatrix* bmatRR, bitmatrix* bmatAA,
-                       std::vector<int32_t>* posvec,
-                       int32_t i, int32_t j, bool reverse,
-                       int32_t start, int32_t _ptr) {
-
-  uint8_t* iRR = bmatRR->get_row_bits(i);
-  uint8_t* iAA = bmatAA->get_row_bits(i);
-  uint8_t* jRR = bmatRR->get_row_bits(j);
-  uint8_t* jAA = bmatAA->get_row_bits(j);
-  int32_t  ptr = 0; // Index in this block
-  int32_t  k, bpos; // Index in bitmat
-
-  // Locate the starting point
-  if (_ptr >= 0) {
-    ptr = _ptr;
-  } else {
-    ptr = posvec->size() - 1;
-    if (start > 0) {
-      while(ptr > 0 && (*posvec)[ptr] > start) {ptr--;}
-    } else {
-      if (!reverse)
-        ptr = 0;
-    }
-    if (ptr < 0 && reverse) {
-      error("Out of boundary in looking for ibs0 in block.");
-    }
-  }
-
-  if (start < 0 && !reverse) {start = (*posvec)[0];}
-  if (start < 0 &&  reverse) {start = posvec->back();}
-
-  bpos = (ptr > 0) ? ((ptr + 1) >> 3) : 0;
-  k = bpos;
-
-  // Process the block closest to / containing the starting pos
-  uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
-  if (byte) {
-    if (reverse) {
-      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-        int32_t pt = k*8+(7-bit);
-        if ( ((byte >> bit) & 0x01) && ((*posvec)[pt] <= start) ) {
-          return (*posvec)[pt];
-        }
-      }
-    }
-    else {
-      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-        int32_t pt = k*8+bit;
-        if ( ((byte >> (7-bit)) & 0x01) && ((*posvec)[pt] >= start) ) {
-          return (*posvec)[pt];
-        }
-      }
-    }
-  }
-
-  if (reverse && bpos > 0) {
-    bpos--;
-    for(k=bpos; k >= 0; --k) {
-      if ( ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] ) ) { // IBS0 exists
-        break;
-      }
-    }
-    if (k == -1)
-      return -1;
-  }
-  if ((!reverse) && bpos < bmatRR->ncol-1) {
-    bpos++;
-    for(k=bpos; k < bmatRR->nbytes_col; ++k) {
-      if ( ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] ) ) { // IBS0 exists
-        break;
-      }
-    }
-    if (k == bmatRR->nbytes_col)
-      return -1;
-  }
-
-  // Find the position of IBS0
-  byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
-  if (byte) {
-    if (reverse) {
-      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-        int32_t pt = k*8+(7-bit);
-        if ( ((byte >> bit) & 0x01) && ((*posvec)[pt] <= start) ) {
-          return (*posvec)[pt];
-        }
-      }
-    }
-    else {
-      for (int32_t bit=0; bit<8 && k*8+bit<bmatRR->ncol; ++bit) {
-        int32_t pt = k*8+bit;
-        if ( ((byte >> (7-bit)) & 0x01) && ((*posvec)[pt] >= start) ) {
-          return (*posvec)[pt];
-        }
-      }
-    }
-  }
-  return -2;
-
-}
-
-int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
-                   std::vector<bitmatrix*>& bmatRR_que,
-                   std::vector<bitmatrix*>& bmatAA_que,
-                   std::vector<std::vector<int32_t>* >& posvec_que,
-                   int32_t min_hom_gts, bool add_to_front) {
-
-  std::vector<GenomeInterval> ibs0interval;
-  parse_intervals(ibs0interval, "", reg);
-  BCFOrderedReader ibs0odr(inVcf, ibs0interval);
-  int32_t nsamples = bcf_hdr_nsamples(ibs0odr.hdr);
-  bcf1_t* ibs0iv = bcf_init();
-  bitmatrix *bmatRR = new bitmatrix(nsamples);
-  bitmatrix *bmatAA = new bitmatrix(nsamples);
-  std::vector<int32_t> *posvec = new std::vector<int32_t>;
-  uint8_t* gtRR = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
-  uint8_t* gtAA = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
-  int32_t* p_gt = NULL;
-  int32_t  n_gt = 0;
-  for(int32_t k=0; ibs0odr.read(ibs0iv); ++k) {  // read markers
-    if ( bcf_get_genotypes(ibs0odr.hdr, ibs0iv, &p_gt, &n_gt) < 0 ) {
-      notice("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(ibs0odr.hdr, ibs0iv->rid), ibs0iv->pos+1);
-      return 0;
-    }
-    memset(gtRR, 0, nsamples);
-    memset(gtAA, 0, nsamples);
-    int32_t gcs[3] = {0,0,0};
-    for(int32_t i=0; i < nsamples; ++i) {
-      int32_t g1 = p_gt[2*i];
-      int32_t g2 = p_gt[2*i+1];
-      int32_t geno;
-      if ( bcf_gt_is_missing(g1) || bcf_gt_is_missing(g2) ) {
-        //geno = 0;
-      } else {
-        geno = ((bcf_gt_allele(g1) > 0) ? 1 : 0) + ((bcf_gt_allele(g2) > 0) ? 1 : 0);
-        if ( geno == 0 )    { gtRR[i] = 1; }
-        else if ( geno == 2 ) { gtAA[i] = 1; }
-        ++gcs[geno];
-      }
-    }
-    if (( gcs[0] >= min_hom_gts ) && ( gcs[2] >= min_hom_gts )) {
-      bmatRR->add_row_bytes(gtRR);
-      bmatAA->add_row_bytes(gtAA);
-      posvec->push_back(ibs0iv->pos+1);
-    }
-  }
-  free(gtRR);
-  free(gtAA);
-  bmatRR->transpose();
-  bmatAA->transpose();
-  if (bmatRR->ncol == 0) {
-    return 0;
-  }
-
-  if (add_to_front) {
-    bmatRR_que.insert(bmatRR_que.begin(), bmatRR);
-    bmatAA_que.insert(bmatAA_que.begin(), bmatAA);
-    posvec_que.insert(posvec_que.begin(), posvec);
-  } else {
-    bmatRR_que.push_back(bmatRR);
-    bmatAA_que.push_back(bmatAA);
-    posvec_que.push_back(posvec);
-  }
-  return bmatRR->ncol;
-
-}
-
-
-
-IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
-                       const bp2cmMap &_pgmap, double _margin,
+IBS0Finder::IBS0Finder(const std::string &_inVcf, const std::string &_reg,
+                       gMap &_pgmap, double _margin,
                        int32_t _ck, int32_t _mh) :
   inVcf(_inVcf), reg(_reg), pgmap(_pgmap), margin_cM(_margin),
   chunksize(_ck), min_hom_gts(_mh) {
@@ -205,8 +38,8 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
   } // Finish initialize ibs0 lookup blocks
 }
 
-IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
-                       const bp2cmMap &_pgmap, int32_t _margin,
+IBS0Finder::IBS0Finder(const std::string &_inVcf, const std::string &_reg,
+                       gMap &_pgmap, int32_t _margin,
                        int32_t _ck, int32_t _mh) :
   inVcf(_inVcf), reg(_reg), pgmap(_pgmap), margin_bp(_margin),
   chunksize(_ck), min_hom_gts(_mh) {
@@ -225,7 +58,7 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
 
   // To jump over centromere
   int32_t off_left = 0, off_right = 0;
-  if (pgmap.overlap_centro(start,end) && pgmap.centromere_st > 0) {
+  if (pgmap.overlap_centro(start,end)) {
     off_left = std::max(start - pgmap.centromere_st, 0);
     off_right = std::max(end - pgmap.centromere_ed, 0);
   }
@@ -250,20 +83,8 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
   } // Finish initialize ibs0 lookup blocks
 }
 
-void IBS0lookup::Clear() {
-  for (uint32_t it = 0; it < bmatAA_que.size(); ++it) {
-    delete bmatAA_que[it];
-    delete bmatRR_que[it];
-    delete posvec_que[it];
-  }
-  bmatAA_que.clear();
-  bmatRR_que.clear();
-  posvec_que.clear();
-  start_que.clear();
-}
-
 // Find IBS0 for a pair of individuals starting from pos
-int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
+int32_t IBS0Finder::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
 
   if ((reverse && (*posvec_que[0])[0] > pos) ||
       (!reverse && posvec_que.back()->back() < pos)) {
@@ -290,7 +111,7 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
 }
 
 // Update to delete & add blocks to cover a new region
-int32_t IBS0lookup::Update(const std::string &_reg) {
+int32_t IBS0Finder::Update(const std::string &_reg) {
 
   reg = _reg;
   int32_t start, end;
@@ -326,6 +147,11 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
     while (ibs_ed - end < margin) {
       ibs_st = ibs_ed + 1;
       ibs_ed = ibs_st + chunksize;
+      if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
+        ibs_st = ibs_ed + 1;
+        ibs_ed = ibs_st + chunksize;
+        continue;
+      }
       if (ibs_st > pgmap.maxpos)
         break;
       reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
@@ -333,12 +159,16 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
         start_que.push_back((*posvec_que.back())[0]);
       }
     }
-
     // Add new ibs0 lookup blocks to head
     ibs_st = start_que[0];
     while (start - ibs_st < margin) {
       ibs_ed = ibs_st - 1;
       ibs_st = ibs_ed - chunksize;
+      if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
+        ibs_ed = ibs_st - 1;
+        ibs_st = ibs_ed - chunksize;
+        continue;
+      }
       if (ibs_ed < pgmap.minpos)
         break;
       reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
@@ -346,7 +176,6 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
         start_que.push_back((*posvec_que[0])[0]);
       }
     }
-
   }
 
   else {
@@ -372,6 +201,11 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
     while (pgmap.bp2cm(ibs_ed) - pgmap.bp2cm(end) < margin) {
       ibs_st = ibs_ed + 1;
       ibs_ed = ibs_st + chunksize;
+      if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
+        ibs_st = ibs_ed + 1;
+        ibs_ed = ibs_st + chunksize;
+        continue;
+      }
       if (ibs_st > pgmap.maxpos)
         break;
       reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
@@ -384,6 +218,11 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
     while (pgmap.bp2cm(start) - pgmap.bp2cm(ibs_st) < margin) {
       ibs_ed = ibs_st - 1;
       ibs_st = ibs_ed - chunksize;
+      if (ibs_st > pgmap.centromere_st && ibs_ed < pgmap.centromere_ed) {
+        ibs_ed = ibs_st - 1;
+        ibs_st = ibs_ed - chunksize;
+        continue;
+      }
       if (ibs_ed < pgmap.minpos)
         break;
       reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
@@ -399,13 +238,13 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
 
 
 // Update to include blocks for exactly the region
-int32_t IBS0lookup::Update_Fixed(const std::string &_reg) {
+int32_t IBS0Finder::Update_Fixed(const std::string &_reg) {
   reg = _reg;
   Clear();
   if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts) > 0) {
     start_que.push_back((*posvec_que.back())[0]);
   } else {
-    notice("IBS0lookup::Update_Fixed Empty region");
+    notice("IBS0Finder::Update_Fixed Empty region");
   }
   return (int32_t) start_que.size();
 }

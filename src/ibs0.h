@@ -45,10 +45,10 @@ public:
   bool by_bp = 0;
 
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
-             bp2cmMap &_pgmap, double _margin,
+             const bp2cmMap &_pgmap, double _margin,
              int32_t _ck = 1000000, int32_t _mh = 1);
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
-             bp2cmMap &_pgmap, int32_t _margin,
+             const bp2cmMap &_pgmap, int32_t _margin,
              int32_t _ck = 1000000, int32_t _mh = 1);
 
   // Find IBS0 for a pair of individuals to one direction starting from pos
@@ -57,19 +57,9 @@ public:
   // Update to delete & add blocks to cover a new region
   int32_t Update (const std::string &_reg);
   int32_t Update_Fixed (const std::string &_reg);
-  void Clear() {
-    for (uint32_t it = 0; it < bmatAA_que.size(); ++it) {
-      delete bmatAA_que[it];
-      delete bmatRR_que[it];
-      delete posvec_que[it];
-    }
-    bmatAA_que.clear();
-    bmatRR_que.clear();
-    posvec_que.clear();
-    start_que.clear();
-  }
+  void Clear();
 
-  ~IBS0lookup() {Clear();}
+  ~IBS0lookup() {Clear(); notice("Cleared IBS0lookup object");}
 
 };
 

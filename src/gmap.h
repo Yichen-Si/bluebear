@@ -1,5 +1,5 @@
-#ifndef BPCM_H
-#define BPCM_H
+#ifndef GMAP_H
+#define GMAP_H
 
 #include "utils.h"
 
@@ -23,7 +23,7 @@ class gMap
     double maxcm, ctrcm;
 
   gMap(const std::string &inMap, const char* sep,
-       std::string chrom, int32_t cst = -1, int32_t ced = -1,
+       std::string &chrom = "", int32_t cst = -1, int32_t ced = -1,
        int32_t bp_col = 1, int32_t cm_col = 3, int32_t rate_col = 2,
        int32_t _binsize=1000);
 

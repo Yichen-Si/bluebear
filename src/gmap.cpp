@@ -1,7 +1,7 @@
 #include "gmap.h"
 
 gMap::gMap(const std::string &inMap, const char* sep,
-           std::string chrom, int32_t cst, int32_t ced,
+           std::string &chrom, int32_t cst, int32_t ced,
            int32_t bp_col, int32_t cm_col, int32_t rate_col,
            int32_t _binsize) : binsize(_binsize) {
 
@@ -11,19 +11,28 @@ gMap::gMap(const std::string &inMap, const char* sep,
   int32_t prepos = 0;
   double precm = 0.0;
 
-  if (mfile.is_open()) {
-    while(std::getline(mfile, line)) {
-      split(words, sep, line);
-      if (words[0] != chrom) {continue;}
-      prepos = std::stoi(words[bp_col]);
-      mapEntry *rec = new mapEntry(prepos, std::stod(words[rate_col]), std::stod(words[cm_col]));
-      bphash[prepos/binsize].push_back(rec);
-    }
+  if (!mfile.is_open()) {
+    error("Genetic map file cannot be opened");
   }
+  while(std::getline(mfile, line)) {
+    split(words, sep, line);
+    if (!chrom.empty() && words[0] != chrom) { // Need to filter for chromosome
+      continue;
+    }
+    try {
+      prepos = std::stoi(words[bp_col]);
+    }
+    catch (const std::invalid_argument& ia) {
+      continue;
+    }
+    mapEntry *rec = new mapEntry(prepos, std::stod(words[rate_col]), std::stod(words[cm_col]));
+    bphash[prepos/binsize].push_back(rec);
+  }
+
   minpos = bphash.begin()->second[0]->pos;
   maxpos = bphash.rbegin()->second.back()->pos;
   maxcm  = bphash.rbegin()->second.back()->cm;
-  prepos = 0;
+  prepos = 0; precm = 0.0;
   if (cst == -1 && ced == -1) { // Find centromere
     for (auto it = bphash.begin(); it != bphash.end(); ++it) {
       for (auto pt : it->second) {

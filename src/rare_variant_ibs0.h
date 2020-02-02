@@ -159,7 +159,8 @@ void Organize(bp2cmMap& pgmap) {
     for (auto & v : *nodelist[1]) {
       int32_t irow = std::min(u,v), icol = std::max(u,v);
       AvgDist += (ibs0mat[irow][icol] - ibs0mat[icol][irow]);
-      AvgDist_cm += (pgmap.bp2cm(ibs0mat[irow][icol]) - pgmap.bp2cm(ibs0mat[icol][irow]));
+      AvgDist_cm += pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
+      // AvgDist_cm += (pgmap.bp2cm(ibs0mat[irow][icol]) - pgmap.bp2cm(ibs0mat[icol][irow]));
       ctbtw += 1;
     }
   }

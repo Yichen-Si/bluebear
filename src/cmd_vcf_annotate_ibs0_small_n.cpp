@@ -3,9 +3,7 @@
 #include "bcf_filter_arg.h"
 #include "bcf_ordered_reader.h"
 #include "bcf_ordered_writer.h"
-#include "compact_matrix.h"
 #include <iomanip>
-#include "bp2cm.h"
 #include "ibs0.h"
 #include "rare_variant_ibs0.h"
 
@@ -100,7 +98,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   }
 
   // Genetic map
-  bp2cmMap pgmap(inMap, " ", cst, ced);
+  bp2cmMap pgmap(inMap, " ", "", cst, ced);
 
   // Region to process
   oreg = reg;
@@ -309,6 +307,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       UpdateInfo_IBS0(odw.hdr, nv, rare);
       odw.write(nv);
       delete rare;
+      rare = NULL;
       nFinished++;
     } else { // Need to look further
       snplist[pos] = rare;
@@ -330,15 +329,17 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     wed = wst - 1;
     wst = std::max(wed - bp_limit, 0);
     wreg = chrom + ":" + std::to_string(wst) + "-" + std::to_string(wed);
+    std::cout << "I.1 " << wreg << '\n';
     if (!ibs0finder.Update_Fixed(wreg)) {
       continue;
     }
+    std::cout << "I.2 " << wreg << '\n';
     auto itr = idpair_l.cbegin();
     while (itr != idpair_l.cend()) {
       // Iterate over pairs of individuals missing left ibs0 pt
       int32_t l = ibs0finder.FindIBS0((*itr).first.first,(*itr).first.second,wed,1);
       if (l > 0) {
-        for (auto & ptr : (*itr).second) {
+        for (auto ptr : (*itr).second) {
           // Add this pos to all relevant variants
           fin = ptr->Add_half((*itr).first.first,(*itr).first.second,l,1);
           if (fin) {
@@ -350,6 +351,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
             // Delete the record
             snplist.erase(ptr->iv->pos+1);
             delete ptr;
+            ptr = NULL;
             nFinished++;
           }
         }
@@ -365,7 +367,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     auto itr = idpair_l.cbegin();
     while (itr != idpair_l.cend()) {
       int32_t l = pgmap.minpos;
-      for (auto & ptr : (*itr).second) {
+      for (auto ptr : (*itr).second) {
         // Add this pos to all relevant variants
         fin = ptr->Add_half((*itr).first.first,(*itr).first.second,l,1);
         if (fin) {
@@ -377,6 +379,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
           // Delete the record
           snplist.erase(ptr->iv->pos+1);
           delete ptr;
+          ptr = NULL;
           nFinished++;
         }
       }
@@ -400,7 +403,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
       // Iterate over pairs of individuals missing left ibs0 pt
       int32_t r = ibs0finder.FindIBS0((*itr).first.first,(*itr).first.second,wst,0);
       if (r > 0) {
-        for (auto & ptr : (*itr).second) {
+        for (auto ptr : (*itr).second) {
           // Add this pos to all relevant variants
           fin = ptr->Add_half((*itr).first.first,(*itr).first.second,r,2);
           if (fin) {
@@ -412,6 +415,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
             // Delete the record
             snplist.erase(ptr->iv->pos+1);
             delete ptr;
+            ptr = NULL;
             nFinished++;
           }
         }
@@ -427,7 +431,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
     auto itr = idpair_r.cbegin();
     while (itr != idpair_r.cend()) {
       int32_t r = pgmap.maxpos;
-      for (auto & ptr : (*itr).second) {
+      for (auto ptr : (*itr).second) {
         // Add this pos to all relevant variants
         fin = ptr->Add_half((*itr).first.first,(*itr).first.second,r,2);
         if (fin) {
@@ -439,6 +443,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
           // Delete the record
           snplist.erase(ptr->iv->pos+1);
           delete ptr;
+          ptr = NULL;
           nFinished++;
         }
       }

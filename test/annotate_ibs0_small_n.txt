@@ -6,7 +6,7 @@
 
 // Example test command for annotating ibs0 (small scale)
 
-/net/wonderland/home/ycsi/tool/bluebear/bin/bluebear anno-ibs0-small --in-vcf /net/wonderland/home/ycsi/IBD/ibs0/Data/topmed/vcf/minDP10/topmed.EUR.8k.chr20.gtonly.minDP10.filtered.rehdr.bcf --region chr20:10000000-11000000 --map /net/wonderland/home/ycsi/Data/Map/plink.chr20.GRCh38.map --out /net/wonderland/home/ycsi/IBD/ibs0/Data/test/ibs0anno.sites.vcf --max-rare 10 --bp-limit 1000000 --left-over 0
+/net/wonderland/home/ycsi/tool/bluebear/bin/bluebear anno-ibs0-small --in-vcf /net/wonderland/home/ycsi/IBD/ibs0/Data/topmed/vcf/minDP10/topmed.EUR.8k.chr20.gtonly.minDP10.filtered.rehdr.bcf --region chr20:10000000-11000000 --map /net/wonderland/home/ycsi/Data/Map/genetic_map_eagle_hg38_chr20.txt --out /net/wonderland/home/ycsi/IBD/ibs0/Data/test/ibs0anno.sites.vcf --max-rare 10 --bp-limit 1000000 --left-over 0
 
 // 8k chr20 1Mb AC<=10 Keep <= 2Mb in memory: 79,456 Kbytes, 130s (somehow it has to scan the whole chromosome?)
 

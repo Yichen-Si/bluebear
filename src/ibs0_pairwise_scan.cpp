@@ -157,7 +157,7 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv) {
   }
 
   // Genetic map
-  bp2cmMap pgmap(inMap, " ", cst, ced);
+  bp2cmMap pgmap(inMap, " ", "", cst, ced);
 
   // Output
   std::ofstream wf;

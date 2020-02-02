@@ -104,7 +104,7 @@ int32_t IBS0AddPMDistr(int32_t argc, char** argv) {
   std::mt19937 rng(rd());
 
   // Genetic map
-  bp2cmMap pgmap(inMap, " ", cst, ced);
+  bp2cmMap pgmap(inMap, " ", "", cst, ced);
 
   // Output
   std::ofstream wf;
