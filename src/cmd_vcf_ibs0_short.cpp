@@ -96,6 +96,7 @@ LONG_INT_PARAM("window-size",&window_size, "Length of the sliding window to proc
     if (ct % verbose == 0) {
       notice("Processing %d variants at %s:%d.", ct, chrom.c_str(), pos);
     }
+    if (abs(pos-pgmap.centromere_st) < bp_limit || abs(pos-pgmap.centromere_ed) < bp_limit || pos < start) {continue;}
     NchooseK(nsamples, 2, chosen, rng, 0);
     std::copy(chosen.begin(),chosen.end(),pair.begin());
     chosen.clear();
@@ -109,6 +110,10 @@ LONG_INT_PARAM("window-size",&window_size, "Length of the sliding window to proc
     if (pos > end) { // Update
       start = end + 1;
       end = start + window_size;
+      while (pgmap.overlap_centro(start,end) > 0 && end < pgmap.maxpos) {
+        start = end + 1;
+        end = start + window_size;
+      }
       if (start > pgmap.maxpos) {break;}
       reg = chrom + ":" + std::to_string(start) + "-" + std::to_string(end);
       ibs0finder.Update(reg);

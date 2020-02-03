@@ -279,11 +279,17 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
       ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
                             i, j, reverse);
     }
+    if (ibs0 > 0 && pgmap.centromere_st < pos && pgmap.centromere_st > ibs0) {
+      ibs0 = std::min(pos,pgmap.centromere_ed);
+    }
   } else {
     while(ibs0 < 0 && k < (int32_t) start_que.size() - 1) {
       k++;
       ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
                             i, j, reverse);
+    }
+    if (ibs0 > 0 && pgmap.centromere_ed > pos && pgmap.centromere_ed < ibs0) {
+      ibs0 = std::max(pos,pgmap.centromere_st);
     }
   }
   return ibs0;
@@ -322,7 +328,11 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
     }
 
     // Add new ibs0 lookup blocks to tail
-    ibs_ed = posvec_que.back()->back();
+    if (posvec_que.size() == 0) {
+      ibs_ed = std::max(end, pgmap.centromere_ed);
+    } else {
+      ibs_ed = posvec_que.back()->back();
+    }
     while (ibs_ed - end < margin) {
       ibs_st = ibs_ed + 1;
       ibs_ed = ibs_st + chunksize;
@@ -333,9 +343,12 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
         start_que.push_back((*posvec_que.back())[0]);
       }
     }
-
     // Add new ibs0 lookup blocks to head
-    ibs_st = start_que[0];
+    if (posvec_que.size() == 0) {
+      ibs_st = std::min(start+chunksize, pgmap.centromere_st);
+    } else {
+      ibs_st = start_que[0];
+    }
     while (start - ibs_st < margin) {
       ibs_ed = ibs_st - 1;
       ibs_st = ibs_ed - chunksize;
@@ -346,7 +359,6 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
         start_que.push_back((*posvec_que[0])[0]);
       }
     }
-
   }
 
   else {

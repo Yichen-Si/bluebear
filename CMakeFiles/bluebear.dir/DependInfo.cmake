@@ -19,6 +19,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_short.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_unconditional.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_unconditional.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_view.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o"
+  "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_info_cdf.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o"
+  "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_insert_pm.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_raresharing.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sfs.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_triallelic.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o"

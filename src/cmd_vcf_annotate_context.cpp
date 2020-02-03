@@ -150,23 +150,14 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
       bcf_subset(odw.hdr, nv, 0, 0);
     ac = info_ac[0]; an = info_an[0];
     ctx = fa_kmer(fai, val, iv->pos, kmer);
-    refcpg = "F";
-    majcpg = "F";
+    cpg = "F";
 
     if (bcf_is_snp(iv)) { // SNP
-      if (ctx[mpt]=='C' && ctx[mpt+1]=='G') { // Ref CpG
-        refcpg = "T";
-      }
-      if (ac <= an/2) { // Ref == Major
-        majcpg = refcpg;
-      } else {
-        if ((iv->d).allele[1][0]=='C' && ctx[mpt+1]=='G') { // Major CpG
-          majcpg="T";
-        }
+      if (ctx[mpt]=='C' && ctx[mpt+1]=='G') { // CpG
+        cpg="T";
       }
     }
 
-    cpg = refcpg+majcpg;
     bcf_update_info_string(odw.hdr, nv, "CpG", cpg.c_str());
     bcf_update_info_string(odw.hdr, nv, "CONTEXT", ctx.c_str());
     odw.write(nv);

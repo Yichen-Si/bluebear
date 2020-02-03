@@ -17,6 +17,8 @@ int32_t cmdVcfIBS0View(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Flank(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
 int32_t RandomPairIBS0(int32_t argc, char** argv);
+int32_t VCFInsertPM(int32_t argc, char** argv);
+int32_t CDFInfo(int32_t argc, char** argv);
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv);
@@ -71,9 +73,11 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length (null distribution) from BCF/VCF")
     LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
-
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
+    LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
+    LONG_COMMAND("insert-pm",&VCFInsertPM, "Merge nearby rare variants to create artificial parallel mutation from & to BCF/VCF")
+    LONG_COMMAND("info-int-cdf",&CDFInfo, "Summarize empirical CDF from VCF INFO")
+
     LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 
     LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")

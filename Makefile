@@ -531,6 +531,60 @@ src/cmd_vcf_ibs0_view.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.s
 .PHONY : src/cmd_vcf_ibs0_view.cpp.s
 
+src/cmd_vcf_info_cdf.o: src/cmd_vcf_info_cdf.cpp.o
+
+.PHONY : src/cmd_vcf_info_cdf.o
+
+# target to build an object file
+src/cmd_vcf_info_cdf.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o
+.PHONY : src/cmd_vcf_info_cdf.cpp.o
+
+src/cmd_vcf_info_cdf.i: src/cmd_vcf_info_cdf.cpp.i
+
+.PHONY : src/cmd_vcf_info_cdf.i
+
+# target to preprocess a source file
+src/cmd_vcf_info_cdf.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.i
+.PHONY : src/cmd_vcf_info_cdf.cpp.i
+
+src/cmd_vcf_info_cdf.s: src/cmd_vcf_info_cdf.cpp.s
+
+.PHONY : src/cmd_vcf_info_cdf.s
+
+# target to generate assembly for a file
+src/cmd_vcf_info_cdf.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.s
+.PHONY : src/cmd_vcf_info_cdf.cpp.s
+
+src/cmd_vcf_insert_pm.o: src/cmd_vcf_insert_pm.cpp.o
+
+.PHONY : src/cmd_vcf_insert_pm.o
+
+# target to build an object file
+src/cmd_vcf_insert_pm.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o
+.PHONY : src/cmd_vcf_insert_pm.cpp.o
+
+src/cmd_vcf_insert_pm.i: src/cmd_vcf_insert_pm.cpp.i
+
+.PHONY : src/cmd_vcf_insert_pm.i
+
+# target to preprocess a source file
+src/cmd_vcf_insert_pm.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.i
+.PHONY : src/cmd_vcf_insert_pm.cpp.i
+
+src/cmd_vcf_insert_pm.s: src/cmd_vcf_insert_pm.cpp.s
+
+.PHONY : src/cmd_vcf_insert_pm.s
+
+# target to generate assembly for a file
+src/cmd_vcf_insert_pm.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.s
+.PHONY : src/cmd_vcf_insert_pm.cpp.s
+
 src/cmd_vcf_raresharing.o: src/cmd_vcf_raresharing.cpp.o
 
 .PHONY : src/cmd_vcf_raresharing.o
@@ -1503,6 +1557,12 @@ help:
 	@echo "... src/cmd_vcf_ibs0_view.o"
 	@echo "... src/cmd_vcf_ibs0_view.i"
 	@echo "... src/cmd_vcf_ibs0_view.s"
+	@echo "... src/cmd_vcf_info_cdf.o"
+	@echo "... src/cmd_vcf_info_cdf.i"
+	@echo "... src/cmd_vcf_info_cdf.s"
+	@echo "... src/cmd_vcf_insert_pm.o"
+	@echo "... src/cmd_vcf_insert_pm.i"
+	@echo "... src/cmd_vcf_insert_pm.s"
 	@echo "... src/cmd_vcf_raresharing.o"
 	@echo "... src/cmd_vcf_raresharing.i"
 	@echo "... src/cmd_vcf_raresharing.s"
