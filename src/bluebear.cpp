@@ -10,6 +10,11 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv);
 int32_t KmerSFS(int32_t argc, char** argv);
 int32_t MultiAllelicSites(int32_t argc, char** argv);
 
+int32_t AnnotateRareWithTotalAC(int32_t argc, char** argv);
+int32_t cmdVcfSummerRefAC(int32_t argc, char** argv);
+int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
+
+int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
@@ -18,7 +23,9 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
 int32_t RandomPairIBS0(int32_t argc, char** argv);
 int32_t VCFInsertPM(int32_t argc, char** argv);
-int32_t CDFInfo(int32_t argc, char** argv);
+int32_t CDFInfoInt(int32_t argc, char** argv);
+int32_t CDFInfoFloatByKmer(int32_t argc, char** argv);
+int32_t CDFInfoFloatSimu(int32_t argc, char** argv);
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv);
@@ -66,7 +73,13 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")
     LONG_COMMAND("triallelic",&MultiAllelicSites, "Find tri-allelic sites from BCF/VCF")
 
+    LONG_COMMAND("anno-total-carrier",&AnnotateRareWithTotalAC, "Annotate a query dataset with the ultra-rare variant AC and carriers in a reference dataset")
+    LONG_COMMAND("singleton-ref-ac",&cmdVcfSummerRefAC, "Summarize the AC in a large ref. pop of singletons in a smaller sample")
+
+    LONG_COMMAND("vcf-sample-summary",&cmdVcfSampleSummary, "Sample-level summary from BCF/VCF")
+
     // Temperary ibs0 tests
+    LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
@@ -76,7 +89,10 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
     LONG_COMMAND("insert-pm",&VCFInsertPM, "Merge nearby rare variants to create artificial parallel mutation from & to BCF/VCF")
-    LONG_COMMAND("info-int-cdf",&CDFInfo, "Summarize empirical CDF from VCF INFO")
+    LONG_COMMAND("info-int-cdf",&CDFInfoInt, "Summarize empirical CDF from VCF INFO")
+    LONG_COMMAND("info-flt-cdf",&CDFInfoFloatByKmer, "Summarize empirical CDF from VCF INFO (by kmer)")
+    LONG_COMMAND("info-flt-cdf-simu",&CDFInfoFloatSimu, "Summarize empirical CDF from VCF INFO")
+
 
     LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 

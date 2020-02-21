@@ -40,7 +40,7 @@ int32_t RandomPairIBS0(int32_t argc, char** argv) {
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("min-hom",&min_hom_gts, "Minimum number of homozygous genotypes to be counted for IBS0")
     LONG_INT_PARAM("bp-limit",&bp_limit, "Max distance to look for IBS0 (bp)")
-LONG_INT_PARAM("window-size",&window_size, "Length of the sliding window to procee (bp)")
+    LONG_INT_PARAM("window-size",&window_size, "Length of the sliding window to procee (bp)")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file name")
@@ -77,6 +77,7 @@ LONG_INT_PARAM("window-size",&window_size, "Length of the sliding window to proc
   std::set<int32_t> chosen;
   std::vector<int32_t> pair(2);
   int32_t pos, leftibs0, rightibs0, lengthbp;
+  double lengthcm;
 
   // Parse positions. Assume sorted
   std::ifstream rf (inPos);
@@ -102,10 +103,14 @@ LONG_INT_PARAM("window-size",&window_size, "Length of the sliding window to proc
     chosen.clear();
     leftibs0 = ibs0finder.FindIBS0(pair[0],pair[1],pos,1);
     rightibs0= ibs0finder.FindIBS0(pair[0],pair[1],pos,0);
-    lengthbp = rightibs0 - leftibs0;
-    if (leftibs0 <= 0 || rightibs0 <= 0)
+    if (leftibs0 <= 0 || rightibs0 <= 0) {
       lengthbp = bp_limit*2+window_size;
-    fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\n",pos,pair[0],pair[1],leftibs0,rightibs0,lengthbp);
+      lengthcm = pgmap.bpinterval2cm(pos-bp_limit,pos+bp_limit);
+    } else {
+      lengthbp = rightibs0 - leftibs0;
+      lengthcm = pgmap.bpinterval2cm(leftibs0,rightibs0);
+    }
+    fprintf(wf, "%d\t%d\t%d\t%d\t%d\t%d\t%.5f\n",pos,pair[0],pair[1],leftibs0,rightibs0,lengthbp,lengthcm);
     ct++;
     if (pos > end) { // Update
       start = end + 1;

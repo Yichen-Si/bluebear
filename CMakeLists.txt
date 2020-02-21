@@ -65,6 +65,8 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_vcf_ibs0_short.cpp
     src/cmd_vcf_insert_pm.cpp
     src/cmd_vcf_info_cdf.cpp
+    src/cmd_vcf_site_annotate_refsample_info.cpp
+    src/cmd_vcf_sample_summary.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h

@@ -612,6 +612,33 @@ src/cmd_vcf_raresharing.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.s
 .PHONY : src/cmd_vcf_raresharing.cpp.s
 
+src/cmd_vcf_sample_summary.o: src/cmd_vcf_sample_summary.cpp.o
+
+.PHONY : src/cmd_vcf_sample_summary.o
+
+# target to build an object file
+src/cmd_vcf_sample_summary.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o
+.PHONY : src/cmd_vcf_sample_summary.cpp.o
+
+src/cmd_vcf_sample_summary.i: src/cmd_vcf_sample_summary.cpp.i
+
+.PHONY : src/cmd_vcf_sample_summary.i
+
+# target to preprocess a source file
+src/cmd_vcf_sample_summary.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i
+.PHONY : src/cmd_vcf_sample_summary.cpp.i
+
+src/cmd_vcf_sample_summary.s: src/cmd_vcf_sample_summary.cpp.s
+
+.PHONY : src/cmd_vcf_sample_summary.s
+
+# target to generate assembly for a file
+src/cmd_vcf_sample_summary.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s
+.PHONY : src/cmd_vcf_sample_summary.cpp.s
+
 src/cmd_vcf_sfs.o: src/cmd_vcf_sfs.cpp.o
 
 .PHONY : src/cmd_vcf_sfs.o
@@ -638,6 +665,33 @@ src/cmd_vcf_sfs.s: src/cmd_vcf_sfs.cpp.s
 src/cmd_vcf_sfs.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
 .PHONY : src/cmd_vcf_sfs.cpp.s
+
+src/cmd_vcf_site_annotate_refsample_info.o: src/cmd_vcf_site_annotate_refsample_info.cpp.o
+
+.PHONY : src/cmd_vcf_site_annotate_refsample_info.o
+
+# target to build an object file
+src/cmd_vcf_site_annotate_refsample_info.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o
+.PHONY : src/cmd_vcf_site_annotate_refsample_info.cpp.o
+
+src/cmd_vcf_site_annotate_refsample_info.i: src/cmd_vcf_site_annotate_refsample_info.cpp.i
+
+.PHONY : src/cmd_vcf_site_annotate_refsample_info.i
+
+# target to preprocess a source file
+src/cmd_vcf_site_annotate_refsample_info.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i
+.PHONY : src/cmd_vcf_site_annotate_refsample_info.cpp.i
+
+src/cmd_vcf_site_annotate_refsample_info.s: src/cmd_vcf_site_annotate_refsample_info.cpp.s
+
+.PHONY : src/cmd_vcf_site_annotate_refsample_info.s
+
+# target to generate assembly for a file
+src/cmd_vcf_site_annotate_refsample_info.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s
+.PHONY : src/cmd_vcf_site_annotate_refsample_info.cpp.s
 
 src/cmd_vcf_triallelic.o: src/cmd_vcf_triallelic.cpp.o
 
@@ -1566,9 +1620,15 @@ help:
 	@echo "... src/cmd_vcf_raresharing.o"
 	@echo "... src/cmd_vcf_raresharing.i"
 	@echo "... src/cmd_vcf_raresharing.s"
+	@echo "... src/cmd_vcf_sample_summary.o"
+	@echo "... src/cmd_vcf_sample_summary.i"
+	@echo "... src/cmd_vcf_sample_summary.s"
 	@echo "... src/cmd_vcf_sfs.o"
 	@echo "... src/cmd_vcf_sfs.i"
 	@echo "... src/cmd_vcf_sfs.s"
+	@echo "... src/cmd_vcf_site_annotate_refsample_info.o"
+	@echo "... src/cmd_vcf_site_annotate_refsample_info.i"
+	@echo "... src/cmd_vcf_site_annotate_refsample_info.s"
 	@echo "... src/cmd_vcf_triallelic.o"
 	@echo "... src/cmd_vcf_triallelic.i"
 	@echo "... src/cmd_vcf_triallelic.s"

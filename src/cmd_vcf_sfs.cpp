@@ -404,8 +404,8 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     for (uint32_t j = 0; j < mset.size(); ++j) {
       std::string mtype = motifs[i].substr(0,(kmer-1)/2) + mset[j] + motifs[i].substr((kmer-1)/2);
       std::string ctype = "";
-      for (uint32_t k = 0; k < mtype.size(); ++k) {
-        ctype += bpair[mtype[k]];
+      for (uint32_t k = mtype.size(); k > 0; --k) {
+        ctype += bpair[mtype[k-1]];
       }
       auto fs1 = sfs.find(mtype);
       auto fs2 = sfs.find(ctype);

@@ -98,6 +98,11 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
   int32_t st_bp = -1, ed_bp = -1;
   double  st_cm = -1.0, ed_cm = -1.0;
   int32_t key;
+  if(st > ed) {
+    notice("bp2cmMap::bpinterval2cm: Invalid interval: %d,%d. End points are switched.",st,ed);
+    int32_t tmp = ed;
+    ed = st; st = tmp;
+  }
 
   if (in_centro(st, ed)) {return 0.0;}
   if (ed <= minpos) {return 0.0;}
@@ -126,9 +131,8 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
     }
     st_bp = rec->second.back()->pos;
     st_cm = rec->second.back()->cm;
-    st_cm -= (rec->second.back()->rate)*((st-st_bp)*1e-6);
+    st_cm += (rec->second.back()->rate)*((st-st_bp)*1e-6);
   }
-
   if (ed_cm < 0.0) {
     // Find the genetic position of ed
     key = ed/binsize;
@@ -141,17 +145,19 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
           break;
         }
       }
-    } else {
-      while(rec == bphash.end() && ed_cm < 0.0) {
-        key++;
-        rec = bphash.find(key);
-      }
-      ed_bp = rec->second[0]->pos;
-      ed_cm = rec->second[0]->cm;
-      ed_cm -= (rec->second[0]->rate)*((ed_bp-ed)*1e-6);
     }
+    while(rec == bphash.end() && ed_cm < 0.0) {
+      key++;
+      rec = bphash.find(key);
+    }
+    ed_bp = rec->second[0]->pos;
+    ed_cm = rec->second[0]->cm;
+    ed_cm -= (rec->second[0]->rate)*((ed_bp-ed)*1e-6);
   }
 
+  if (ed_cm-st_cm < 0) { // Should never happen
+    notice("bp2cmMap::bpinterval2cm: negtaive cm length %d,%.3f-%d,%.3f", st,st_cm,ed,ed_cm);
+  }
   return ed_cm - st_cm;
 }
 

@@ -12,9 +12,9 @@ void UpdateInfo_IBS0(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
   std::string sstr;
   ss << rare->subset1.size() << "," << rare->subset2.size();
   bcf_update_info_string(hdr, nv, "BiCluster", ss.str().c_str());
-  bcf_update_info_int32(hdr, nv, "LeftSet", &(rare->subset1), rare->subset1.size());
-  bcf_update_info_int32(hdr, nv, "RightSet", &(rare->subset2), rare->subset2.size());
-  bcf_update_info_int32(hdr, nv, "Carriers", &(rare->id_list), rare->id_list.size());
+  bcf_update_info_int32(hdr, nv, "LeftSet", &(rare->subset1[0]), rare->subset1.size());
+  bcf_update_info_int32(hdr, nv, "RightSet", &(rare->subset2[0]), rare->subset2.size());
+  bcf_update_info_int32(hdr, nv, "Carriers", &(rare->id_list[0]), rare->id_list.size());
   bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
   bcf_update_info_float(hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
 
@@ -98,6 +98,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
 
   // Genetic map
   bp2cmMap pgmap(inMap, " ", "", cst, ced);
+  notice("Read map. min %d; max %d; cst %d; ced %d.", pgmap.minpos, pgmap.maxpos, pgmap.centromere_st, pgmap.centromere_ed);
 
   // Region to process
   oreg = reg;
@@ -335,16 +336,14 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   int32_t leftmost = pgmap.minpos;
   if (start > pgmap.centromere_st)
     leftmost = pgmap.centromere_ed;
-  while (idpair_l.size() > 0 && snplist.size() > leftover && wst > leftmost) {
+  while (idpair_l.size() > 0 && (int32_t) idpair_l.size() > leftover/2 && wed > leftmost) {
     pct = 0;
     wed = wst - 1;
     wst = std::max(wed - bp_limit, 0);
     wreg = chrom + ":" + std::to_string(wst) + "-" + std::to_string(wed);
-    std::cout << "I.1 " << wreg << '\n';
     if (!ibs0finder.Update_Fixed(wreg)) {
       continue;
     }
-    std::cout << "I.2 " << wreg << '\n';
     auto itr = idpair_l.cbegin();
     while (itr != idpair_l.cend()) {
       // Iterate over pairs of individuals missing left ibs0 pt
@@ -404,7 +403,7 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   int32_t rightmost = pgmap.maxpos;
   if (end < pgmap.centromere_ed)
     rightmost = pgmap.centromere_st;
-  while (idpair_r.size() > 0 && snplist.size() > leftover && wst < rightmost) {
+  while (idpair_r.size() > 0 && (int32_t) snplist.size() > leftover && wst < rightmost) {
     pct = 0;
     wst = wed + 1;
     wed = wst + bp_limit;
@@ -476,4 +475,96 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
 
   return 0;
 }
+
+
+
+
+
+
+
+
+
+int32_t tmpUpdateCMInfo(int32_t argc, char** argv) {
+  std::string inVcf, inMap, reg;
+  std::string out;
+  int32_t verbose = 100000;
+
+  paramList pl;
+
+  BEGIN_LONG_PARAMS(longParameters)
+    LONG_PARAM_GROUP("Input Sites", NULL)
+    LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("map",&inMap, "Map file for genetic distance")
+    LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
+
+    LONG_PARAM_GROUP("Output Options", NULL)
+    LONG_STRING_PARAM("out", &out, "Output VCF file name")
+    LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
+
+  END_LONG_PARAMS();
+
+  pl.Add(new longParams("Available Options", longParameters));
+  pl.Read(argc, argv);
+  pl.Status();
+
+  bp2cmMap pgmap(inMap, " ", "", -1, -1);
+  notice("Read map. min %d; max %d; cst %d; ced %d.", pgmap.minpos, pgmap.maxpos, pgmap.centromere_st, pgmap.centromere_ed);
+
+  std::vector<GenomeInterval> intervals;
+  if (!reg.empty())
+    parse_intervals(intervals, "", reg);
+  BCFOrderedReader* odr = new BCFOrderedReader(inVcf, intervals);
+  bcf1_t* iv = bcf_init();
+
+  BCFOrderedWriter odw(out.c_str(),0);
+  bcf_hdr_t* hnull = bcf_hdr_subset(odr->hdr, 0, 0, 0);
+  bcf_hdr_remove(hnull, BCF_HL_FMT, NULL);
+  odw.set_hdr(hnull);
+
+  int32_t *info_bp = NULL;
+  float *info_cm = NULL;
+  int32_t n_bp = 0, n_cm = 0;
+  int32_t nVariants = 0;
+  for(int32_t k = 0; odr->read(iv); ++k) {  // read marker
+    if ( k % verbose == 0 )
+      notice("Processing %d markers at %s:%d, updated %d variants.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1, nVariants);
+
+    bcf_unpack(iv, BCF_UN_ALL);
+
+    if (bcf_get_info_float(odr->hdr, iv, "AvgDist_cM", &info_cm, &n_cm) < 0) {continue;}
+    if (info_cm[0] > 0) {continue;}
+
+    if (bcf_get_info_int32(odr->hdr, iv, "AvgDist_bp", &info_bp, &n_bp) < 0) {continue;}
+    int32_t st = iv->pos - info_bp[0]/2;
+    int32_t ed = iv->pos + info_bp[0]/2;
+    float newcm = pgmap.bpinterval2cm(st,ed);
+
+    bcf1_t* nv = bcf_dup(iv);
+    bcf_unpack(nv, BCF_UN_ALL);
+    bcf_update_info_float(odw.hdr, nv, "AvgDist_cM", &newcm, 1);
+
+    odw.write(nv);
+    bcf_destroy(nv);
+    nVariants++;
+  }
+
+  odw.close();
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

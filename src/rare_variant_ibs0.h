@@ -29,10 +29,11 @@ RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
 
 void Add_id(int32_t id) { // Not robust!
   id_list.push_back(id);
-  id_index[id] = id_index.size();
+  id_index[id] = id_index.size()-1;
 }
 void Add_id(std::vector<int32_t>& idvec) {
   int32_t ct = 0;
+  id_list.clear();
   for (auto & v : idvec) {
     id_list.push_back(v);
     id_index[v] = ct;
@@ -149,9 +150,9 @@ void Organize(bp2cmMap& pgmap) {
 
   // Ends up with two clusters.
   int32_t it = ((*nodelist[0]).size() < (*nodelist[1]).size()) ? 0 : 1;
-  for (auto & v : *nodelist[it])
+  for (auto & v : *(nodelist[it]) )
     subset1.push_back(id_list[v]); // Id in the smaller cluster
-  for (auto & v : *nodelist[1-it])
+  for (auto & v : *(nodelist[1-it]) )
     subset2.push_back(id_list[v]); // Id in the larger cluster
 
   int32_t ctbtw = 0;

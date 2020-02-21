@@ -49,6 +49,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o"
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"

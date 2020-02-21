@@ -1260,9 +1260,57 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o.provides: CMakeFiles/bluebear
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: src/cmd_vcf_site_annotate_refsample_info.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.provides: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o
+
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: src/cmd_vcf_sample_summary.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sample_summary.cpp
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sample_summary.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sample_summary.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.provides: CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: src/bluebear.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bluebear.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/bluebear.cpp
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.i: cmake_force
@@ -1336,6 +1384,8 @@ bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o" \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o" \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o" \
+"CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o" \
+"CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o" \
 "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
 
 # External object files for target bluebear
@@ -1391,11 +1441,13 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/bluebear.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/build.make
 bin/bluebear: ../htslib/libhts.a
 bin/bluebear: CMakeFiles/bluebear.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Linking CXX executable bin/bluebear"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Linking CXX executable bin/bluebear"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bluebear.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -1453,6 +1505,8 @@ CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_i
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/bluebear.cpp.o.requires
 
 .PHONY : CMakeFiles/bluebear.dir/requires
