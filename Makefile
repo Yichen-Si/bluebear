@@ -666,6 +666,60 @@ src/cmd_vcf_sfs.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
 .PHONY : src/cmd_vcf_sfs.cpp.s
 
+src/cmd_vcf_site_annotate_age.o: src/cmd_vcf_site_annotate_age.cpp.o
+
+.PHONY : src/cmd_vcf_site_annotate_age.o
+
+# target to build an object file
+src/cmd_vcf_site_annotate_age.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o
+.PHONY : src/cmd_vcf_site_annotate_age.cpp.o
+
+src/cmd_vcf_site_annotate_age.i: src/cmd_vcf_site_annotate_age.cpp.i
+
+.PHONY : src/cmd_vcf_site_annotate_age.i
+
+# target to preprocess a source file
+src/cmd_vcf_site_annotate_age.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.i
+.PHONY : src/cmd_vcf_site_annotate_age.cpp.i
+
+src/cmd_vcf_site_annotate_age.s: src/cmd_vcf_site_annotate_age.cpp.s
+
+.PHONY : src/cmd_vcf_site_annotate_age.s
+
+# target to generate assembly for a file
+src/cmd_vcf_site_annotate_age.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.s
+.PHONY : src/cmd_vcf_site_annotate_age.cpp.s
+
+src/cmd_vcf_site_annotate_pm_posterior.o: src/cmd_vcf_site_annotate_pm_posterior.cpp.o
+
+.PHONY : src/cmd_vcf_site_annotate_pm_posterior.o
+
+# target to build an object file
+src/cmd_vcf_site_annotate_pm_posterior.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o
+.PHONY : src/cmd_vcf_site_annotate_pm_posterior.cpp.o
+
+src/cmd_vcf_site_annotate_pm_posterior.i: src/cmd_vcf_site_annotate_pm_posterior.cpp.i
+
+.PHONY : src/cmd_vcf_site_annotate_pm_posterior.i
+
+# target to preprocess a source file
+src/cmd_vcf_site_annotate_pm_posterior.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.i
+.PHONY : src/cmd_vcf_site_annotate_pm_posterior.cpp.i
+
+src/cmd_vcf_site_annotate_pm_posterior.s: src/cmd_vcf_site_annotate_pm_posterior.cpp.s
+
+.PHONY : src/cmd_vcf_site_annotate_pm_posterior.s
+
+# target to generate assembly for a file
+src/cmd_vcf_site_annotate_pm_posterior.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.s
+.PHONY : src/cmd_vcf_site_annotate_pm_posterior.cpp.s
+
 src/cmd_vcf_site_annotate_refsample_info.o: src/cmd_vcf_site_annotate_refsample_info.cpp.o
 
 .PHONY : src/cmd_vcf_site_annotate_refsample_info.o
@@ -1626,6 +1680,12 @@ help:
 	@echo "... src/cmd_vcf_sfs.o"
 	@echo "... src/cmd_vcf_sfs.i"
 	@echo "... src/cmd_vcf_sfs.s"
+	@echo "... src/cmd_vcf_site_annotate_age.o"
+	@echo "... src/cmd_vcf_site_annotate_age.i"
+	@echo "... src/cmd_vcf_site_annotate_age.s"
+	@echo "... src/cmd_vcf_site_annotate_pm_posterior.o"
+	@echo "... src/cmd_vcf_site_annotate_pm_posterior.i"
+	@echo "... src/cmd_vcf_site_annotate_pm_posterior.s"
 	@echo "... src/cmd_vcf_site_annotate_refsample_info.o"
 	@echo "... src/cmd_vcf_site_annotate_refsample_info.i"
 	@echo "... src/cmd_vcf_site_annotate_refsample_info.s"

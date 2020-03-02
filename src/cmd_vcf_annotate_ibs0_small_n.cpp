@@ -520,6 +520,7 @@ int32_t tmpUpdateCMInfo(int32_t argc, char** argv) {
   bcf_hdr_t* hnull = bcf_hdr_subset(odr->hdr, 0, 0, 0);
   bcf_hdr_remove(hnull, BCF_HL_FMT, NULL);
   odw.set_hdr(hnull);
+  odw.write_hdr();
 
   int32_t *info_bp = NULL;
   float *info_cm = NULL;
@@ -530,22 +531,27 @@ int32_t tmpUpdateCMInfo(int32_t argc, char** argv) {
       notice("Processing %d markers at %s:%d, updated %d variants.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1, nVariants);
 
     bcf_unpack(iv, BCF_UN_ALL);
+    bool update = 1;
 
-    if (bcf_get_info_float(odr->hdr, iv, "AvgDist_cM", &info_cm, &n_cm) < 0) {continue;}
-    if (info_cm[0] > 0) {continue;}
+    if (bcf_get_info_float(odr->hdr, iv, "AvgDist_cM", &info_cm, &n_cm) < 0) {update=0;}
+    if (info_cm[0] > 0) {update=0;}
+    if (bcf_get_info_int32(odr->hdr, iv, "AvgDist_bp", &info_bp, &n_bp) < 0) {update=0;}
 
-    if (bcf_get_info_int32(odr->hdr, iv, "AvgDist_bp", &info_bp, &n_bp) < 0) {continue;}
-    int32_t st = iv->pos - info_bp[0]/2;
-    int32_t ed = iv->pos + info_bp[0]/2;
-    float newcm = pgmap.bpinterval2cm(st,ed);
+    if (update) {
 
-    bcf1_t* nv = bcf_dup(iv);
-    bcf_unpack(nv, BCF_UN_ALL);
-    bcf_update_info_float(odw.hdr, nv, "AvgDist_cM", &newcm, 1);
+      int32_t st = iv->pos - info_bp[0]/2;
+      int32_t ed = iv->pos + info_bp[0]/2;
+      float newcm = pgmap.bpinterval2cm(st,ed);
+      bcf1_t* nv = bcf_dup(iv);
+      bcf_unpack(nv, BCF_UN_ALL);
+      bcf_update_info_float(odw.hdr, nv, "AvgDist_cM", &newcm, 1);
+      odw.write(nv);
+      bcf_destroy(nv);
+      nVariants++;
+    } else {
+      odw.write(iv);
+    }
 
-    odw.write(nv);
-    bcf_destroy(nv);
-    nVariants++;
   }
 
   odw.close();

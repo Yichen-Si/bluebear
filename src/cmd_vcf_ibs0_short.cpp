@@ -19,7 +19,7 @@ int32_t RandomPairIBS0(int32_t argc, char** argv) {
   int32_t cst = -1, ced = -1;
   int32_t ck_len = 500000;
   int32_t bp_limit = 1000000;
-  // double  cm_limit =2.0;
+  // double  cm_limit = -1.0;
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;

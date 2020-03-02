@@ -9,6 +9,7 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
   std::string inVcf, out, outf, reg;
   int32_t verbose = 10000;
   int32_t use_info = 1;
+  int32_t max_ac = -1;
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
@@ -27,6 +28,7 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("use-info",&use_info, "Whether to use AC/AN in info field")
+    LONG_INT_PARAM("max-ac",&max_ac, "Maximal AC to report")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output VCF file name")
@@ -87,12 +89,21 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
 
   int32_t nVariant = 0;
   int32_t nsamples = bcf_hdr_nsamples(odr.hdr);
-  int32_t sfs[nsamples+1] = {0};
 
   notice("Started Reading site information from VCF file, identifying %d samples", nsamples);
 
-  if ( nsamples == 0 )
-    error("FATAL ERROR: The VCF does not have any samples with genotypes");
+  if ( nsamples == 0 ) {
+    notice("The VCF does not have any samples with genotypes. Use AC in INFO");
+    use_info = 1;
+  }
+  if (max_ac <= 0) {
+    if (nsamples == 0)
+      max_ac = 100;
+    else
+      max_ac = nsamples;
+  }
+
+  int32_t sfs[max_ac+1] = {0};
 
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -136,7 +147,7 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
       if (ac > an/2) {
         ac = an - ac;
       }
-      if (ac == 0) {nmono++; continue;}
+      if (ac == 0 || ac > max_ac) {nmono++; continue;}
       sfs[(uint32_t) ac] ++;
       nVariant++;
     } else {
@@ -156,6 +167,7 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
       if (ac > an/2) {
         ac = an - ac;
       }
+      if (ac == 0 || ac > max_ac) {nmono++; continue;}
       sfs[(uint32_t) ac] ++;
       nVariant++;
     }
@@ -166,7 +178,7 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
   outf = out+".folded.sfs";
   htsFile* wf = hts_open(outf.c_str(), "w");
   int32_t i = 0;
-  for (i = 0; i < nsamples+1; i++) {
+  for (i = 0; i < max_ac+1; i++) {
     hprintf(wf,"%d\t%d\n",i,sfs[i]);
   }
   hts_close(wf);
@@ -306,12 +318,6 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     }
   }
 
-// std::cout << allmut.size() << '\t';
-// for (auto & v : allmut) {
-//   std::cout << v << '\t';
-// }
-// std::cout << '\n';
-
   std::vector<std::string > motifs;
   int32_t ret = AllConfig(alphabet,kmer-1,motifs);
   for (int32_t i = 0; i < ret; ++i) {
@@ -321,12 +327,6 @@ int32_t KmerSFS(int32_t argc, char** argv) {
       sfs[mtype] = tmp;
     }
   }
-
-// std::cout << motifs.size() << '\t';
-// for (auto & v : motifs) {
-//   std::cout << v << '\t';
-// }
-// std::cout << '\n';
 
   notice("Started reading site information from VCF file");
 
@@ -354,9 +354,9 @@ int32_t KmerSFS(int32_t argc, char** argv) {
 
     // check filter logic
     if ( filt != NULL ) {
-      int32_t ret = filter_test(filt, iv, NULL);
-      if ( filter_logic == FLT_INCLUDE ) { if ( !ret)  has_filter = false; }
-      else if ( ret ) { has_filter = false; }
+      int32_t ftest = filter_test(filt, iv, NULL);
+      if ( filter_logic == FLT_INCLUDE ) { if ( !ftest)  has_filter = false; }
+      else if ( ftest ) { has_filter = false; }
     }
     if ( ! has_filter ) { ++nskip; continue; }
 
@@ -401,12 +401,14 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   std::vector<std::string> mset {"A-T","A-C","A-G","C-A","C-T","C-G"};
   std::vector<std::string> cset {"T-A","T-G","T-C","G-T","G-A","G-C"};
   for (int32_t i = 0; i < ret; ++i) {
+    std::string flank0 = motifs[i];
+    std::string flank1 = "";
+    for (uint32_t k = kmer-1; k > 0; --k) {
+      flank1 += bpair[flank0[k-1]];
+    }
     for (uint32_t j = 0; j < mset.size(); ++j) {
-      std::string mtype = motifs[i].substr(0,(kmer-1)/2) + mset[j] + motifs[i].substr((kmer-1)/2);
-      std::string ctype = "";
-      for (uint32_t k = mtype.size(); k > 0; --k) {
-        ctype += bpair[mtype[k-1]];
-      }
+      std::string mtype = flank0.substr(0,(kmer-1)/2) + mset[j] + flank0.substr((kmer-1)/2);
+      std::string ctype = flank1.substr(0,(kmer-1)/2) + cset[j] + flank1.substr((kmer-1)/2);
       auto fs1 = sfs.find(mtype);
       auto fs2 = sfs.find(ctype);
       if (fs2 != sfs.end()) {
@@ -421,7 +423,6 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   }
 
   wf.close();
-
   return 0;
 }
 

@@ -398,19 +398,21 @@ int32_t CDFInfoFloatByKmer(int32_t argc, char** argv) {
     std::string mtype(1, maj);
     mtype += "-";
     mtype += mir;
-    kctx = kctx.substr(0,(kmer-1)/2)+mtype+kctx.substr((kmer-1)/2+1);
+
     if ( maj == 'T' || maj == 'G' ) {
       std::string fctx = "";
       std::string fmtype="";
       for (uint32_t k = kctx.size(); k > 0; --k) {
         fctx += bpair[kctx[k-1]];
       }
-      for (uint32_t k = mtype.size(); k > 0; --k) {
-        fmtype += bpair[mtype[k-1]];
+      for (uint32_t k = 0; k < mtype.size(); ++k) {
+        fmtype += bpair[mtype[k]];
       }
       kctx = fctx;
       mtype = fmtype;
     }
+
+    kctx = kctx.substr(0,(kmer-1)/2)+mtype+kctx.substr((kmer-1)/2+1);
     auto ptr = cdf.find(kctx);
     if (ptr != cdf.end()) {
       (*ptr->second[ac])[it]++;
@@ -443,6 +445,189 @@ int32_t CDFInfoFloatByKmer(int32_t argc, char** argv) {
 
   return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Goal: summarize empirical CDF of ibs0 length in vcf INFO by functional annotations
+
+int32_t CDFInfoFloatByAnn(int32_t argc, char** argv) {
+  std::string inVcf, out, outf, reg;
+  int32_t verbose = 10000;
+  double binsize = 0.002;
+  double maxval = 3.0;
+  double minval = 0;
+  int32_t target_ac = 2;
+  std::vector<std::string> keywords;
+
+  // bcf_vfilter_arg vfilt;
+  // bcf_gfilter_arg gfilt;
+
+  paramList pl;
+
+  BEGIN_LONG_PARAMS(longParameters)
+    LONG_PARAM_GROUP("Input Sites", NULL)
+    LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
+
+    // LONG_PARAM_GROUP("Variant Filtering Options", NULL)
+    // LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
+    // LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
+    // LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+
+    LONG_PARAM_GROUP("Additional Options", NULL)
+    LONG_INT_PARAM("ac",&target_ac,"Allele count to annotate")
+    LONG_MULTI_STRING_PARAM("key-words",&keywords, "Functional annotation to summarize")
+    LONG_DOUBLE_PARAM("bin-size",&binsize, "Bin size for empirical CDF")
+    LONG_DOUBLE_PARAM("max-val",&maxval, "Upper bound for empirical CDF")
+
+    LONG_PARAM_GROUP("Output Options", NULL)
+    LONG_STRING_PARAM("out", &out, "Output VCF file name")
+    LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
+
+  END_LONG_PARAMS();
+
+  pl.Add(new longParams("Available Options", longParameters));
+  pl.Read(argc, argv);
+  pl.Status();
+
+  // sanity check of input arguments
+  if ( inVcf.empty() || out.empty() ) {
+    error("[E:%s:%d %s] --in-vcf, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
+  }
+
+  int32_t nbins = (maxval - minval) / binsize;
+  // Type -> keywords -> count
+  std::map<std::string, std::map<std::string, std::vector<int64_t> > > fn_ct;
+  std::vector<std::string> type_key{"CpG","TS","TV"};
+  std::vector<int64_t> cvec(nbins+1, 0);
+  for (auto & v : type_key) {
+    std::map<std::string, std::vector<int64_t> > tmp;
+    for (auto & u : keywords) {
+      tmp[u] = cvec;
+    }
+    tmp["Tot"] = cvec;
+    fn_ct[v] = tmp;
+  }
+
+  // mutation types
+  std::vector<char> alphabet {'A','T','C','G'};
+  std::set<char> alphaset(alphabet.begin(),alphabet.end());
+  std::set<std::string> tsmut{"A-G","C-T","G-A","T-C"};
+  std::map<char,char> bpair = { {'A','T'}, {'T','A'}, {'C','G'}, {'G','C'}, {'-','-'} };
+
+  // bcf reader
+  std::vector<GenomeInterval> intervals;
+  if ( !reg.empty() ) {
+    parse_intervals(intervals, "", reg);
+  }
+  BCFOrderedReader odr(inVcf, intervals);
+  bcf1_t* iv = bcf_init();
+
+  float *info_cm = NULL;
+  char  *ann = NULL;
+  char  *cpg = NULL;
+  float cm = 0.0;
+  int32_t *info_ac = NULL;
+  int32_t n_ac = 0, n_cm = 0, n_ann = 0, n_cpg = 0;
+  int32_t nVariant = 0;
+
+  notice("Started reading site information from VCF file");
+
+  for(int32_t k=0; odr.read(iv); ++k) {  // read marker
+    // periodic message to user
+    bcf_unpack(iv, BCF_UN_INFO);
+    if ( k % verbose == 0 ) {
+      notice("Processing %d markers at %s:%d. Recorded %d variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
+    }
+    if (!bcf_is_snp(iv)) {continue;}
+
+
+    if (bcf_get_info_string(odr.hdr, iv, "ANN", &ann, &n_ann) < 0) {continue;}
+    if (bcf_get_info_string(odr.hdr, iv, "CpG", &cpg, &n_cpg) < 0) {continue;}
+    if (bcf_get_info_float(odr.hdr, iv, "AvgDist_cM", &info_cm, &n_cm) < 0) {continue;}
+    if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
+    if (info_ac[0] != target_ac) {continue;}
+    cm = info_cm[0];
+    if (cm < 0) {cm = 0.0;}
+
+    std::string fun(ann);
+    std::string type = "TV";
+    char ref = iv->d.allele[0][0];
+    char alt = iv->d.allele[1][0];
+    std::string mtype(1, ref);
+    mtype += "-";
+    mtype += alt;
+    if ( tsmut.find(mtype) != tsmut.end() ) {
+      type = "TS";
+    }
+    if (cpg[0] == 'T') {
+      type = "CpG";
+    }
+
+    int32_t b = (int32_t) std::round(cm / binsize);
+    if (cm > maxval) {b = nbins;}
+    if (cm < minval) {b = 0;}
+    fn_ct[type]["Tot"][b] += 1;
+
+    for (auto & v : keywords) {
+      if ( fun.find(v) != std::string::npos ) {
+        fn_ct[type][v][b] += 1;
+      }
+    }
+    nVariant++;
+  }
+
+  notice("Finished recording %d variants", nVariant);
+
+  outf = out;
+  std::string suff = ".ibs0.cm.avgbtw.fn.ct";
+  if (!reg.empty()) {
+    outf += "_"+reg+suff;
+  } else {
+    outf += suff;
+  }
+
+  FILE *wf;
+  wf = fopen(outf.c_str(),"w");
+  for (auto & v : fn_ct) { // Type
+    for (auto & u : v.second) { // Fn
+      for (int32_t k = 0; k <= nbins; ++k) {
+        fprintf(wf, "%d\t%s\t%s\t%.3f\t%ld\n", target_ac, v.first.c_str(), u.first.c_str(), (k*binsize),(long)u.second[k]);
+      }
+    }
+  }
+  fclose(wf);
+
+  return 0;
+}
+
+
+
+
+
+
+
 
 
 

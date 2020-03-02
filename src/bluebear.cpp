@@ -10,8 +10,13 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv);
 int32_t KmerSFS(int32_t argc, char** argv);
 int32_t MultiAllelicSites(int32_t argc, char** argv);
 
-int32_t AnnotateRareWithTotalAC(int32_t argc, char** argv);
+int32_t AnnotateAge(int32_t argc, char** argv);
+int32_t AnnotatePM(int32_t argc, char** argv);
+int32_t AnnotateRefAC(int32_t argc, char** argv);
 int32_t cmdVcfSummerRefAC(int32_t argc, char** argv);
+int32_t AnnotateRareWithTotalAC(int32_t argc, char** argv);
+int32_t cmdVcfSingletonRefAC(int32_t argc, char** argv);
+
 int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
 
 int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
@@ -25,7 +30,8 @@ int32_t RandomPairIBS0(int32_t argc, char** argv);
 int32_t VCFInsertPM(int32_t argc, char** argv);
 int32_t CDFInfoInt(int32_t argc, char** argv);
 int32_t CDFInfoFloatByKmer(int32_t argc, char** argv);
-int32_t CDFInfoFloatSimu(int32_t argc, char** argv);
+int32_t CDFInfoFloatByAnn(int32_t argc, char** argv); // tmp
+int32_t CDFInfoFloatSimu(int32_t argc, char** argv); // tmp
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv);
@@ -73,8 +79,12 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")
     LONG_COMMAND("triallelic",&MultiAllelicSites, "Find tri-allelic sites from BCF/VCF")
 
+    LONG_COMMAND("anno-age",&AnnotateAge, "Annotate variant age")
+    LONG_COMMAND("anno-pm",&AnnotatePM, "Annotate posterior probability of being a parallel mutation")
     LONG_COMMAND("anno-total-carrier",&AnnotateRareWithTotalAC, "Annotate a query dataset with the ultra-rare variant AC and carriers in a reference dataset")
-    LONG_COMMAND("singleton-ref-ac",&cmdVcfSummerRefAC, "Summarize the AC in a large ref. pop of singletons in a smaller sample")
+    LONG_COMMAND("anno-ref-ac",&AnnotateRefAC, "Annotate a query dataset with the AC in a reference dataset (optional: annotate carrier ancestry info)")
+    LONG_COMMAND("singleton-ref-ac",&cmdVcfSingletonRefAC, "Summarize the AC in a large ref. pop of singletons in a smaller sample")
+    LONG_COMMAND("rare-ref-ac",&cmdVcfSummerRefAC, "Summarize the AC in a large ref. pop of (rare) variants in a smaller sample")
 
     LONG_COMMAND("vcf-sample-summary",&cmdVcfSampleSummary, "Sample-level summary from BCF/VCF")
 
@@ -91,6 +101,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("insert-pm",&VCFInsertPM, "Merge nearby rare variants to create artificial parallel mutation from & to BCF/VCF")
     LONG_COMMAND("info-int-cdf",&CDFInfoInt, "Summarize empirical CDF from VCF INFO")
     LONG_COMMAND("info-flt-cdf",&CDFInfoFloatByKmer, "Summarize empirical CDF from VCF INFO (by kmer)")
+    LONG_COMMAND("info-flt-cdf-ann",&CDFInfoFloatByAnn, "Summarize empirical CDF from VCF INFO (by functional annotations)")
     LONG_COMMAND("info-flt-cdf-simu",&CDFInfoFloatSimu, "Summarize empirical CDF from VCF INFO")
 
 

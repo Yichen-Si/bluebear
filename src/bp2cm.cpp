@@ -155,10 +155,12 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
     ed_cm -= (rec->second[0]->rate)*((ed_bp-ed)*1e-6);
   }
 
-  if (ed_cm-st_cm < 0) { // Should never happen
+  double res = ed_cm-st_cm;
+  if (res < 0) { // Should not happen except for very small intervals (?)
     notice("bp2cmMap::bpinterval2cm: negtaive cm length %d,%.3f-%d,%.3f", st,st_cm,ed,ed_cm);
+    res = 0.0;
   }
-  return ed_cm - st_cm;
+  return res;
 }
 
 
