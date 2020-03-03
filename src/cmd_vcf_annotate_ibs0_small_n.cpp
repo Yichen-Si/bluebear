@@ -17,6 +17,7 @@ void UpdateInfo_IBS0(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
   bcf_update_info_int32(hdr, nv, "Carriers", &(rare->id_list[0]), rare->id_list.size());
   bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
   bcf_update_info_float(hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
+  bcf_update_info_float(hdr, nv, "MedDist_cM", &(rare->MedDist_cm), 1);
 
   ss.str(std::string());
   for (int32_t i = 0; i < rare->ac-1; ++i) {
@@ -39,7 +40,7 @@ void UpdateInfo_IBS0(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
 
 // goal -- get all pairwise no-ibs0 regions covering shared
 //         rare variants from the given region
-int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
+int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   std::string inVcf, inMap, chrom, reg, oreg;
   std::string out;
   int32_t min_hom_gts = 1;
@@ -144,6 +145,10 @@ int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv) {
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AvgDist_cM" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=AvgDist_cM,Number=1,Type=Float,Description=\"Average no-IBS0 length between two clusters, in cM\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "MedDist_cM" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=MedDist_cM,Number=1,Type=Float,Description=\"Median no-IBS0 length between two clusters, in cM\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "LeftIBS0" ) < 0 ) {

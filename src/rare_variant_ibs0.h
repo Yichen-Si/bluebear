@@ -10,7 +10,7 @@ public:
   std::vector<int32_t> id_list;
   std::vector<int32_t> subset1,subset2;
   int32_t AvgDist = 0;
-  float AvgDist_cm = 0.0;
+  float AvgDist_cm = 0.0, MedDist_cm = 0.0;
   int32_t ovst = -1, oved = -1; // st & ed of the overlap region
   int32_t finished = 0; // Count number of pairs with both ibs0 found
 
@@ -39,6 +39,10 @@ void Add_id(std::vector<int32_t>& idvec) {
     id_index[v] = ct;
     ct++;
   }
+}
+
+bool IfDone() {
+  return ( finished >= (ac*(ac-1)/2) );
 }
 
 bool Add(int32_t id1, int32_t id2, int32_t st, int32_t ed) {
@@ -156,15 +160,21 @@ void Organize(bp2cmMap& pgmap) {
     subset2.push_back(id_list[v]); // Id in the larger cluster
 
   int32_t ctbtw = 0;
+  std::vector<double> btwDist;
   for (auto & u : *nodelist[0]) {
     for (auto & v : *nodelist[1]) {
       int32_t irow = std::min(u,v), icol = std::max(u,v);
       AvgDist += (ibs0mat[irow][icol] - ibs0mat[icol][irow]);
-      AvgDist_cm += pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
+      double d = pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
+      btwDist.push_back(d);
+      AvgDist_cm += d;
+      // AvgDist_cm += pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
       // AvgDist_cm += (pgmap.bp2cm(ibs0mat[irow][icol]) - pgmap.bp2cm(ibs0mat[icol][irow]));
       ctbtw += 1;
     }
   }
+  std::sort(btwDist.begin(),btwDist.end());
+  MedDist_cm = (float) btwDist[ btwDist.size()/2 ];
   AvgDist /= ctbtw;
   AvgDist_cm /= ctbtw;
   for (int32_t it = 0; it < m; ++it) {

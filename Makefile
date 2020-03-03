@@ -315,6 +315,33 @@ src/cmd_vcf_annotate_context.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.s
 .PHONY : src/cmd_vcf_annotate_context.cpp.s
 
+src/cmd_vcf_annotate_ibd.o: src/cmd_vcf_annotate_ibd.cpp.o
+
+.PHONY : src/cmd_vcf_annotate_ibd.o
+
+# target to build an object file
+src/cmd_vcf_annotate_ibd.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o
+.PHONY : src/cmd_vcf_annotate_ibd.cpp.o
+
+src/cmd_vcf_annotate_ibd.i: src/cmd_vcf_annotate_ibd.cpp.i
+
+.PHONY : src/cmd_vcf_annotate_ibd.i
+
+# target to preprocess a source file
+src/cmd_vcf_annotate_ibd.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.i
+.PHONY : src/cmd_vcf_annotate_ibd.cpp.i
+
+src/cmd_vcf_annotate_ibd.s: src/cmd_vcf_annotate_ibd.cpp.s
+
+.PHONY : src/cmd_vcf_annotate_ibd.s
+
+# target to generate assembly for a file
+src/cmd_vcf_annotate_ibd.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.s
+.PHONY : src/cmd_vcf_annotate_ibd.cpp.s
+
 src/cmd_vcf_annotate_ibs0_small_n.o: src/cmd_vcf_annotate_ibs0_small_n.cpp.o
 
 .PHONY : src/cmd_vcf_annotate_ibs0_small_n.o
@@ -1641,6 +1668,9 @@ help:
 	@echo "... src/cmd_vcf_annotate_context.o"
 	@echo "... src/cmd_vcf_annotate_context.i"
 	@echo "... src/cmd_vcf_annotate_context.s"
+	@echo "... src/cmd_vcf_annotate_ibd.o"
+	@echo "... src/cmd_vcf_annotate_ibd.i"
+	@echo "... src/cmd_vcf_annotate_ibd.s"
 	@echo "... src/cmd_vcf_annotate_ibs0_small_n.o"
 	@echo "... src/cmd_vcf_annotate_ibs0_small_n.i"
 	@echo "... src/cmd_vcf_annotate_ibs0_small_n.s"

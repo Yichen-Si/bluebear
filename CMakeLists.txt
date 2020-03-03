@@ -69,6 +69,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_vcf_sample_summary.cpp
     src/cmd_vcf_site_annotate_pm_posterior.cpp
     src/cmd_vcf_site_annotate_age.cpp
+    src/cmd_vcf_annotate_ibd.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h

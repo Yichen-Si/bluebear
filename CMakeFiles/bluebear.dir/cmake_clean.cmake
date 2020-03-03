@@ -53,6 +53,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o"
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"

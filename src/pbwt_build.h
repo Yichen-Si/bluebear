@@ -39,6 +39,23 @@ public:
     d = NULL; a = NULL;
   }
 
+  void Reset(int32_t _M, int32_t k) {
+    M = _M;
+    for (int32_t i = 0; i < M; ++i) {
+      d[i] = k; a[i] = i;
+      b[i] = 0; e[i] = 0;
+    }
+  }
+
+  void Reset(int32_t _M, int32_t* _a, int32_t* _d) {
+    M = _M;
+    memcpy (a, _a, M*sizeof(int32_t));
+    memcpy (d, _d, M*sizeof(int32_t));
+    for (int32_t i = 0; i < M; ++i) {
+      b[i] = 0; e[i] = 0;
+    }
+  }
+
   void ForwardsAD_suffix(bool *y, int32_t k) {
     int32_t u = 0, v = 0;
     int32_t p = k-1, q = k-1;

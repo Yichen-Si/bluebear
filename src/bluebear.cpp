@@ -34,7 +34,8 @@ int32_t CDFInfoFloatByAnn(int32_t argc, char** argv); // tmp
 int32_t CDFInfoFloatSimu(int32_t argc, char** argv); // tmp
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
-int32_t AnnotateIBS0AroundRare_Samll(int32_t argc, char** argv);
+int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
+int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
 
 int32_t cmdIBS0Bridge(int32_t argc, char** argv);
 int32_t mapPt2Interval(int32_t argc, char** argv);
@@ -105,7 +106,8 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("info-flt-cdf-simu",&CDFInfoFloatSimu, "Summarize empirical CDF from VCF INFO")
 
 
-    LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Samll, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
+    LONG_COMMAND("anno-ibd",&AnnotateIBDAroundRare, "Annotate pairwise IBD among rare allele carriers from input BCF/VCF")
+    LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Small, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 
     LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 

@@ -143,6 +143,36 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/params.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/utils.h
 
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/bgzf.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/faidx.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/hts.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/hts_defs.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/hts_endian.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/kseq.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/kstring.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/sam.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/tbx.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/vcf.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/vcfutils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/Error.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/bcf_filter_arg.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/bcf_ordered_reader.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/bcf_ordered_writer.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/bp2cm.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/cmd_vcf_annotate_ibd.cpp
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/filter.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/genome_interval.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/interval.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/interval_tree.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/pbwt_build.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/rare_variant_ibs0.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/utils.h
+
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/faidx.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/hts.h
