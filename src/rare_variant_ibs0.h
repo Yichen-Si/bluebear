@@ -13,6 +13,7 @@ public:
   float AvgDist_cm = 0.0, MedDist_cm = 0.0;
   int32_t ovst = -1, oved = -1; // st & ed of the overlap region
   int32_t finished = 0; // Count number of pairs with both ibs0 found
+  std::vector<float> btwDist;
 
 RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
   ibs0mat = new int32_t*[ac];
@@ -29,7 +30,7 @@ RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
 
 void Add_id(int32_t id) { // Not robust!
   id_list.push_back(id);
-  id_index[id] = id_index.size()-1;
+  id_index[id] = id_list.size()-1;
 }
 void Add_id(std::vector<int32_t>& idvec) {
   int32_t ct = 0;
@@ -160,12 +161,12 @@ void Organize(bp2cmMap& pgmap) {
     subset2.push_back(id_list[v]); // Id in the larger cluster
 
   int32_t ctbtw = 0;
-  std::vector<double> btwDist;
+  // std::vector<double> btwDist;
   for (auto & u : *nodelist[0]) {
     for (auto & v : *nodelist[1]) {
       int32_t irow = std::min(u,v), icol = std::max(u,v);
       AvgDist += (ibs0mat[irow][icol] - ibs0mat[icol][irow]);
-      double d = pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
+      float d = pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
       btwDist.push_back(d);
       AvgDist_cm += d;
       // AvgDist_cm += pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
@@ -173,8 +174,13 @@ void Organize(bp2cmMap& pgmap) {
       ctbtw += 1;
     }
   }
-  std::sort(btwDist.begin(),btwDist.end());
-  MedDist_cm = (float) btwDist[ btwDist.size()/2 ];
+  int32_t index[btwDist.size()];
+  for (int32_t it = 0; it < (int32_t) btwDist.size(); ++it) {
+    index[it] = it;
+  }
+  std::sort(index, index + btwDist.size(), [this](uint32_t index_left, uint32_t index_right) { return btwDist[index_left] < btwDist[index_right]; });
+  // std::sort(btwDist.begin(),btwDist.end());
+  MedDist_cm = (float) btwDist[ index[ctbtw/2] ];
   AvgDist /= ctbtw;
   AvgDist_cm /= ctbtw;
   for (int32_t it = 0; it < m; ++it) {

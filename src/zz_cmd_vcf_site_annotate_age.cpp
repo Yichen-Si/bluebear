@@ -23,9 +23,7 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
   int32_t max_ac = 10, skip = 1;
   int32_t max_age= 1000;
   double cover = 0.95;
-  float max_cm = 10.0, min_cm = 0.001;
-  std::vector<std::string> tag_list;
-  std::string tag_field = "ANN";
+  float max_cm = 10.0;
 
   paramList pl;
 
@@ -41,8 +39,6 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
     LONG_INT_PARAM("skip",&skip,"lines in info file to skip")
     LONG_INT_PARAM("cover",&cover,"Credible interval")
     LONG_DOUBLE_PARAM("cap",&max_cm,"Maximum ibd length to trust")
-    LONG_DOUBLE_PARAM("cup",&min_cm,"Maximum ibd length to trust")
-    LONG_MULTI_STRING_PARAM("key-words",&tag_list, "Functional annotation groups to get posterior summary")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output VCF file prefix")
@@ -67,17 +63,10 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
   }
 
   // Store the overall distribution of posterior
-  // By annotation groups
-  std::map<std::string, std::vector<std::vector<double> > > post_dict;
-  if (tag_list.size() > 0) {
-    for (auto & v : tag_list) {
-      std::vector<std::vector<double> > posterior;
-      for (int32_t i = 0; i <= max_ac; ++i) {
-        std::vector<double> vec(max_age+2, 0.0);
-        posterior.push_back(vec);
-      }
-      post_dict[v] = posterior;
-    }
+  std::vector<std::vector<double> > posterior;
+  for (int32_t i = 0; i <= max_ac; ++i) {
+    std::vector<double> vec(max_age+1, 0.0);
+    posterior.push_back(vec);
   }
 
   std::ifstream ifs;
@@ -129,10 +118,6 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
   odw.set_hdr(hnull);
 
   char buffer[65536];
-  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeMLE" ) < 0 ) {
-    sprintf(buffer,"##INFO=<ID=AgeMLE,Number=1,Type=Integer,Description=\"MLE age for doubletons\">\n");
-    bcf_hdr_append(odw.hdr, buffer);
-  }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeMAP" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=AgeMAP,Number=1,Type=Float,Description=\"Posterior mode of the variant age\">\n");
     bcf_hdr_append(odw.hdr, buffer);
@@ -150,36 +135,32 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
     bcf_hdr_append(odw.hdr, buffer);
   }
 
-  // if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeMAP2" ) < 0 ) {
-  //   sprintf(buffer,"##INFO=<ID=AgeMAP2,Number=1,Type=Float,Description=\"Posterior mode of the variant age\">\n");
-  //   bcf_hdr_append(odw.hdr, buffer);
-  // }
-  // if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeCME2" ) < 0 ) {
-  //   sprintf(buffer,"##INFO=<ID=AgeCME2,Number=1,Type=Float,Description=\"Conditional mean estimate of the variant age\">\n");
-  //   bcf_hdr_append(odw.hdr, buffer);
-  // }
-  // if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeLowerBound2" ) < 0 ) {
-  //   sprintf(buffer,"##INFO=<ID=AgeLowerBound2,Number=1,Type=Float,Description=\"Lower bound of the credible interval of the variant age\">\n");
-  //   bcf_hdr_append(odw.hdr, buffer);
-  // }
-  // if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeUpperBound2" ) < 0 ) {
-  //   sprintf(buffer,"##INFO=<ID=AgeUpperBound2,Number=1,Type=Float,Description=\"Upper bound of the credible interval of the variant age\">\n");
-  //   bcf_hdr_append(odw.hdr, buffer);
-  // }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeMAP2" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=AgeMAP2,Number=1,Type=Float,Description=\"Posterior mode of the variant age\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeCME2" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=AgeCME2,Number=1,Type=Float,Description=\"Conditional mean estimate of the variant age\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeLowerBound2" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=AgeLowerBound2,Number=1,Type=Float,Description=\"Lower bound of the credible interval of the variant age\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AgeUpperBound2" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=AgeUpperBound2,Number=1,Type=Float,Description=\"Upper bound of the credible interval of the variant age\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
 
   odw.write_hdr();
 
   notice("Start reading site information from VCF file.");
 
-  float *info_cm = NULL;
-  // float *med_cm = NULL;
+  float *info_cm = NULL, *med_cm = NULL;
   float *pair_cm = NULL;
-  float cm = 0.0;
-  // float mcm = 0.0;
+  float cm = 0.0, mcm = 0.0;
   int32_t *info_ac = NULL;
-  char  *ann = NULL;
-  int32_t n_ac = 0, n_cm = 0, n_bt = 0, n_ann = 0;
-  // int32_t n_md = 0;
+  int32_t n_ac = 0, n_cm = 0, n_md = 0, n_bt = 0;
   int32_t nVariant = 0;
   float rg = (1.0-cover)/2.0;
 
@@ -192,32 +173,22 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
       notice("Processing %d markers at %s:%d. Recorded %d variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
     }
     if (bcf_get_info_float(odr.hdr, iv, "AvgDist_cM", &info_cm, &n_cm) < 0) {continue;}
-    // if (bcf_get_info_float(odr.hdr, iv, "MedDist_cM", &med_cm, &n_md) < 0) {continue;}
+    if (bcf_get_info_float(odr.hdr, iv, "MedDist_cM", &med_cm, &n_md) < 0) {continue;}
     if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
     if (info_ac[0] > max_ac || info_ac[0] < 2) {continue;}
     cm = std::min(info_cm[0],max_cm);
-    if (cm <= 0.0) {
-      cm = min_cm;
-    }
-    // mcm= std::min(med_cm[0],max_cm);
+    mcm= std::min(med_cm[0],max_cm);
     ac = info_ac[0];
     if (cm < 0) {cm = 0.0;} // Never happen
-    // if (mcm < 0) {mcm = 0.0;} // Never happen
-    int32_t have_tag_field = bcf_get_info_string(odr.hdr, iv, tag_field.c_str(), &ann, &n_ann);
+    if (mcm < 0) {mcm = 0.0;} // Never happen
 
     // Posterior mean
     double prob[max_age+1];
     double prob_map = 0.0, w_sum = 0.0, p_sum = 0.0, tmp = 0.0;
-    float est_map = 0.0, ml = 0.0;
+    float est_map = 0.0;
     float lower = -1.0, upper = -1.0;
-    int32_t mle = 0;
     for ( uint32_t i = 1; i < prior[ac].size(); ++i ) {
-      tmp = gammapdf(2, 0.02*i, cm);
-      if (ml < tmp) {
-        ml = tmp;
-        mle = i;
-      }
-      tmp *= prior[ac][i];
+      tmp = gammapdf(2, 0.02*i, cm) * prior[ac][i];
       if (prob_map < tmp) {
         prob_map = tmp;
         est_map = (float) i;
@@ -229,87 +200,93 @@ int32_t AnnotateAge(int32_t argc, char** argv) {
     float cme = (float) w_sum / p_sum;
     float n_sum = 0.0;
     for (int32_t i = 1; i <= max_age; ++i) {
-      prob[i] /= p_sum;
-      n_sum += prob[i];
+      n_sum += prob[i]/p_sum;
+      posterior[ac][i] += prob[i]/p_sum;
       if (lower < 0 && n_sum >= rg) {lower = i;}
       if (upper < 0 && n_sum >= 1.0-rg) {upper=i;break;}
     }
 
-    if (have_tag_field >= 0) {
-      std::string fun(ann);
-      for (auto & tag : tag_list) {
-        if ( fun.find(tag) != std::string::npos ) {
-          for (int32_t i = 1; i <= max_age; ++i)
-            post_dict[tag][ac][i] += prob[i];
-          post_dict[tag][ac].back() += 1;
-        }
-      }
-    }
-
-    if (ac == 2) {
-      bcf_update_info_int32(odw.hdr, iv, "AgeMLE", &mle, 1);
-    }
     bcf_update_info_float(odw.hdr, iv, "AgeMAP", &est_map, 1);
     bcf_update_info_float(odw.hdr, iv, "AgeCME", &cme, 1);
     bcf_update_info_float(odw.hdr, iv, "AgeLowerBound", &lower, 1);
     bcf_update_info_float(odw.hdr, iv, "AgeUpperBound", &upper, 1);
 
-    // // Composite likelihood
-    // int32_t sz = bcf_get_info_float(odr.hdr, iv, "BtwDist", &pair_cm, &n_bt);
+    // Composite likelihood
+    int32_t sz = bcf_get_info_float(odr.hdr, iv, "BtwDist", &pair_cm, &n_bt);
 
-    // if (sz > 1) {
-    //   prob_map = 0.0; w_sum = 0.0; p_sum = 0.0; tmp = 0.0;
-    //   est_map = 0.0;
-    //   lower = -1.0; upper = -1.0;
-    //   for ( uint32_t i = 1; i < prior[ac].size(); ++i ) {
-    //     tmp = 0.0;
-    //     for (int32_t it = 0; it < sz; ++it) {
-    //       tmp += lgammapdf(2, 0.02*i, pair_cm[it]);
-    //     }
-    //     tmp = exp(tmp + log(prior[ac][i]));
-    //     if (prob_map < tmp) {
-    //       prob_map = tmp;
-    //       est_map = (float) i;
-    //     }
-    //     w_sum += i * tmp;
-    //     p_sum += tmp;
-    //     prob[i] = tmp;
+    if (sz > 1) {
+      prob_map = 0.0; w_sum = 0.0; p_sum = 0.0; tmp = 0.0;
+      est_map = 0.0;
+      lower = -1.0; upper = -1.0;
+      for ( uint32_t i = 1; i < prior[ac].size(); ++i ) {
+        tmp = 0.0;
+        for (int32_t it = 0; it < sz; ++it) {
+          tmp += lgammapdf(2, 0.02*i, pair_cm[it]);
+        }
+        tmp = exp(tmp + log(prior[ac][i]));
+        if (prob_map < tmp) {
+          prob_map = tmp;
+          est_map = (float) i;
+        }
+        w_sum += i * tmp;
+        p_sum += tmp;
+        prob[i] = tmp;
+      }
+      cme = (float) w_sum / p_sum;
+      n_sum = 0.0;
+      for (int32_t i = 1; i <= max_age; ++i) {
+        n_sum += prob[i]/p_sum;
+        if (lower < 0 && n_sum >= rg) {lower = i;}
+        if (upper < 0 && n_sum >= 1.0-rg) {upper=i;break;}
+      }
+    }
+    if (sz > 1 || ac == 2) {
+      bcf_update_info_float(odw.hdr, iv, "AgeMAP2", &est_map, 1);
+      bcf_update_info_float(odw.hdr, iv, "AgeCME2", &cme, 1);
+      bcf_update_info_float(odw.hdr, iv, "AgeLowerBound2", &lower, 1);
+      bcf_update_info_float(odw.hdr, iv, "AgeUpperBound2", &upper, 1);
+    }
+
+    // for ( uint32_t i = 1; i < prior[ac].size(); ++i ) {
+    //   tmp = gammapdf(2, 0.02*i, mcm) * prior[ac][i];
+    //   if (prob_map < tmp) {
+    //     prob_map = tmp;
+    //     est_map = (float) i;
     //   }
-    //   cme = (float) w_sum / p_sum;
-    //   n_sum = 0.0;
-    //   for (int32_t i = 1; i <= max_age; ++i) {
-    //     n_sum += prob[i]/p_sum;
-    //     if (lower < 0 && n_sum >= rg) {lower = i;}
-    //     if (upper < 0 && n_sum >= 1.0-rg) {upper=i;break;}
-    //   }
+    //   w_sum += i * tmp;
+    //   p_sum += tmp;
+    //   prob[i] = tmp;
     // }
-    // if (sz > 1 || (sz == 1 && ac == 2) ) {
-    //   bcf_update_info_float(odw.hdr, iv, "AgeMAP2", &est_map, 1);
-    //   bcf_update_info_float(odw.hdr, iv, "AgeCME2", &cme, 1);
-    //   bcf_update_info_float(odw.hdr, iv, "AgeLowerBound2", &lower, 1);
-    //   bcf_update_info_float(odw.hdr, iv, "AgeUpperBound2", &upper, 1);
+    // cme = (float) w_sum / p_sum;
+    // n_sum = 0.0;
+    // for (int32_t i = 1; i <= max_age; ++i) {
+    //   n_sum += prob[i]/p_sum;
+    //   if (lower < 0 && n_sum >= rg) {lower = i;}
+    //   if (upper < 0 && n_sum >= 1.0-rg) {upper=i;break;}
     // }
 
+    // bcf_update_info_float(odw.hdr, iv, "AgeMAP2", &est_map, 1);
+    // bcf_update_info_float(odw.hdr, iv, "AgeCME2", &cme, 1);
+    // bcf_update_info_float(odw.hdr, iv, "AgeLowerBound2", &lower, 1);
+    // bcf_update_info_float(odw.hdr, iv, "AgeUpperBound2", &upper, 1);
+
+// std::cout << ac << '\t' << cm << '\t' << est_map << '\t' << cme << '\n';
     odw.write(iv);
     nVariant++;
   }
 
-  // Output the posterior distribution by functional annotation
-  // AC Age Tot Prob Tag
+  // Output the posterior distribution (Should be the same as prior
+  // AC Age Tot Prob
   outf = out + ".post.age.txt";
   FILE * wf;
   wf = fopen(outf.c_str(), "w");
   for (ac = 2; ac <= max_ac; ++ac) {
-    for (auto & v : post_dict) {
-      if (v.second[ac].back() <= 0.0) {continue;}
-      double psum = 0.0;
-      for (int32_t a = 1; a <= max_age; ++a) {
-        psum += v.second[ac][a];
-      }
-      if (psum <= 0.0) {continue;}
-      for (int32_t a = 1; a <= max_age; ++a) {
-        fprintf(wf, "%d\t%d\t%d\t%.2f\t%.4f\t%s\n", ac, (int32_t) v.second[ac].back(), a, v.second[ac][a], v.second[ac][a]/psum, v.first.c_str());
-      }
+    double psum = 0.0;
+    for (int32_t a = 1; a <= max_age; ++a) {
+      psum += posterior[ac][a];
+    }
+    for (int32_t a = 1; a <= max_age; ++a) {
+      fprintf(wf, "%d\t%d\t%.2f\t%.4f\n", ac, a, posterior[ac][a], posterior[ac][a]/psum);
     }
   }
   fclose(wf);

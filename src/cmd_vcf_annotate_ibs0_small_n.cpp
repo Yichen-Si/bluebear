@@ -12,12 +12,14 @@ void UpdateInfo_IBS0(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
   std::string sstr;
   ss << rare->subset1.size() << "," << rare->subset2.size();
   bcf_update_info_string(hdr, nv, "BiCluster", ss.str().c_str());
+
   bcf_update_info_int32(hdr, nv, "LeftSet", &(rare->subset1[0]), rare->subset1.size());
   bcf_update_info_int32(hdr, nv, "RightSet", &(rare->subset2[0]), rare->subset2.size());
   bcf_update_info_int32(hdr, nv, "Carriers", &(rare->id_list[0]), rare->id_list.size());
   bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
   bcf_update_info_float(hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
   bcf_update_info_float(hdr, nv, "MedDist_cM", &(rare->MedDist_cm), 1);
+  bcf_update_info_float(hdr, nv, "BtwDist", &(rare->btwDist), (rare->btwDist).size());
 
   ss.str(std::string());
   for (int32_t i = 0; i < rare->ac-1; ++i) {
@@ -157,6 +159,10 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "RightIBS0" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=RightIBS0,Number=1,Type=String,Description=\"Pairwise IBS0 position to the right\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "BtwDist" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=BtwDist,Number=.,Type=Float,Description=\"No-IBS0 lengths of individual pairs in the two final clusters, in cM\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   odw.write_hdr();

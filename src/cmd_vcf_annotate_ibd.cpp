@@ -5,15 +5,19 @@
 #include "bcf_ordered_writer.h"
 #include "pbwt_build.h"
 #include "bp2cm.h"
-#include "rare_variant_ibs0.h"
+#include "rare_variant_config.h"
 
 void UpdateInfo_IBD(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
-  std::stringstream ss;
-  ss << rare->subset1.size() << "," << rare->subset2.size();
-  bcf_update_info_string(hdr, nv, "BiCluster", ss.str().c_str());
+  int32_t bc[2];
+  int32_t ac = rare->ac;
+  bc[0] = rare->left_size;
+  bc[1] = ac - bc[0];
   bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
   bcf_update_info_float(hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
   bcf_update_info_float(hdr, nv, "MedDist_cM", &(rare->MedDist_cm), 1);
+  bcf_update_info_int32(hdr, nv, "BiCluster", &bc, 2);
+  bcf_update_info_int32(hdr, nv, "CarrierID", &(rare->id_list[0]), ac);
+  bcf_update_info_float(hdr, nv, "Matrix_cM", rare->sorted_cm, ac*ac);
 }
 
 // goal -- get all pairwise ibd regions covering shared
@@ -87,7 +91,11 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
   odw.set_hdr(hnull);
   char buffer[65536];
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "BiCluster" ) < 0 ) {
-    sprintf(buffer,"##INFO=<ID=BiCluster,Number=1,Type=String,Description=\"Sizes of the two subtree\">\n");
+    sprintf(buffer,"##INFO=<ID=BiCluster,Number=2,Type=Integer,Description=\"Sizes of the two subtree\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "CarrierID" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=CarrierID,Number=.,Type=Integer,Description=\"Carriers of the rare allele, order matches the IBD matrix\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AvgDist_bp" ) < 0 ) {
@@ -100,6 +108,10 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "MedDist_cM" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=MedDist_cM,Number=1,Type=Float,Description=\"Median no-IBS0 length between two clusters, in cM\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "Matrix_cM" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=Matrix_cM,Number=.,Type=Float,Description=\"No-IBS0 lengths (cM) of individual pairs arranged in a planer order; upper and lower triangular correspond to down- and upstream respectively\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   odw.write_hdr();
@@ -125,10 +137,11 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
   // Find indiv. carrying rare alleles.
   for(int32_t k=0; odr.read(iv); ++k) {
     if (iv->pos == pos) {
-      if (iv->pos == snplist.back()->iv->pos) {
+      if (snplist.size() > 0 && pos == snplist.back()->iv->pos) {
         delete snplist.back();
         snplist.pop_back();
         nVariant--;
+        // notice("Delete tri-allelic site at %d",pos);
       }
       continue; // Ignore tri-allelic sites
     }
@@ -213,18 +226,20 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
           if (bcf_gt_allele(g1) > 0 || bcf_gt_allele(g2) > 0) {
             hapcarry.push_back((bcf_gt_allele(g1) > 0)? 0 : 1);
           } else { // Never happen
-            error("Error in identifying rare variant carriers");
+            notice("Error in identifying rare variant carriers");
           }
         }
-        int32_t rvec[M];
-        pc.ReverseA(rvec);
-        int32_t h1,h2,fin;
-        for (int32_t i = 0; i < ac-1; i++) {
-          h1 = rvec[ rv->id_list[i] * 2 + hapcarry[i]];
-          for (int32_t j = i+1; j < ac; j++) {
-            h2 = rvec[ rv->id_list[j] * 2 + hapcarry[j]];
-// std::cout << iv->pos << "\tLeft: " << pc.Dist_pref(h1,h2) << '\n';
-            fin = rv->Add_half( rv->id_list[i], rv->id_list[j], pc.Dist_pref(h1,h2), 1);
+        if (hapcarry.size() == rv->id_list.size()) {
+          int32_t rvec[M];
+          pc.ReverseA(rvec);
+          int32_t h1,h2,fin;
+          for (int32_t i = 0; i < ac-1; i++) {
+            h1 = rvec[ rv->id_list[i] * 2 + hapcarry[i]];
+            for (int32_t j = i+1; j < ac; j++) {
+              h2 = rvec[ rv->id_list[j] * 2 + hapcarry[j]];
+              int32_t l = std::max(min_pos, pc.Dist_pref(h1,h2));
+              fin = rv->Add_half( rv->id_list[i], rv->id_list[j], l, 1);
+            }
           }
         }
       }
@@ -348,17 +363,20 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
             if (g1|| g2) {
               hapcarry.push_back((g1)? 0 : 1);
             } else { // Never happen
-              error("Error in identifying rare variant carriers");
+              notice("Error in identifying rare variant carriers");
             }
           }
-          int32_t rvec[M];
-          pc.ReverseA(rvec);
-          int32_t h1,h2,fin;
-          for (int32_t i = 0; i < ac-1; i++) {
-            h1 = rvec[ rv->id_list[i] * 2 + hapcarry[i]];
-            for (int32_t j = i+1; j < ac; j++) {
-              h2 = rvec[ rv->id_list[j] * 2 + hapcarry[j]];
-              fin = rv->Add_half( rv->id_list[i], rv->id_list[j], pc.Dist_suff(h1,h2), 2);
+          if (hapcarry.size() == rv->id_list.size()) {
+            int32_t rvec[M];
+            pc.ReverseA(rvec);
+            int32_t h1,h2,fin;
+            for (int32_t i = 0; i < ac-1; i++) {
+              h1 = rvec[ rv->id_list[i] * 2 + hapcarry[i]];
+              for (int32_t j = i+1; j < ac; j++) {
+                h2 = rvec[ rv->id_list[j] * 2 + hapcarry[j]];
+                int32_t r = std::min(max_pos, pc.Dist_suff(h1,h2));
+                fin = rv->Add_half( rv->id_list[i], rv->id_list[j], r, 2);
+              }
             }
           }
         }

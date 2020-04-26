@@ -1503,6 +1503,33 @@ src/pt2interval.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/pt2interval.cpp.s
 .PHONY : src/pt2interval.cpp.s
 
+src/rare_variant_config.o: src/rare_variant_config.cpp.o
+
+.PHONY : src/rare_variant_config.o
+
+# target to build an object file
+src/rare_variant_config.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o
+.PHONY : src/rare_variant_config.cpp.o
+
+src/rare_variant_config.i: src/rare_variant_config.cpp.i
+
+.PHONY : src/rare_variant_config.i
+
+# target to preprocess a source file
+src/rare_variant_config.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.i
+.PHONY : src/rare_variant_config.cpp.i
+
+src/rare_variant_config.s: src/rare_variant_config.cpp.s
+
+.PHONY : src/rare_variant_config.s
+
+# target to generate assembly for a file
+src/rare_variant_config.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.s
+.PHONY : src/rare_variant_config.cpp.s
+
 src/reference_sequence.o: src/reference_sequence.cpp.o
 
 .PHONY : src/reference_sequence.o
@@ -1800,6 +1827,9 @@ help:
 	@echo "... src/pt2interval.o"
 	@echo "... src/pt2interval.i"
 	@echo "... src/pt2interval.s"
+	@echo "... src/rare_variant_config.o"
+	@echo "... src/rare_variant_config.i"
+	@echo "... src/rare_variant_config.s"
 	@echo "... src/reference_sequence.o"
 	@echo "... src/reference_sequence.i"
 	@echo "... src/reference_sequence.s"

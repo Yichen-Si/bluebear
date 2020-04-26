@@ -171,7 +171,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
  /net/wonderland/home/ycsi/tool/bluebear/src/params.h
  /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
- /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
  /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o
  ../htslib/include/htslib/bgzf.h
@@ -1221,6 +1221,32 @@ CMakeFiles/bluebear.dir/src/pt2interval.cpp.o
  /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
  /net/wonderland/home/ycsi/tool/bluebear/src/params.h
  /net/wonderland/home/ycsi/tool/bluebear/src/pt2interval.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o
+ ../htslib/include/htslib/bgzf.h
+ ../htslib/include/htslib/faidx.h
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kseq.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/tbx.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/Error.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/genome_interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/interval_tree.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/params.h
+ /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.cpp
+ /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
  /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o
  ../htslib/include/htslib/bgzf.h

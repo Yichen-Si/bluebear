@@ -18,6 +18,7 @@ int32_t AnnotateRareWithTotalAC(int32_t argc, char** argv);
 int32_t cmdVcfSingletonRefAC(int32_t argc, char** argv);
 
 int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
+int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
 
 int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
@@ -88,6 +89,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("rare-ref-ac",&cmdVcfSummerRefAC, "Summarize the AC in a large ref. pop of (rare) variants in a smaller sample")
 
     LONG_COMMAND("vcf-sample-summary",&cmdVcfSampleSummary, "Sample-level summary from BCF/VCF")
+    LONG_COMMAND("vcf-count-singleton",&cmdVcfCountSingleton, "Count & list singletons from BCF/VCF")
 
     // Temperary ibs0 tests
     LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")

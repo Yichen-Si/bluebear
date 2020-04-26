@@ -291,8 +291,8 @@ pbwt_build.h
 /net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
 bp2cm.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
-rare_variant_ibs0.h
-/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+rare_variant_config.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp
 cramore.h
@@ -439,6 +439,8 @@ cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
 bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sfs.cpp
 cramore.h
@@ -467,6 +469,8 @@ ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
 rare_variant_ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+iterator
+-
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp
 cramore.h
@@ -1053,6 +1057,20 @@ pbwt_build.h
 /net/wonderland/home/ycsi/tool/bluebear/src/pt2interval.cpp
 cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.cpp
+rare_variant_config.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
 utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/utils.h
 

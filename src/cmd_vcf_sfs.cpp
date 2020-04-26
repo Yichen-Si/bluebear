@@ -282,6 +282,10 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     }
   }
 
+  int32_t max_rare = 50;
+  std::vector<double> lower{0.0,0.001,0.005,0.01,0.05};
+  std::vector<double> upper{0.001,0.005,0.01,0.05, 1.00};
+
   int32_t nskip = 0, nmono = 0;
   int32_t *info_ac = NULL;
   int32_t *info_an = NULL;
@@ -323,7 +327,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   for (int32_t i = 0; i < ret; ++i) {
     for (uint32_t j = 0; j < allmut.size(); ++j) {
       std::string mtype = motifs[i].substr(0,(kmer-1)/2) + allmut[j] + motifs[i].substr((kmer-1)/2);
-      std::vector<int64_t> tmp(nsamples+1, 0);
+      std::vector<int64_t> tmp(max_rare+1+lower.size(), 0);
       sfs[mtype] = tmp;
     }
   }
@@ -384,7 +388,16 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     }
     auto ptr = sfs.find(kctx);
     if (ptr != sfs.end()) {
-      (ptr->second)[ac] ++;
+      if (ac <= max_rare) {
+        (ptr->second)[ac] ++;
+      }
+      double af = 1.0 * ac / nsamples / 2.0;
+      for (uint32_t it = 0; it < lower.size(); ++it) {
+        if (af > lower[it] && af <= upper[it]) {
+          (ptr->second)[max_rare + it+1]++;
+          break;
+        }
+      }
       nVariant++;
     } else {
       nmono++;
