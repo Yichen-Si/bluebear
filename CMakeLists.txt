@@ -9,7 +9,7 @@ set(VERSION "1.0.0")
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pipe -D__STDC_LIMIT_MACROS -Wall -Wno-unused-local-typedefs -Wno-enum-compare -fpic -O2 -DVERSION='\"${VERSION}\"' -DUSER='\"${USER}\"' -DDATE='\"${DATE}\"' -D__ZLIB_AVAILABLE__")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pipe -no-pie -D__STDC_LIMIT_MACROS -Wall -Wno-unused-local-typedefs -Wno-enum-compare -fpic -O2 -DVERSION='\"${VERSION}\"' -DUSER='\"${USER}\"' -DDATE='\"${DATE}\"' -D__ZLIB_AVAILABLE__")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
@@ -64,6 +64,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/ibs0_between_group_control.cpp
     src/cmd_vcf_annotate_ibs0_small_n.cpp
     src/cmd_vcf_ibs0_short.cpp
+    src/cmd_vcf_ibs0_triallelic.cpp
     src/cmd_vcf_insert_pm.cpp
     src/cmd_vcf_info_cdf.cpp
     src/cmd_vcf_site_annotate_refsample_info.cpp
@@ -71,6 +72,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_vcf_site_annotate_pm_posterior.cpp
     src/cmd_vcf_site_annotate_age.cpp
     src/cmd_vcf_annotate_ibd.cpp
+    src/cmd_dge_shuffle.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h

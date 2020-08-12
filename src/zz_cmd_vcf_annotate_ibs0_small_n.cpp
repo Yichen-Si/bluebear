@@ -5,19 +5,39 @@
 #include "bcf_ordered_writer.h"
 #include <iomanip>
 #include "ibs0.h"
-#include "rare_variant_config.h"
+#include "rare_variant_ibs0.h"
 
 void UpdateInfo_IBS0(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
-  int32_t bc[2];
-  int32_t ac = rare->ac;
-  bc[0] = rare->left_size;
-  bc[1] = ac - bc[0];
+  std::stringstream ss;
+  std::string sstr;
+  ss << rare->subset1.size() << "," << rare->subset2.size();
+  bcf_update_info_string(hdr, nv, "BiCluster", ss.str().c_str());
+
+  bcf_update_info_int32(hdr, nv, "LeftSet", &(rare->subset1[0]), rare->subset1.size());
+  bcf_update_info_int32(hdr, nv, "RightSet", &(rare->subset2[0]), rare->subset2.size());
+  bcf_update_info_int32(hdr, nv, "Carriers", &(rare->id_list[0]), rare->id_list.size());
   bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
   bcf_update_info_float(hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
   bcf_update_info_float(hdr, nv, "MedDist_cM", &(rare->MedDist_cm), 1);
-  bcf_update_info_int32(hdr, nv, "BiCluster", &bc, 2);
-  bcf_update_info_int32(hdr, nv, "CarrierID", &(rare->id_list[0]), ac);
-  bcf_update_info_float(hdr, nv, "Matrix_cM", rare->sorted_cm, ac*ac);
+  bcf_update_info_float(hdr, nv, "BtwDist", &(rare->btwDist), (rare->btwDist).size());
+
+  ss.str(std::string());
+  for (int32_t i = 0; i < rare->ac-1; ++i) {
+    for (int32_t j = i+1; j < rare->ac; ++j) {
+      ss << rare->ibs0mat[j][i] << ',';
+    }
+  }
+  sstr = ss.str(); sstr.pop_back();
+  bcf_update_info_string(hdr, nv, "LeftIBS0", sstr.c_str());
+
+  ss.str(std::string());
+  for (int32_t i = 0; i < rare->ac-1; ++i) {
+    for (int32_t j = i+1; j < rare->ac; ++j) {
+      ss << rare->ibs0mat[i][j] << ',';
+    }
+  }
+  sstr = ss.str(); sstr.pop_back();
+  bcf_update_info_string(hdr, nv, "RightIBS0", sstr.c_str());
 }
 
 // goal -- get all pairwise no-ibs0 regions covering shared
@@ -109,8 +129,16 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
     sprintf(buffer,"##INFO=<ID=BiCluster,Number=1,Type=String,Description=\"Sizes of the two subtree\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "CarrierID" ) < 0 ) {
-    sprintf(buffer,"##INFO=<ID=CarrierID,Number=.,Type=Integer,Description=\"Carriers of the rare allele, order matches the IBD matrix\">\n");
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "LeftSet" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=LeftSet,Number=.,Type=Integer,Description=\"Individual ID in one subset\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "RightSet" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=RightSet,Number=.,Type=Integer,Description=\"Individual ID in another subset\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "Carriers" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=Carriers,Number=.,Type=Integer,Description=\"Individual ID carrying the rare allele\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "AvgDist_bp" ) < 0 ) {
@@ -125,8 +153,16 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
     sprintf(buffer,"##INFO=<ID=MedDist_cM,Number=1,Type=Float,Description=\"Median no-IBS0 length between two clusters, in cM\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
-  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "Matrix_cM" ) < 0 ) {
-    sprintf(buffer,"##INFO=<ID=Matrix_cM,Number=.,Type=Float,Description=\"No-IBS0 lengths (cM) of individual pairs arranged in a planer order; upper and lower triangular correspond to down- and upstream respectively\">\n");
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "LeftIBS0" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=LeftIBS0,Number=1,Type=String,Description=\"Pairwise IBS0 position to the left\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "RightIBS0" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=RightIBS0,Number=1,Type=String,Description=\"Pairwise IBS0 position to the right\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "BtwDist" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=BtwDist,Number=.,Type=Float,Description=\"No-IBS0 lengths of individual pairs in the two final clusters, in cM\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   odw.write_hdr();
@@ -450,6 +486,98 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
 
   return 0;
 }
+
+
+
+
+
+
+
+
+
+int32_t tmpUpdateCMInfo(int32_t argc, char** argv) {
+  std::string inVcf, inMap, reg;
+  std::string out;
+  int32_t verbose = 100000;
+
+  paramList pl;
+
+  BEGIN_LONG_PARAMS(longParameters)
+    LONG_PARAM_GROUP("Input Sites", NULL)
+    LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("map",&inMap, "Map file for genetic distance")
+    LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
+
+    LONG_PARAM_GROUP("Output Options", NULL)
+    LONG_STRING_PARAM("out", &out, "Output VCF file name")
+    LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
+
+  END_LONG_PARAMS();
+
+  pl.Add(new longParams("Available Options", longParameters));
+  pl.Read(argc, argv);
+  pl.Status();
+
+  bp2cmMap pgmap(inMap, " ", "", -1, -1);
+  notice("Read map. min %d; max %d; cst %d; ced %d.", pgmap.minpos, pgmap.maxpos, pgmap.centromere_st, pgmap.centromere_ed);
+
+  std::vector<GenomeInterval> intervals;
+  if (!reg.empty())
+    parse_intervals(intervals, "", reg);
+  BCFOrderedReader* odr = new BCFOrderedReader(inVcf, intervals);
+  bcf1_t* iv = bcf_init();
+
+  BCFOrderedWriter odw(out.c_str(),0);
+  bcf_hdr_t* hnull = bcf_hdr_subset(odr->hdr, 0, 0, 0);
+  bcf_hdr_remove(hnull, BCF_HL_FMT, NULL);
+  odw.set_hdr(hnull);
+  odw.write_hdr();
+
+  int32_t *info_bp = NULL;
+  float *info_cm = NULL;
+  int32_t n_bp = 0, n_cm = 0;
+  int32_t nVariants = 0;
+  for(int32_t k = 0; odr->read(iv); ++k) {  // read marker
+    if ( k % verbose == 0 )
+      notice("Processing %d markers at %s:%d, updated %d variants.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1, nVariants);
+
+    bcf_unpack(iv, BCF_UN_ALL);
+    bool update = 1;
+
+    if (bcf_get_info_float(odr->hdr, iv, "AvgDist_cM", &info_cm, &n_cm) < 0) {update=0;}
+    if (info_cm[0] > 0) {update=0;}
+    if (bcf_get_info_int32(odr->hdr, iv, "AvgDist_bp", &info_bp, &n_bp) < 0) {update=0;}
+
+    if (update) {
+
+      int32_t st = iv->pos - info_bp[0]/2;
+      int32_t ed = iv->pos + info_bp[0]/2;
+      float newcm = pgmap.bpinterval2cm(st,ed);
+      bcf1_t* nv = bcf_dup(iv);
+      bcf_unpack(nv, BCF_UN_ALL);
+      bcf_update_info_float(odw.hdr, nv, "AvgDist_cM", &newcm, 1);
+      odw.write(nv);
+      bcf_destroy(nv);
+      nVariants++;
+    } else {
+      odw.write(iv);
+    }
+
+  }
+
+  odw.close();
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

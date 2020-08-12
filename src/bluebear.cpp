@@ -20,7 +20,7 @@ int32_t cmdVcfSingletonRefAC(int32_t argc, char** argv);
 int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
 int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
 
-int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
+// int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
@@ -67,6 +67,9 @@ int32_t RareBlipOnlyStats(int32_t argc, char** argv);
 int32_t IBS0AddPMDistr(int32_t argc, char** argv);
 int32_t IBS0AddNoncarrierControl(int32_t argc, char** argv);
 int32_t IBS0AddOutgroupControl(int32_t argc, char** argv);
+int32_t IBS0Triallelic(int32_t argc, char** argv);
+
+int32_t cmdDgeShuffle(int32_t argc, char** argv);
 
 int32_t test(int32_t argc, char** argv);
 
@@ -92,7 +95,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-count-singleton",&cmdVcfCountSingleton, "Count & list singletons from BCF/VCF")
 
     // Temperary ibs0 tests
-    LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
+    // LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
@@ -145,6 +148,9 @@ int32_t main(int32_t argc, char** argv) {
 LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
 LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
 LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
+LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
+
+LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
 
     LONG_COMMAND("test",&test, "Test")
 

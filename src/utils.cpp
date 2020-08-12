@@ -204,17 +204,25 @@ int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::strin
  */
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rng, int32_t base) {
   if (base == 0) {
-    for (int32_t r = N - k - 1; r < N-1; ++r) {
-      int32_t v = std::uniform_int_distribution<>(0, r)(rng);
-      if (!chosen.insert(v).second) {
-        chosen.insert(r+1);
+    if (N == k) {
+      for (int32_t r = 0; r < N; ++r) {chosen.insert(r);}
+    } else {
+      for (int32_t r = N - k - 1; r < N-1; ++r) {
+        int32_t v = std::uniform_int_distribution<>(0, r)(rng);
+        if (!chosen.insert(v).second) {
+          chosen.insert(r+1);
+        }
       }
     }
   } else {
-    for (int32_t r = N - k; r < N; ++r) {
-      int32_t v = std::uniform_int_distribution<>(1, r)(rng);
-      if (!chosen.insert(v).second) {
-        chosen.insert(r+1);
+    if (N == k) {
+      for (int32_t r = 1; r <= N; ++r) {chosen.insert(r);}
+    } else {
+      for (int32_t r = N - k; r < N; ++r) {
+        int32_t v = std::uniform_int_distribution<>(1, r)(rng);
+        if (!chosen.insert(v).second) {
+          chosen.insert(r+1);
+        }
       }
     }
   }
@@ -222,7 +230,7 @@ void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rn
 
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::vector<int32_t> & avoid, std::mt19937& rng, int32_t base) {
   if (base == 0) {
-    for (int32_t r = N - k - 1; r < N-avoid.size()-1; ++r) {
+    for (int32_t r = N - k - 1; r < N-((int32_t) avoid.size())-1; ++r) {
       int32_t v = std::uniform_int_distribution<>(0, r)(rng);
       if (!chosen.insert(v).second) {
         chosen.insert(r+1);

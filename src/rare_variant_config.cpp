@@ -49,6 +49,8 @@ void RareVariant::Organize(bp2cmMap& pgmap) {
   left_size = root->left->leaves.size();
 
   // Re-order the ibd matrix according to the planer order
+  // sorted_cm: acxac matrix flatten by row as vector
+  // upper triangle is right (downstream), lower trangle is left (upstream)
   for (int32_t i = 0; i < ac-1; ++i) {
     for (int32_t j = i+1; j < ac; ++j) {
       int32_t irow = std::min(planer_order[i], planer_order[j]);
@@ -102,7 +104,7 @@ bool RareVariant::Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t directi
       ovst = pt;
     else
       ovst = std::max(ovst, pt);
-    if (ibs0mat[i][j] != 0)
+    if (ibs0mat[i][j] >= 0)
       finished ++;
   } else {              // Right
     ibs0mat[i][j] = pt;
@@ -110,7 +112,7 @@ bool RareVariant::Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t directi
       oved = pt;
     else
       oved = std::min(oved, pt);
-    if (ibs0mat[j][i] != 0)
+    if (ibs0mat[j][i] >= 0)
       finished ++;
   }
 

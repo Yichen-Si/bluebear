@@ -244,6 +244,20 @@ fstream
 math.h
 -
 
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_dge_shuffle.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+tsv_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/tsv_reader.h
+ctime
+-
+set
+-
+sys/stat.h
+-
+sys/types.h
+-
+
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_ibs0_add_control.cpp
 cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
@@ -309,8 +323,8 @@ iomanip
 -
 ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
-rare_variant_ibs0.h
-/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+rare_variant_config.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0.cpp
 cramore.h
@@ -376,6 +390,28 @@ ibs0.h
 rare_variant_ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
 stdio.h
+-
+
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_triallelic.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+bcf_ordered_writer.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+rare_variant_ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+stdio.h
+-
+iomanip
+-
+sstream
 -
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_unconditional.cpp
