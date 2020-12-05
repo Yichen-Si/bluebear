@@ -297,15 +297,19 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htsli
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/Error.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/bcf_filter_arg.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/bcf_ordered_reader.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/bcf_ordered_writer.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/bp2cm.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/cmd_vcf_ibs0_flanking.cpp
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/compact_matrix.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/cramore.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/filter.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/genome_interval.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/ibs0.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/interval.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/rare_variant_config.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/utils.h
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/bgzf.h
@@ -675,6 +679,34 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: src/inte
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: src/params.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: src/rare_variant_ibs0.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: src/utils.h
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/bgzf.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/faidx.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/hts.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/hts_defs.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/hts_endian.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/kseq.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/kstring.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/sam.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/tbx.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/vcf.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/vcfutils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/Error.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/bcf_filter_arg.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/bcf_ordered_reader.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/bp2cm.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/cmd_vcf_snppairinfo.cpp
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/filter.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/genome_interval.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/interval.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/interval_tree.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/pbwt_build.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/utils.h
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/faidx.h
@@ -1362,7 +1394,6 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/vcfutils.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/Error.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_filter_arg.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_ordered_reader.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bp2cm.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/cramore.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/filter.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/genome_interval.h
@@ -1370,7 +1401,6 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/hts_utils.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/params.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/pbwt_build.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/test_hts.cpp
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/utils.h
 

@@ -421,3 +421,375 @@ int32_t HapibdVSnoibs0(int32_t argc, char** argv) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+struct snp_query_simple {
+  int32_t pos1, pos2;
+  std::vector<int32_t> carry_id;
+  std::vector<int32_t> carry_ht;
+  std::vector<int32_t> left;
+  std::vector<int32_t> right;
+  snp_query_simple(int32_t _p1, int32_t _p2) : pos1(_p1), pos2(_p2) {}
+};
+
+bool snp_compare3 (snp_query_simple* v, snp_query_simple* u) {return (v->pos1 < u->pos1);};
+
+
+
+int32_t hapIBDpairwise(int32_t argc, char** argv) {
+
+  std::string inVcf, inPos, out, path_pbwt;
+  int32_t verbose = 10000;
+  int32_t nsamples=0, M=0;
+  int32_t min_ac = 10;
+  int32_t pbwt_chunk = 1000000, OFFSET = 2;
+
+  paramList pl;
+  BEGIN_LONG_PARAMS(longParameters)
+    LONG_PARAM_GROUP("Input Sites", NULL)
+    LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("pos",&inPos, "List of positions to query")
+    LONG_STRING_PARAM("pbwt-path",&path_pbwt, "Gene region bed")
+    LONG_INT_PARAM("min-ac",&min_ac, "Minimum sample allele count to include in haplotype matching")
+
+    // LONG_PARAM_GROUP("Additional Options", NULL)
+    LONG_PARAM_GROUP("Output Options", NULL)
+    LONG_STRING_PARAM("out", &out, "Output file prefix")
+    LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
+
+  END_LONG_PARAMS();
+  pl.Add(new longParams("Available Options", longParameters));
+  pl.Read(argc, argv);
+  pl.Status();
+
+  // bcf reader
+  std::vector<GenomeInterval> intervals;
+  BCFOrderedReader odr(inVcf, intervals);
+  nsamples = bcf_hdr_nsamples(odr.hdr);
+  M = nsamples * 2;
+
+  // Read query position file
+  std::vector<snp_query_simple* > query_pos;
+  // std::map<int32_t, std::vector<int32_t> > query_id;
+  // std::map<int32_t, std::vector<int32_t> > query_ht;
+  std::ifstream ifs;
+  std::string line, preline, reg, chrom;
+  std::vector<std::string> words, ids, hts;
+  ifs.open(inPos, std::ifstream::in);
+  int32_t pos, p1, p2, start, end, elt;
+  if (!ifs.is_open()) {
+    error("Query position file cannot be opened");
+  }
+  while(std::getline(ifs, line)) {
+    words.clear();
+    split(words, "\t", line);
+    if (str2int32(words[1], p1) && str2int32(words[2], p2) ) {
+      ids.clear(); hts.clear();
+      snp_query_simple* tmp = new snp_query_simple(p1,p2);
+      split(ids, ",", words[3]);
+      split(hts, ",", words[4]);
+      for (auto & v : ids) {
+        if (v != "" &&  str2int32(v, elt)) {
+          tmp->carry_id.push_back(elt);
+        }
+      }
+      for (auto & v : hts) {
+        if (v != "" &&  str2int32(v, elt)) {
+          tmp->carry_ht.push_back(elt);
+        }
+      }
+      ids.clear();
+      split(ids, ",", words[5]);
+      for (auto & v : ids) {
+        if (v != "" &&  str2int32(v, elt)) {
+          tmp->left.push_back(elt);
+        }
+      }
+      ids.clear();
+      split(ids, ",", words[6]);
+      for (auto & v : ids) {
+        if (v != "" &&  str2int32(v, elt)) {
+          tmp->right.push_back(elt);
+        }
+      }
+      query_pos.push_back(tmp);
+    }
+  }
+  chrom = words[0];
+  words.clear();
+  line = "";
+  ifs.close();
+  std::sort(query_pos.begin(), query_pos.end(), snp_compare3);
+  start = query_pos[0]->pos1;
+  end   = query_pos.back()->pos1;
+
+  notice("Finish reading query positions. Range: %d - %d", start, end);
+
+  // Initialize prefix pbwt from saved check points
+  int32_t st, ed, st_read, ed_read;
+  int32_t a[M], d[M];
+  std::string afile, dfile;
+  st = start / pbwt_chunk * pbwt_chunk + 1;
+  ed = st - 1 + pbwt_chunk;
+  preline = "";
+  while (preline == "") {
+    reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
+    afile = path_pbwt + "_" + reg + "_prefix.amat";
+    dfile = path_pbwt + "_" + reg + "_prefix.dmat";
+    ifs.open(afile, std::ifstream::in);
+    pos = start - 1;
+    while (pos < start && std::getline(ifs, line)) {
+      words.clear();
+      split(words, "\t", line);
+      pos = std::stoi(words[1]);
+      preline = line;
+    }
+    ifs.close();
+    if (pos < start) {
+      break;
+    }
+    preline = "";
+    st -= pbwt_chunk;
+    ed -= pbwt_chunk;
+  }
+  words.clear();
+  split(words, "\t", preline);
+
+  for (uint32_t i =  OFFSET; i < words.size(); ++i)
+    a[i- OFFSET] = std::stoi(words[i]);
+
+  line = "";
+  ifs.open(dfile, std::ifstream::in);
+  pos = start - 1;
+  while (pos < start && std::getline(ifs, line)) {
+    words.clear();
+    split(words, "\t", line);
+    pos = std::stoi(words[1]);
+    preline = line;
+  }
+  ifs.close();
+
+  words.clear();
+  split(words, "\t", preline);
+
+  for (uint32_t i =  OFFSET; i < words.size(); ++i)
+    d[i- OFFSET] = std::stoi(words[i]);
+
+  pbwtCursor prepc(M, a, d);
+  st_read = std::stoi(words[1]) + 1;
+
+  notice("Finish finitilize pbwt prefix");
+// Initialize suffix pbwt from saved check points
+
+  st = end / pbwt_chunk * pbwt_chunk + 1;
+  ed = st - 1 + pbwt_chunk;
+  preline = "";
+  while (preline == "") {
+    reg = chrom + ":" + std::to_string(st) + "-" + std::to_string(ed);
+    afile = path_pbwt + "_" + reg + "_suffix.amat";
+    dfile = path_pbwt + "_" + reg + "_suffix.dmat";
+    ifs.open(afile, std::ifstream::in);
+    pos = end + 1;
+    while (pos > end && std::getline(ifs, line)) {
+      words.clear();
+      split(words, "\t", line);
+      pos = std::stoi(words[1]);
+      preline = line;
+    }
+    ifs.close();
+    if (pos > end) {
+      break;
+    }
+    preline = "";
+    st += pbwt_chunk;
+    ed += pbwt_chunk;
+  }
+  words.clear();
+  split(words, "\t", preline);
+
+  for (uint32_t i =  OFFSET; i < words.size(); ++i)
+    a[i- OFFSET] = std::stoi(words[i]);
+
+  line = "";
+  ifs.open(dfile, std::ifstream::in);
+  pos = end + 1;
+  while (pos > end && std::getline(ifs, line)) {
+    words.clear();
+    split(words, "\t", line);
+    pos = std::stoi(words[1]);
+    preline = line;
+  }
+  ifs.close();
+
+  words.clear();
+  split(words, "\t", preline);
+
+  for (uint32_t i =  OFFSET; i < words.size(); ++i)
+    d[i- OFFSET] = std::stoi(words[i]);
+
+  pbwtCursor sufpc(M, a, d);
+  ed_read = std::stoi(words[1]) - 1;
+  notice("Finish finitilize pbwt suffix");
+
+  reg = chrom + ":" + std::to_string(st_read) + "-" + std::to_string(ed_read);
+
+  // reset bcf reader range
+  parse_intervals(intervals, "", reg);
+  odr.jump_to_interval(intervals[0]);
+  bcf1_t* iv = bcf_init();
+
+  // Output
+  FILE * wf;
+  wf = fopen(out.c_str(), "w");
+  fprintf(wf, "%s\n", "POS\tRefPOS\tID\tHT\tIBD1\tIBD2\tDirection");
+
+
+  std::vector<bool*> gtmat;
+  std::vector<int32_t> positions;
+
+  int32_t *p_gt = NULL;
+  int32_t  n_gt = 0;
+  int32_t *info_ac = NULL;
+  int32_t n_ac = 0;
+
+  int32_t query_iter = 0;
+
+  for (int32_t k=0; odr.read(iv); ++k) { // Read haplotypes
+    if ( k % verbose == 0 )
+      notice("Processing %d variants at %s:%d.", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+    if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
+      error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+    }
+    if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
+    // int32_t minor = 1;
+    // if (info_ac[0] > nsamples) {minor = 0;}
+
+    if (query_iter < (int32_t) query_pos.size() && iv->pos+1 == query_pos[query_iter]->pos1) {
+      int32_t rvec[M];
+      prepc.ReverseA(rvec);
+      while (query_iter < (int32_t) query_pos.size() && iv->pos+1 == query_pos[query_iter]->pos1) {
+        p1 = query_pos[query_iter]->pos1;
+        p2 = query_pos[query_iter]->pos2;
+        // Get carriers
+        std::vector<int32_t> & c_id = query_pos[query_iter]->carry_id;
+        std::vector<int32_t> & c_ht = query_pos[query_iter]->carry_ht;
+        // Get haplotype matching
+        if (c_id.size() > 1 && query_pos[query_iter]->left.size() > 0) {
+          // query_id[pos] = c_id;
+          // query_ht[pos] = c_ht;
+          // for (uint32_t i = 0; i < c_id.size(); ++i) {
+          for (uint32_t i = 0; i < query_pos[query_iter]->left.size(); ++i) {
+            int32_t q_id = query_pos[query_iter]->left[i];
+            std::stringstream d1, d2;
+            for (uint32_t j = 0; j < c_id.size(); ++j) {
+              if (c_id[j] != q_id ) {
+                d1 << p1 - prepc.Dist_pref(rvec[2*q_id], rvec[2*c_id[j]+c_ht[j]]);
+                d1 << ',';
+                d2 << p1 - prepc.Dist_pref(rvec[2*q_id+1], rvec[2*c_id[j]+c_ht[j]]);
+                d2 << ',';
+              }
+            }
+            fprintf(wf, "%d\t%d\t%d\t%d\t%s\t%s\t%d\n", p1, p2, q_id, c_ht[i], d1.str().c_str(), d2.str().c_str(), 0 );
+          }
+        }
+        query_iter += 1;
+      }
+      continue;
+    }
+
+    if (info_ac[0] < min_ac) {continue;}
+
+    bool *y = new bool[M];
+    int32_t ac = 0;
+    for (int32_t i = 0; i <  nsamples; ++i) {
+      int32_t g1 = p_gt[2*i];
+      int32_t g2 = p_gt[2*i+1];
+      if (bcf_gt_is_missing(g1)) {
+        y[2*i] = 0;
+      } else {
+        y[2*i] = (bcf_gt_allele(g1) > 0);
+      }
+      if (bcf_gt_is_missing(g2)) {
+        y[2*i+1] = 0;
+      } else {
+        y[2*i+1] = (bcf_gt_allele(g2) > 0);
+      }
+      ac += (y[2*i] + y[2*i+1]);
+    } // Finish reading one SNP
+    prepc.ForwardsAD_prefix(y, iv->pos+1);
+    gtmat.push_back(y);
+    positions.push_back(iv->pos+1);
+  } // Finish reading all haplotypes in this chunk
+
+  uint32_t N = positions.size();
+  if (N != gtmat.size()) {
+    error("Error in scanning forward: unmatched gtmat & positions");
+  }
+
+  notice("SNPs used in haplotype matrix: %d. Start right matching.", N);
+
+  query_iter = (int32_t) query_pos.size() - 1;
+  for (uint32_t k = N-1; k >= 0; --k) {
+    if (positions[k] <= query_pos[query_iter]->pos1) {
+      int32_t rvec[M];
+      sufpc.ReverseA(rvec);
+      while (positions[k] <= query_pos[query_iter]->pos1) {
+        p1 = query_pos[query_iter]->pos1;
+        p2 = query_pos[query_iter]->pos2;
+        if (query_pos[query_iter]->right.size() > 0) {
+          std::vector<int32_t> & c_id = query_pos[query_iter]->carry_id;
+          std::vector<int32_t> & c_ht = query_pos[query_iter]->carry_ht;
+          // Get haplotype matching
+          for (uint32_t i = 0; i < query_pos[query_iter]->right.size(); ++i) {
+            int32_t q_id = query_pos[query_iter]->right[i];
+            std::stringstream d1, d2;
+            for (uint32_t j = 0; j < c_id.size(); ++j) {
+              if (c_id[j] != q_id ) {
+                d1 << sufpc.Dist_suff(rvec[2*q_id], rvec[2*c_id[j]+c_ht[j]]) - p1;
+                d1 << ',';
+                d2 << sufpc.Dist_suff(rvec[2*q_id+1], rvec[2*c_id[j]+c_ht[j]]) - p1;
+                d2 << ',';
+              }
+            }
+            fprintf(wf, "%d\t%d\t%d\t%d\t%s\t%s\t%d\n", p1, p2, q_id, c_ht[i], d1.str().c_str(), d2.str().c_str(), 1 );
+          }
+        }
+        query_iter -= 1;
+        if (query_iter < 0) {break;}
+      }
+    }
+    if (query_iter < 0) {break;}
+    sufpc.ForwardsAD_suffix(gtmat[k], positions[k]);
+  }
+
+  fclose(wf);
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -349,17 +349,21 @@ compact_matrix.h
 /net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_flanking.cpp
-bcf_filter_arg.h
-/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
 cramore.h
 /net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/utils.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
 bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
-compact_matrix.h
-/net/wonderland/home/ycsi/tool/bluebear/src/compact_matrix.h
-bitset
--
-stack
+bcf_ordered_writer.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_writer.h
+ibs0.h
+/net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
+rare_variant_config.h
+/net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_config.h
+iomanip
 -
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_ibs0_pairwise.cpp
@@ -543,6 +547,24 @@ ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/ibs0.h
 rare_variant_ibs0.h
 /net/wonderland/home/ycsi/tool/bluebear/src/rare_variant_ibs0.h
+
+/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_snppairinfo.cpp
+cramore.h
+/net/wonderland/home/ycsi/tool/bluebear/src/cramore.h
+bcf_filter_arg.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_filter_arg.h
+bcf_ordered_reader.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
+hts_utils.h
+/net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
+pbwt_build.h
+/net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
+bp2cm.h
+/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
+bits/stdc++.h
+-
+sstream
+-
 
 /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_snppairingene.cpp
 cramore.h
@@ -1147,10 +1169,6 @@ bcf_ordered_reader.h
 /net/wonderland/home/ycsi/tool/bluebear/src/bcf_ordered_reader.h
 hts_utils.h
 /net/wonderland/home/ycsi/tool/bluebear/src/hts_utils.h
-pbwt_build.h
-/net/wonderland/home/ycsi/tool/bluebear/src/pbwt_build.h
-bp2cm.h
-/net/wonderland/home/ycsi/tool/bluebear/src/bp2cm.h
 bits/stdc++.h
 -
 sstream

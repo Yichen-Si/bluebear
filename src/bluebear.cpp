@@ -21,13 +21,14 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
 int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneCount(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneSummary(int32_t argc, char** argv);
+int32_t cmdVcfSnpPairInGeneInfo(int32_t argc, char** argv);
 
 // int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0View(int32_t argc, char** argv);
-int32_t cmdVcfIBS0Flank(int32_t argc, char** argv); // zz
+int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
 int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
 int32_t RandomPairIBS0(int32_t argc, char** argv);
 int32_t VCFInsertPM(int32_t argc, char** argv);
@@ -98,6 +99,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-count-singleton",&cmdVcfCountSingleton, "Count & list singletons from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-info",&cmdVcfSnpPairInGeneCount, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-short",&cmdVcfSnpPairInGeneSummary, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
+    LONG_COMMAND("snp-pair-in-gene-long",&cmdVcfSnpPairInGeneInfo, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
 
     // Temperary ibs0 tests
     // LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
@@ -105,7 +107,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length (null distribution) from BCF/VCF")
+    LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length from BCF/VCF")
     LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")

@@ -53,7 +53,7 @@ inline void Delete(Node* rt) {
 
 class RareVariant {
 public:
-  bcf1_t* iv;
+  bcf1_t* iv = NULL;
   int32_t ac, pos;
   int32_t **ibs0mat; // ac x ac matrix of ibs0 pos; upper-right; lower-left
   float *sorted_cm;  // ac x ac matrix in planer order, flatten by row as vector
@@ -78,7 +78,9 @@ RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
   for (int32_t i = 0; i < ac; ++i) {
     delete ibs0mat[i];
   }
-  bcf_destroy(iv);
+  if (iv) {
+    bcf_destroy(iv);
+  }
 }
 
 void Add_id(int32_t id) { // Not robust!

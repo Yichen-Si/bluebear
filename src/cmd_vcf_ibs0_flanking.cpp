@@ -1,24 +1,64 @@
-#include "bcf_filter_arg.h"
 #include "cramore.h"
+#include "utils.h"
+#include "bcf_filter_arg.h"
 #include "bcf_ordered_reader.h"
-#include "compact_matrix.h"
-#include <bitset>
-#include <stack>
+#include "bcf_ordered_writer.h"
+#include "ibs0.h"
+#include "rare_variant_config.h"
+#include <iomanip>
 
-// goal -- for a given chunk (e.g. 100kb)
-//         ind IBS0 and shared rare allele for each pair of individual
+class ibs0pair {
+  public:
+    int32_t pos, ac;
+    std::string id1, id2;
+    int32_t left_bp=-1, right_bp=-1;
+    double length_cM;
+    std::string info;
+
+  ibs0pair(int32_t _p, int32_t _ac, std::string _v=".") : pos(_p), ac(_ac), info(_v) {}
+  void Add_id(std::string i, std::string j) {
+    id1 = i;
+    id2 = j;
+  }
+  void Add_info(std::string& v) {info = v;}
+  void Add_half(int32_t pt, int32_t direction) {
+    if (direction == 1) {
+      left_bp = pt;
+    } else {
+      right_bp = pt;
+    }
+  }
+  bool Finished() {
+    return (left_bp > 0 && right_bp > 0);
+  }
+};
+
+void output_pair(FILE * wf, bp2cmMap& pgmap, ibs0pair* snp, std::string& chrom) {
+
+  double cm = pgmap.bpinterval2cm( snp->left_bp, snp->right_bp );
+  fprintf(wf, "%s\t%d\t%d\t%s\t%s\t%d\t%d\t%f\t%s\n",
+          chrom.c_str(), snp->pos, snp->ac, snp->id1.c_str(), snp->id1.c_str(),
+          snp->left_bp, snp->right_bp, cm, snp->info.c_str() );
+}
+
+// goal -- Input option 1: a list of pos & individual pairs
+//         Input option 2: a AC criterion
+//         Output: flanking IBS0 information for individual pairs
+
 int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
-  std::string inVcf;
+  std::string inVcf, inQuery, inMap, chrom, reg, oreg;
   std::string out;
   int32_t min_hom_gts = 1;
   int32_t verbose = 1000;
-  int32_t batch_size = 10000;
-  std::string reg;
   int32_t min_variant = 1;
-  int32_t max_rare_ac = 0;
-  int32_t n_flank = 5;
-  double max_rare_af = 0.005;
-  int32_t n_samples = 0;
+  int32_t min_rare_ac = 2;
+  int32_t max_rare_ac = 5;
+  int32_t start, end;
+  int32_t leftover = 0;
+  int32_t cst = -1, ced = -1;
+  int32_t ck_len = 500000;
+  int32_t bp_limit = 1000000;
+  // double  cm_limit =2.0;
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
@@ -29,27 +69,28 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
     LONG_PARAM_GROUP("Input Sites", NULL)
     LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
+    LONG_STRING_PARAM("map",&inMap, "Map file for genetic distance")
+    LONG_STRING_PARAM("in-query",&inQuery, "Position and individual pairs to query")
 
     LONG_PARAM_GROUP("Variant Filtering Options", NULL)
     LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
     LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
     LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+    LONG_INT_PARAM("centromere-st",&cst, "Start position of centromere")
+    LONG_INT_PARAM("centromere-ed",&ced, "End position of centromere")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("min-hom",&min_hom_gts, "Minimum number of homozygous genotypes to be counted for IBS0")
-    LONG_INT_PARAM("batch-size",&batch_size, "Size of batches (in # of samples) to calculate the no-IBS0 pairs")
     LONG_INT_PARAM("min-variant",&min_variant, "Minimum number of variants to present to have output file")
-    // For testing
-    LONG_INT_PARAM("num-samples",&n_samples, "Number of samples to test")
-
-    LONG_INT_PARAM("max-rare-ac",&max_rare_ac, "Maximal minor allele count to be considered as anchor for IBD")
-    LONG_DOUBLE_PARAM("max-rare-af",&max_rare_af, "Maximal minor allele frequency to be considered as anchor for IBD")
-    LONG_INT_PARAM("n-flanking",&n_flank, "Number of ibs0 sites to record flanking a no-ibs0 region carrying a rare variant")
+    LONG_INT_PARAM("left-over",&leftover, "Stop when only x pairs are left")
+    LONG_INT_PARAM("bp-limit",&bp_limit, "The length of window to store common (0/1/2) variants (bp)")
+    // LONG_DOUBLE_PARAM("out-reach-cm",&cm_limit, "How far to look forward & backward (cm)")
+    LONG_INT_PARAM("min-rare",&min_rare_ac, "Minimum minor allele count to be considered as anchor for IBD")
+    LONG_INT_PARAM("max-rare",&max_rare_ac, "Maximum minor allele count to be considered as anchor for IBD")
 
     LONG_PARAM_GROUP("Output Options", NULL)
-    LONG_STRING_PARAM("out", &out, "Output VCF file name")
+    LONG_STRING_PARAM("out", &out, "Output file name")
     LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
-
 
   END_LONG_PARAMS();
 
@@ -58,17 +99,34 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
   pl.Status();
 
   // sanity check of input arguments
-  if ( inVcf.empty() || out.empty() ) {
-    error("[E:%s:%d %s] --in-vcf, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
+  if ( inVcf.empty() || reg.empty() || inMap.empty() || out.empty() ) {
+    error("[E:%s:%d %s] --in-vcf, --region, --inMap, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
+  }
+
+  // Genetic map
+  bp2cmMap pgmap(inMap, " ", "", cst, ced);
+  notice("Read map. min %d; max %d; cst %d; ced %d.", pgmap.minpos, pgmap.maxpos, pgmap.centromere_st, pgmap.centromere_ed);
+
+  // Region to process
+  oreg = reg;
+  std::vector<std::string> v;
+  split(v, ":-", reg);
+  chrom = v[0];
+  if (!str2int32(v[1], start) || !str2int32(v[2], end)) {
+    error("Invalid region.");
   }
 
   // bcf reader
+  // TODO: currently assume a small enough region.
   std::vector<GenomeInterval> intervals;
-  if ( !reg.empty() ) {
-    parse_intervals(intervals, "", reg);
-  }
+  parse_intervals(intervals, "", reg);
   BCFOrderedReader odr(inVcf, intervals);
   bcf1_t* iv = bcf_init();
+
+  // output
+  FILE * wf;
+  wf = fopen(out.c_str(), "w");
+  fputs("CHR\tPOS\tAC\tID1\tID2\tLeft\tRight\tLength_cM\n", wf);
 
   // handle filter string
   std::string filter_str;
@@ -104,224 +162,306 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
     }
   }
 
-  int32_t nVariant = 0;
+  int32_t nVariant = 0, nFinished = 0;
   int32_t nsamples = bcf_hdr_nsamples(odr.hdr);
-
-  std::vector<int32_t> nRRs, nAAs;
+  char** id_ptr = bcf_hdr_get_samples(odr.hdr);
+  std::vector<std::string> id_samples(id_ptr, id_ptr+nsamples);
+  std::map<std::string, int32_t> id_index;
+  for (int32_t i = 0; i < nsamples; ++i)
+    id_index[id_samples[i]] = i;
 
   notice("Started Reading site information from VCF file, identifying %d samples", nsamples);
-
   if ( nsamples == 0 )
     error("FATAL ERROR: The VCF does not have any samples with genotypes");
 
-  if (max_rare_ac == 0)
-    max_rare_ac=(int32_t) (nsamples*2.0*max_rare_af);
-
-  bitmatrix bmatRR(nsamples);
-  bitmatrix bmatAA(nsamples);
-  std::vector<int32_t> mac; // minor allele count
-  std::vector<int32_t> snoopy; // informative position
-
-  int32_t* p_gt = NULL;
-  int32_t n_gt = 0;
-  int32_t nskip = 0, nmono = 0;
-  uint8_t* gtRR = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
-  uint8_t* gtAA = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
-  int32_t *info_ac = NULL;
-  int32_t *info_an = NULL;
-  int32_t n_ac = 0, n_an = 0;
-
-  for(int32_t k=0; odr.read(iv); ++k) {  // read marker
-    // periodic message to user
-    if ( k % verbose == 0 )
-      notice("Processing %d markers at %s:%d. Skipped %d filtered markers and %d uninformative markers, retaining %d variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nskip, nmono, nVariant);
-
-    // unpack FILTER column
-    bcf_unpack(iv, BCF_UN_FLT);
-
-    // check --apply-filters
-    bool has_filter = req_flt_ids.empty() ? true : false;
-    if ( ! has_filter ) {
-      //notice("%d %d", iv->d.n_flt, (int32_t)req_flt_ids.size());
-      for(int32_t i=0; i < iv->d.n_flt; ++i) {
-      	for(int32_t j=0; j < (int32_t)req_flt_ids.size(); ++j) {
-      	  if ( req_flt_ids[j] == iv->d.flt[i] )
-      	    has_filter = true;
-      	}
-      }
-    }
-    if ( ! has_filter ) { ++nskip; continue; }
-    // check filter logic
-    if ( filt != NULL ) {
-      int32_t ret = filter_test(filt, iv, NULL);
-      if ( filter_logic == FLT_INCLUDE ) { if ( !ret)  has_filter = false; }
-      else if ( ret ) { has_filter = false; }
-    }
-    if ( ! has_filter ) { ++nskip; continue; }
-
-    // extract genotype and apply genotype level filter
-    if ( bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0 ) {
-      error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
-    }
-    if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
-    if (info_ac[0] < 2) {continue;}
-    if (bcf_get_info_int32(odr.hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
-    int32_t ifflip = 0, ac = 0, an = 0;
-    ac = info_ac[0]; an = info_an[0];
-    if (ac > an * 0.5) {
-      ac = an - ac;
-      ifflip = 1;
-    }
-    if (ac == 0) {continue;}
-    memset(gtRR, 0, nsamples);
-    memset(gtAA, 0, nsamples);
-    int32_t gcs[3] = {0,0,0};
-    for(int32_t i=0; i < nsamples; ++i) {
-      int32_t g1 = p_gt[2*i];
-      int32_t g2 = p_gt[2*i+1];
-      int32_t geno;
-      if ( bcf_gt_is_missing(g1) || bcf_gt_is_missing(g2) ) {
-	       //geno = 0;
-      }
-      else {
-      	geno = ((bcf_gt_allele(g1) > 0) ? 1 : 0) + ((bcf_gt_allele(g2) > 0) ? 1 : 0);
-        if ( ifflip == 1 ) {geno = 2 - geno;}
-      	if ( geno == 0 )    { gtRR[i] = 1; }
-      	else if ( geno == 2 ) { gtAA[i] = 1; }
-      	++gcs[geno];
-
-        if ( ac <= max_rare_ac && geno == 1 ) {
-          // If it is a rare variant, 1 labels carriers
-          gtAA[i] = 1;
-        }
-      }
-    }
-    if ( (ac > max_rare_ac) && (( gcs[0] < min_hom_gts ) || ( gcs[2] < min_hom_gts )) ) { ++nmono; }
-    else {
-      bmatRR.add_row_bytes(gtRR);
-      bmatAA.add_row_bytes(gtAA);
-      mac.push_back(ac);
-      snoopy.push_back(iv->pos+1);
-      nRRs.push_back(gcs[0]);
-      nAAs.push_back(gcs[2]);
-      ++nVariant;
-    }
-  }
-  notice("Finished Processing %d markers across %d samples, Skipping %d filtered markers and %d uninformative markers", nVariant, nsamples, nskip, nmono);
-
-  free(gtRR);
-  free(gtAA);
-
-  if ( nVariant < min_variant ) {
-    notice("Observed only %d informative markers. Skipping IBD segment detection for this chunk...", nVariant);
+  IBS0lookup ibs0finder(inVcf, reg, pgmap, bp_limit/2, ck_len, 1);
+  if (ibs0finder.start_que.size() < 1) {
+    notice("Not enough variants in the given region. Stopped without output.");
     return 0;
   }
 
-  bmatRR.transpose();
-  bmatAA.transpose();
+  std::map< std::pair<int32_t, int32_t>, std::vector<ibs0pair*> > idpair_l;
+  std::map< std::pair<int32_t, int32_t>, std::vector<ibs0pair*> > idpair_r;
+  std::vector<ibs0pair*> snplist;
+  int32_t* p_gt = NULL;
+  int32_t  n_gt = 0;
+  int32_t *info_ac = NULL;
+  int32_t *info_an = NULL;
+  int32_t n_ac = 0, n_an = 0, pos = 0;
 
-  // For testing
-  if (n_samples > 0 && nsamples > n_samples)
-    nsamples = n_samples;
 
-  notice("Searching for potential IBD segments amoung the first %d samples..", nsamples);
-  int32_t nibds = 0, k = 0;
-  std::vector<int32_t> byte2cnt;
-  for(int32_t i=0; i < 256; ++i) {
-    int32_t sum = 0;
-    for(int32_t j=0; j < 8; ++j) {
-      if ( ( (0x00ff & i) >> j ) & 0x01 ) ++sum;
-    }
-    byte2cnt.push_back(sum);
-  }
+    // First pass - get pairs & focal pos to look for IBS0
+  if (inQuery.empty()) {
 
-  //return 0;
+    // Find indiv. carrying rare alleles.
+    for(int32_t k=0; odr.read(iv); ++k) {
+      if (iv->pos+1 == pos) {
+        continue; // Jump over tri-allelic sites
+      }
+      // periodic message to user
+      if ( k % verbose == 0 )
+        notice("Processing %d markers at %s:%d. Recorded %d rare variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
 
-  htsFile* wf = hts_open(out.c_str(), "w");
-
-  for(int32_t i=1; i < nsamples; ++i) {
-    if (i % 500 == 0)
-      notice("Processing pairs including the %dth individual...", i);
-    uint8_t* iRR = bmatRR.get_row_bits(i);
-    uint8_t* iAA = bmatAA.get_row_bits(i);
-    for(int32_t j=0; j < i; ++j) {
-      uint8_t* jRR = bmatRR.get_row_bits(j);
-      uint8_t* jAA = bmatAA.get_row_bits(j);
-      std::vector<std::string> rec;
-      std::stack <int32_t> ibstmp;
-      int32_t rarest = max_rare_ac + 1;
-      bool flag = 0;
-      bool head = 1;
-      for(k=0; k < bmatRR.nbytes_col; ++k) {
-        if ((iAA[k] == 0) && (jAA[k] == 0)) {continue;}
-        uint8_t byte = ( iRR[k] ^ jRR[k] ) & ( iAA[k] ^ jAA[k] );
-        for (int32_t bit=0; bit<8 && k*8+bit<bmatRR.ncol; ++bit) {
-          int32_t pt = k*8+bit;
-          if (mac[pt] <= max_rare_ac) { // rare variant
-            if ( ((iAA[k]>>(7-bit)) & 0x01) & ((jAA[k]>>(7-bit)) & 0x01) ) {
-            // share rare allele
-              flag = 1; head = 0;
-              if (mac[pt] < rarest)
-                rarest = mac[pt];
-            }
-            else {continue;}
-         }
-        	else if ( (byte >> (7-bit)) & 0x01 ) { // IBS0
-            if (ibstmp.empty() && rarest <= max_rare_ac) { // Ending a region
-              rec.push_back('\t'+std::to_string(rarest)+";");
-            }
-            rarest=max_rare_ac+1;
-            if (flag && ((int32_t) ibstmp.size()) < n_flank) {
-              ibstmp.push(snoopy[pt]);
-            }
-            if (flag && ((int32_t) ibstmp.size()) == n_flank) {
-              flag = 0;
-              int32_t it=0;
-              while (!ibstmp.empty()) {
-                rec.push_back(std::to_string(ibstmp.top())+":"+std::to_string(n_flank-it)+",");
-                ibstmp.pop();
-                it++;
-              }
-            }
-            if (head) {
-              if (((int32_t)ibstmp.size()) > n_flank) {
-                head=0;
-                while (!ibstmp.empty()) {ibstmp.pop();}
-              }
-              else {
-                if (ibstmp.empty()) {rec.push_back("\t");}
-                ibstmp.push(snoopy[pt]);
-                rec.push_back(std::to_string(snoopy[pt])+",");
-              }
-            }
-        	}
+      // unpack FILTER column
+      bcf_unpack(iv, BCF_UN_FLT);
+      // check --apply-filters
+      bool has_filter = req_flt_ids.empty() ? true : false;
+      if ( ! has_filter ) {
+        for(int32_t i=0; i < iv->d.n_flt; ++i) {
+          for(int32_t j=0; j < (int32_t)req_flt_ids.size(); ++j) {
+            if ( req_flt_ids[j] == iv->d.flt[i] )
+              has_filter = true;
+          }
         }
       }
-      if (flag) {
-        rec.push_back('\t'+std::to_string(rarest)+";");
+      if ( ! has_filter ) { continue; }
+      // check filter logic
+      if ( filt != NULL ) {
+        int32_t ret = filter_test(filt, iv, NULL);
+        if ( filter_logic == FLT_INCLUDE ) { if ( !ret)  has_filter = false; }
+        else if ( ret ) { has_filter = false; }
       }
-      int32_t it=1;
-      while (flag && !ibstmp.empty() && it <= n_flank) {
-        rec.push_back(std::to_string(ibstmp.top())+":"+std::to_string(it)+",");
-        ibstmp.pop();
-        it++;
+      if ( ! has_filter ) { continue; }
+      // extract genotype and apply genotype level filter
+      if ( bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0 ) {
+        error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
       }
-      // Output for this pair of individual
+      if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
+      if (info_ac[0] < 2) {continue;}
+      if (bcf_get_info_int32(odr.hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
+      int32_t ac = 0, an = 0;
+      ac = info_ac[0]; an = info_an[0];
+      if (ac > an/2) {
+        ac = an - ac;
+      }
+      if (ac < min_rare_ac || ac > max_rare_ac) {continue;}
 
-      std::string outline(odr.hdr->id[BCF_DT_SAMPLE][i].key);
-      outline += "\t";
-      outline.append(odr.hdr->id[BCF_DT_SAMPLE][j].key);
-      if (rec.size() > 0) {
-        for (uint32_t it = 0; it < rec.size(); it++)
-          outline += rec[it];
+      std::vector<int32_t> carry;
+      for(int32_t i=0; i < nsamples; ++i) {
+        int32_t g1 = p_gt[2*i];
+        int32_t g2 = p_gt[2*i+1];
+        int32_t geno;
+        if ( bcf_gt_is_missing(g1) || bcf_gt_is_missing(g2) ) {
+          continue;
+        } else {
+          geno = ((bcf_gt_allele(g1) > 0) ? 1 : 0) + ((bcf_gt_allele(g2) > 0) ? 1 : 0);
+          if (geno == 1) {
+            carry.push_back(i);
+          }
+        }
+      } // Found carriers (have to be het)
+      // TODO: here we ignore rare varaiants with any hom carrier
+      if ((int32_t) carry.size() != ac) {continue;}
+
+      // Creat a new ibs0pair record
+      pos = iv->pos+1;
+        // Find pairwise ibs0 w/in a short limit
+      for (int32_t i = 0; i < ac-1; ++i) {
+        for (int32_t j = i+1; j < ac; ++j) {
+          ibs0pair* rare = new ibs0pair(pos, ac);
+          rare->Add_id(id_samples[carry[i]], id_samples[carry[j]]);
+          int32_t r = ibs0finder.FindIBS0(carry[i],carry[j],pos,0);
+          int32_t l = ibs0finder.FindIBS0(carry[i],carry[j],pos,1);
+          if (l > 0 && r > 0) {
+            rare->Add_half(l, 1);
+            rare->Add_half(r, 0);
+            output_pair(wf, pgmap, rare, chrom);
+            delete rare;
+            nFinished++;
+          } else {
+            std::pair<int32_t, int32_t> kpair(carry[i],carry[j]);
+            if (l > 0) {
+              rare->Add_half(l, 1);
+              idpair_r[kpair].push_back(rare);
+            } else if (r > 0) {
+              rare->Add_half(r, 0);
+              idpair_l[kpair].push_back(rare);
+            } else {
+              idpair_r[kpair].push_back(rare);
+              idpair_l[kpair].push_back(rare);
+            }
+            snplist.push_back(rare);
+          }
+        }
       }
-      // if (rec.size() > 0) {std::cout<<outline<< std::endl;}
-  	  hprintf(wf,"%s\n",outline.c_str());
+      nVariant++;
+    }
+
+  } else {
+
+    std::ifstream ifs;
+    std::string line;
+    std::vector<std::string> words;
+    std::vector<int32_t> idvec(2,0);
+    ifs.open(inQuery, std::ifstream::in);
+    if (!ifs.is_open()) {
+      error("Query file cannot be opened");
+    }
+    while(std::getline(ifs, line)) {
+      words.clear();
+      split(words, "\t", line);
+      auto ptr1 = id_index.find(words[3]);
+      auto ptr2 = id_index.find(words[4]);
+      if (ptr1==id_index.end() || ptr2==id_index.end()) {continue;}
+      int32_t p, a;
+      if (!str2int32(words[1], p)) {continue;}
+      if (!str2int32(words[2], a)) {continue;}
+      ibs0pair* rare = new ibs0pair(p, a);
+      rare->Add_id(words[3], words[4]);
+      if (words.size() > 5) {
+        rare->Add_info(words[5]);
+      }
+      int32_t r = ibs0finder.FindIBS0(ptr1->second,ptr2->second,p,0);
+      int32_t l = ibs0finder.FindIBS0(ptr1->second,ptr2->second,p,1);
+      if (l > 0 && r > 0) {
+        rare->Add_half(l, 1);
+        rare->Add_half(r, 0);
+        output_pair(wf, pgmap, rare, chrom);
+        delete rare;
+        nFinished++;
+      } else {
+        std::pair<int32_t, int32_t> kpair(ptr1->second,ptr2->second);
+        if (l > 0) {
+          rare->Add_half(l, 1);
+          idpair_r[kpair].push_back(rare);
+        } else if (r > 0) {
+          rare->Add_half(r, 0);
+          idpair_l[kpair].push_back(rare);
+        } else {
+          idpair_r[kpair].push_back(rare);
+          idpair_l[kpair].push_back(rare);
+        }
+        snplist.push_back(rare);
+      }
+    }
+    ifs.close();
+  }
+
+  notice("Finished first pass. Processed %d rare variants across %d samples; finished %d.", nVariant, nsamples, nFinished);
+  notice("%d pairs miss left ibs0; %d pairs miss right ibs0.", idpair_l.size(), idpair_r.size());
+  if (nVariant < 1) {
+    notice("Not enough rare variants in the given region");
+    return 0;
+  }
+  int32_t bound1 = (*(ibs0finder.posvec_que[0]))[0];
+  int32_t bound2 = ibs0finder.posvec_que.back()->back();
+
+  // Look backward
+  int32_t wed = bound2;
+  int32_t wst = bound1;
+  int32_t pct = 0;
+  std::string wreg;
+  int32_t leftmost = pgmap.minpos;
+  if (start > pgmap.centromere_st)
+    leftmost = pgmap.centromere_ed;
+  while (idpair_l.size() > 0 && (int32_t) idpair_l.size() > leftover/2 && wed > leftmost) {
+    pct = 0;
+    wed = wst - 1;
+    wst = std::max(wed - bp_limit, 0);
+    wreg = chrom + ":" + std::to_string(wst) + "-" + std::to_string(wed);
+    if (!ibs0finder.Update_Fixed(wreg)) {
+      continue;
+    }
+    auto itr = idpair_l.cbegin();
+    while (itr != idpair_l.cend()) {
+      // Iterate over pairs of individuals missing left ibs0 pt
+      int32_t l = ibs0finder.FindIBS0((*itr).first.first,(*itr).first.second,wed,1);
+      if (l > 0) {
+        for (auto & ptr : (*itr).second) {
+          // Add this pos to all relevant variants
+          ptr->Add_half(l,1);
+          if ( ptr->Finished() ) {
+            output_pair(wf, pgmap, ptr, chrom);
+            delete ptr;
+            nFinished++;
+          }
+        }
+        itr = idpair_l.erase(itr);
+        pct++;
+      } else {
+        itr++;
+      }
+    }
+    notice("Looking backward. Found %d more end points in %s; %d pairs still miss left ibs0; %d rare variants left.", pct, wreg.c_str(), idpair_l.size(), nVariant-nFinished);
+  }
+  if (wst <= leftmost) {
+    auto itr = idpair_l.cbegin();
+    while (itr != idpair_l.cend()) {
+      int32_t l = leftmost;
+      for (auto & ptr : (*itr).second) {
+        // Add this pos to all relevant variants
+        ptr->Add_half(l,1);
+        if ( ptr->Finished() ) {
+          output_pair(wf, pgmap, ptr, chrom);
+          delete ptr;
+          nFinished++;
+        }
+      }
+      itr = idpair_l.erase(itr);
     }
   }
-  notice("Finished searching for potential IBD segments, identifying %d pairs who share rare allele with MAC <= %d", nibds, max_rare_ac);
-  hts_close(wf);
+
+  // Look forward
+  wed = bound2;
+  wst = bound1;
+  int32_t rightmost = pgmap.maxpos;
+  if (end < pgmap.centromere_ed)
+    rightmost = pgmap.centromere_st;
+  while (idpair_r.size() > 0 && (int32_t) snplist.size() > leftover && wst < rightmost) {
+    pct = 0;
+    wst = wed + 1;
+    wed = wst + bp_limit;
+    wreg = chrom + ":" + std::to_string(wst) + "-" + std::to_string(wed);
+    if (!ibs0finder.Update_Fixed(wreg)) {
+      continue;
+    }
+    auto itr = idpair_r.cbegin();
+    while (itr != idpair_r.cend()) {
+      // Iterate over pairs of individuals missing left ibs0 pt
+      int32_t r = ibs0finder.FindIBS0((*itr).first.first,(*itr).first.second,wst,0);
+      if (r > 0) {
+        for (auto & ptr : (*itr).second) {
+          // Add this pos to all relevant variants
+          ptr->Add_half(r,2);
+          if ( ptr->Finished() ) {
+            output_pair(wf, pgmap, ptr, chrom);
+            delete ptr;
+            nFinished++;
+          }
+        }
+        itr = idpair_r.erase(itr);
+        pct++;
+      } else {
+        itr++;
+      }
+    }
+    notice("Looking forward. Found %d more end points in %s; %d pairs still miss right ibs0; %d rare variants left.", pct, wreg.c_str(), idpair_r.size(), nVariant-nFinished);
+  }
+  if (wst >= rightmost) {
+    auto itr = idpair_r.cbegin();
+    while (itr != idpair_r.cend()) {
+      int32_t r = rightmost;
+      for (auto & ptr : (*itr).second) {
+        // Add this pos to all relevant variants
+        ptr->Add_half(r,2);
+        if ( ptr->Finished() ) {
+          output_pair(wf, pgmap, ptr, chrom);
+          delete ptr;
+          nFinished++;
+        }
+      }
+      itr = idpair_r.erase(itr);
+    }
+  }
+
+  fclose(wf);
 
   return 0;
 }
+
+
+
+
+
+
 

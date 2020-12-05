@@ -1452,9 +1452,33 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o.provides: CMakeFiles/blu
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/cmd_vcf_snppairinfo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_snppairinfo.cpp
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_snppairinfo.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_snppairinfo.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.provides: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: src/cmd_dge_shuffle.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/cmd_dge_shuffle.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.i: cmake_force
@@ -1478,7 +1502,7 @@ CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o.provides.build: CMakeFiles/blu
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: src/bluebear.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bluebear.cpp.o -c /net/wonderland/home/ycsi/tool/bluebear/src/bluebear.cpp
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.i: cmake_force
@@ -1560,6 +1584,7 @@ bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o" \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o" \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o" \
+"CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o" \
 "CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o" \
 "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
 
@@ -1624,12 +1649,13 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/bluebear.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/build.make
 bin/bluebear: ../htslib/libhts.a
 bin/bluebear: CMakeFiles/bluebear.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Linking CXX executable bin/bluebear"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Linking CXX executable bin/bluebear"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bluebear.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -1695,6 +1721,7 @@ CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annot
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/bluebear.cpp.o.requires
 

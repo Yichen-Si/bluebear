@@ -57,6 +57,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o"
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
