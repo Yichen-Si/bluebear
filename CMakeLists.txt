@@ -72,6 +72,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_vcf_site_annotate_pm_posterior.cpp
     src/cmd_vcf_site_annotate_age.cpp
     src/cmd_vcf_annotate_ibd.cpp
+    src/cmd_vcf_snppairingene.cpp
     src/cmd_dge_shuffle.cpp
     src/bluebear.cpp)
 

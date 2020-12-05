@@ -828,6 +828,33 @@ src/cmd_vcf_site_annotate_refsample_info.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s
 .PHONY : src/cmd_vcf_site_annotate_refsample_info.cpp.s
 
+src/cmd_vcf_snppairingene.o: src/cmd_vcf_snppairingene.cpp.o
+
+.PHONY : src/cmd_vcf_snppairingene.o
+
+# target to build an object file
+src/cmd_vcf_snppairingene.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o
+.PHONY : src/cmd_vcf_snppairingene.cpp.o
+
+src/cmd_vcf_snppairingene.i: src/cmd_vcf_snppairingene.cpp.i
+
+.PHONY : src/cmd_vcf_snppairingene.i
+
+# target to preprocess a source file
+src/cmd_vcf_snppairingene.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.i
+.PHONY : src/cmd_vcf_snppairingene.cpp.i
+
+src/cmd_vcf_snppairingene.s: src/cmd_vcf_snppairingene.cpp.s
+
+.PHONY : src/cmd_vcf_snppairingene.s
+
+# target to generate assembly for a file
+src/cmd_vcf_snppairingene.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.s
+.PHONY : src/cmd_vcf_snppairingene.cpp.s
+
 src/cmd_vcf_triallelic.o: src/cmd_vcf_triallelic.cpp.o
 
 .PHONY : src/cmd_vcf_triallelic.o
@@ -1806,6 +1833,9 @@ help:
 	@echo "... src/cmd_vcf_site_annotate_refsample_info.o"
 	@echo "... src/cmd_vcf_site_annotate_refsample_info.i"
 	@echo "... src/cmd_vcf_site_annotate_refsample_info.s"
+	@echo "... src/cmd_vcf_snppairingene.o"
+	@echo "... src/cmd_vcf_snppairingene.i"
+	@echo "... src/cmd_vcf_snppairingene.s"
 	@echo "... src/cmd_vcf_triallelic.o"
 	@echo "... src/cmd_vcf_triallelic.i"
 	@echo "... src/cmd_vcf_triallelic.s"

@@ -19,6 +19,7 @@ int32_t AnnotatePM(int32_t argc, char** argv) {
   int32_t kmersize = 5, offset = 0;
   std::vector<std::string> keywords;
   std::vector<double> th_vec;
+  int32_t col_kmer=0, col_bin=1, col_post=3;
 
   paramList pl;
 
@@ -35,6 +36,10 @@ int32_t AnnotatePM(int32_t argc, char** argv) {
     LONG_DOUBLE_PARAM("bin",&bin,"Piece wise constant")
     LONG_MULTI_STRING_PARAM("key-words",&keywords, "Functional annotation to summarize")
     LONG_MULTI_DOUBLE_PARAM("prob-cut",&th_vec, "Threshold to cut pm probability")
+    LONG_INT_PARAM("col-kmer",&col_kmer,"Column number correponding to kmer")
+    LONG_INT_PARAM("col-bin",&col_bin,"Column number correponding to cM bin")
+    LONG_INT_PARAM("col-post",&col_post,"Column number correponding to posterior")
+
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output VCF file prefix")
@@ -89,9 +94,9 @@ int32_t AnnotatePM(int32_t argc, char** argv) {
     words.clear();
     split(words, "\t", line);
     try {
-      kmer = words[0];
-      x = std::stod(words[1]);
-      post = std::stod(words[2]);
+      kmer = words[col_kmer];
+      x = std::stod(words[col_bin]);
+      post = std::stod(words[col_post]);
     }
     catch (const std::invalid_argument& ia) {
       continue;

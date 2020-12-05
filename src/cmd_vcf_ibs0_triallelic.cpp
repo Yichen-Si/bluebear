@@ -287,11 +287,11 @@ int32_t IBS0Triallelic(int32_t argc, char** argv) {
         std::vector<int32_t> pair1v(n_pair), pair2v(n_pair);
         int32_t it = 0;
         for (auto v : pair1) {
-          pair1v[it]=v; it++;
+          pair1v[it]=carry1[v]; it++;
         }
         it = 0;
         for (auto v : pair2) {
-          pair2v[it]=v; it++;
+          pair2v[it]=carry2[v]; it++;
         }
 
         std::vector<int32_t> bplist(n_pair);

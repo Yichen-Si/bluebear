@@ -81,14 +81,15 @@ double bp2cmMap::bp2cm(int32_t pos) {
       }
     }
   }
-  while(rec == bphash.end() && st_bp == 0) {
-    key--;
-    rec = bphash.find(key);
+  if (st_bp == 0) {
+    while(rec == bphash.end()) {
+      key--;
+      rec = bphash.find(key);
+    }
+    st_bp = rec->second.back()->pos;
+    st_cm = rec->second.back()->cm;
+    st_cm += (rec->second.back()->rate)*((pos-st_bp)*1e-6);
   }
-  st_bp = rec->second.back()->pos;
-  st_cm = rec->second.back()->cm;
-  st_cm += (rec->second.back()->rate)*((pos-st_bp)*1e-6);
-
   return st_cm;
 }
 
@@ -96,7 +97,7 @@ double bp2cmMap::bp2cm(int32_t pos) {
 double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
 
   int32_t st_bp = -1, ed_bp = -1;
-  double  st_cm = -1.0, ed_cm = -1.0;
+  double  st_cm = -1.0, ed_cm = -1.0, st_rho = -1.0; //, ed_rho = -1.0;
   int32_t key;
   if(st > ed) {
     notice("bp2cmMap::bpinterval2cm: Invalid interval: %d,%d. End points are switched.",st,ed);
@@ -121,6 +122,7 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
         if ((*it)->pos <= st) {
           st_bp = (*it)->pos;
           st_cm = (*it)->cm + ((*it)->rate)*((st-st_bp)*1e-6);
+          st_rho = (*it)->rate;
           break;
         }
       }
@@ -132,6 +134,7 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
     st_bp = rec->second.back()->pos;
     st_cm = rec->second.back()->cm;
     st_cm += (rec->second.back()->rate)*((st-st_bp)*1e-6);
+    st_rho = rec->second.back()->rate;
   }
   if (ed_cm < 0.0) {
     // Find the genetic position of ed
@@ -142,6 +145,7 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
         if ((*it)->pos >= ed) {
           ed_bp = (*it)->pos;
           ed_cm = (*it)->cm - ((*it)->rate)*((ed_bp-ed)*1e-6);
+          // ed_rho= (*it)->rate;
           break;
         }
       }
@@ -153,10 +157,15 @@ double bp2cmMap::bpinterval2cm(int32_t st, int32_t ed) {
     ed_bp = rec->second[0]->pos;
     ed_cm = rec->second[0]->cm;
     ed_cm -= (rec->second[0]->rate)*((ed_bp-ed)*1e-6);
+    // ed_rho= rec->second[0]->rate;
   }
 
   double res = ed_cm-st_cm;
-  if (res < 0) { // Should not happen except for very small intervals (?)
+  if (st_bp >= ed_bp || res < 0) {
+    res = abs(ed-st)*st_rho*1e-6;
+  }
+
+  if (res < 0) { // Should not happen
     notice("bp2cmMap::bpinterval2cm: negtaive cm length %d,%.3f-%d,%.3f", st,st_cm,ed,ed_cm);
     res = 0.0;
   }

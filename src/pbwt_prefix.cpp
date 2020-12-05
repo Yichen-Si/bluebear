@@ -18,19 +18,23 @@ void pbwtPrefix(pbwtCursor& pc, std::vector<bool*>& gtmat, std::vector<int32_t>&
 int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   std::string inVcf, reg, out;
+  std::string chrom = "chr20";
   int32_t verbose = 10000;
   int32_t store_interval = 1000; // Store snapshot of pbwt
   int32_t nsamples=0, M=0;
   int32_t chunksize = 1000000;
+  int32_t min_ac = 10;
 
   paramList pl;
   BEGIN_LONG_PARAMS(longParameters)
     LONG_PARAM_GROUP("Input Sites", NULL)
     LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
+    LONG_STRING_PARAM("chr",&chrom, "Input VCF/BCF file")
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("chunk-size",&chunksize, "Output by chunk")
+    LONG_INT_PARAM("min-ac",&min_ac, "Minimum allele count to include")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -45,7 +49,6 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
   // bcf reader
   std::vector<GenomeInterval> intervals;
   std::vector<std::string> v;
-  std::string chrom = "chr20";
   if ( !reg.empty() ) {
     parse_intervals(intervals, "", reg);
     split(v, ":-", reg);
@@ -64,6 +67,8 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   int32_t *p_gt = NULL;
   int32_t  n_gt = 0;
+  int32_t *info_ac = NULL;
+  int32_t  n_ac = 0;
   bool *y;
   y = new bool[M];
 
@@ -78,7 +83,9 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
   a_wf.open(a_outf);
   // read marker
   for (int32_t k=0; odr.read(iv); ++k) {
-
+    if (!bcf_is_snp(iv)) {continue;}
+    if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
+    if (info_ac[0] < min_ac || info_ac[0] > 2*nsamples - min_ac) {continue;}
     if (bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0) {
       error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
     }

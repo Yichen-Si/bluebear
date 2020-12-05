@@ -4,14 +4,13 @@
 #include "bcf_ordered_reader.h"
 #include "bcf_ordered_writer.h"
 
-// goal -- (For simulated data) merge nearby rare variants to create artificial parallel mutation
-int32_t VCFInsertPM(int32_t argc, char** argv) {
+// TODO -- Replace extreme genotype likelihoods by a fixed bound
+
+int32_t CapGL(int32_t argc, char** argv) {
   std::string inVcf, outVcf, reg;
   // std::string out, outf;
-  int32_t verbose = 5000;
-  int32_t maxac = 10;
+  int32_t verbose = 10000;
   int32_t winsize = 200;
-  int32_t start = -1, end = -1;
 
   paramList pl;
 
@@ -22,10 +21,8 @@ int32_t VCFInsertPM(int32_t argc, char** argv) {
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
-    LONG_INT_PARAM("max-ac",&maxac, "Maximal allele count to consider as focal rare variants")
+    LONG_INT_PARAM("min-PL",&winsize, "Maximal window size to merge as one locus")
     LONG_INT_PARAM("win-size",&winsize, "Maximal window size to merge as one locus")
-    LONG_INT_PARAM("pm-start",&start, "Insert PM starting from this pos")
-    LONG_INT_PARAM("pm-end",&end, "Insert PM up to this pos")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     // LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -38,8 +35,8 @@ int32_t VCFInsertPM(int32_t argc, char** argv) {
   pl.Status();
 
   // sanity check of input arguments
-  if ( inVcf.empty() || outVcf.empty() || start < 0 || end < 0 ) {
-    error("[E:%s:%d %s] --in-vcf, --outVcf, --pm-start, --pm-end are required parameters",__FILE__,__LINE__,__FUNCTION__);
+  if ( inVcf.empty() || outVcf.empty() ) {
+    error("[E:%s:%d %s] --in-vcf, --outVcf are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
 
   // bcf reader
@@ -93,12 +90,12 @@ int32_t VCFInsertPM(int32_t argc, char** argv) {
 
   int32_t npm = 0;
   for (int32_t k = 0; odr.read(iv); ++k) {
-    if (!bcf_is_snp(iv)) {continue;}
     if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
     if (info_ac[0] < 1) {continue;}
+
     if ( k % verbose == 0 )
       notice("Processing %d variants at %s:%d. Created %d PM variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, npm);
-    if ( (info_ac[0] >= maxac || iv->pos < start || iv->pos > end ) && iv->pos > lastwrite) {
+    if (info_ac[0] >= maxac && iv->pos > lastwrite) {
       lastwrite = iv->pos;
       odw.write(iv);
       continue;
