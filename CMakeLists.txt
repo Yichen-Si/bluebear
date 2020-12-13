@@ -32,11 +32,8 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/utils.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp
-    src/cmd_vcf_ibs0_baseline.cpp
-    src/cmd_vcf_ibs0.cpp
     src/cmd_vcf_ibs0_flanking.cpp
     src/cmd_vcf_ibs0_pairwise.cpp
-    src/cmd_vcf_ibs0_unconditional.cpp
     src/cmd_vcf_ibs0_view.cpp
     src/ibs0_pairwise_scan.cpp
     src/cmd_vcf_raresharing.cpp
@@ -50,7 +47,6 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/ibs0_phase_forward.cpp
     src/hap_ibd_pbwt.cpp
     src/ibd_around_pt.cpp
-    src/test_hts.cpp
     src/ibs0rare.cpp
     src/rare_variant_config.cpp
     src/ibs0_rare_phase_backward.cpp
@@ -75,6 +71,8 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_vcf_snppairingene.cpp
     src/cmd_vcf_snppairinfo.cpp
     src/cmd_dge_shuffle.cpp
+    src/cmd_vcf_temp.cpp
+    src/test_hts.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h

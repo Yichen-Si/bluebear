@@ -37,7 +37,7 @@ void output_pair(FILE * wf, bp2cmMap& pgmap, ibs0pair* snp, std::string& chrom) 
 
   double cm = pgmap.bpinterval2cm( snp->left_bp, snp->right_bp );
   fprintf(wf, "%s\t%d\t%d\t%s\t%s\t%d\t%d\t%f\t%s\n",
-          chrom.c_str(), snp->pos, snp->ac, snp->id1.c_str(), snp->id1.c_str(),
+          chrom.c_str(), snp->pos, snp->ac, snp->id1.c_str(), snp->id2.c_str(),
           snp->left_bp, snp->right_bp, cm, snp->info.c_str() );
 }
 
@@ -52,7 +52,7 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
   int32_t verbose = 1000;
   int32_t min_variant = 1;
   int32_t min_rare_ac = 2;
-  int32_t max_rare_ac = 5;
+  int32_t max_rare_ac = 2;
   int32_t start, end;
   int32_t leftover = 0;
   int32_t cst = -1, ced = -1;
@@ -85,8 +85,8 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
     LONG_INT_PARAM("left-over",&leftover, "Stop when only x pairs are left")
     LONG_INT_PARAM("bp-limit",&bp_limit, "The length of window to store common (0/1/2) variants (bp)")
     // LONG_DOUBLE_PARAM("out-reach-cm",&cm_limit, "How far to look forward & backward (cm)")
-    LONG_INT_PARAM("min-rare",&min_rare_ac, "Minimum minor allele count to be considered as anchor for IBD")
-    LONG_INT_PARAM("max-rare",&max_rare_ac, "Maximum minor allele count to be considered as anchor for IBD")
+    LONG_INT_PARAM("min-ac",&min_rare_ac, "Minimum minor allele count to be considered as anchor for IBD")
+    LONG_INT_PARAM("max-ac",&max_rare_ac, "Maximum minor allele count to be considered as anchor for IBD")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file name")
@@ -126,7 +126,7 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
   // output
   FILE * wf;
   wf = fopen(out.c_str(), "w");
-  fputs("CHR\tPOS\tAC\tID1\tID2\tLeft\tRight\tLength_cM\n", wf);
+  fputs("CHR\tPOS\tAC\tID1\tID2\tLeft\tRight\tLength_cM\tInfo\n", wf);
 
   // handle filter string
   std::string filter_str;
@@ -306,6 +306,8 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
       int32_t p, a;
       if (!str2int32(words[1], p)) {continue;}
       if (!str2int32(words[2], a)) {continue;}
+      if (p < start) {continue;}
+      if (p >= end) {break;}
       ibs0pair* rare = new ibs0pair(p, a);
       rare->Add_id(words[3], words[4]);
       if (words.size() > 5) {
@@ -334,6 +336,7 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
         snplist.push_back(rare);
       }
     }
+    nVariant = snplist.size();
     ifs.close();
   }
 
@@ -341,10 +344,12 @@ int32_t cmdVcfIBS0Flank(int32_t argc, char** argv) {
   notice("%d pairs miss left ibs0; %d pairs miss right ibs0.", idpair_l.size(), idpair_r.size());
   if (nVariant < 1) {
     notice("Not enough rare variants in the given region");
+    fclose(wf);
     return 0;
   }
   int32_t bound1 = (*(ibs0finder.posvec_que[0]))[0];
   int32_t bound2 = ibs0finder.posvec_que.back()->back();
+  nFinished = 0;
 
   // Look backward
   int32_t wed = bound2;

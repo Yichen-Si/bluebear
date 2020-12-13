@@ -248,7 +248,7 @@ for (auto & one_gene : gene_info) {
 
   fprintf(wf, "%s\t%s\t%s\t", one_gene[3].c_str(), one_gene[1].c_str(), one_gene[2].c_str() );
   fprintf(wf, "%d\t%d\t%d\t%d\t", nsnps, ct_fun[2], ct_fun[3], ct_fun[4]);
-  fprintf(wf, "%d\t%d\t%d\t%d\t", ct_pair["NoSharing"],ct_pair["Share_one"],ct_pair["Share_more"],ct_pair["Nested"]);
+  fprintf(wf, "%ld\t%ld\t%ld\t%ld\t", ct_pair["NoSharing"],ct_pair["Share_one"],ct_pair["Share_more"],ct_pair["Nested"]);
   fprintf(wf, "%d\t%d\t%d\t%d\n", ct_carry["Minor_two"], ct_carry["Minor_more"], ct_carry["Fun_two"], ct_carry["Fun_more"]);
 }
   fclose(wf);

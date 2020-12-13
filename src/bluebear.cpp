@@ -25,11 +25,11 @@ int32_t cmdVcfSnpPairInGeneInfo(int32_t argc, char** argv);
 
 // int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
-int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
-int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
+// int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
+// int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
 int32_t cmdVcfIBS0View(int32_t argc, char** argv);
 int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
-int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
+// int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
 int32_t RandomPairIBS0(int32_t argc, char** argv);
 int32_t VCFInsertPM(int32_t argc, char** argv);
 int32_t CDFInfoInt(int32_t argc, char** argv);
@@ -41,7 +41,7 @@ int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
 int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
 
-int32_t cmdIBS0Bridge(int32_t argc, char** argv);
+// int32_t cmdIBS0Bridge(int32_t argc, char** argv); // zz
 int32_t mapPt2Interval(int32_t argc, char** argv);
 
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
@@ -75,6 +75,7 @@ int32_t IBS0Triallelic(int32_t argc, char** argv);
 
 int32_t cmdDgeShuffle(int32_t argc, char** argv);
 
+int32_t temp(int32_t argc, char** argv);
 int32_t test(int32_t argc, char** argv);
 
 int32_t main(int32_t argc, char** argv) {
@@ -104,11 +105,11 @@ int32_t main(int32_t argc, char** argv) {
     // Temperary ibs0 tests
     // LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
     LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
     LONG_COMMAND("insert-pm",&VCFInsertPM, "Merge nearby rare variants to create artificial parallel mutation from & to BCF/VCF")
@@ -121,7 +122,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("anno-ibd",&AnnotateIBDAroundRare, "Annotate pairwise IBD among rare allele carriers from input BCF/VCF")
     LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Small, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 
-    LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
+    // LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 
     LONG_COMMAND("pt-to-interval",&mapPt2Interval, "Map points to intervals, both indexed by the carriers.")
 
@@ -161,6 +162,7 @@ LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of di
 LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
 
     LONG_COMMAND("test",&test, "Test")
+    LONG_COMMAND("temp",&temp, "Temporary script")
 
   END_LONG_COMMANDS();
 

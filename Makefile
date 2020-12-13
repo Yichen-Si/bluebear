@@ -396,60 +396,6 @@ src/cmd_vcf_annotate_ibs0_small_n.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.s
 .PHONY : src/cmd_vcf_annotate_ibs0_small_n.cpp.s
 
-src/cmd_vcf_ibs0.o: src/cmd_vcf_ibs0.cpp.o
-
-.PHONY : src/cmd_vcf_ibs0.o
-
-# target to build an object file
-src/cmd_vcf_ibs0.cpp.o:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.o
-.PHONY : src/cmd_vcf_ibs0.cpp.o
-
-src/cmd_vcf_ibs0.i: src/cmd_vcf_ibs0.cpp.i
-
-.PHONY : src/cmd_vcf_ibs0.i
-
-# target to preprocess a source file
-src/cmd_vcf_ibs0.cpp.i:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.i
-.PHONY : src/cmd_vcf_ibs0.cpp.i
-
-src/cmd_vcf_ibs0.s: src/cmd_vcf_ibs0.cpp.s
-
-.PHONY : src/cmd_vcf_ibs0.s
-
-# target to generate assembly for a file
-src/cmd_vcf_ibs0.cpp.s:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0.cpp.s
-.PHONY : src/cmd_vcf_ibs0.cpp.s
-
-src/cmd_vcf_ibs0_baseline.o: src/cmd_vcf_ibs0_baseline.cpp.o
-
-.PHONY : src/cmd_vcf_ibs0_baseline.o
-
-# target to build an object file
-src/cmd_vcf_ibs0_baseline.cpp.o:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_baseline.cpp.o
-.PHONY : src/cmd_vcf_ibs0_baseline.cpp.o
-
-src/cmd_vcf_ibs0_baseline.i: src/cmd_vcf_ibs0_baseline.cpp.i
-
-.PHONY : src/cmd_vcf_ibs0_baseline.i
-
-# target to preprocess a source file
-src/cmd_vcf_ibs0_baseline.cpp.i:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_baseline.cpp.i
-.PHONY : src/cmd_vcf_ibs0_baseline.cpp.i
-
-src/cmd_vcf_ibs0_baseline.s: src/cmd_vcf_ibs0_baseline.cpp.s
-
-.PHONY : src/cmd_vcf_ibs0_baseline.s
-
-# target to generate assembly for a file
-src/cmd_vcf_ibs0_baseline.cpp.s:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_baseline.cpp.s
-.PHONY : src/cmd_vcf_ibs0_baseline.cpp.s
-
 src/cmd_vcf_ibs0_flanking.o: src/cmd_vcf_ibs0_flanking.cpp.o
 
 .PHONY : src/cmd_vcf_ibs0_flanking.o
@@ -557,33 +503,6 @@ src/cmd_vcf_ibs0_triallelic.s: src/cmd_vcf_ibs0_triallelic.cpp.s
 src/cmd_vcf_ibs0_triallelic.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.s
 .PHONY : src/cmd_vcf_ibs0_triallelic.cpp.s
-
-src/cmd_vcf_ibs0_unconditional.o: src/cmd_vcf_ibs0_unconditional.cpp.o
-
-.PHONY : src/cmd_vcf_ibs0_unconditional.o
-
-# target to build an object file
-src/cmd_vcf_ibs0_unconditional.cpp.o:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_unconditional.cpp.o
-.PHONY : src/cmd_vcf_ibs0_unconditional.cpp.o
-
-src/cmd_vcf_ibs0_unconditional.i: src/cmd_vcf_ibs0_unconditional.cpp.i
-
-.PHONY : src/cmd_vcf_ibs0_unconditional.i
-
-# target to preprocess a source file
-src/cmd_vcf_ibs0_unconditional.cpp.i:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_unconditional.cpp.i
-.PHONY : src/cmd_vcf_ibs0_unconditional.cpp.i
-
-src/cmd_vcf_ibs0_unconditional.s: src/cmd_vcf_ibs0_unconditional.cpp.s
-
-.PHONY : src/cmd_vcf_ibs0_unconditional.s
-
-# target to generate assembly for a file
-src/cmd_vcf_ibs0_unconditional.cpp.s:
-	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_unconditional.cpp.s
-.PHONY : src/cmd_vcf_ibs0_unconditional.cpp.s
 
 src/cmd_vcf_ibs0_view.o: src/cmd_vcf_ibs0_view.cpp.o
 
@@ -881,6 +800,33 @@ src/cmd_vcf_snppairingene.s: src/cmd_vcf_snppairingene.cpp.s
 src/cmd_vcf_snppairingene.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.s
 .PHONY : src/cmd_vcf_snppairingene.cpp.s
+
+src/cmd_vcf_temp.o: src/cmd_vcf_temp.cpp.o
+
+.PHONY : src/cmd_vcf_temp.o
+
+# target to build an object file
+src/cmd_vcf_temp.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o
+.PHONY : src/cmd_vcf_temp.cpp.o
+
+src/cmd_vcf_temp.i: src/cmd_vcf_temp.cpp.i
+
+.PHONY : src/cmd_vcf_temp.i
+
+# target to preprocess a source file
+src/cmd_vcf_temp.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.i
+.PHONY : src/cmd_vcf_temp.cpp.i
+
+src/cmd_vcf_temp.s: src/cmd_vcf_temp.cpp.s
+
+.PHONY : src/cmd_vcf_temp.s
+
+# target to generate assembly for a file
+src/cmd_vcf_temp.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.s
+.PHONY : src/cmd_vcf_temp.cpp.s
 
 src/cmd_vcf_triallelic.o: src/cmd_vcf_triallelic.cpp.o
 
@@ -1812,12 +1758,6 @@ help:
 	@echo "... src/cmd_vcf_annotate_ibs0_small_n.o"
 	@echo "... src/cmd_vcf_annotate_ibs0_small_n.i"
 	@echo "... src/cmd_vcf_annotate_ibs0_small_n.s"
-	@echo "... src/cmd_vcf_ibs0.o"
-	@echo "... src/cmd_vcf_ibs0.i"
-	@echo "... src/cmd_vcf_ibs0.s"
-	@echo "... src/cmd_vcf_ibs0_baseline.o"
-	@echo "... src/cmd_vcf_ibs0_baseline.i"
-	@echo "... src/cmd_vcf_ibs0_baseline.s"
 	@echo "... src/cmd_vcf_ibs0_flanking.o"
 	@echo "... src/cmd_vcf_ibs0_flanking.i"
 	@echo "... src/cmd_vcf_ibs0_flanking.s"
@@ -1830,9 +1770,6 @@ help:
 	@echo "... src/cmd_vcf_ibs0_triallelic.o"
 	@echo "... src/cmd_vcf_ibs0_triallelic.i"
 	@echo "... src/cmd_vcf_ibs0_triallelic.s"
-	@echo "... src/cmd_vcf_ibs0_unconditional.o"
-	@echo "... src/cmd_vcf_ibs0_unconditional.i"
-	@echo "... src/cmd_vcf_ibs0_unconditional.s"
 	@echo "... src/cmd_vcf_ibs0_view.o"
 	@echo "... src/cmd_vcf_ibs0_view.i"
 	@echo "... src/cmd_vcf_ibs0_view.s"
@@ -1866,6 +1803,9 @@ help:
 	@echo "... src/cmd_vcf_snppairingene.o"
 	@echo "... src/cmd_vcf_snppairingene.i"
 	@echo "... src/cmd_vcf_snppairingene.s"
+	@echo "... src/cmd_vcf_temp.o"
+	@echo "... src/cmd_vcf_temp.i"
+	@echo "... src/cmd_vcf_temp.s"
 	@echo "... src/cmd_vcf_triallelic.o"
 	@echo "... src/cmd_vcf_triallelic.i"
 	@echo "... src/cmd_vcf_triallelic.s"
