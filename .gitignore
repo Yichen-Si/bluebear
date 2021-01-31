@@ -31,8 +31,9 @@
 *.out
 *.app
 
-# test/
-# test/*
+test/
+test/*
+src/zz_*
 
 bin/
 bin/*

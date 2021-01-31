@@ -207,6 +207,33 @@ src/bcf_ordered_writer.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.s
 .PHONY : src/bcf_ordered_writer.cpp.s
 
+src/blocks_in_ibs0_info.o: src/blocks_in_ibs0_info.cpp.o
+
+.PHONY : src/blocks_in_ibs0_info.o
+
+# target to build an object file
+src/blocks_in_ibs0_info.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o
+.PHONY : src/blocks_in_ibs0_info.cpp.o
+
+src/blocks_in_ibs0_info.i: src/blocks_in_ibs0_info.cpp.i
+
+.PHONY : src/blocks_in_ibs0_info.i
+
+# target to preprocess a source file
+src/blocks_in_ibs0_info.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.i
+.PHONY : src/blocks_in_ibs0_info.cpp.i
+
+src/blocks_in_ibs0_info.s: src/blocks_in_ibs0_info.cpp.s
+
+.PHONY : src/blocks_in_ibs0_info.s
+
+# target to generate assembly for a file
+src/blocks_in_ibs0_info.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.s
+.PHONY : src/blocks_in_ibs0_info.cpp.s
+
 src/bluebear.o: src/bluebear.cpp.o
 
 .PHONY : src/bluebear.o
@@ -584,6 +611,33 @@ src/cmd_vcf_insert_pm.s: src/cmd_vcf_insert_pm.cpp.s
 src/cmd_vcf_insert_pm.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.s
 .PHONY : src/cmd_vcf_insert_pm.cpp.s
+
+src/cmd_vcf_phase_outlier.o: src/cmd_vcf_phase_outlier.cpp.o
+
+.PHONY : src/cmd_vcf_phase_outlier.o
+
+# target to build an object file
+src/cmd_vcf_phase_outlier.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o
+.PHONY : src/cmd_vcf_phase_outlier.cpp.o
+
+src/cmd_vcf_phase_outlier.i: src/cmd_vcf_phase_outlier.cpp.i
+
+.PHONY : src/cmd_vcf_phase_outlier.i
+
+# target to preprocess a source file
+src/cmd_vcf_phase_outlier.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.i
+.PHONY : src/cmd_vcf_phase_outlier.cpp.i
+
+src/cmd_vcf_phase_outlier.s: src/cmd_vcf_phase_outlier.cpp.s
+
+.PHONY : src/cmd_vcf_phase_outlier.s
+
+# target to generate assembly for a file
+src/cmd_vcf_phase_outlier.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.s
+.PHONY : src/cmd_vcf_phase_outlier.cpp.s
 
 src/cmd_vcf_raresharing.o: src/cmd_vcf_raresharing.cpp.o
 
@@ -1737,6 +1791,9 @@ help:
 	@echo "... src/bcf_ordered_writer.o"
 	@echo "... src/bcf_ordered_writer.i"
 	@echo "... src/bcf_ordered_writer.s"
+	@echo "... src/blocks_in_ibs0_info.o"
+	@echo "... src/blocks_in_ibs0_info.i"
+	@echo "... src/blocks_in_ibs0_info.s"
 	@echo "... src/bluebear.o"
 	@echo "... src/bluebear.i"
 	@echo "... src/bluebear.s"
@@ -1779,6 +1836,9 @@ help:
 	@echo "... src/cmd_vcf_insert_pm.o"
 	@echo "... src/cmd_vcf_insert_pm.i"
 	@echo "... src/cmd_vcf_insert_pm.s"
+	@echo "... src/cmd_vcf_phase_outlier.o"
+	@echo "... src/cmd_vcf_phase_outlier.i"
+	@echo "... src/cmd_vcf_phase_outlier.s"
 	@echo "... src/cmd_vcf_raresharing.o"
 	@echo "... src/cmd_vcf_raresharing.i"
 	@echo "... src/cmd_vcf_raresharing.s"

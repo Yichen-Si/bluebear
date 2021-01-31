@@ -129,10 +129,10 @@ int32_t trioSwitchDetect(int32_t argc, char** argv) {
     if ( ! has_filter ) {
       //notice("%d %d", iv->d.n_flt, (int32_t)req_flt_ids.size());
       for(int32_t i=0; i < iv_c->d.n_flt; ++i) {
-      	for(int32_t j=0; j < (int32_t)req_flt_ids.size(); ++j) {
-      	  if ( req_flt_ids[j] == iv_c->d.flt[i] )
-      	    has_filter = true;
-      	}
+        for(int32_t j=0; j < (int32_t)req_flt_ids.size(); ++j) {
+          if ( req_flt_ids[j] == iv_c->d.flt[i] )
+            has_filter = true;
+        }
       }
     }
     if ( ! has_filter ) { continue; }
@@ -320,7 +320,7 @@ int32_t trioSwitchDetect(int32_t argc, char** argv) {
 
 int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
   std::string childVCF, parentsVCF;
-  std::string out, outf, outb;
+  std::string out, outf, outb, outm;
   int32_t verbose = 100000;
   std::string reg;
   int32_t min_variant = 1;
@@ -373,17 +373,26 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
   BCFOrderedReader odr_p(parentsVCF, intervals);
   bcf1_t* iv_p = bcf_init();
 
+  int32_t nsamples = bcf_hdr_nsamples(odr_c.hdr);
+  char** id_ptr = bcf_hdr_get_samples(odr_c.hdr);
+  std::vector<std::string> id_child(id_ptr, id_ptr+nsamples);
+
   // Output
   outf = out;
   if ( !reg.empty() ) {
     outf += ("_" + reg);
   }
   outb = outf;
-  outf += "_switch.pos";
-  outb += "_blip.pos";
-  std::ofstream wf,wfb;
+  outm = outf;
+  outf += "_switch.pos"; // Store switch points
+  outb += "_blip.pos"; // Store blip points
+  outm += "_nonMendel.pos"; // Store non-Mendelian points
+  std::ofstream wf,wfb,wfm;
   wf.open(outf, std::ios::trunc);
   wfb.open(outb, std::ios::trunc);
+  wfb << "POS\tNextHet\tID\n";
+  wfm.open(outm, std::ios::trunc);
+  wfm << "POS\tO_GT\tP1_GT\tP2_GT\tID_O\n";
 
   // handle filter string
   std::string filter_str;
@@ -420,8 +429,6 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
     }
   }
 
-  int32_t nsamples = bcf_hdr_nsamples(odr_c.hdr);
-
 
   notice("Started Reading site information from VCF file, identifying %d samples", nsamples);
   if ( nsamples == 0 )
@@ -435,11 +442,11 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
   uint8_t* gthap = (uint8_t*)calloc(2*nsamples, sizeof(uint8_t));
   int32_t  nVariant = 0;
   odr_p.read(iv_p);
-
+  int32_t nonMendel_ct = 0;
   for(int32_t k=0; odr_c.read(iv_c); ++k) {
     // periodic message to user
     if ( k % verbose == 0 )
-      notice("Processing child vcf: %d markers at %s:%d", k, bcf_hdr_id2name(odr_c.hdr, iv_c->rid), iv_c->pos+1);
+      notice("Processing child vcf: %d markers at %s:%d. Found %d non-Mendelian sites", k, bcf_hdr_id2name(odr_c.hdr, iv_c->rid), iv_c->pos+1, nonMendel_ct);
     // unpack FILTER column
     bcf_unpack(iv_c, BCF_UN_FLT);
     // check --apply-filters
@@ -480,7 +487,7 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
         if (gthap[2*i] + gthap[2*i+1] == 1) gcs++;
       }
     }
-    if (gcs == 0) {continue;}
+    // if (gcs == 0) {continue;}
 
     // Move the reader of parents genotype to this position
     while (iv_p->pos < iv_c->pos) {odr_p.read(iv_p);}
@@ -492,10 +499,20 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
     }
     for(int32_t i=0; i < nsamples; ++i) {
       bool c1 = gthap[2*i], c2 = gthap[2*i+1];
-      if (c1 == c2) {continue;}
       int32_t pi = 2*i, mi = 2*i+1;
       int32_t g11 = p_gt[2*pi], g12 = p_gt[2*pi+1];
       int32_t g21 = p_gt[2*mi], g22 = p_gt[2*mi+1];
+      bool nonmendel = 0;
+      if (c1==c2 && (g11+g12==2*(1-c1) || g21+g22==2*(1-c1) ))
+        nonmendel = 1;
+      if (c1!=c2 && (g11+g12+g21+g22==0 || g11+g12+g21+g22==4))
+        nonmendel = 1;
+      if (nonmendel) {
+        nonMendel_ct++;
+        wfm << iv_p->pos+1 << '\t' << (int32_t) c1 << (int32_t) c2 << '\t' << g11 << g12 << '\t' << g21 << g22 << '\t' << id_child[i] << '\n';
+        continue;
+      }
+      if (c1 == c2) {continue;}
       bool gtRR1, gtRR2, gtAA1, gtAA2;
       if ( bcf_gt_is_missing(g11) || bcf_gt_is_missing(g12) || bcf_gt_is_missing(g21) || bcf_gt_is_missing(g22) ) {
         // If any is missing, don't make decision at this position
@@ -512,12 +529,8 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
       // Informative
       bool config = ((c1 && gtAA1) || (c2 && gtAA2) || (c2 && gtRR1) || (c1 && gtRR2));
       if (preconfig[i]!=config) {
-// if (i == 0) {
-//   std::cout << prehet[i] << '\t' << preconfig[i] << '\n';
-//   std::cout << iv_c->pos << '\t' << c1 << c2 << '\t' << bcf_gt_allele(g11) << bcf_gt_allele(g12) << '\t' << bcf_gt_allele(g21) << bcf_gt_allele(g22) << '\n';
-// }
         if (prehet[i] == switchpos[i].back()) { // Blip
-          wfb << prehet[i] << '\t' << iv_c->pos+1 << '\t' << i << '\n';
+          wfb << prehet[i] << '\t' << iv_c->pos+1 << '\t' << id_child[i] << '\n';
         }
         switchpos[i].push_back(iv_c->pos+1);
         preconfig[i] = config;
@@ -528,10 +541,11 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
   }
   free(gthap);
   wfb.close();
+  wfm.close();
 
   for (int32_t i = 0; i < nsamples; ++i) {
     std::stringstream recline;
-    recline << i << '\t' << switchpos[i].size() << '\t';
+    recline << id_child[i] << '\t' << switchpos[i].size() << '\t';
     uint32_t j = 1;
     while (j < switchpos[i].size()) {
       recline << switchpos[i][j] << ',';

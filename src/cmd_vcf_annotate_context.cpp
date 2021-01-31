@@ -153,7 +153,7 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
     cpg = "F";
 
     if (bcf_is_snp(iv)) { // SNP
-      if (ctx[mpt]=='C' && ctx[mpt+1]=='G') { // CpG
+      if ((ctx[mpt]=='C' && ctx[mpt+1]=='G')||(ctx[mpt]=='G' && ctx[mpt-1]=='C')) { // CpG
         cpg="T";
       }
     }

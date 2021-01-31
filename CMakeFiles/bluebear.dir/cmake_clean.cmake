@@ -57,6 +57,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o"
   "CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
+  "CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o"
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
   "bin/bluebear.pdb"
   "bin/bluebear"

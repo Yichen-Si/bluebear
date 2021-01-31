@@ -73,6 +73,8 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_dge_shuffle.cpp
     src/cmd_vcf_temp.cpp
     src/test_hts.cpp
+    src/blocks_in_ibs0_info.cpp
+    src/cmd_vcf_phase_outlier.cpp
     src/bluebear.cpp)
 
 set(ibs0phase_HEADERS src/cramore.h

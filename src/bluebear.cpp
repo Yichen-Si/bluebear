@@ -23,6 +23,8 @@ int32_t cmdVcfSnpPairInGeneCount(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneSummary(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneInfo(int32_t argc, char** argv);
 
+int32_t DoubletonBlockInfo(int32_t argc, char** argv);
+
 // int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
 int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
 // int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
@@ -52,6 +54,8 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 int32_t hapIBDpbwtLeft(int32_t argc, char** argv);
 int32_t hapIBDpbwtRight(int32_t argc, char** argv);
 int32_t hapIBDpairwise(int32_t argc, char** argv);
+
+int32_t HaplotypeChangeAtPt(int32_t argc, char** argv);
 
 int32_t HapibdVSnoibs0(int32_t argc, char** argv);
 
@@ -102,6 +106,8 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("snp-pair-in-gene-short",&cmdVcfSnpPairInGeneSummary, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-long",&cmdVcfSnpPairInGeneInfo, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
 
+LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statistics of switch/blip blocks in doubleton pairs from BCF/VCF")
+
     // Temperary ibs0 tests
     // LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
     LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
@@ -135,6 +141,8 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("hap-ibd-left",&hapIBDpbwtLeft, "Haplotype matching length preceeding a shared rare allele from BCF/VCF")
     LONG_COMMAND("hap-ibd-right",&hapIBDpbwtRight, "Haplotype matching length succeeding a shared rare allele from BCF/VCF")
     LONG_COMMAND("ibd-pairwise-pos",&hapIBDpairwise, "Haplotype matching length of rare allele carriers around given position from BCF/VCF")
+
+    LONG_COMMAND("hap-change-at-pt",&HaplotypeChangeAtPt, "Haplotype matching order change at SNP sites from BCF/VCF")
 
     LONG_COMMAND("ibd-ibs",&HapibdVSnoibs0, "Haplotype & ibs0 based IBD around given positions from BCF/VCF")
 

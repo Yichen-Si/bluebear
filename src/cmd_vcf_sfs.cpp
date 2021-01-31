@@ -204,7 +204,11 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   int32_t verbose = 10000;
   int32_t use_info = 1;
   int32_t kmer = 5;
+  double mr_cut = 0.05;
+  int32_t split_cpg = 0;
+  int32_t ignore_multiallele = 0;
   std::map<std::string, std::vector<int64_t> > sfs;
+  std::string mutation_tag = "C_T";
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
@@ -224,6 +228,10 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("use-info",&use_info, "Whether to use AC/AN in info field")
     LONG_INT_PARAM("kmer",&kmer, "The kmer to be considered. Cannot exceed what has been annotated in the VCF")
+    LONG_INT_PARAM("bi-allele",&ignore_multiallele, "If multi-allelic, only count the first one")
+    LONG_INT_PARAM("split-cpg",&split_cpg, "Separate extremely high mutation rate CpG from normal ones. Currently only support two category. Require mutation rate annotation.")
+    LONG_DOUBLE_PARAM("mr-cut",&mr_cut, "Mutation rate curoff to separate extremely high mutation rate CpG from normal ones. Currently only support two category.")
+    LONG_STRING_PARAM("mutation-tag",&mutation_tag,"INFO/TAG of the annotated mutation rate to reference to.")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output VCF file name")
@@ -285,6 +293,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   int32_t max_rare = 50;
   std::vector<double> lower{0.0,0.001,0.005,0.01,0.05};
   std::vector<double> upper{0.001,0.005,0.01,0.05, 1.00};
+  std::map<char,char> bpair = { {'A','T'}, {'T','A'}, {'C','G'}, {'G','C'}, {'-','-'} };
 
   int32_t nskip = 0, nmono = 0;
   int32_t *info_ac = NULL;
@@ -297,11 +306,14 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   int32_t tmp = 0;
   BCFOrderedReader odrtmp(inVcf, intervals);
   while (odrtmp.read(iv)) {
-    if (bcf_get_info_int32(odrtmp.hdr, iv, "AN", &info_an, &n_an)) {
+    if (bcf_get_info_int32(odrtmp.hdr, iv, "AN", &info_an, &n_an) >= 0) {
       nsamples = std::max(nsamples,info_an[0]);
       tmp ++;
       if (tmp > 500)
         break;
+      if (tmp % 100 == 0) {
+        std::cout << tmp << "\n";
+      }
     }
   }
   nsamples = (nsamples / 2 / 500) * 500 + 500;
@@ -332,12 +344,32 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     }
   }
 
+  std::map<std::string, std::vector<int64_t> > cpg_hyper;
+  if (split_cpg) {
+    for (int32_t i = 0; i < ret; ++i) {
+      for (uint32_t j = 0; j < allmut.size(); ++j) {
+        if ( (motifs[i].compare((kmer-1)/2, 1, "G") == 0 && allmut[j] == "C-T") ||
+             (motifs[i].compare((kmer-1)/2-1, 1, "C") == 0 && allmut[j] == "G-A") ) {
+          std::string mtype = motifs[i].substr(0,(kmer-1)/2) + allmut[j] + motifs[i].substr((kmer-1)/2);
+          std::vector<int64_t> tmp(max_rare+1+lower.size(), 0);
+          cpg_hyper[mtype] = tmp;
+        }
+      }
+    }
+  }
+
   notice("Started reading site information from VCF file");
 
+  int32_t pre_pos = 0;
+  int32_t multi_allele = 0;
   for(int32_t k=0; odr.read(iv); ++k) {  // read marker
     // periodic message to user
     if ( (k+1) % verbose == 0 ) {
-      notice("Processing %d markers at %s:%d. Skipped %d filtered markers and %d uninformative markers, retaining %d variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nskip, nmono, nVariant);
+      notice("Processing %d markers at %s:%d. Skipped %d filtered markers and %d uninformative markers, %d multi-allelic variants, retaining %d variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nskip, nmono, multi_allele, nVariant);
+    }
+    if (!bcf_is_snp(iv)) {nmono++; continue;}
+    if (ignore_multiallele) {
+      if (iv->pos == pre_pos) {multi_allele++; continue;}
     }
 
     // unpack FILTER column
@@ -368,7 +400,6 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     if (bcf_get_info_int32(odr.hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
     ac = info_ac[0]; an = info_an[0];
     if (ac == 0) {nmono++; continue;}
-    if (!bcf_is_snp(iv)) {nmono++; continue;}
 
     char *ctx = NULL;
     int32_t nctx = 0;
@@ -382,26 +413,63 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     char alt = iv->d.allele[1][0];
     if (ac > an/2) {
       ac = an - ac;
-      kctx = kctx.substr(0,(kmer-1)/2)+alt+"-"+ref+kctx.substr((kmer-1)/2+1);
-    } else {
-      kctx = kctx.substr(0,(kmer-1)/2)+ref+"-"+alt+kctx.substr((kmer-1)/2+1);
     }
+    std::string mbp(1,ref);
+    if ( kctx.compare( (kmer-1)/2, 1, mbp) != 0 ) {
+      ref = bpair[ref];
+      alt = bpair[ref];
+    }
+    mbp = ref;
+    if ( kctx.compare( (kmer-1)/2, 1, mbp) != 0 ) {
+      // Should not happen
+      nskip++;
+      continue;
+    }
+    kctx = kctx.substr(0,(kmer-1)/2)+ref+"-"+alt+kctx.substr((kmer-1)/2+1);
     auto ptr = sfs.find(kctx);
-    if (ptr != sfs.end()) {
-      if (ac <= max_rare) {
-        (ptr->second)[ac] ++;
-      }
-      double af = 1.0 * ac / nsamples / 2.0;
-      for (uint32_t it = 0; it < lower.size(); ++it) {
-        if (af > lower[it] && af <= upper[it]) {
-          (ptr->second)[max_rare + it+1]++;
-          break;
-        }
-      }
-      nVariant++;
-    } else {
+    if (ptr == sfs.end()) {
       nmono++;
+      continue;
     }
+    if (split_cpg == 1 && ( (ref=='C'&&alt=='T')||(ref=='G'&&alt=='A') )  ) {
+      bool skip = 0;
+      float *info_mr = NULL;
+      int32_t n_mr = 0;
+      if (bcf_get_info_float(odr.hdr, iv, mutation_tag.c_str(), &info_mr, &n_mr) < 0) {
+        skip=1;
+      }
+      auto ptr1 = cpg_hyper.find(kctx);
+      if (ptr1 == cpg_hyper.end()) {
+        skip=1;
+      }
+      if ( skip == 0 && info_mr[0] > mr_cut ) {
+        if (ac <= max_rare) {
+          (ptr1->second)[ac] ++;
+        }
+        double af = 1.0 * ac / nsamples / 2.0;
+        for (uint32_t it = 0; it < lower.size(); ++it) {
+          if (af > lower[it] && af <= upper[it]) {
+            (ptr1->second)[max_rare + it+1]++;
+            break;
+          }
+        }
+        nVariant++;
+        pre_pos = iv->pos;
+        continue;
+      }
+    }
+    if (ac <= max_rare) {
+      (ptr->second)[ac] ++;
+    }
+    double af = 1.0 * ac / nsamples / 2.0;
+    for (uint32_t it = 0; it < lower.size(); ++it) {
+      if (af > lower[it] && af <= upper[it]) {
+        (ptr->second)[max_rare + it+1]++;
+        break;
+      }
+    }
+    nVariant++;
+    pre_pos = iv->pos;
   }
 
   notice("Finished Processing %d markers across %d samples, Skipping %d filtered markers and %d uninformative markers", nVariant, nsamples, nskip, nmono);
@@ -410,7 +478,6 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   std::ofstream wf(outf.c_str(), std::ios::out);
 
   // Merge equivalent mutation types
-  std::map<char,char> bpair = { {'A','T'}, {'T','A'}, {'C','G'}, {'G','C'}, {'-','-'} };
   std::vector<std::string> mset {"A-T","A-C","A-G","C-A","C-T","C-G"};
   std::vector<std::string> cset {"T-A","T-G","T-C","G-T","G-A","G-C"};
   for (int32_t i = 0; i < ret; ++i) {
@@ -432,6 +499,18 @@ int32_t KmerSFS(int32_t argc, char** argv) {
       for (auto & w : fs1->second)
         wf << '\t' << w;
       wf << '\n';
+      if (split_cpg && mset[j].compare("C-T") == 0 && flank0.substr((kmer-1)/2,1) == "G" ) {
+        auto hs1 = cpg_hyper.find(mtype);
+        auto hs2 = cpg_hyper.find(ctype);
+        if (hs2 != cpg_hyper.end()) {
+          for (uint32_t k = 0; k < (hs1->second).size(); ++k)
+            hs1->second[k] += hs2->second[k];
+        }
+        wf << hs1->first << "_Hyper";
+        for (auto & w : hs1->second)
+          wf << '\t' << w;
+        wf << '\n';
+      }
     }
   }
 
