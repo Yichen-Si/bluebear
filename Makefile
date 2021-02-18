@@ -720,6 +720,33 @@ src/cmd_vcf_sfs.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
 .PHONY : src/cmd_vcf_sfs.cpp.s
 
+src/cmd_vcf_sfs_mr.o: src/cmd_vcf_sfs_mr.cpp.o
+
+.PHONY : src/cmd_vcf_sfs_mr.o
+
+# target to build an object file
+src/cmd_vcf_sfs_mr.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o
+.PHONY : src/cmd_vcf_sfs_mr.cpp.o
+
+src/cmd_vcf_sfs_mr.i: src/cmd_vcf_sfs_mr.cpp.i
+
+.PHONY : src/cmd_vcf_sfs_mr.i
+
+# target to preprocess a source file
+src/cmd_vcf_sfs_mr.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.i
+.PHONY : src/cmd_vcf_sfs_mr.cpp.i
+
+src/cmd_vcf_sfs_mr.s: src/cmd_vcf_sfs_mr.cpp.s
+
+.PHONY : src/cmd_vcf_sfs_mr.s
+
+# target to generate assembly for a file
+src/cmd_vcf_sfs_mr.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.s
+.PHONY : src/cmd_vcf_sfs_mr.cpp.s
+
 src/cmd_vcf_site_annotate_age.o: src/cmd_vcf_site_annotate_age.cpp.o
 
 .PHONY : src/cmd_vcf_site_annotate_age.o
@@ -1848,6 +1875,9 @@ help:
 	@echo "... src/cmd_vcf_sfs.o"
 	@echo "... src/cmd_vcf_sfs.i"
 	@echo "... src/cmd_vcf_sfs.s"
+	@echo "... src/cmd_vcf_sfs_mr.o"
+	@echo "... src/cmd_vcf_sfs_mr.i"
+	@echo "... src/cmd_vcf_sfs_mr.s"
 	@echo "... src/cmd_vcf_site_annotate_age.o"
 	@echo "... src/cmd_vcf_site_annotate_age.i"
 	@echo "... src/cmd_vcf_site_annotate_age.s"

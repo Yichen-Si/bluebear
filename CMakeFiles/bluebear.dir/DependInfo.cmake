@@ -26,6 +26,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_raresharing.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sample_summary.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sfs.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o"
+  "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_sfs_mr.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_age.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o"
   "/net/wonderland/home/ycsi/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp" "/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o"

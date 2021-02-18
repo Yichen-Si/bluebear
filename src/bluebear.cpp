@@ -8,6 +8,8 @@ typedef khash_t(vdict) vdict_t;
 int32_t KmerCount(int32_t argc, char** argv);
 int32_t cmdVcfAddContexte(int32_t argc, char** argv);
 int32_t KmerSFS(int32_t argc, char** argv);
+int32_t cmdVcfSFS(int32_t argc, char** argv);
+int32_t mrSFS(int32_t argc, char** argv);
 int32_t MultiAllelicSites(int32_t argc, char** argv);
 
 int32_t AnnotateAge(int32_t argc, char** argv);
@@ -36,6 +38,7 @@ int32_t RandomPairIBS0(int32_t argc, char** argv);
 int32_t VCFInsertPM(int32_t argc, char** argv);
 int32_t CDFInfoInt(int32_t argc, char** argv);
 int32_t CDFInfoFloatByKmer(int32_t argc, char** argv);
+int32_t CDFInfoFloatByMR(int32_t argc, char** argv);
 int32_t CDFInfoFloatByAnn(int32_t argc, char** argv); // tmp
 int32_t CDFInfoFloatSimu(int32_t argc, char** argv); // tmp
 
@@ -47,7 +50,6 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
 int32_t mapPt2Interval(int32_t argc, char** argv);
 
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
-int32_t cmdVcfSFS(int32_t argc, char** argv);
 
 int32_t pbwtBuildSuffix(int32_t argc, char** argv);
 int32_t pbwtBuildPrefix(int32_t argc, char** argv);
@@ -91,6 +93,8 @@ int32_t main(int32_t argc, char** argv) {
 
     LONG_COMMAND("folded-sfs",&cmdVcfSFS, "Folded SFS from BCF/VCF")
     LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")
+    LONG_COMMAND("mr-sfs",&mrSFS, "Mutation rate stratified SFS from BCF/VCF")
+
     LONG_COMMAND("triallelic",&MultiAllelicSites, "Find tri-allelic sites from BCF/VCF")
 
     LONG_COMMAND("anno-age",&AnnotateAge, "Annotate variant age")
@@ -121,6 +125,7 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
     LONG_COMMAND("insert-pm",&VCFInsertPM, "Merge nearby rare variants to create artificial parallel mutation from & to BCF/VCF")
     LONG_COMMAND("info-int-cdf",&CDFInfoInt, "Summarize empirical CDF from VCF INFO")
     LONG_COMMAND("info-flt-cdf",&CDFInfoFloatByKmer, "Summarize empirical CDF from VCF INFO (by kmer)")
+    LONG_COMMAND("info-flt-cdf-mr",&CDFInfoFloatByMR, "Summarize empirical CDF from VCF INFO (by mutation rate bin)")
     LONG_COMMAND("info-flt-cdf-ann",&CDFInfoFloatByAnn, "Summarize empirical CDF from VCF INFO (by functional annotations)")
     LONG_COMMAND("info-flt-cdf-simu",&CDFInfoFloatSimu, "Summarize empirical CDF from VCF INFO")
 

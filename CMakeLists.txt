@@ -38,6 +38,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/ibs0_pairwise_scan.cpp
     src/cmd_vcf_raresharing.cpp
     src/cmd_vcf_sfs.cpp
+    src/cmd_vcf_sfs_mr.cpp
     src/pbwt_prefix.cpp
     src/pbwt_suffix.cpp
     src/trio_phase.cpp

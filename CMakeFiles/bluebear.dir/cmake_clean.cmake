@@ -22,6 +22,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o"
   "CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o"
   "CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
   "CMakeFiles/bluebear.dir/src/trio_phase.cpp.o"

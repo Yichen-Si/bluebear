@@ -300,24 +300,6 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   int32_t *info_an = NULL;
   int32_t n_ac = 0, n_an = 0, ac = 0, an = 0;
   int32_t nVariant = 0;
-  int32_t nsamples = 0;
-
-  // Need a way to set up sfs size when the VCF does not contain GT
-  int32_t tmp = 0;
-  BCFOrderedReader odrtmp(inVcf, intervals);
-  while (odrtmp.read(iv)) {
-    if (bcf_get_info_int32(odrtmp.hdr, iv, "AN", &info_an, &n_an) >= 0) {
-      nsamples = std::max(nsamples,info_an[0]);
-      tmp ++;
-      if (tmp > 500)
-        break;
-      if (tmp % 100 == 0) {
-        std::cout << tmp << "\n";
-      }
-    }
-  }
-  nsamples = (nsamples / 2 / 500) * 500 + 500;
-  notice("Will initialize SFS to at most AC = %d.",nsamples);
 
   // Setup kmer sfs
   std::vector<char> alphabet {'A','T','C','G'};
@@ -446,7 +428,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
         if (ac <= max_rare) {
           (ptr1->second)[ac] ++;
         }
-        double af = 1.0 * ac / nsamples / 2.0;
+        double af = 1.0 * ac / an;
         for (uint32_t it = 0; it < lower.size(); ++it) {
           if (af > lower[it] && af <= upper[it]) {
             (ptr1->second)[max_rare + it+1]++;
@@ -461,7 +443,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     if (ac <= max_rare) {
       (ptr->second)[ac] ++;
     }
-    double af = 1.0 * ac / nsamples / 2.0;
+    double af = 1.0 * ac / an;
     for (uint32_t it = 0; it < lower.size(); ++it) {
       if (af > lower[it] && af <= upper[it]) {
         (ptr->second)[max_rare + it+1]++;
@@ -472,7 +454,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     pre_pos = iv->pos;
   }
 
-  notice("Finished Processing %d markers across %d samples, Skipping %d filtered markers and %d uninformative markers", nVariant, nsamples, nskip, nmono);
+  notice("Finished Processing %d markers. Skipping %d filtered markers and %d uninformative markers", nVariant, nskip, nmono);
 
   outf = out+".ctx.kmer."+std::to_string(kmer)+".sfs";
   std::ofstream wf(outf.c_str(), std::ios::out);

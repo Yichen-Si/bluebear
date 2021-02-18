@@ -561,6 +561,32 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: src/params.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: src/utils.h
 
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/bgzf.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/faidx.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts_defs.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts_endian.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/kseq.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/kstring.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/sam.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/tbx.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/vcf.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/vcfutils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/Error.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/bcf_filter_arg.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/bcf_ordered_reader.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/cmd_vcf_sfs_mr.cpp
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/filter.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/genome_interval.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/interval.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/interval_tree.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/utils.h
+
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/faidx.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/hts.h
