@@ -273,7 +273,7 @@ int32_t mrSFS(int32_t argc, char** argv) {
 
 
 
-// Goal: mutation rate specific SFS (kmer contex defined by major allele)
+// Goal: mutation rate specific distribution of annotation
 
 int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
   std::string inVcf, inBin, outf, out, reg;
@@ -285,6 +285,7 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
   int32_t maxac = 10;
   int32_t ignore_multiallele = 0;
   std::string tag = "AvgDist_cM";
+  int32_t ignore_cpg = 0;
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
@@ -301,6 +302,7 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
     LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
     LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
     LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+    LONG_INT_PARAM("ignore-cpg",&ignore_cpg, "Whether to ignore CpG sites")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_DOUBLE_PARAM("unit",&unit, "The minimum unit / gcd of the cutoffs")
@@ -331,7 +333,7 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
 
   // Setup cdf
   std::map<int32_t, std::vector<std::vector<double>* > > cdf;
-  std::vector<int32_t> mr_keys;
+  std::set<int32_t> mr_keys_set;
 
   std::ifstream ifs;
   std::string line;
@@ -350,22 +352,24 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
     catch (const std::invalid_argument& ia) {
       continue;
     }
-    mr_keys.push_back((int32_t) (x/unit));
+    mr_keys_set.insert((int32_t) (x/unit));
+    // mr_keys.push_back((int32_t) (x/unit));
   }
   ifs.close();
-
+  std::vector<int32_t> mr_keys(mr_keys_set.begin(), mr_keys_set.end());
   std::sort(mr_keys.begin(),mr_keys.end());
+
   if (mr_keys[0] > 0) {
     mr_keys.insert(mr_keys.begin(), 0);
   }
 
   for (auto & v : mr_keys) {
     for (int32_t i = 0; i <= 1; ++i) { // to simplify
-      std::vector<int64_t> *tmp = new std::vector<double>(0,0);
+      std::vector<double> *tmp = new std::vector<double>(0,0);
       cdf[v].push_back(tmp);
     }
     for (int32_t i = 2; i <= maxac; ++i) {
-      std::vector<int64_t> *tmp = new std::vector<double>(nbins,0);
+      std::vector<double> *tmp = new std::vector<double>(nbins,0);
       cdf[v].push_back(tmp);
     }
   }
@@ -419,7 +423,8 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
   float   *info_mr = NULL;
   int32_t *info_ac = NULL;
   int32_t *info_an = NULL;
-  int32_t nval = 0, n_mr = 0, n_ac = 0, n_an = 0, ac = 0, an = 0;
+  char  *ctx = NULL;
+  int32_t nval = 0, n_mr = 0, n_ac = 0, n_an = 0, ac = 0, an = 0, nctx=0;
   int32_t nVariant = 0;
 
   notice("Started reading site information from VCF file");
@@ -474,6 +479,15 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
 
     char ref = iv->d.allele[0][0];
     char alt = iv->d.allele[1][0];
+if (ignore_cpg) {
+  if (bcf_get_info_string(odr.hdr, iv, "CONTEXT", &ctx, &nctx) < 0) {continue;}
+  std::string kctx(ctx);
+  kctx = kctx.substr(((int32_t) (kctx.size()/2) ), 2);
+  if (kctx == "CG" && ref == 'C' && alt == 'T') {
+    nskip++;
+    continue;
+  }
+}
     if (ac > an/2) {
       ac = an - ac;
     }
@@ -493,6 +507,8 @@ int32_t CDFInfoFloatByMR(int32_t argc, char** argv) {
     int32_t key = binarySearch<int32_t>(mr_keys,0,mr_keys.size()-1,w);
     if (key == -1) {key = 0;}
     key = mr_keys[key];
+    if (w >= mr_keys.back())
+      key = mr_keys.back();
 
     auto ptr = cdf.find( key );
     (*ptr->second[ac])[it] += 1.;

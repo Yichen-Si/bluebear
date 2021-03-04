@@ -71,7 +71,10 @@ RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
   sorted_cm = new float[ac*ac]{0.0};
   ibs0mat = new int32_t*[ac];
   for (int32_t i = 0; i < ac; ++i) {
-    ibs0mat[i] = new int32_t[ac]{-1};
+    ibs0mat[i] = new int32_t[ac];
+    for (int32_t j = 0; j < ac; ++j) {
+      ibs0mat[i][j] = -1;
+    }
   }
 }
 ~RareVariant() {

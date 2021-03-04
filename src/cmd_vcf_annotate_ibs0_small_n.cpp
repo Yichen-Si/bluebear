@@ -79,6 +79,7 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
     error("[E:%s:%d %s] --in-vcf, --region, --inMap, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
 
+
   // Genetic map
   bp2cmMap pgmap(inMap, " ", "", cst, ced);
   notice("Read map. min %d; max %d; cst %d; ced %d.", pgmap.minpos, pgmap.maxpos, pgmap.centromere_st, pgmap.centromere_ed);

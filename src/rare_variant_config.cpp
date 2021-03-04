@@ -95,6 +95,9 @@ bool RareVariant::Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t directi
   catch (const std::out_of_range& e) {
     error("RareVariant::Add_half ID out of range");
   }
+  if (pt <= 0) {
+    notice("RareVariant::Add_half Potential wrong position added as %d",pt);
+  }
   if (i > j) {
     tmp=i; i=j; j=tmp;
   }
@@ -132,6 +135,9 @@ bool RareVariant::Add(int32_t id1, int32_t id2, int32_t st, int32_t ed) {
   }
   catch (const std::out_of_range& e) {
     error("RareVariant::Add ID out of range");
+  }
+  if (st <= 0 || ed <= 0) {
+    notice("RareVariant::Add_half Potential wrong position added as %d, %d",st,ed);
   }
   if (i > j) {
     tmp=i; i=j; j=tmp;
