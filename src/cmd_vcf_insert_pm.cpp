@@ -12,6 +12,7 @@ int32_t VCFInsertPM(int32_t argc, char** argv) {
   int32_t maxac = 10;
   int32_t winsize = 200;
   int32_t start = -1, end = -1;
+  int32_t common = 0;
 
   paramList pl;
 
@@ -23,6 +24,7 @@ int32_t VCFInsertPM(int32_t argc, char** argv) {
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("max-ac",&maxac, "Maximal allele count to consider as focal rare variants")
+    LONG_INT_PARAM("ignore-rare-outside",&common, "Ignore rare variants outside focal region")
     LONG_INT_PARAM("win-size",&winsize, "Maximal window size to merge as one locus")
     LONG_INT_PARAM("pm-start",&start, "Insert PM starting from this pos")
     LONG_INT_PARAM("pm-end",&end, "Insert PM up to this pos")
@@ -101,6 +103,9 @@ int32_t VCFInsertPM(int32_t argc, char** argv) {
     if ( (info_ac[0] >= maxac || iv->pos < start || iv->pos > end ) && iv->pos > lastwrite) {
       lastwrite = iv->pos;
       odw.write(iv);
+      continue;
+    }
+    if ( (common == 1) && (info_ac[0] < maxac) && (iv->pos < start || iv->pos > end ) ) {
       continue;
     }
       if (ivstack.size() > 1 && acsum < maxac && pos - prepos > winsize) { // Merge
