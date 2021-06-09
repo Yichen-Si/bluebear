@@ -112,4 +112,3 @@ set(ibs0phase_HEADERS src/cramore.h
 
 add_executable(bluebear ${ibs0phase_SOURCES} ${ibs0phase_HEADERS})
 target_link_libraries(bluebear ${CMAKE_SOURCE_DIR}/../htslib/libhts.a dl pthread lzma z bz2 curl crypto)
-

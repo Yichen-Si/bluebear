@@ -1279,6 +1279,7 @@ CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/genome_interval.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/hts_utils.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/kmer_count.cpp
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/reference_sequence.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/utils.h
 
 CMakeFiles/bluebear.dir/src/params.cpp.o: src/Constant.h

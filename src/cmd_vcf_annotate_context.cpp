@@ -46,7 +46,7 @@ class FaReader {
 
 };
 
-std::string fa_kmer(faidx_t *fai, Faival *val, int32_t pos, int32_t k) {
+std::string fa_kmer(const faidx_t *fai, Faival *val, int32_t pos, int32_t k) {
   int32_t st = pos - k/2;
   int32_t ret = bgzf_useek(fai->bgzf, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
   if ( ret<0 ) {
@@ -167,7 +167,3 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
   odw.close();
   return 0;
 }
-
-
-
-

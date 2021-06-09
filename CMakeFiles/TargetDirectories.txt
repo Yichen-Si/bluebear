@@ -1,5 +1,5 @@
-/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/rebuild_cache.dir
-/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir
-/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/edit_cache.dir
-/net/wonderland/home/ycsi/tool/bluebear/src/CMakeFiles/rebuild_cache.dir
-/net/wonderland/home/ycsi/tool/bluebear/src/CMakeFiles/edit_cache.dir
+/home/s.yichen.si/tools/bluebear/CMakeFiles/rebuild_cache.dir
+/home/s.yichen.si/tools/bluebear/CMakeFiles/bluebear.dir
+/home/s.yichen.si/tools/bluebear/CMakeFiles/edit_cache.dir
+/home/s.yichen.si/tools/bluebear/src/CMakeFiles/rebuild_cache.dir
+/home/s.yichen.si/tools/bluebear/src/CMakeFiles/edit_cache.dir

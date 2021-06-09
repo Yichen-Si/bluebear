@@ -1,4 +1,4 @@
-# Install script for directory: /net/wonderland/home/ycsi/tool/bluebear/src
+# Install script for directory: /home/s.yichen.si/tools/bluebear/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

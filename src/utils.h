@@ -76,7 +76,12 @@ int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::strin
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rng, int32_t base = 1);
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::vector<int32_t> & avoid, std::mt19937& rng, int32_t base = 1);
 
+/**
+ * Check if file exists.
+ */
+inline bool file_exists (const std::string& name) {
+  struct stat buffer;
+  return (stat (name.c_str(), &buffer) == 0);
+}
+
 #endif
-
-
-

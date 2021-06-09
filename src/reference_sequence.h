@@ -104,7 +104,7 @@ class ReferenceSequence
       return fetch_seq_len(s);
     }
 
-    
+
 
     /**
      * Get a base.

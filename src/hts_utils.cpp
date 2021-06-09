@@ -131,14 +131,14 @@ int32_t bam_get_end_pos1(bam1_t *s)
         for (int32_t i = 0; i < (int32_t)n_cigar_op; ++i)
         {
             int32_t opchr = bam_cigar_opchr(cigar[i]);
-            
+
             if (opchr=='M' || opchr=='D' || opchr=='N' || opchr=='=' || opchr=='X')
             {
                 end_pos1 += bam_cigar_oplen(cigar[i]);
             }
         }
     }
-    
+
     return end_pos1-1;
 }
 
@@ -318,7 +318,7 @@ void bam_get_base_and_qual_and_read_and_qual(bam1_t *srec, uint32_t pos, char& b
             rpos = BAM_READ_INDEX_NA;
         }
     }
-    
+
     if ( str.s ) free(str.s);
 
     if ( rpos >= rlen ) {
@@ -948,7 +948,7 @@ const char* bcf_get_chrom(bcf_hdr_t *h, bcf1_t *v)
       //return NULL;
     }
     else if ( v->rid < 0 ) return NULL;
-    
+
     return h->id[BCF_DT_CTG][v->rid].key;
 }
 
@@ -1107,16 +1107,16 @@ int32_t bam_get_unclipped_end(bam1_t* b) {
     case BAM_CEQUAL:
     case BAM_CDIFF:
     case BAM_CDEL:
-    case BAM_CREF_SKIP:      
+    case BAM_CREF_SKIP:
     case BAM_CSOFT_CLIP:
-    case BAM_CHARD_CLIP:      
+    case BAM_CHARD_CLIP:
       y += l;
       //case BAM_CINS:
       //case BAM_CPAD:
       //case BAM_CBACK:
     }
   }
-  return ( c->pos + y );  
+  return ( c->pos + y );
 }
 
 int32_t bam_get_clipped_end(bam1_t* b) {
@@ -1130,16 +1130,16 @@ int32_t bam_get_clipped_end(bam1_t* b) {
     case BAM_CEQUAL:
     case BAM_CDIFF:
     case BAM_CDEL:
-    case BAM_CREF_SKIP:      
+    case BAM_CREF_SKIP:
       //case BAM_CSOFT_CLIP:
-      //case BAM_CHARD_CLIP:      
+      //case BAM_CHARD_CLIP:
       y += l;
       //case BAM_CINS:
       //case BAM_CPAD:
       //case BAM_CBACK:
     }
   }
-  return ( c->pos + y );  
+  return ( c->pos + y );
 }
 
 
@@ -1281,6 +1281,6 @@ merged_header_t *merged_hdr;
     if (merged_hdr->pg_ids == NULL) goto fail;
 
     return merged_hdr;
-    
+
 }
 */
