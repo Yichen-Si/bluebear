@@ -3,70 +3,9 @@
 #include "bcf_ordered_reader.h"
 #include "bcf_ordered_writer.h"
 #include "hts_utils.h"
+#include "fa_reader.h"
 
-struct Faival {
-  int64_t len, offset, line_blen, line_len;
-  Faival(int64_t _l, int64_t _os, int64_t _bl, int64_t _ll) :
-  len(_l), offset(_os), line_blen(_bl), line_len(_ll) {}
-};
-
-class FaReader {
-
-  public:
-    std::map<std::string, Faival*> lookup;
-
-    FaReader(std::string &fnfai) {
-      std::ifstream mfile(fnfai);
-      std::string line;
-      std::vector<std::string> words;
-      int64_t len=0, offset=0, line_blen=0, line_len=0;
-      const char* sep = "\t";
-      if (mfile.is_open()) {
-        while(std::getline(mfile, line)) {
-          split(words, sep, line);
-          len = std::stoll(words[1]);
-          offset = std::stoll(words[2]);
-          line_blen = std::stoll(words[3]);
-          line_len = std::stoll(words[4]);
-          Faival *tmp = new Faival(len, offset, line_blen, line_len);
-          lookup[words[0]] = tmp;
-        }
-      } else {
-        error("Unable to open .fai file");
-      }
-    }
-
-    Faival* FindFaiVal(std::string &chrom) {
-      if (lookup.find(chrom) != lookup.end()) {
-        return lookup[chrom];
-      } else {
-        return NULL;
-      }
-    }
-
-};
-
-std::string fa_kmer(const faidx_t *fai, Faival *val, int32_t pos, int32_t k) {
-  int32_t st = pos - k/2;
-  int32_t ret = bgzf_useek(fai->bgzf, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
-  if ( ret<0 ) {
-    error("Error: bgzf_useek failed.");
-  }
-  int32_t l = 0;
-  char c;
-  std::string seq = "";
-  while ( (c=bgzf_getc(fai->bgzf))>=0 && l < k ) {
-    if (isgraph(c)) {
-      c = toupper(c);
-      seq += c;
-      l++;
-    }
-  }
-  return(seq);
-};
-
-
-int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
+int32_t cmdVcfAddContext(int32_t argc, char** argv) {
   std::string inVcf, inFa, chrom, out;
   int32_t kmer = 7;
   int64_t verbose = 50000;
@@ -95,15 +34,12 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
     error("[E:%s:%d %s] --in-vcf, --in-fasta, --chr, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
 
-  faidx_t *fai = fai_load(inFa.c_str());
-  // Read .fai index
-  std::string fnfai = inFa + ".fai";
-  FaReader findx(fnfai);
-  Faival *val = findx.FindFaiVal(chrom);
-  if (val == NULL) {
+  // Locate target chr
+  FaReader findx(inFa);
+  if (! findx.FindFaiVal(chrom) ) {
     error("Cannot find fai index for this chromosome");
   }
-  notice("Initialized reader of fasta file. Index info: %ld\t%ld\t%ld\t%ld\n ", val->len, val->offset, val->line_blen, val->line_len);
+  notice("Initialized reader of fasta file. Index info: %ld\t%ld\t%ld\t%ld\n ", findx.val->len, findx.val->offset, findx.val->line_blen, findx.val->line_len);
 
 
   // setup input & output BCF/VCF file
@@ -135,21 +71,16 @@ int32_t cmdVcfAddContexte(int32_t argc, char** argv) {
   // Process each variant and retrieve kmer context
   int32_t k = 0;
   int32_t mpt = kmer/2;
-  int32_t *info_ac = NULL, *info_an = NULL;
-  int32_t n_ac = 0, n_an = 0, ac, an;
   std::string ctx, cpg, refcpg, majcpg;
   for(; odr->read(iv); ++k) {
     if ( k % verbose == 0 )
       notice("Processing %d markers at %s:%d.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1);
-    if (bcf_get_info_int32(odr->hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
-    if (bcf_get_info_int32(odr->hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
 
     bcf1_t* nv = bcf_dup(iv);
     bcf_unpack(nv, BCF_UN_ALL);
     if (!withGT)
       bcf_subset(odw.hdr, nv, 0, 0);
-    ac = info_ac[0]; an = info_an[0];
-    ctx = fa_kmer(fai, val, iv->pos, kmer);
+    ctx = findx.fa_kmer(iv->pos, kmer);
     cpg = "F";
 
     if (bcf_is_snp(iv)) { // SNP

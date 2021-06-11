@@ -23,10 +23,11 @@ public:
   int32_t* fields;
   int32_t nlines;
   int32_t delimiter;
-  
+
   bool open(const char* filename);
   bool close();
   int32_t read_line();
+	int32_t read_line(std::string &line);
   const char* str_field_at(int32_t idx);
   int32_t int_field_at(int32_t idx);
   double double_field_at(int32_t idx);
@@ -39,9 +40,9 @@ public:
   }
 
  tsv_reader(const char* filename) : hp(NULL), tbx(NULL), itr(NULL), lstr(0), nfields(0), fields(NULL), nlines(0), delimiter(0) {
-    str.l = str.m = 0; str.s = NULL;    
+    str.l = str.m = 0; str.s = NULL;
     open(filename);
-  }  
+  }
 
   ~tsv_reader() {
     if ( str.s ) free(str.s);

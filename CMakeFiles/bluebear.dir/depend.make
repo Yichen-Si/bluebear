@@ -12,6 +12,7 @@ CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: ../htslib/include/htslib/sam.h
@@ -33,6 +34,7 @@ CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: ../htslib/include/htslib/sam.h
@@ -52,6 +54,7 @@ CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: ../htslib/include/htslib/sam.h
@@ -78,6 +81,7 @@ CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: ../htslib/include/htslib/sam.h
@@ -99,6 +103,7 @@ CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: ../htslib/include/htslib/sam.h
@@ -120,6 +125,7 @@ CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/hts_
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: ../htslib/include/htslib/sam.h
@@ -142,6 +148,7 @@ CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/sam.h
@@ -164,6 +171,31 @@ CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: src/params.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: src/utils.h
 
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/bgzf.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/faidx.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/hts.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/hts_defs.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/hts_endian.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/kroundup.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/kseq.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/kstring.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/sam.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/tbx.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/vcf.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: ../htslib/include/htslib/vcfutils.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/Error.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/cmd_tsv_annotate_context.cpp
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/fa_reader.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/genome_interval.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/seq_basics.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/tsv_reader.h
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/utils.h
+
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/faidx.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/hts.h
@@ -171,6 +203,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/ht
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: ../htslib/include/htslib/sam.h
@@ -183,6 +216,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/bcf_ordered_read
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/bcf_ordered_writer.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/cmd_vcf_annotate_context.cpp
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/fa_reader.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/filter.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/genome_interval.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/hts_utils.h
@@ -198,6 +232,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: ../htslib/include/htslib/sam.h
@@ -228,6 +263,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/inclu
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: ../htslib/include/htslib/sam.h
@@ -259,6 +295,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htsli
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: ../htslib/include/htslib/sam.h
@@ -290,6 +327,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htsli
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: ../htslib/include/htslib/sam.h
@@ -317,6 +355,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: ../htslib/include/htslib/sam.h
@@ -348,6 +387,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/hts
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: ../htslib/include/htslib/sam.h
@@ -379,6 +419,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/ht
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: ../htslib/include/htslib/sam.h
@@ -407,6 +448,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/hts
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: ../htslib/include/htslib/sam.h
@@ -433,6 +475,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/ht
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: ../htslib/include/htslib/sam.h
@@ -460,6 +503,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htsli
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: ../htslib/include/htslib/sam.h
@@ -490,6 +534,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: ../htslib/include/htslib/sam.h
@@ -516,6 +561,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htsl
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: ../htslib/include/htslib/sam.h
@@ -542,6 +588,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/hts_defs
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: ../htslib/include/htslib/sam.h
@@ -568,6 +615,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts_d
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: ../htslib/include/htslib/sam.h
@@ -594,6 +642,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: ../htslib/include/htslib/sam.h
@@ -625,6 +674,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: ../htslib/include/htslib/sam.h
@@ -656,6 +706,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htsli
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: ../htslib/include/htslib/sam.h
@@ -687,6 +738,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: ../htslib/include/htslib/sam.h
@@ -715,6 +767,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htsli
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: ../htslib/include/htslib/sam.h
@@ -742,6 +795,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/hts_def
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: ../htslib/include/htslib/sam.h
@@ -768,6 +822,7 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: ../htslib/include/htslib/sam.h
@@ -802,6 +857,7 @@ CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/khash.h
 CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/khash_str2int.h
+CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/vcf.h
 CMakeFiles/bluebear.dir/src/filter.cpp.o: ../htslib/include/htslib/vcfutils.h
@@ -816,6 +872,7 @@ CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/hts_
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: ../htslib/include/htslib/sam.h
@@ -833,6 +890,7 @@ CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: ../htslib/include/htslib/sam.h
@@ -852,6 +910,7 @@ CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/hts_def
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: ../htslib/include/htslib/sam.h
@@ -883,6 +942,7 @@ CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: ../htslib/include/htslib/sam.h
@@ -901,6 +961,7 @@ CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/hts_de
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: ../htslib/include/htslib/sam.h
@@ -931,6 +992,7 @@ CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: ../htslib/include/htslib/sam.h
@@ -958,6 +1020,7 @@ CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: ../htslib/include/htslib/sam.h
@@ -987,6 +1050,7 @@ CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/ht
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1018,6 +1082,7 @@ CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: ../htslib/include/htslib/sam.h
@@ -1047,6 +1112,7 @@ CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1078,6 +1144,7 @@ CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1109,6 +1176,7 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/inclu
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1140,6 +1208,7 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/includ
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1171,6 +1240,7 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/ht
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1202,6 +1272,7 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/hts
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: ../htslib/include/htslib/sam.h
@@ -1233,6 +1304,7 @@ CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: ../htslib/include/htslib/sam.h
@@ -1268,6 +1340,7 @@ CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/hts_defs.
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/sam.h
@@ -1275,11 +1348,12 @@ CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/vcf.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: ../htslib/include/htslib/vcfutils.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/Error.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/fa_reader.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/genome_interval.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/hts_utils.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/kmer_count.cpp
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/params.h
-CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/reference_sequence.h
+CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/seq_basics.h
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/utils.h
 
 CMakeFiles/bluebear.dir/src/params.cpp.o: src/Constant.h
@@ -1294,6 +1368,7 @@ CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/hts_defs
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: ../htslib/include/htslib/sam.h
@@ -1321,6 +1396,7 @@ CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/hts_defs
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: ../htslib/include/htslib/sam.h
@@ -1348,6 +1424,7 @@ CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/hts_defs
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: ../htslib/include/htslib/sam.h
@@ -1368,6 +1445,7 @@ CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: ../htslib/include/htslib/sam.h
@@ -1394,6 +1472,7 @@ CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: ../htslib/include/htslib/sam.h
@@ -1412,6 +1491,7 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/sam.h
@@ -1438,6 +1518,7 @@ CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/hts_defs.
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: ../htslib/include/htslib/sam.h
@@ -1462,6 +1543,7 @@ CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: src/utils.h
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/hts.h
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: ../htslib/include/htslib/tbx.h
@@ -1474,6 +1556,7 @@ CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/hts_defs.h
 CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/hts_endian.h
 CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/hts_log.h
 CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/sam.h
 CMakeFiles/bluebear.dir/src/utils.cpp.o: ../htslib/include/htslib/vcf.h

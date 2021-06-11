@@ -1,93 +1,10 @@
 #include "cramore.h"
 #include "hts_utils.h"
 #include "utils.h"
-#include "reference_sequence.h"
-#include "fstream"
+#include "fa_reader.h"
+#include "seq_basics.h"
 #include "fstream"
 #include "sstream"
-
-inline bool if_cpg (const std::string& seq, int32_t indx, bool one_side=1) {
-  if (one_side) {
-    return seq.compare(indx,2,"CG") == 0;
-  } else {
-    return (seq.compare(indx,2,"CG") == 0) || (seq.compare(indx-1,2,"CG") == 0);
-  }
-}
-
-inline std::string reverse_complement (std::string& seq, std::map<char, char>& bpair, char default_missing = 'N') {
-	std::stringstream reversed;
-	int32_t seq_len = seq.size();
-	for (int32_t i = 1; i <= seq_len; i++) {
-		auto ptr = bpair.find(seq[seq_len-i]);
-		if (ptr == bpair.end()) {
-			reversed << default_missing;
-		} else {
-			reversed << bpair[seq[seq_len-i]];
-		}
-	}
-	return reversed.str();
-}
-
-struct Faival {
-  int64_t len, offset, line_blen, line_len;
-  Faival(int64_t _l, int64_t _os, int64_t _bl, int64_t _ll) :
-  len(_l), offset(_os), line_blen(_bl), line_len(_ll) {}
-};
-
-class FaReader {
-
-  public:
-    std::map<std::string, Faival*> lookup;
-
-    FaReader(std::string &fnfai) {
-      std::ifstream mfile(fnfai);
-      std::string line;
-      std::vector<std::string> words;
-      int64_t len=0, offset=0, line_blen=0, line_len=0;
-      const char* sep = "\t";
-      if (mfile.is_open()) {
-        while(std::getline(mfile, line)) {
-          split(words, sep, line);
-          len = std::stoll(words[1]);
-          offset = std::stoll(words[2]);
-          line_blen = std::stoll(words[3]);
-          line_len = std::stoll(words[4]);
-          Faival *tmp = new Faival(len, offset, line_blen, line_len);
-          lookup[words[0]] = tmp;
-        }
-      } else {
-        error("Unable to open .fai file");
-      }
-    }
-
-    Faival* FindFaiVal(std::string &chrom) {
-      if (lookup.find(chrom) != lookup.end()) {
-        return lookup[chrom];
-      } else {
-        return NULL;
-      }
-    }
-
-};
-
-std::string fa_get_seq(const faidx_t *fai, Faival *val, int32_t st, int32_t ed) {
-  int32_t ret = bgzf_useek(fai->bgzf, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
-  if ( ret<0 ) {
-    error("Error: bgzf_useek failed.");
-  }
-	int32_t seq_len = ed-st+1;
-  int32_t l = 0;
-  char c;
-  std::string seq = "";
-  while ( (c=bgzf_getc(fai->bgzf))>=0 && l < seq_len ) {
-    if (isgraph(c)) {
-      c = toupper(c);
-      seq += c;
-      l++;
-    }
-  }
-  return(seq);
-};
 
 // Goal: count the occurence of kmers
 
@@ -114,49 +31,21 @@ int32_t KmerCount(int32_t argc, char** argv) {
   pl.Read(argc, argv);
   pl.Status();
 
-  faidx_t *fai = fai_load(inFa.c_str());
-
-  // Read .fai index
-  std::string fnfai = inFa + ".fai";
-  std::ifstream mfile(fnfai);
-  std::string line;
-  std::vector<std::string> words;
-  int64_t len=0, offset=0, line_blen=0, line_len=0;
-  const char* sep = "\t";
-  if (mfile.is_open()) {
-    while(std::getline(mfile, line)) {
-      split(words, sep, line);
-      if (words[0] == chrom) {
-        len = std::stoll(words[1]);
-        offset = std::stoll(words[2]);
-        line_blen = std::stoll(words[3]);
-        line_len = std::stoll(words[4]);
-        break;
-      }
-    }
+  // Read .fa
+	FaReader findx(inFa);
+  if (!findx.FindFaiVal(chrom)) {
+    error("Cannot find fai index for this chromosome");
   }
-
-  if (len == 0) {
-    error("Cannot read index.");
-  }
-  std::cout << "Initialized reader\n";
-  std::cout << len << '\t' << offset << '\t' << line_blen << '\t' << line_len << '\n';
+	notice("Initialized .fa reader");
 
   std::string seq = "";
   std::set<char> alphabet {'A','T','C','G'};
   std::map<std::string, int32_t> kmerct;
   char c;
-  int32_t l = 0, p_beg_i = 0;
+  int32_t l = 0;
 
-  // Retrive the first kmer
-  int ret = bgzf_useek(fai->bgzf, offset + p_beg_i / line_blen * line_len + p_beg_i % line_blen, SEEK_SET);
-  std::cout << ret << '\n';
-
-  if ( ret<0 ) {
-    error("Error: bgzf_useek failed.");
-  }
   l = 0;
-  while ( (c=bgzf_getc(fai->bgzf))>=0 && l < kmer ) {
+  while ( (c=bgzf_getc(findx.fai->bgzf))>=0 && l < kmer ) {
     if (isgraph(c)) {
       c = toupper(c);
       if (alphabet.find(c) == alphabet.end()) {
@@ -172,7 +61,7 @@ int32_t KmerCount(int32_t argc, char** argv) {
 
   int32_t verb = 0;
   // Read one base at a time
-  while ((c=bgzf_getc(fai->bgzf))>=0) {
+  while ((c=bgzf_getc(findx.fai->bgzf))>=0) {
     if (isgraph(c)) {
       if (c == '>') {
         break;
@@ -201,7 +90,7 @@ int32_t KmerCount(int32_t argc, char** argv) {
   outf = out + "_" + chrom + "_kmer_" + std::to_string(kmer) + "_count.txt";
   htsFile *wf = hts_open(outf.c_str(), "w");
   for (auto const& v : kmerct) {
-    hprintf(wf, "%s\t%d\t%s\t%d\n", chrom.c_str(), len, v.first.c_str(), v.second);
+    hprintf(wf, "%s\t%d\t%s\t%d\n", chrom.c_str(), v.first.c_str(), v.second);
   }
 
   hts_close(wf);
@@ -252,12 +141,12 @@ int32_t KmerCount_window(int32_t argc, char** argv) {
   pl.Read(argc, argv);
   pl.Status();
 
-  std::string fnfai = inFa + ".fai";
+  std::string inFai = inFa + ".fai";
   // sanity check of input arguments
   if ( inFa.empty() || out.empty() ) {
     error("[E:%s:%d %s] --in-fasta, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
-  if (!file_exists(inFa) || !file_exists(fnfai)) {
+  if (!file_exists(inFa) || !file_exists(inFai)) {
     error("[E:%s:%d %s] input --in-fasta or its .fai index file does not exist",__FILE__,__LINE__,__FUNCTION__);
   }
 	if (end < start + w_size) {
@@ -272,13 +161,11 @@ int32_t KmerCount_window(int32_t argc, char** argv) {
   if ( w_size % (w_size-ovlp) != 0 )
     notice("Window size & overlapping length privided does not support a partition as a subset of the output windows" );
 
-	faidx_t *fai = fai_load(inFa.c_str());
-  FaReader findx(fnfai);
-  Faival *val = findx.FindFaiVal(chrom);
-  if (val == NULL) {
+  FaReader findx(inFa);
+  if (!findx.FindFaiVal(chrom)) {
     error("Cannot find fai index for this chromosome");
   }
-  notice("Initialized reader of fasta file. Index info: %ld\t%ld\t%ld\t%ld\n ", val->len, val->offset, val->line_blen, val->line_len);
+  notice("Initialized reader of fasta file. Index info: %ld\t%ld\t%ld\t%ld\n ", findx.val->len, findx.val->offset, findx.val->line_blen, findx.val->line_len);
 
   outf = out + "." + chrom + ".kmer_" + std::to_string(kmer) + "_wsize_"+std::to_string((int32_t) (w_size*1e-3))+"kb_ovlp_"+std::to_string((ovlp))+"bp.count";
 	if (cpg_only) {
@@ -353,7 +240,7 @@ std::cout << '\n';
 			notice("Processing %d-th window in %s at %d kb (%.2f Mb)", verb, chrom.c_str(), st/1000, st*1e-6);
 
 		// Read sequence by window
-		std::string seq = fa_get_seq(fai, val, st-kmer_pad_left, ed+kmer_pad_right);
+		std::string seq = findx.fa_get_seq(st-kmer_pad_left, ed+kmer_pad_right);
 		if (seq.size() == 0) {
 			st += step;
 			ed = st + w_size - 1;

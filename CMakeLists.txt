@@ -29,6 +29,7 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/reference_sequence.cpp
     src/tsv_reader.cpp
     src/cmd_vcf_annotate_context.cpp
+		src/cmd_tsv_annotate_context.cpp
     src/utils.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp
@@ -102,6 +103,8 @@ set(ibs0phase_HEADERS src/cramore.h
     src/reference_sequence.h
     src/tsv_reader.h
     src/utils.h
+		src/fa_reader.h
+		src/seq_basics.h
     src/cm2bp.h
     src/compact_matrix.h
     src/pbwt_build.h

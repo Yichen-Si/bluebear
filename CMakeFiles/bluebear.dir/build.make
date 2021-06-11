@@ -46,10 +46,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/s.yichen.si/tools/bluebear
+CMAKE_SOURCE_DIR = /home/s.yichen.si/efs/tool/bluebear
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/s.yichen.si/tools/bluebear
+CMAKE_BINARY_DIR = /home/s.yichen.si/efs/tool/bluebear
 
 # Include any dependencies generated for this target.
 include CMakeFiles/bluebear.dir/depend.make
@@ -62,16 +62,16 @@ include CMakeFiles/bluebear.dir/flags.make
 
 CMakeFiles/bluebear.dir/src/Error.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/Error.cpp.o: src/Error.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/bluebear.dir/src/Error.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/Error.cpp.o -c /home/s.yichen.si/tools/bluebear/src/Error.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/bluebear.dir/src/Error.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/Error.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/Error.cpp
 
 CMakeFiles/bluebear.dir/src/Error.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/Error.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/Error.cpp > CMakeFiles/bluebear.dir/src/Error.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/Error.cpp > CMakeFiles/bluebear.dir/src/Error.cpp.i
 
 CMakeFiles/bluebear.dir/src/Error.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/Error.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/Error.cpp -o CMakeFiles/bluebear.dir/src/Error.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/Error.cpp -o CMakeFiles/bluebear.dir/src/Error.cpp.s
 
 CMakeFiles/bluebear.dir/src/Error.cpp.o.requires:
 
@@ -86,16 +86,16 @@ CMakeFiles/bluebear.dir/src/Error.cpp.o.provides.build: CMakeFiles/bluebear.dir/
 
 CMakeFiles/bluebear.dir/src/commands.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/commands.cpp.o: src/commands.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/bluebear.dir/src/commands.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/commands.cpp.o -c /home/s.yichen.si/tools/bluebear/src/commands.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/bluebear.dir/src/commands.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/commands.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/commands.cpp
 
 CMakeFiles/bluebear.dir/src/commands.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/commands.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/commands.cpp > CMakeFiles/bluebear.dir/src/commands.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/commands.cpp > CMakeFiles/bluebear.dir/src/commands.cpp.i
 
 CMakeFiles/bluebear.dir/src/commands.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/commands.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/commands.cpp -o CMakeFiles/bluebear.dir/src/commands.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/commands.cpp -o CMakeFiles/bluebear.dir/src/commands.cpp.s
 
 CMakeFiles/bluebear.dir/src/commands.cpp.o.requires:
 
@@ -110,16 +110,16 @@ CMakeFiles/bluebear.dir/src/commands.cpp.o.provides.build: CMakeFiles/bluebear.d
 
 CMakeFiles/bluebear.dir/src/params.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/params.cpp.o: src/params.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/bluebear.dir/src/params.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/params.cpp.o -c /home/s.yichen.si/tools/bluebear/src/params.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/bluebear.dir/src/params.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/params.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/params.cpp
 
 CMakeFiles/bluebear.dir/src/params.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/params.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/params.cpp > CMakeFiles/bluebear.dir/src/params.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/params.cpp > CMakeFiles/bluebear.dir/src/params.cpp.i
 
 CMakeFiles/bluebear.dir/src/params.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/params.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/params.cpp -o CMakeFiles/bluebear.dir/src/params.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/params.cpp -o CMakeFiles/bluebear.dir/src/params.cpp.s
 
 CMakeFiles/bluebear.dir/src/params.cpp.o.requires:
 
@@ -134,16 +134,16 @@ CMakeFiles/bluebear.dir/src/params.cpp.o.provides.build: CMakeFiles/bluebear.dir
 
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o: src/hts_utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/bluebear.dir/src/hts_utils.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/hts_utils.cpp.o -c /home/s.yichen.si/tools/bluebear/src/hts_utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/bluebear.dir/src/hts_utils.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/hts_utils.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/hts_utils.cpp
 
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/hts_utils.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/hts_utils.cpp > CMakeFiles/bluebear.dir/src/hts_utils.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/hts_utils.cpp > CMakeFiles/bluebear.dir/src/hts_utils.cpp.i
 
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/hts_utils.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/hts_utils.cpp -o CMakeFiles/bluebear.dir/src/hts_utils.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/hts_utils.cpp -o CMakeFiles/bluebear.dir/src/hts_utils.cpp.s
 
 CMakeFiles/bluebear.dir/src/hts_utils.cpp.o.requires:
 
@@ -158,16 +158,16 @@ CMakeFiles/bluebear.dir/src/hts_utils.cpp.o.provides.build: CMakeFiles/bluebear.
 
 CMakeFiles/bluebear.dir/src/filter.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/filter.cpp.o: src/filter.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/bluebear.dir/src/filter.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/filter.cpp.o -c /home/s.yichen.si/tools/bluebear/src/filter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/bluebear.dir/src/filter.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/filter.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/filter.cpp
 
 CMakeFiles/bluebear.dir/src/filter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/filter.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/filter.cpp > CMakeFiles/bluebear.dir/src/filter.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/filter.cpp > CMakeFiles/bluebear.dir/src/filter.cpp.i
 
 CMakeFiles/bluebear.dir/src/filter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/filter.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/filter.cpp -o CMakeFiles/bluebear.dir/src/filter.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/filter.cpp -o CMakeFiles/bluebear.dir/src/filter.cpp.s
 
 CMakeFiles/bluebear.dir/src/filter.cpp.o.requires:
 
@@ -182,16 +182,16 @@ CMakeFiles/bluebear.dir/src/filter.cpp.o.provides.build: CMakeFiles/bluebear.dir
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o: src/bcf_ordered_reader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o -c /home/s.yichen.si/tools/bluebear/src/bcf_ordered_reader.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_reader.cpp
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/bcf_ordered_reader.cpp > CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_reader.cpp > CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.i
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/bcf_ordered_reader.cpp -o CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_reader.cpp -o CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.s
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o.requires:
 
@@ -206,16 +206,16 @@ CMakeFiles/bluebear.dir/src/bcf_ordered_reader.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o: src/bcf_ordered_writer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o -c /home/s.yichen.si/tools/bluebear/src/bcf_ordered_writer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_writer.cpp
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/bcf_ordered_writer.cpp > CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_writer.cpp > CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.i
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/bcf_ordered_writer.cpp -o CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_writer.cpp -o CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.s
 
 CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o.requires:
 
@@ -230,16 +230,16 @@ CMakeFiles/bluebear.dir/src/bcf_ordered_writer.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o: src/genome_interval.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/bluebear.dir/src/genome_interval.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/genome_interval.cpp.o -c /home/s.yichen.si/tools/bluebear/src/genome_interval.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/bluebear.dir/src/genome_interval.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/genome_interval.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/genome_interval.cpp
 
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/genome_interval.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/genome_interval.cpp > CMakeFiles/bluebear.dir/src/genome_interval.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/genome_interval.cpp > CMakeFiles/bluebear.dir/src/genome_interval.cpp.i
 
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/genome_interval.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/genome_interval.cpp -o CMakeFiles/bluebear.dir/src/genome_interval.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/genome_interval.cpp -o CMakeFiles/bluebear.dir/src/genome_interval.cpp.s
 
 CMakeFiles/bluebear.dir/src/genome_interval.cpp.o.requires:
 
@@ -254,16 +254,16 @@ CMakeFiles/bluebear.dir/src/genome_interval.cpp.o.provides.build: CMakeFiles/blu
 
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o: src/genotype_concordance.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o -c /home/s.yichen.si/tools/bluebear/src/genotype_concordance.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/genotype_concordance.cpp
 
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/genotype_concordance.cpp > CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/genotype_concordance.cpp > CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.i
 
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/genotype_concordance.cpp -o CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/genotype_concordance.cpp -o CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.s
 
 CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o.requires:
 
@@ -278,16 +278,16 @@ CMakeFiles/bluebear.dir/src/genotype_concordance.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/bluebear.dir/src/interval.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/interval.cpp.o: src/interval.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/bluebear.dir/src/interval.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/interval.cpp.o -c /home/s.yichen.si/tools/bluebear/src/interval.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/bluebear.dir/src/interval.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/interval.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/interval.cpp
 
 CMakeFiles/bluebear.dir/src/interval.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/interval.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/interval.cpp > CMakeFiles/bluebear.dir/src/interval.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/interval.cpp > CMakeFiles/bluebear.dir/src/interval.cpp.i
 
 CMakeFiles/bluebear.dir/src/interval.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/interval.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/interval.cpp -o CMakeFiles/bluebear.dir/src/interval.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/interval.cpp -o CMakeFiles/bluebear.dir/src/interval.cpp.s
 
 CMakeFiles/bluebear.dir/src/interval.cpp.o.requires:
 
@@ -302,16 +302,16 @@ CMakeFiles/bluebear.dir/src/interval.cpp.o.provides.build: CMakeFiles/bluebear.d
 
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.o: src/interval_tree.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/bluebear.dir/src/interval_tree.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/interval_tree.cpp.o -c /home/s.yichen.si/tools/bluebear/src/interval_tree.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/bluebear.dir/src/interval_tree.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/interval_tree.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/interval_tree.cpp
 
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/interval_tree.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/interval_tree.cpp > CMakeFiles/bluebear.dir/src/interval_tree.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/interval_tree.cpp > CMakeFiles/bluebear.dir/src/interval_tree.cpp.i
 
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/interval_tree.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/interval_tree.cpp -o CMakeFiles/bluebear.dir/src/interval_tree.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/interval_tree.cpp -o CMakeFiles/bluebear.dir/src/interval_tree.cpp.s
 
 CMakeFiles/bluebear.dir/src/interval_tree.cpp.o.requires:
 
@@ -326,16 +326,16 @@ CMakeFiles/bluebear.dir/src/interval_tree.cpp.o.provides.build: CMakeFiles/blueb
 
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o: src/reference_sequence.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o -c /home/s.yichen.si/tools/bluebear/src/reference_sequence.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/reference_sequence.cpp
 
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/reference_sequence.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/reference_sequence.cpp > CMakeFiles/bluebear.dir/src/reference_sequence.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/reference_sequence.cpp > CMakeFiles/bluebear.dir/src/reference_sequence.cpp.i
 
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/reference_sequence.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/reference_sequence.cpp -o CMakeFiles/bluebear.dir/src/reference_sequence.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/reference_sequence.cpp -o CMakeFiles/bluebear.dir/src/reference_sequence.cpp.s
 
 CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.requires:
 
@@ -350,16 +350,16 @@ CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o: src/tsv_reader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o -c /home/s.yichen.si/tools/bluebear/src/tsv_reader.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/tsv_reader.cpp
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/tsv_reader.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/tsv_reader.cpp > CMakeFiles/bluebear.dir/src/tsv_reader.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/tsv_reader.cpp > CMakeFiles/bluebear.dir/src/tsv_reader.cpp.i
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/tsv_reader.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/tsv_reader.cpp -o CMakeFiles/bluebear.dir/src/tsv_reader.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/tsv_reader.cpp -o CMakeFiles/bluebear.dir/src/tsv_reader.cpp.s
 
 CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o.requires:
 
@@ -374,16 +374,16 @@ CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o.provides.build: CMakeFiles/bluebear
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o: src/cmd_vcf_annotate_context.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_context.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_context.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_context.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_context.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_context.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_context.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o.requires:
 
@@ -396,18 +396,42 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o.provides: CMakeFiles/
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o
 
 
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: CMakeFiles/bluebear.dir/flags.make
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o: src/cmd_tsv_annotate_context.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_tsv_annotate_context.cpp
+
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_tsv_annotate_context.cpp > CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.i
+
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_tsv_annotate_context.cpp -o CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.s
+
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.requires:
+
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.requires
+
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.provides: CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.requires
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.provides.build
+.PHONY : CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.provides
+
+CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.provides.build: CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o
+
+
 CMakeFiles/bluebear.dir/src/utils.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/utils.cpp.o: src/utils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/bluebear.dir/src/utils.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/utils.cpp.o -c /home/s.yichen.si/tools/bluebear/src/utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/bluebear.dir/src/utils.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/utils.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/utils.cpp
 
 CMakeFiles/bluebear.dir/src/utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/utils.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/utils.cpp > CMakeFiles/bluebear.dir/src/utils.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/utils.cpp > CMakeFiles/bluebear.dir/src/utils.cpp.i
 
 CMakeFiles/bluebear.dir/src/utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/utils.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/utils.cpp -o CMakeFiles/bluebear.dir/src/utils.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/utils.cpp -o CMakeFiles/bluebear.dir/src/utils.cpp.s
 
 CMakeFiles/bluebear.dir/src/utils.cpp.o.requires:
 
@@ -422,16 +446,16 @@ CMakeFiles/bluebear.dir/src/utils.cpp.o.provides.build: CMakeFiles/bluebear.dir/
 
 CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o: src/compact_matrix.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o -c /home/s.yichen.si/tools/bluebear/src/compact_matrix.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/compact_matrix.cpp
 
 CMakeFiles/bluebear.dir/src/compact_matrix.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/compact_matrix.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/compact_matrix.cpp > CMakeFiles/bluebear.dir/src/compact_matrix.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/compact_matrix.cpp > CMakeFiles/bluebear.dir/src/compact_matrix.cpp.i
 
 CMakeFiles/bluebear.dir/src/compact_matrix.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/compact_matrix.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/compact_matrix.cpp -o CMakeFiles/bluebear.dir/src/compact_matrix.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/compact_matrix.cpp -o CMakeFiles/bluebear.dir/src/compact_matrix.cpp.s
 
 CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o.requires:
 
@@ -446,16 +470,16 @@ CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o.provides.build: CMakeFiles/blue
 
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: src/bp2cm.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/bluebear.dir/src/bp2cm.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bp2cm.cpp.o -c /home/s.yichen.si/tools/bluebear/src/bp2cm.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/bluebear.dir/src/bp2cm.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bp2cm.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/bp2cm.cpp
 
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/bp2cm.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/bp2cm.cpp > CMakeFiles/bluebear.dir/src/bp2cm.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/bp2cm.cpp > CMakeFiles/bluebear.dir/src/bp2cm.cpp.i
 
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/bp2cm.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/bp2cm.cpp -o CMakeFiles/bluebear.dir/src/bp2cm.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/bp2cm.cpp -o CMakeFiles/bluebear.dir/src/bp2cm.cpp.s
 
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o.requires:
 
@@ -470,16 +494,16 @@ CMakeFiles/bluebear.dir/src/bp2cm.cpp.o.provides.build: CMakeFiles/bluebear.dir/
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o: src/cmd_vcf_ibs0_flanking.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_flanking.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_flanking.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_flanking.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_flanking.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_flanking.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_flanking.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o.requires:
 
@@ -494,16 +518,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o: src/cmd_vcf_ibs0_pairwise.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_pairwise.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_pairwise.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_pairwise.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_pairwise.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_pairwise.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_pairwise.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o.requires:
 
@@ -518,16 +542,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_pairwise.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o: src/cmd_vcf_ibs0_view.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_view.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_view.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_view.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_view.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_view.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_view.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o.requires:
 
@@ -542,16 +566,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_view.cpp.o.provides.build: CMakeFiles/b
 
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o: src/ibs0_pairwise_scan.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_pairwise_scan.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_pairwise_scan.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_pairwise_scan.cpp > CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_pairwise_scan.cpp > CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_pairwise_scan.cpp -o CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_pairwise_scan.cpp -o CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o.requires:
 
@@ -566,16 +590,16 @@ CMakeFiles/bluebear.dir/src/ibs0_pairwise_scan.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o: src/cmd_vcf_raresharing.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_raresharing.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_raresharing.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_raresharing.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_raresharing.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_raresharing.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_raresharing.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o.requires:
 
@@ -590,16 +614,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_raresharing.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o: src/cmd_vcf_sfs.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sfs.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sfs.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sfs.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sfs.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sfs.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sfs.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o.requires:
 
@@ -614,16 +638,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sfs.cpp.o.provides.build: CMakeFiles/bluebea
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o: src/cmd_vcf_sfs_mr.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sfs_mr.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sfs_mr.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sfs_mr.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sfs_mr.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sfs_mr.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sfs_mr.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o.requires:
 
@@ -638,16 +662,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sfs_mr.cpp.o.provides.build: CMakeFiles/blue
 
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o: src/pbwt_prefix.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o -c /home/s.yichen.si/tools/bluebear/src/pbwt_prefix.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/pbwt_prefix.cpp
 
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/pbwt_prefix.cpp > CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/pbwt_prefix.cpp > CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.i
 
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/pbwt_prefix.cpp -o CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/pbwt_prefix.cpp -o CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.s
 
 CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o.requires:
 
@@ -662,16 +686,16 @@ CMakeFiles/bluebear.dir/src/pbwt_prefix.cpp.o.provides.build: CMakeFiles/bluebea
 
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o: src/pbwt_suffix.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o -c /home/s.yichen.si/tools/bluebear/src/pbwt_suffix.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/pbwt_suffix.cpp
 
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/pbwt_suffix.cpp > CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/pbwt_suffix.cpp > CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.i
 
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/pbwt_suffix.cpp -o CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/pbwt_suffix.cpp -o CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.s
 
 CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o.requires:
 
@@ -686,16 +710,16 @@ CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o.provides.build: CMakeFiles/bluebea
 
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o: src/trio_phase.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/bluebear.dir/src/trio_phase.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/trio_phase.cpp.o -c /home/s.yichen.si/tools/bluebear/src/trio_phase.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/bluebear.dir/src/trio_phase.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/trio_phase.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/trio_phase.cpp
 
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/trio_phase.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/trio_phase.cpp > CMakeFiles/bluebear.dir/src/trio_phase.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/trio_phase.cpp > CMakeFiles/bluebear.dir/src/trio_phase.cpp.i
 
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/trio_phase.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/trio_phase.cpp -o CMakeFiles/bluebear.dir/src/trio_phase.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/trio_phase.cpp -o CMakeFiles/bluebear.dir/src/trio_phase.cpp.s
 
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o.requires:
 
@@ -710,16 +734,16 @@ CMakeFiles/bluebear.dir/src/trio_phase.cpp.o.provides.build: CMakeFiles/bluebear
 
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o: src/pt2interval.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/bluebear.dir/src/pt2interval.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pt2interval.cpp.o -c /home/s.yichen.si/tools/bluebear/src/pt2interval.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/bluebear.dir/src/pt2interval.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/pt2interval.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/pt2interval.cpp
 
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/pt2interval.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/pt2interval.cpp > CMakeFiles/bluebear.dir/src/pt2interval.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/pt2interval.cpp > CMakeFiles/bluebear.dir/src/pt2interval.cpp.i
 
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/pt2interval.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/pt2interval.cpp -o CMakeFiles/bluebear.dir/src/pt2interval.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/pt2interval.cpp -o CMakeFiles/bluebear.dir/src/pt2interval.cpp.s
 
 CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.requires:
 
@@ -734,16 +758,16 @@ CMakeFiles/bluebear.dir/src/pt2interval.cpp.o.provides.build: CMakeFiles/bluebea
 
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o: src/ibs0.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0.cpp > CMakeFiles/bluebear.dir/src/ibs0.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0.cpp > CMakeFiles/bluebear.dir/src/ibs0.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0.cpp -o CMakeFiles/bluebear.dir/src/ibs0.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0.cpp -o CMakeFiles/bluebear.dir/src/ibs0.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0.cpp.o.requires:
 
@@ -758,16 +782,16 @@ CMakeFiles/bluebear.dir/src/ibs0.cpp.o.provides.build: CMakeFiles/bluebear.dir/s
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o: src/ibs0_phase_backward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_phase_backward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_phase_backward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.requires:
 
@@ -782,16 +806,16 @@ CMakeFiles/bluebear.dir/src/ibs0_phase_backward.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o: src/ibs0_phase_forward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_phase_forward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_phase_forward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.requires:
 
@@ -806,16 +830,16 @@ CMakeFiles/bluebear.dir/src/ibs0_phase_forward.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o: src/hap_ibd_pbwt.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o -c /home/s.yichen.si/tools/bluebear/src/hap_ibd_pbwt.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/hap_ibd_pbwt.cpp
 
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/hap_ibd_pbwt.cpp > CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/hap_ibd_pbwt.cpp > CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.i
 
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/hap_ibd_pbwt.cpp -o CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/hap_ibd_pbwt.cpp -o CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.s
 
 CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o.requires:
 
@@ -830,16 +854,16 @@ CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o.provides.build: CMakeFiles/bluebe
 
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o: src/ibd_around_pt.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibd_around_pt.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibd_around_pt.cpp
 
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibd_around_pt.cpp > CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibd_around_pt.cpp > CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibd_around_pt.cpp -o CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibd_around_pt.cpp -o CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o.requires:
 
@@ -854,16 +878,16 @@ CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o.provides.build: CMakeFiles/blueb
 
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o: src/ibs0rare.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0rare.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0rare.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0rare.cpp > CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0rare.cpp > CMakeFiles/bluebear.dir/src/ibs0rare.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0rare.cpp -o CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0rare.cpp -o CMakeFiles/bluebear.dir/src/ibs0rare.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.requires:
 
@@ -878,16 +902,16 @@ CMakeFiles/bluebear.dir/src/ibs0rare.cpp.o.provides.build: CMakeFiles/bluebear.d
 
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o: src/rare_variant_config.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o -c /home/s.yichen.si/tools/bluebear/src/rare_variant_config.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/rare_variant_config.cpp
 
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/rare_variant_config.cpp > CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/rare_variant_config.cpp > CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.i
 
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/rare_variant_config.cpp -o CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/rare_variant_config.cpp -o CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.s
 
 CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o.requires:
 
@@ -902,16 +926,16 @@ CMakeFiles/bluebear.dir/src/rare_variant_config.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o: src/ibs0_rare_phase_backward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_rare_phase_backward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_phase_backward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_rare_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_rare_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.requires:
 
@@ -926,16 +950,16 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_phase_backward.cpp.o.provides.build: CMake
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o: src/ibs0_rare_phase_forward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_rare_phase_forward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_phase_forward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_rare_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_rare_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.requires:
 
@@ -950,16 +974,16 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_phase_forward.cpp.o.provides.build: CMakeF
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o: src/ibs0_rare_only_phase_backward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_rare_only_phase_backward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_only_phase_backward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_rare_only_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_only_phase_backward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_rare_only_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_only_phase_backward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o.requires:
 
@@ -974,16 +998,16 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_backward.cpp.o.provides.build: 
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o: src/ibs0_rare_only_phase_forward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_rare_only_phase_forward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_only_phase_forward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_rare_only_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_only_phase_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_rare_only_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_rare_only_phase_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o.requires:
 
@@ -998,16 +1022,16 @@ CMakeFiles/bluebear.dir/src/ibs0_rare_only_phase_forward.cpp.o.provides.build: C
 
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o: src/ibs0_blip_forward.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_blip_forward.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_blip_forward.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_blip_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_blip_forward.cpp > CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_blip_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_blip_forward.cpp -o CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o.requires:
 
@@ -1022,16 +1046,16 @@ CMakeFiles/bluebear.dir/src/ibs0_blip_forward.cpp.o.provides.build: CMakeFiles/b
 
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o: src/kmer_count.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/bluebear.dir/src/kmer_count.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/kmer_count.cpp.o -c /home/s.yichen.si/tools/bluebear/src/kmer_count.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/bluebear.dir/src/kmer_count.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/kmer_count.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/kmer_count.cpp
 
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/kmer_count.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/kmer_count.cpp > CMakeFiles/bluebear.dir/src/kmer_count.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/kmer_count.cpp > CMakeFiles/bluebear.dir/src/kmer_count.cpp.i
 
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/kmer_count.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/kmer_count.cpp -o CMakeFiles/bluebear.dir/src/kmer_count.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/kmer_count.cpp -o CMakeFiles/bluebear.dir/src/kmer_count.cpp.s
 
 CMakeFiles/bluebear.dir/src/kmer_count.cpp.o.requires:
 
@@ -1046,16 +1070,16 @@ CMakeFiles/bluebear.dir/src/kmer_count.cpp.o.provides.build: CMakeFiles/bluebear
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o: src/cmd_vcf_triallelic.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_triallelic.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_triallelic.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_triallelic.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_triallelic.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_triallelic.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_triallelic.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o.requires:
 
@@ -1070,16 +1094,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_triallelic.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: src/cmd_ibs0_add_control.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_ibs0_add_control.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_ibs0_add_control.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_ibs0_add_control.cpp > CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_ibs0_add_control.cpp > CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_ibs0_add_control.cpp -o CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_ibs0_add_control.cpp -o CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o.requires:
 
@@ -1094,16 +1118,16 @@ CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o: src/ibs0_between_group_control.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o -c /home/s.yichen.si/tools/bluebear/src/ibs0_between_group_control.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/ibs0_between_group_control.cpp
 
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/ibs0_between_group_control.cpp > CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/ibs0_between_group_control.cpp > CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.i
 
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/ibs0_between_group_control.cpp -o CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/ibs0_between_group_control.cpp -o CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.s
 
 CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o.requires:
 
@@ -1118,16 +1142,16 @@ CMakeFiles/bluebear.dir/src/ibs0_between_group_control.cpp.o.provides.build: CMa
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o: src/cmd_vcf_annotate_ibs0_small_n.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_ibs0_small_n.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o.requires:
 
@@ -1142,16 +1166,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibs0_small_n.cpp.o.provides.build: 
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o: src/cmd_vcf_ibs0_short.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_short.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_short.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_short.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_short.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_short.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_short.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o.requires:
 
@@ -1166,16 +1190,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_short.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o: src/cmd_vcf_ibs0_triallelic.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_triallelic.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_triallelic.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_triallelic.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_triallelic.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_ibs0_triallelic.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_ibs0_triallelic.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o.requires:
 
@@ -1190,16 +1214,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_triallelic.cpp.o.provides.build: CMakeF
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o: src/cmd_vcf_insert_pm.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_insert_pm.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_insert_pm.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_insert_pm.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_insert_pm.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_insert_pm.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_insert_pm.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o.requires:
 
@@ -1214,16 +1238,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_insert_pm.cpp.o.provides.build: CMakeFiles/b
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o: src/cmd_vcf_info_cdf.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_info_cdf.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_info_cdf.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_info_cdf.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_info_cdf.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_info_cdf.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_info_cdf.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o.requires:
 
@@ -1238,16 +1262,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_info_cdf.cpp.o.provides.build: CMakeFiles/bl
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o: src/cmd_vcf_site_annotate_refsample_info.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_refsample_info.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.requires:
 
@@ -1262,16 +1286,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_refsample_info.cpp.o.provides.
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o: src/cmd_vcf_sample_summary.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sample_summary.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sample_summary.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sample_summary.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sample_summary.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_sample_summary.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_sample_summary.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.requires:
 
@@ -1286,16 +1310,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_sample_summary.cpp.o.provides.build: CMakeFi
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o: src/cmd_vcf_site_annotate_pm_posterior.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_pm_posterior.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o.requires:
 
@@ -1310,16 +1334,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_pm_posterior.cpp.o.provides.bu
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o: src/cmd_vcf_site_annotate_age.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_age.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_age.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_age.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_age.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_site_annotate_age.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_site_annotate_age.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o.requires:
 
@@ -1334,16 +1358,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_site_annotate_age.cpp.o.provides.build: CMak
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o: src/cmd_vcf_annotate_ibd.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_ibd.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_ibd.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_ibd.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_ibd.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_annotate_ibd.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_annotate_ibd.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o.requires:
 
@@ -1358,16 +1382,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_ibd.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o: src/cmd_vcf_snppairingene.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_snppairingene.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_snppairingene.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_snppairingene.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_snppairingene.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_snppairingene.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_snppairingene.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o.requires:
 
@@ -1382,16 +1406,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_snppairingene.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o: src/cmd_vcf_snppairinfo.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_snppairinfo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_snppairinfo.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_snppairinfo.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_snppairinfo.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_snppairinfo.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_snppairinfo.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.requires:
 
@@ -1406,16 +1430,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_snppairinfo.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: src/cmd_dge_shuffle.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_dge_shuffle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_dge_shuffle.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_dge_shuffle.cpp > CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_dge_shuffle.cpp > CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_dge_shuffle.cpp -o CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_dge_shuffle.cpp -o CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o.requires:
 
@@ -1430,16 +1454,16 @@ CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o.provides.build: CMakeFiles/blu
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o: src/cmd_vcf_temp.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_temp.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_temp.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_temp.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_temp.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_temp.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_temp.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o.requires:
 
@@ -1454,16 +1478,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_temp.cpp.o.provides.build: CMakeFiles/bluebe
 
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/test_hts.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/test_hts.cpp.o -c /home/s.yichen.si/tools/bluebear/src/test_hts.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/test_hts.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/test_hts.cpp
 
 CMakeFiles/bluebear.dir/src/test_hts.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/test_hts.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/test_hts.cpp > CMakeFiles/bluebear.dir/src/test_hts.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/test_hts.cpp > CMakeFiles/bluebear.dir/src/test_hts.cpp.i
 
 CMakeFiles/bluebear.dir/src/test_hts.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/test_hts.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/test_hts.cpp -o CMakeFiles/bluebear.dir/src/test_hts.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/test_hts.cpp -o CMakeFiles/bluebear.dir/src/test_hts.cpp.s
 
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o.requires:
 
@@ -1478,16 +1502,16 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o.provides.build: CMakeFiles/bluebear.d
 
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o: src/blocks_in_ibs0_info.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o -c /home/s.yichen.si/tools/bluebear/src/blocks_in_ibs0_info.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/blocks_in_ibs0_info.cpp
 
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/blocks_in_ibs0_info.cpp > CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/blocks_in_ibs0_info.cpp > CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.i
 
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/blocks_in_ibs0_info.cpp -o CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/blocks_in_ibs0_info.cpp -o CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.s
 
 CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o.requires:
 
@@ -1502,16 +1526,16 @@ CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o: src/cmd_vcf_phase_outlier.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o -c /home/s.yichen.si/tools/bluebear/src/cmd_vcf_phase_outlier.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_phase_outlier.cpp
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/cmd_vcf_phase_outlier.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_phase_outlier.cpp > CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.i
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/cmd_vcf_phase_outlier.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/cmd_vcf_phase_outlier.cpp -o CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.s
 
 CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o.requires:
 
@@ -1526,16 +1550,16 @@ CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: CMakeFiles/bluebear.dir/flags.make
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o: src/bluebear.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bluebear.cpp.o -c /home/s.yichen.si/tools/bluebear/src/bluebear.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bluebear.dir/src/bluebear.cpp.o -c /home/s.yichen.si/efs/tool/bluebear/src/bluebear.cpp
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bluebear.dir/src/bluebear.cpp.i"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/tools/bluebear/src/bluebear.cpp > CMakeFiles/bluebear.dir/src/bluebear.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/s.yichen.si/efs/tool/bluebear/src/bluebear.cpp > CMakeFiles/bluebear.dir/src/bluebear.cpp.i
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bluebear.dir/src/bluebear.cpp.s"
-	/home/s.yichen.si/.conda/envs/env0/bin/x86_64-conda-linux-gnu-c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/tools/bluebear/src/bluebear.cpp -o CMakeFiles/bluebear.dir/src/bluebear.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/s.yichen.si/efs/tool/bluebear/src/bluebear.cpp -o CMakeFiles/bluebear.dir/src/bluebear.cpp.s
 
 CMakeFiles/bluebear.dir/src/bluebear.cpp.o.requires:
 
@@ -1564,6 +1588,7 @@ bluebear_OBJECTS = \
 "CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o" \
 "CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o" \
 "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o" \
+"CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o" \
 "CMakeFiles/bluebear.dir/src/utils.cpp.o" \
 "CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o" \
 "CMakeFiles/bluebear.dir/src/bp2cm.cpp.o" \
@@ -1630,6 +1655,7 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/interval_tree.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o
+bin/bluebear: CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/utils.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/src/bp2cm.cpp.o
@@ -1681,7 +1707,7 @@ bin/bluebear: CMakeFiles/bluebear.dir/src/bluebear.cpp.o
 bin/bluebear: CMakeFiles/bluebear.dir/build.make
 bin/bluebear: ../htslib/libhts.a
 bin/bluebear: CMakeFiles/bluebear.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/s.yichen.si/tools/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Linking CXX executable bin/bluebear"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/s.yichen.si/efs/tool/bluebear/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Linking CXX executable bin/bluebear"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bluebear.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -1703,6 +1729,7 @@ CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/interval_tree.cpp.
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/reference_sequence.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o.requires
+CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/utils.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o.requires
 CMakeFiles/bluebear.dir/requires: CMakeFiles/bluebear.dir/src/bp2cm.cpp.o.requires
@@ -1759,6 +1786,6 @@ CMakeFiles/bluebear.dir/clean:
 .PHONY : CMakeFiles/bluebear.dir/clean
 
 CMakeFiles/bluebear.dir/depend:
-	cd /home/s.yichen.si/tools/bluebear && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/s.yichen.si/tools/bluebear /home/s.yichen.si/tools/bluebear /home/s.yichen.si/tools/bluebear /home/s.yichen.si/tools/bluebear /home/s.yichen.si/tools/bluebear/CMakeFiles/bluebear.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/s.yichen.si/efs/tool/bluebear && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/s.yichen.si/efs/tool/bluebear /home/s.yichen.si/efs/tool/bluebear /home/s.yichen.si/efs/tool/bluebear /home/s.yichen.si/efs/tool/bluebear /home/s.yichen.si/efs/tool/bluebear/CMakeFiles/bluebear.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/bluebear.dir/depend
 

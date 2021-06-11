@@ -7,7 +7,8 @@ typedef khash_t(vdict) vdict_t;
 
 int32_t KmerCount(int32_t argc, char** argv);
 int32_t KmerCount_window(int32_t argc, char** argv);
-int32_t cmdVcfAddContexte(int32_t argc, char** argv);
+int32_t cmdVcfAddContext(int32_t argc, char** argv);
+int32_t cmdTsvAddContext(int32_t argc, char** argv);
 int32_t KmerSFS(int32_t argc, char** argv);
 int32_t cmdVcfSFS(int32_t argc, char** argv);
 int32_t mrSFS(int32_t argc, char** argv);
@@ -91,7 +92,8 @@ int32_t main(int32_t argc, char** argv) {
   BEGIN_LONG_COMMANDS(longCommandlines)
     LONG_COMMAND("kmer-count",&KmerCount, "Count total occurence of kmers from fasta file (by chr)")
 		LONG_COMMAND("kmer-count-window",&KmerCount_window, "Count total occurence of kmers from fasta file (by chr, by window)")
-    LONG_COMMAND("kmer-anno",&cmdVcfAddContexte, "Add kmer context and CpG info to VCF/BCF")
+    LONG_COMMAND("kmer-anno",&cmdVcfAddContext, "Add kmer context and CpG info to VCF/BCF")
+		LONG_COMMAND("kmer-anno-tsv",&cmdTsvAddContext, "Add kmer context and CpG to TSV")
 
     LONG_COMMAND("folded-sfs",&cmdVcfSFS, "Folded SFS from BCF/VCF")
     LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")
