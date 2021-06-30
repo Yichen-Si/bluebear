@@ -29,7 +29,8 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/reference_sequence.cpp
     src/tsv_reader.cpp
     src/cmd_vcf_annotate_context.cpp
-		src/cmd_tsv_annotate_context.cpp
+	src/cmd_tsv_annotate_context.cpp
+    src/cmd_fa_cpg.cpp
     src/utils.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp

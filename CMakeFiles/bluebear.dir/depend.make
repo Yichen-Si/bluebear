@@ -141,6 +141,29 @@ CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: src/params.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: src/tsv_reader.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: src/utils.h
 
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/bgzf.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/faidx.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/hts.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/hts_defs.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/hts_endian.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/hts_log.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/khash.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/kroundup.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/kseq.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/kstring.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/sam.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/vcf.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: ../htslib/include/htslib/vcfutils.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/Error.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/cmd_fa_cpg.cpp
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/cramore.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/fa_reader.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/genome_interval.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/hts_utils.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/seq_basics.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o: src/utils.h
+
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/faidx.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o: ../htslib/include/htslib/hts.h
@@ -1495,19 +1518,15 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/kroundup.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/kseq.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/kstring.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/sam.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/tbx.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/vcf.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: ../htslib/include/htslib/vcfutils.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/Error.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_filter_arg.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/bcf_ordered_reader.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/cramore.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/filter.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/fa_reader.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/genome_interval.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/hts_utils.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval.h
-CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/interval_tree.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/params.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/seq_basics.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/test_hts.cpp
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: src/utils.h
 

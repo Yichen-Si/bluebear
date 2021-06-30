@@ -22,7 +22,7 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 
     LONG_PARAM_GROUP("Variant Filtering Options", NULL)
-    LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
+    LONG_MULTI_STRING_PARAM("apply-filters",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
     LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
     LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
 
@@ -221,7 +221,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 
     LONG_PARAM_GROUP("Variant Filtering Options", NULL)
-    LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
+    LONG_MULTI_STRING_PARAM("apply-filters",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
     LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
     LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
 
@@ -499,19 +499,3 @@ int32_t KmerSFS(int32_t argc, char** argv) {
   wf.close();
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,6 +5,8 @@
 KHASH_MAP_INIT_STR(vdict, bcf_idinfo_t)
 typedef khash_t(vdict) vdict_t;
 
+int32_t cmdFaCpG(int32_t argc, char** argv);
+int32_t cmdFaCpG_bed(int32_t argc, char** argv);
 int32_t KmerCount(int32_t argc, char** argv);
 int32_t KmerCount_window(int32_t argc, char** argv);
 int32_t cmdVcfAddContext(int32_t argc, char** argv);
@@ -90,10 +92,12 @@ int32_t main(int32_t argc, char** argv) {
   commandList cl;
 
   BEGIN_LONG_COMMANDS(longCommandlines)
+    LONG_COMMAND("cpg",&cmdFaCpG, "Output all CpG sites (and their sequence context) from Fasta")
+    LONG_COMMAND("cpg-bed",&cmdFaCpG_bed, "Output all CpG sites (and their sequence context) from Fasta")
     LONG_COMMAND("kmer-count",&KmerCount, "Count total occurence of kmers from fasta file (by chr)")
-		LONG_COMMAND("kmer-count-window",&KmerCount_window, "Count total occurence of kmers from fasta file (by chr, by window)")
+	LONG_COMMAND("kmer-count-window",&KmerCount_window, "Count total occurence of kmers from fasta file (by chr, by window)")
     LONG_COMMAND("kmer-anno",&cmdVcfAddContext, "Add kmer context and CpG info to VCF/BCF")
-		LONG_COMMAND("kmer-anno-tsv",&cmdTsvAddContext, "Add kmer context and CpG to TSV")
+	LONG_COMMAND("kmer-anno-tsv",&cmdTsvAddContext, "Add kmer context and CpG to TSV")
 
     LONG_COMMAND("folded-sfs",&cmdVcfSFS, "Folded SFS from BCF/VCF")
     LONG_COMMAND("ctx-sfs",&KmerSFS, "Kmer context specific SFS from BCF/VCF")

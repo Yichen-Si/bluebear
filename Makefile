@@ -315,6 +315,33 @@ src/cmd_dge_shuffle.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.s
 .PHONY : src/cmd_dge_shuffle.cpp.s
 
+src/cmd_fa_cpg.o: src/cmd_fa_cpg.cpp.o
+
+.PHONY : src/cmd_fa_cpg.o
+
+# target to build an object file
+src/cmd_fa_cpg.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o
+.PHONY : src/cmd_fa_cpg.cpp.o
+
+src/cmd_fa_cpg.i: src/cmd_fa_cpg.cpp.i
+
+.PHONY : src/cmd_fa_cpg.i
+
+# target to preprocess a source file
+src/cmd_fa_cpg.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.i
+.PHONY : src/cmd_fa_cpg.cpp.i
+
+src/cmd_fa_cpg.s: src/cmd_fa_cpg.cpp.s
+
+.PHONY : src/cmd_fa_cpg.s
+
+# target to generate assembly for a file
+src/cmd_fa_cpg.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.s
+.PHONY : src/cmd_fa_cpg.cpp.s
+
 src/cmd_ibs0_add_control.o: src/cmd_ibs0_add_control.cpp.o
 
 .PHONY : src/cmd_ibs0_add_control.o
@@ -1857,6 +1884,9 @@ help:
 	@echo "... src/cmd_dge_shuffle.o"
 	@echo "... src/cmd_dge_shuffle.i"
 	@echo "... src/cmd_dge_shuffle.s"
+	@echo "... src/cmd_fa_cpg.o"
+	@echo "... src/cmd_fa_cpg.i"
+	@echo "... src/cmd_fa_cpg.s"
 	@echo "... src/cmd_ibs0_add_control.o"
 	@echo "... src/cmd_ibs0_add_control.i"
 	@echo "... src/cmd_ibs0_add_control.s"

@@ -141,6 +141,29 @@ CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o
  /home/s.yichen.si/efs/tool/bluebear/src/params.h
  /home/s.yichen.si/efs/tool/bluebear/src/tsv_reader.h
  /home/s.yichen.si/efs/tool/bluebear/src/utils.h
+CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o
+ ../htslib/include/htslib/bgzf.h
+ ../htslib/include/htslib/faidx.h
+ ../htslib/include/htslib/hts.h
+ ../htslib/include/htslib/hts_defs.h
+ ../htslib/include/htslib/hts_endian.h
+ ../htslib/include/htslib/hts_log.h
+ ../htslib/include/htslib/khash.h
+ ../htslib/include/htslib/kroundup.h
+ ../htslib/include/htslib/kseq.h
+ ../htslib/include/htslib/kstring.h
+ ../htslib/include/htslib/sam.h
+ ../htslib/include/htslib/vcf.h
+ ../htslib/include/htslib/vcfutils.h
+ /home/s.yichen.si/efs/tool/bluebear/src/Error.h
+ /home/s.yichen.si/efs/tool/bluebear/src/cmd_fa_cpg.cpp
+ /home/s.yichen.si/efs/tool/bluebear/src/cramore.h
+ /home/s.yichen.si/efs/tool/bluebear/src/fa_reader.h
+ /home/s.yichen.si/efs/tool/bluebear/src/genome_interval.h
+ /home/s.yichen.si/efs/tool/bluebear/src/hts_utils.h
+ /home/s.yichen.si/efs/tool/bluebear/src/params.h
+ /home/s.yichen.si/efs/tool/bluebear/src/seq_basics.h
+ /home/s.yichen.si/efs/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/cmd_ibs0_add_control.cpp.o
  ../htslib/include/htslib/bgzf.h
  ../htslib/include/htslib/faidx.h
@@ -1496,19 +1519,15 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o
  ../htslib/include/htslib/kseq.h
  ../htslib/include/htslib/kstring.h
  ../htslib/include/htslib/sam.h
- ../htslib/include/htslib/tbx.h
  ../htslib/include/htslib/vcf.h
  ../htslib/include/htslib/vcfutils.h
  /home/s.yichen.si/efs/tool/bluebear/src/Error.h
- /home/s.yichen.si/efs/tool/bluebear/src/bcf_filter_arg.h
- /home/s.yichen.si/efs/tool/bluebear/src/bcf_ordered_reader.h
  /home/s.yichen.si/efs/tool/bluebear/src/cramore.h
- /home/s.yichen.si/efs/tool/bluebear/src/filter.h
+ /home/s.yichen.si/efs/tool/bluebear/src/fa_reader.h
  /home/s.yichen.si/efs/tool/bluebear/src/genome_interval.h
  /home/s.yichen.si/efs/tool/bluebear/src/hts_utils.h
- /home/s.yichen.si/efs/tool/bluebear/src/interval.h
- /home/s.yichen.si/efs/tool/bluebear/src/interval_tree.h
  /home/s.yichen.si/efs/tool/bluebear/src/params.h
+ /home/s.yichen.si/efs/tool/bluebear/src/seq_basics.h
  /home/s.yichen.si/efs/tool/bluebear/src/test_hts.cpp
  /home/s.yichen.si/efs/tool/bluebear/src/utils.h
 CMakeFiles/bluebear.dir/src/trio_phase.cpp.o

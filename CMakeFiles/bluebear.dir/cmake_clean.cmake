@@ -14,6 +14,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/tsv_reader.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_annotate_context.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_tsv_annotate_context.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cmd_fa_cpg.cpp.o"
   "CMakeFiles/bluebear.dir/src/utils.cpp.o"
   "CMakeFiles/bluebear.dir/src/compact_matrix.cpp.o"
   "CMakeFiles/bluebear.dir/src/bp2cm.cpp.o"

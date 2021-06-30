@@ -12,7 +12,7 @@ int32_t KmerCount(int32_t argc, char** argv) {
   std::string inFa, out, outf;
   std::string chrom="chr20";
   int32_t kmer = 7;
-  int64_t verbose = 5000000;
+  int64_t verbose = 10000000;
 
   paramList pl;
   BEGIN_LONG_PARAMS(longParameters)
