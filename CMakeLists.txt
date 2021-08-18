@@ -1,6 +1,8 @@
-cmake_minimum_required (VERSION 2.6)
-project(ibs0phase)
+cmake_minimum_required (VERSION 3.0)
+project(bluebear)
 
+
+find_package (Eigen3 REQUIRED NO_MODULE HINTS ${CMAKE_SOURCE_DIR}/../eigen/build/)
 include_directories(${CMAKE_SOURCE_DIR}/../htslib/include)
 
 execute_process(COMMAND date OUTPUT_VARIABLE DATE OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -13,9 +15,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pipe -no-pie -D__STDC_LIMIT_
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-add_subdirectory(src)
-
-set(ibs0phase_SOURCES src/Error.cpp
+set(bluebear_SOURCES src/bluebear.cpp
+    src/Error.cpp
     src/commands.cpp
     src/params.cpp
     src/hts_utils.cpp
@@ -34,22 +35,26 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/utils.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp
+    src/cmd_vcf_sfs.cpp
+    src/cmd_vcf_sfs_mr.cpp
+    src/kmer_count.cpp
+    src/cmd_vcf_triallelic.cpp
+    src/pt2interval.cpp
+    src/pbwt_prefix.cpp
+    src/pbwt_suffix.cpp
+    src/hap_ibd_pbwt.cpp
+    src/ibd_around_pt.cpp
+    src/cthmm.cpp
+    src/cpghmm.cpp
+    src/trio_phase.cpp
+    src/ibs0.cpp
     src/cmd_vcf_ibs0_flanking.cpp
     src/cmd_vcf_ibs0_pairwise.cpp
     src/cmd_vcf_ibs0_view.cpp
     src/ibs0_pairwise_scan.cpp
     src/cmd_vcf_raresharing.cpp
-    src/cmd_vcf_sfs.cpp
-    src/cmd_vcf_sfs_mr.cpp
-    src/pbwt_prefix.cpp
-    src/pbwt_suffix.cpp
-    src/trio_phase.cpp
-    src/pt2interval.cpp
-    src/ibs0.cpp
     src/ibs0_phase_backward.cpp
     src/ibs0_phase_forward.cpp
-    src/hap_ibd_pbwt.cpp
-    src/ibd_around_pt.cpp
     src/ibs0rare.cpp
     src/rare_variant_config.cpp
     src/ibs0_rare_phase_backward.cpp
@@ -57,8 +62,6 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/ibs0_rare_only_phase_backward.cpp
     src/ibs0_rare_only_phase_forward.cpp
     src/ibs0_blip_forward.cpp
-    src/kmer_count.cpp
-    src/cmd_vcf_triallelic.cpp
     src/cmd_ibs0_add_control.cpp
     src/ibs0_between_group_control.cpp
     src/cmd_vcf_annotate_ibs0_small_n.cpp
@@ -75,12 +78,11 @@ set(ibs0phase_SOURCES src/Error.cpp
     src/cmd_vcf_snppairinfo.cpp
     src/cmd_dge_shuffle.cpp
     src/cmd_vcf_temp.cpp
-    src/test_hts.cpp
     src/blocks_in_ibs0_info.cpp
     src/cmd_vcf_phase_outlier.cpp
-    src/bluebear.cpp)
+    src/test_hts.cpp)
 
-set(ibs0phase_HEADERS src/cramore.h
+set(bluebear_HEADERS src/cramore.h
     src/Error.h
     src/pException.h
     src/commands.h
@@ -104,15 +106,16 @@ set(ibs0phase_HEADERS src/cramore.h
     src/reference_sequence.h
     src/tsv_reader.h
     src/utils.h
-		src/fa_reader.h
-		src/seq_basics.h
+	src/fa_reader.h
+	src/seq_basics.h
     src/cm2bp.h
     src/compact_matrix.h
     src/pbwt_build.h
     src/bp2cm.h
+    src/cthmm.h
     src/ibs0.h
     src/rare_variant_ibs0.h
     src/rare_variant_config.h)
 
-add_executable(bluebear ${ibs0phase_SOURCES} ${ibs0phase_HEADERS})
-target_link_libraries(bluebear ${CMAKE_SOURCE_DIR}/../htslib/libhts.a dl pthread lzma z bz2 curl crypto)
+add_executable(bluebear ${bluebear_SOURCES} ${bluebear_HEADERS})
+target_link_libraries(bluebear ${CMAKE_SOURCE_DIR}/../htslib/libhts.a Eigen3::Eigen dl pthread lzma z bz2 curl crypto)

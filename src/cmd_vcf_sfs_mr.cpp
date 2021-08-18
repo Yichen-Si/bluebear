@@ -4,21 +4,6 @@
 #include "utils.h"
 #include <algorithm>
 
-
-template<typename T>
-int32_t binarySearch(std::vector<T> & arr, int32_t l, int32_t r, T x)
-{
-    if (r > l) {
-        int32_t mid = l + (r - l) / 2;
-        if (arr[mid+1] > x && arr[mid] <= x)
-            return mid;
-        if (arr[mid] > x)
-            return binarySearch(arr, l, mid - 1, x);
-        return binarySearch(arr, mid + 1, r, x);
-    }
-    return r;
-}
-
 // Goal: mutation rate specific SFS (kmer contex defined by major allele)
 
 int32_t mrSFS(int32_t argc, char** argv) {
@@ -533,13 +518,3 @@ if (ignore_cpg) {
   }
   return 0;
 }
-
-
-
-
-
-
-
-
-
-

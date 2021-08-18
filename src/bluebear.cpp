@@ -45,27 +45,21 @@ int32_t CDFInfoFloatByKmer(int32_t argc, char** argv);
 int32_t CDFInfoFloatByMR(int32_t argc, char** argv);
 int32_t CDFInfoFloatByAnn(int32_t argc, char** argv); // tmp
 int32_t CDFInfoFloatSimu(int32_t argc, char** argv); // tmp
+int32_t mapPt2Interval(int32_t argc, char** argv);
+int32_t pbwtBuildSuffix(int32_t argc, char** argv);
+int32_t pbwtBuildPrefix(int32_t argc, char** argv);
+
+int32_t cpgHMM(int32_t argc, char** argv);
 
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
 int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
-
-// int32_t cmdIBS0Bridge(int32_t argc, char** argv); // zz
-int32_t mapPt2Interval(int32_t argc, char** argv);
-
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
-
-int32_t pbwtBuildSuffix(int32_t argc, char** argv);
-int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 int32_t hapIBDpbwtLeft(int32_t argc, char** argv);
 int32_t hapIBDpbwtRight(int32_t argc, char** argv);
 int32_t hapIBDpairwise(int32_t argc, char** argv);
-
 int32_t HaplotypeChangeAtPt(int32_t argc, char** argv);
-
 int32_t HapibdVSnoibs0(int32_t argc, char** argv);
-
-// int32_t IBS0Phase(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
 int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
 int32_t IBS0PhaseForward(int32_t argc, char** argv);
@@ -175,12 +169,13 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
     LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")
 
-LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
-LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
-LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
-LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
+    LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
+    LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
+    LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
+    LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
 
-LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
+    LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
+    LONG_COMMAND("cpg-cthmm",&cpgHMM, "HMM for cpg methylation status")
 
     LONG_COMMAND("test",&test, "Test")
     LONG_COMMAND("temp",&temp, "Temporary script")
@@ -190,8 +185,7 @@ LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
   cl.Add(new longCommands("Available Commands", longCommandlines));
 
   if ( argc < 2 ) {
-    // fprintf(stderr, " Copyright (c) 2009-2017 by Hyun Min Kang and Adrian Tan\n");
-    fprintf(stderr, " Licensed under the Apache License v2.0 http://www.apache.org/licenses/\n\n");
+    fprintf(stderr, "Based on tools developed by Hyun Min Kang and Adrian Tan\n");
     fprintf(stderr, "To run a specific command      : %s [command] [options]\n",argv[0]);
     fprintf(stderr, "For detailed instructions, run : %s --help\n",argv[0]);
     cl.Status();

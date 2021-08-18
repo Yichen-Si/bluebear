@@ -84,4 +84,22 @@ inline bool file_exists (const std::string& name) {
   return (stat (name.c_str(), &buffer) == 0);
 }
 
+/**
+ * Simple binary search, return index argmax arr[index] <= x.
+ */
+template<typename T>
+int32_t binarySearch(std::vector<T> & arr, int32_t l, int32_t r, T x)
+{
+    if (r > l) {
+        int32_t mid = l + (r - l) / 2;
+        if (arr[mid+1] > x && arr[mid] <= x)
+            return mid;
+        if (arr[mid] > x)
+            return binarySearch(arr, l, mid - 1, x);
+        return binarySearch(arr, mid + 1, r, x);
+    }
+    return r;
+}
+
+
 #endif

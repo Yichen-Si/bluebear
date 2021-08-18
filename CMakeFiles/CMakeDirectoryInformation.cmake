@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/home/s.yichen.si/efs/tool/bluebear")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/s.yichen.si/efs/tool/bluebear")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/mnt/efs/users/yichen.si/tool/bluebear")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

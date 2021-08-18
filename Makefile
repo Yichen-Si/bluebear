@@ -54,7 +54,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /home/s.yichen.si/efs/tool/bluebear
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/s.yichen.si/efs/tool/bluebear
+CMAKE_BINARY_DIR = /mnt/efs/users/yichen.si/tool/bluebear
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -83,9 +83,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/s.yichen.si/efs/tool/bluebear/CMakeFiles /home/s.yichen.si/efs/tool/bluebear/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/efs/users/yichen.si/tool/bluebear/CMakeFiles /mnt/efs/users/yichen.si/tool/bluebear/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/s.yichen.si/efs/tool/bluebear/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/efs/users/yichen.si/tool/bluebear/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -1044,6 +1044,60 @@ src/compact_matrix.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/compact_matrix.cpp.s
 .PHONY : src/compact_matrix.cpp.s
 
+src/cpghmm.o: src/cpghmm.cpp.o
+
+.PHONY : src/cpghmm.o
+
+# target to build an object file
+src/cpghmm.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cpghmm.cpp.o
+.PHONY : src/cpghmm.cpp.o
+
+src/cpghmm.i: src/cpghmm.cpp.i
+
+.PHONY : src/cpghmm.i
+
+# target to preprocess a source file
+src/cpghmm.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cpghmm.cpp.i
+.PHONY : src/cpghmm.cpp.i
+
+src/cpghmm.s: src/cpghmm.cpp.s
+
+.PHONY : src/cpghmm.s
+
+# target to generate assembly for a file
+src/cpghmm.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cpghmm.cpp.s
+.PHONY : src/cpghmm.cpp.s
+
+src/cthmm.o: src/cthmm.cpp.o
+
+.PHONY : src/cthmm.o
+
+# target to build an object file
+src/cthmm.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cthmm.cpp.o
+.PHONY : src/cthmm.cpp.o
+
+src/cthmm.i: src/cthmm.cpp.i
+
+.PHONY : src/cthmm.i
+
+# target to preprocess a source file
+src/cthmm.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cthmm.cpp.i
+.PHONY : src/cthmm.cpp.i
+
+src/cthmm.s: src/cthmm.cpp.s
+
+.PHONY : src/cthmm.s
+
+# target to generate assembly for a file
+src/cthmm.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/cthmm.cpp.s
+.PHONY : src/cthmm.cpp.s
+
 src/filter.o: src/filter.cpp.o
 
 .PHONY : src/filter.o
@@ -1965,6 +2019,12 @@ help:
 	@echo "... src/compact_matrix.o"
 	@echo "... src/compact_matrix.i"
 	@echo "... src/compact_matrix.s"
+	@echo "... src/cpghmm.o"
+	@echo "... src/cpghmm.i"
+	@echo "... src/cpghmm.s"
+	@echo "... src/cthmm.o"
+	@echo "... src/cthmm.i"
+	@echo "... src/cthmm.s"
 	@echo "... src/filter.o"
 	@echo "... src/filter.i"
 	@echo "... src/filter.s"
