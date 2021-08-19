@@ -10,6 +10,8 @@
 #include <cmath>
 #include <cfloat>
 #include <iostream>
+// #include "brent.hpp"
+#include "brent_obj.h"
 
 #include <Eigen/Dense>
 using Eigen::MatrixXd;
@@ -28,6 +30,8 @@ public:
     ArrayXd theta, init_state_prob, max_ll;
     Eigen::Array<int8_t,Eigen::Dynamic,Eigen::Dynamic> phi;
     std::vector<int8_t> viterbi_path;
+    double loo_post, loo_map, viterbi_ll;
+    ArrayXd update_size = ArrayXd::Zero(3);
 
     cthmm(std::vector<int32_t>& _obs, std::vector<float>& _dist, double _s,
           std::vector<double>& _scale, ArrayXXd _A, ArrayXXd _E, ArrayXd _pi ) :
@@ -45,8 +49,17 @@ public:
           }
     void forward();
     void backward();
-    void EM( int32_t max_iter_EM = 20, int32_t max_iter_NR = 20, double tol = 1e-8 );
+    void update_matrix();
+    void EM( int32_t max_iter_EM = 20, int32_t max_iter_inner = 20, double tol_EM = 1e-8, double tol_inner = 1e-8, int32_t optim_method = 0 );
+    void mixed_optim( int32_t max_iter = 20, int32_t max_iter_inner = 20, double tol = 1e-8,  double tol_inner = 1e-3);
+    double min_obj_theta_indivisual(int32_t state_idx, double x);
+    double optim_brent_theta_individual(int32_t state_idx, int32_t max_iter, double tol);
+    void min_obj_theta(ArrayXd x, ArrayXd& res);
+    void optim_brent_theta(int32_t max_iter, double tol, ArrayXd& arg);
+    void NewtonRaphson(int32_t max_iter_inner, double tol_inner, ArrayXd& theta_new);
     void leave_one_out();
+    void leave_one_out_composite_posterior();
+    void leave_one_out_composite_map();
     void viterbi();
 };
 

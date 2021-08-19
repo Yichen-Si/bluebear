@@ -288,6 +288,33 @@ src/bp2cm.cpp.s:
 	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/bp2cm.cpp.s
 .PHONY : src/bp2cm.cpp.s
 
+src/brent.o: src/brent.cpp.o
+
+.PHONY : src/brent.o
+
+# target to build an object file
+src/brent.cpp.o:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/brent.cpp.o
+.PHONY : src/brent.cpp.o
+
+src/brent.i: src/brent.cpp.i
+
+.PHONY : src/brent.i
+
+# target to preprocess a source file
+src/brent.cpp.i:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/brent.cpp.i
+.PHONY : src/brent.cpp.i
+
+src/brent.s: src/brent.cpp.s
+
+.PHONY : src/brent.s
+
+# target to generate assembly for a file
+src/brent.cpp.s:
+	$(MAKE) -f CMakeFiles/bluebear.dir/build.make CMakeFiles/bluebear.dir/src/brent.cpp.s
+.PHONY : src/brent.cpp.s
+
 src/cmd_dge_shuffle.o: src/cmd_dge_shuffle.cpp.o
 
 .PHONY : src/cmd_dge_shuffle.o
@@ -1935,6 +1962,9 @@ help:
 	@echo "... src/bp2cm.o"
 	@echo "... src/bp2cm.i"
 	@echo "... src/bp2cm.s"
+	@echo "... src/brent.o"
+	@echo "... src/brent.i"
+	@echo "... src/brent.s"
 	@echo "... src/cmd_dge_shuffle.o"
 	@echo "... src/cmd_dge_shuffle.i"
 	@echo "... src/cmd_dge_shuffle.s"

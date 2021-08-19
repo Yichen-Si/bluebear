@@ -33,6 +33,7 @@ set(bluebear_SOURCES src/bluebear.cpp
 	src/cmd_tsv_annotate_context.cpp
     src/cmd_fa_cpg.cpp
     src/utils.cpp
+    src/brent.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp
     src/cmd_vcf_sfs.cpp
@@ -106,6 +107,8 @@ set(bluebear_HEADERS src/cramore.h
     src/reference_sequence.h
     src/tsv_reader.h
     src/utils.h
+    src/brent.hpp
+    src/brent_obj.h
 	src/fa_reader.h
 	src/seq_basics.h
     src/cm2bp.h

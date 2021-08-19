@@ -276,6 +276,34 @@ fstream
 algorithm
 -
 
+/home/s.yichen.si/efs/tool/bluebear/src/brent.cpp
+cmath
+-
+cstdlib
+-
+ctime
+-
+iostream
+-
+brent.hpp
+/home/s.yichen.si/efs/tool/bluebear/src/brent.hpp
+
+/home/s.yichen.si/efs/tool/bluebear/src/brent.hpp
+vector
+-
+
+/home/s.yichen.si/efs/tool/bluebear/src/brent_obj.h
+vector
+-
+cmath
+-
+cstdlib
+-
+ctime
+-
+iostream
+-
+
 /home/s.yichen.si/efs/tool/bluebear/src/cm2bp.h
 utils.h
 /home/s.yichen.si/efs/tool/bluebear/src/utils.h
@@ -797,6 +825,8 @@ cfloat
 -
 iostream
 -
+brent_obj.h
+/home/s.yichen.si/efs/tool/bluebear/src/brent_obj.h
 Eigen/Dense
 -
 
@@ -1337,10 +1367,16 @@ fa_reader.h
 /home/s.yichen.si/efs/tool/bluebear/src/fa_reader.h
 seq_basics.h
 /home/s.yichen.si/efs/tool/bluebear/src/seq_basics.h
+iostream
+-
 fstream
 /home/s.yichen.si/efs/tool/bluebear/src/fstream
 sstream
 /home/s.yichen.si/efs/tool/bluebear/src/sstream
+cmath
+-
+brent.hpp
+/home/s.yichen.si/efs/tool/bluebear/src/brent.hpp
 
 /home/s.yichen.si/efs/tool/bluebear/src/trio_phase.cpp
 bcf_filter_arg.h

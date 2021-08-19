@@ -3,10 +3,30 @@
 #include "utils.h"
 #include "fa_reader.h"
 #include "seq_basics.h"
+#include <iostream>
 #include "fstream"
 #include "sstream"
 
+#include <cmath>
+#include "brent.hpp"
+
 int32_t test(int32_t argc, char** argv) {
+
+    double a = 0, b = 2, v = 0;
+    int32_t status = 0;
+    double arg = brent::local_min_rc (a,b,status,v);
+    v = arg*(arg-2);
+    int32_t max_iter = 100;
+    int32_t n_iter = 0;
+    while (status > 0 && n_iter < max_iter) {
+        arg = brent::local_min_rc (a,b,status,v);
+        v = arg*(arg-2);
+        n_iter++;
+    }
+    printf("After %d iterations. Final output: a=%.3f, b=%.3f, arg=%.3f, value=%.3f\n", n_iter, a, b, arg, v);
+
+
+
     // std::string inFa, out, chrom;
     // int32_t start = 0, end = -1;
     // int32_t kmer = 9, kmer0 = 3;

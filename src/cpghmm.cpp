@@ -16,15 +16,16 @@ using Eigen::ArrayXXd;
 // Goal: HMM for methylation status of CpG sites
 int32_t cpgHMM(int32_t argc, char** argv) {
     std::string inTsv, initEmis, initTrans, reg, out, chrom;
-    int32_t max_iter_EM = 20, max_iter_NR = 20;
-    double  tol_EM = 1e-6;
+    int32_t max_iter_outer = 20, max_iter_inner = 20;
+    double  tol_outer = 1e-6, tol_inner = 1e-6;
     int32_t start, end, st, ed, n_sample;
     int32_t n_state, n_obs;
-    int32_t chunk_size = (int) 1e6;
+    double  chunk_size_double = 1e6;
     int32_t min_obs = (int) 1e4;
     int32_t ac_column = 6, pos_column = 2;
     bool    output_full_likelihood = 1, output_viterbi = 1, output_leave_one_out = 1;
     double  dist_scale = 1e-3;
+    bool    optim_EM = 1;
 
   paramList pl;
     BEGIN_LONG_PARAMS(longParameters)
@@ -38,10 +39,13 @@ int32_t cpgHMM(int32_t argc, char** argv) {
     LONG_STRING_PARAM("init-transition",&initTrans,"Input file containing initial transition scale and transition probabilities for each state")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
-    LONG_INT_PARAM("max-iter-EM",&max_iter_EM,"Maximun iterations of EM")
-    LONG_INT_PARAM("max-iter-NR",&max_iter_NR,"Maximun iterations of Newton's method inside each EM iteration")
-    LONG_DOUBLE_PARAM("tol",&tol_EM,"Tolerance to declare convergence in EM")
+    LONG_INT_PARAM("max-iter-outer",&max_iter_outer,"Maximun iterations of EM")
+    LONG_INT_PARAM("max-iter-inner",&max_iter_inner,"Maximun iterations of Newton's method inside each EM iteration")
+    LONG_DOUBLE_PARAM("tol-outer",&tol_outer,"Tolerance to declare convergence in EM")
+    LONG_DOUBLE_PARAM("tol-inner",&tol_inner,"Tolerance to declare convergence in nuemerical optimization transition rate (evaluated in scale, unit kb)")
     LONG_DOUBLE_PARAM("min-obs",&min_obs,"Minimum observation in a block")
+    LONG_DOUBLE_PARAM("chunk-size",&chunk_size_double,"Maximun window to process at one time")
+    LONG_INT_PARAM("optim-EM",&optim_EM,"If use EM as parameter learning method")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -57,6 +61,7 @@ int32_t cpgHMM(int32_t argc, char** argv) {
 if ( inTsv.empty() || reg.empty() || initTrans.empty() || initEmis.empty() || out.empty() ) {
     error("[E:%s:%d %s] --in-tsv, --region, --init-emission, --init-transition, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
 }
+Eigen::IOFormat MtxTsvFmt(4, Eigen::DontAlignCols, "\t", "\n");
 
 std::string line;
 std::vector<std::string> v;
@@ -105,13 +110,13 @@ for (int32_t i = 0; i < n_state; ++i) {
     printf("%.1f\t", trans_scale[i]);
     for (int32_t j = 0; j < n_state; ++j) {
         Amtx(i,j) = Amtx_v[i][j];
-        printf("%.3f\t", Amtx(i,j) );
     }
-    printf("Row sum: %.2f\n", Amtx.row(i).sum());
+    Amtx(i,i) = 0;
     Amtx.row(i) /= Amtx.row(i).sum();
     trans_scale[i] *= dist_scale;
 }
 init_prob /= init_prob.sum();
+std::cout << '\n' << Amtx.format(MtxTsvFmt) << '\n';
 
 // Emission
 rf.open(initEmis, std::ifstream::in);
@@ -146,18 +151,13 @@ for (int32_t i = 0; i < n_state; ++i) {
     for (int32_t j = 0; j < n_category; ++j) {
         Emtx(i,j) = Emtx_v[i][j];
     }
+    Emtx.row(i) /= Emtx.row(i).sum();
 }
 printf ("Read %ld states and %ld observation categories from initial emission parameters.\n", Emtx.rows(), Emtx.cols() );
-VectorXd Erowsum = Emtx.rowwise().sum();
-for (int32_t i = 0; i < n_state; ++i) {
-    Emtx.row(i) /= Erowsum[i];
-    for (int32_t j = 0; j < n_category; ++j) {
-        printf("%.3f\t", Emtx(i,j));
-    }
-    printf("Row sum: %.2f\n", Erowsum[i]);
-}
+std::cout << Emtx.format(MtxTsvFmt) << '\n';
 
 // Read input observaitons
+int32_t  chunk_size = (int) chunk_size_double;
 std::vector<int32_t> position;
 std::vector<float> distance;
 std::vector<int32_t> obs;
@@ -165,9 +165,8 @@ st = start;
 ed = end;
 if (end - start > chunk_size) {
     ed = st+chunk_size-1;
-} else {
-    ed = end;
 }
+printf("%s:%d-%d\n", chrom.c_str(), st, ed);
 tsv_reader tr = (inTsv.c_str());
 tr.jump_to(chrom.c_str(), st, ed);
 std::map<int32_t, int32_t > ac_cut_ct;
@@ -205,20 +204,22 @@ if (*(std::min_element(distance.begin(), distance.end())) < 0) {
 notice("Initializing HMM object");
 cthmm hmm_obj(obs, distance, dist_scale, trans_scale, Amtx, Emtx, init_prob);
 // EM
-notice("Start EM");
-hmm_obj.EM(max_iter_EM, max_iter_NR, tol_EM);
+notice("Start parameter learning");
+if (optim_EM) {
+    hmm_obj.EM(max_iter_outer, max_iter_inner, tol_outer, tol_inner);
+} else {
+    hmm_obj.mixed_optim(max_iter_outer, max_iter_inner, tol_outer, tol_inner);
+}
 // Final
-notice("Finish EM, start LOO");
+notice("Finish parameter learning, start final LOO");
 hmm_obj.leave_one_out();
 notice("Finish LOO, start Viterbi");
 hmm_obj.viterbi();
 notice("Finish Viterbi");
 
 // Output
-Eigen::IOFormat MtxTsvFmt(4, Eigen::DontAlignCols, "\t", "\n");
 std::ofstream mf;
 std::string outf;
-std::stringstream ss;
 // Output parameters
 outf = out + ".transition.tsv";
 mf.open(outf.c_str(), std::ofstream::out);
@@ -248,19 +249,30 @@ for (int32_t i = 0; i < n_state; ++i) {
 }
 mf.close();
 
-// Output Viterbi path. chr,st,ed,state
+// Output Viterbi path. chr,st,ed,state,n_obs,collapsed SFS
 if (output_viterbi) {
     FILE *wf;
     outf = out + ".viterbi";
     wf = fopen(outf.c_str(), "w");
     int32_t v_st = position[0] - 1;
+    int32_t n_tot = 0;
+    std::vector<int32_t> sfs_window(n_category, 0);
     int8_t  v_state = hmm_obj.viterbi_path[0];
     for (int32_t i = 1; i < n_obs; ++i) {
         if (hmm_obj.viterbi_path[i] != v_state) {
-            fprintf(wf, "%s\t%d\t%d\t%d\n", chrom.c_str(), v_st, position[i-1], v_state);
+            std::stringstream ss;
+            ss << sfs_window[0];
+            for (int32_t j = 1; j < n_category; ++j) {
+                ss << ',' << sfs_window[j];
+            }
+            fprintf(wf, "%s\t%d\t%d\t%d\t%d\t%s\n", chrom.c_str(), v_st, position[i-1], n_tot, v_state,ss.str().c_str());
             v_state = hmm_obj.viterbi_path[i];
             v_st = position[i] - 1;
+            n_tot = 0;
+            std::fill(sfs_window.begin(), sfs_window.end(), 0);
         }
+        n_tot++;
+        sfs_window[obs[i]]++;
     }
     fclose(wf);
 }

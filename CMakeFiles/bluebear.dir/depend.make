@@ -118,6 +118,9 @@ CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/params.h
 CMakeFiles/bluebear.dir/src/bp2cm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/utils.h
 
+CMakeFiles/bluebear.dir/src/brent.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/brent.cpp
+CMakeFiles/bluebear.dir/src/brent.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/brent.hpp
+
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/bgzf.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/faidx.h
 CMakeFiles/bluebear.dir/src/cmd_dge_shuffle.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/hts.h
@@ -889,6 +892,7 @@ CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/..
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/vcf.h
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/vcfutils.h
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/Error.h
+CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/brent_obj.h
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/cpghmm.cpp
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/cramore.h
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/cthmm.h
@@ -1144,6 +1148,7 @@ CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /mnt/efs/users/yichen.si/tool/eigen/Ei
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /mnt/efs/users/yichen.si/tool/eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 CMakeFiles/bluebear.dir/src/cpghmm.cpp.o: /mnt/efs/users/yichen.si/tool/eigen/Eigen/src/plugins/ReshapedMethods.h
 
+CMakeFiles/bluebear.dir/src/cthmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/brent_obj.h
 CMakeFiles/bluebear.dir/src/cthmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/cthmm.cpp
 CMakeFiles/bluebear.dir/src/cthmm.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/cthmm.h
 CMakeFiles/bluebear.dir/src/cthmm.cpp.o: /mnt/efs/users/yichen.si/tool/eigen/Eigen/Cholesky
@@ -2040,6 +2045,7 @@ CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/vcf.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/../htslib/include/htslib/vcfutils.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/Error.h
+CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/brent.hpp
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/cramore.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/fa_reader.h
 CMakeFiles/bluebear.dir/src/test_hts.cpp.o: /home/s.yichen.si/efs/tool/bluebear/src/genome_interval.h
