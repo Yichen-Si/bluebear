@@ -77,6 +77,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/s.yichen.si/efs/tool/bluebear/../htslib/include"
+  "/home/s.yichen.si/efs/tool/bluebear/../optim/build/include"
   "/mnt/efs/users/yichen.si/tool/eigen"
   )
 

@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/bluebear.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cthmm.cpp.o"
+  "CMakeFiles/bluebear.dir/src/cpghmm.cpp.o"
   "CMakeFiles/bluebear.dir/src/Error.cpp.o"
   "CMakeFiles/bluebear.dir/src/commands.cpp.o"
   "CMakeFiles/bluebear.dir/src/params.cpp.o"
@@ -29,8 +31,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/pbwt_suffix.cpp.o"
   "CMakeFiles/bluebear.dir/src/hap_ibd_pbwt.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibd_around_pt.cpp.o"
-  "CMakeFiles/bluebear.dir/src/cthmm.cpp.o"
-  "CMakeFiles/bluebear.dir/src/cpghmm.cpp.o"
   "CMakeFiles/bluebear.dir/src/trio_phase.cpp.o"
   "CMakeFiles/bluebear.dir/src/ibs0.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_ibs0_flanking.cpp.o"

@@ -58,7 +58,7 @@ void cthmm::update_matrix() {
     Amtx = Amtx_new;
 };
 
-void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, double tol_inner) {
+void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, double tol_inner, int32_t criterion) {
     update_size = ArrayXd::Zero(3) + 1.;
     int32_t n_iter = 0;
     double max_update = 1.;
@@ -66,46 +66,95 @@ void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, do
     forward();
     backward();
     update_matrix();
-    leave_one_out();
-    leave_one_out_composite_map();
-    double ll_prev = loo_map;
+    double ll_old = 0, ll_new = 0;
+    if (criterion == 1) {
+        leave_one_out();
+        leave_one_out_composite_map();
+        ll_old = loo_map;
+    } else if (criterion == 2) {
+        viterbi();
+        ll_old = viterbi_ll;
+    } else {
+        leave_one_out();
+        leave_one_out_composite_posterior();
+        ll_old = loo_post;
+    }
     while ( n_iter < max_iter && max_update > tol ) {
         printf("%d-th iteration.\n", n_iter);
         // transition rate = arg max LOO composite likelihood
         ArrayXd theta_org = theta;
+        ArrayXd theta_new = theta;
         for (int32_t state_idx = 0; state_idx < n_state; ++state_idx) {
             double x1, x2;
-            x1 = theta(state_idx) * 0.3;
-            x2 = theta(state_idx) * 10;
+            x1 = 1./(5e6 * dist_scale);
+            x2 = 1./(1e1 * dist_scale);
             double v = 1., v_prev = 1.;
             BrentObj brent(x1,x2);
             double arg = brent.arg;
             int32_t n_iter_inner = 0;
+            theta = theta_org; // Update each rate separately
             while (brent.status > 0 && n_iter_inner < max_iter_inner) {
                 theta(state_idx) = arg;
                 forward(); backward();
-                leave_one_out(); leave_one_out_composite_map();
-                v = -loo_map;
-                // viterbi();
-                // v = -viterbi_ll;
+                if (criterion == 1) {
+                    leave_one_out();
+                    leave_one_out_composite_map();
+                    v = -loo_map;
+                } else if (criterion == 2) {
+                    viterbi();
+                    v = -viterbi_ll;
+                } else {
+                    leave_one_out();
+                    leave_one_out_composite_posterior();
+                    v = -loo_post;
+                }
                 arg = brent.local_min_rc(x1,x2,v);
                 n_iter_inner++;
                 if (n_iter_inner > 1 && abs(v-v_prev) < tol_inner) {
                     break;
                 }
                 v_prev = v;
-                if (n_iter_inner % 10 == 0 && -v > ll_prev) {
-                    update_matrix();
-                }
-            }
-            ll_prev = -v;
-            printf("Theta_%d - Output after %d iterations: a=%.3f, b=%.3f, arg=%.3f, value=%.3f\n", state_idx, n_iter_inner, x1, x2, arg, v);
+            } // Finish one transition rate
+            theta_new(state_idx) = theta(state_idx);
+            printf("Theta_%d - Output after %d iterations: a=%.3f, b=%.3f, arg=%.3f, value=%.3f\n", state_idx, n_iter_inner, 1./x1, 1./x2, 1./arg, v);
+        } // Finish separate updating each transition rate
+        theta = theta_new;
+        forward(); backward();
+        viterbi();
+        leave_one_out();
+        leave_one_out_composite_map();
+        leave_one_out_composite_posterior();
+        if (criterion == 1) {
+            ll_new = loo_map;
+        } else if (criterion == 2) {
+            ll_new = viterbi_ll;
+        } else {
+            ll_new = loo_post;
         }
-        std::cout << "Emtx\n" << Emtx.format(MtxFmt) << '\n';
-        std::cout << "Amtx\n" << Amtx.format(MtxFmt) << '\n';
-        std::cout << "Scale(bp):\t" << (theta.inverse().transpose()/dist_scale).format(MtxFmt) << '\n';
-        update_size(0) = (theta - theta_org).abs().maxCoeff();
-        max_update = update_size.maxCoeff();
+        History* rec = new History();
+        rec->iter = n_iter;
+        rec->failed = (ll_new > ll_old) ? 0 : 1;
+        rec->loo_map = loo_map;
+        rec->loo_post = loo_post;
+        rec->viterbi_ll = viterbi_ll;
+        rec->theta = theta_new;
+        track.push_back(rec);
+        if (ll_new > ll_old) {
+            update_matrix();
+            printf("Ascent succeed in the %d-th iteration - ll_new=%.3f, ll_old=%.3f, difference=%.2f\n", n_iter, ll_new, ll_old, ll_new-ll_old);
+            std::cout << "Emtx\n" << Emtx.format(MtxFmt) << '\n';
+            std::cout << "Amtx\n" << Amtx.format(MtxFmt) << '\n';
+            std::cout << "Scale(bp):\t" << (theta.inverse().transpose()/dist_scale).format(MtxFmt) << '\n';
+            update_size(0) = (theta - theta_org).abs().maxCoeff();
+            max_update = update_size.maxCoeff();
+            ll_old = ll_new;
+        } else {
+            theta = theta_org; // failed, roll back to previous state
+            forward();
+            backward();
+            update_matrix();
+            max_update = 1.;
+        }
         n_iter++;
     }
 };
@@ -179,23 +228,16 @@ void cthmm::min_obj_theta(ArrayXd x, ArrayXd& res) {
 
 void cthmm::optim_brent_theta(int32_t max_iter, double tol, ArrayXd& arg) {
     // Optimize a single transition rate
-    ArrayXd x1(n_state);
-    ArrayXd x2(n_state);
+    ArrayXd x1 = ArrayXd::Zero(n_state) + 1./(5e6*dist_scale);
+    ArrayXd x2 = ArrayXd::Zero(n_state) + 1./(1e2*dist_scale);
     ArrayXd v = ArrayXd::Zero(n_state) + 1.;
     ArrayXd v_prev = v;
     std::vector<BrentObj*> brent_v;
-    x1 = theta / 2.;
-    x2 = theta * 2.;
     Eigen::IOFormat VecFmt(5, Eigen::DontAlignCols, "\t", "\t");
-    std::cout << "Initial boundary\n";
-    std::cout << (x1.inverse()/dist_scale).format(VecFmt) << ",\t";
-    std::cout << (x2.inverse()/dist_scale).format(VecFmt) << '\n';
     for (int32_t i = 0; i < n_state; ++i) {
-        // x1(i) = 1./(2e6 * dist_scale);
-        // x2(i) = 1./(2e1 * dist_scale);
         BrentObj* bt = new BrentObj(x1(i), x2(i));
-        brent_v.push_back(bt);
         arg(i) = bt->arg;
+        brent_v.push_back(bt);
     }
     int32_t n_iter = 0, status = 1;
     while (status > 0 && n_iter < max_iter) {
@@ -210,7 +252,6 @@ void cthmm::optim_brent_theta(int32_t max_iter, double tol, ArrayXd& arg) {
             break;
         }
         v_prev = v;
-        std::cout << (arg.inverse()/dist_scale).format(VecFmt) << '\n';
     }
     printf("Partial Q value for theta after %d iterations: ", n_iter);
     std::cout << (-v).format(VecFmt) << '\n';
@@ -229,11 +270,6 @@ void cthmm::EM(int32_t max_iter_EM, int32_t max_iter_inner, double tol_EM, doubl
         printf("%d-th iteration, E step...\n", n_iter);
         forward();
         backward();
-        if ((n_iter+1) % 5 == 0) {
-            leave_one_out();
-            leave_one_out_composite_map();
-            printf("LOO composite likelihood after %d iterations: %.2f\n", n_iter, loo_map);
-        }
         // M-step
         printf("%d-th iteration, M step...\n", n_iter);
         // 2.2 update transition rate
@@ -244,15 +280,28 @@ void cthmm::EM(int32_t max_iter_EM, int32_t max_iter_inner, double tol_EM, doubl
             NewtonRaphson(max_iter_inner, tol_inner, theta_new);
         }
         update_size(0) = (theta_new - theta).abs().maxCoeff();
-        std::cout << "Scale(bp):\t" << (theta_new.inverse().transpose()/dist_scale).format(MtxFmt) << '\n';
+        std::cout << "Scale(kb):\t" << (theta_new.inverse().transpose()).format(MtxFmt) << '\n';
         // Update emisstion & transition conditional probabilities
         update_matrix();
         max_update = update_size.maxCoeff();
         theta = theta_new;
         n_iter++;
-        if (n_iter % 5 == 0) {
+        if (n_iter % record_freq == 0) {
             std::cout << "Emtx\n" << Emtx.format(MtxFmt) << '\n';
             std::cout << "Amtx\n" << Amtx.format(MtxFmt) << '\n';
+            viterbi();
+            leave_one_out();
+            leave_one_out_composite_map();
+            leave_one_out_composite_posterior();
+            printf("\nLOO composite likelihood after %d iterations: %.2f\n", n_iter, loo_map);
+            History* rec = new History();
+            rec->iter = n_iter;
+            rec->failed = 0;
+            rec->loo_map = loo_map;
+            rec->loo_post = loo_post;
+            rec->viterbi_ll = viterbi_ll;
+            rec->theta = theta;
+            track.push_back(rec);
         }
     }
 };
@@ -388,4 +437,83 @@ void cthmm::NewtonRaphson(int32_t max_iter_inner, double tol_inner, ArrayXd& the
         n_iter_inner++;
     }
     printf("%d iterations of N-R are used, last scale change is %.3e.\n", n_iter_inner, theta_inv_delta.maxCoeff());
+};
+
+
+
+double obj_map_wrap(const VectorXd& vals_inp, VectorXd* grad_out, void* opt_data)
+{
+std::cout << "Evaluation...\t";
+    cthmm* hmm = (cthmm*) opt_data;
+    hmm->theta = vals_inp.array().inverse();
+    hmm->forward();
+    hmm->backward();
+    hmm->leave_one_out();
+    hmm->leave_one_out_composite_map();
+    double obj_val = hmm->loo_map;
+std::cout << obj_val << "\n";
+    return -obj_val;
+}
+
+void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol) {
+    // Use Nelder-Mead to optimize transition rate parameters
+    int32_t n_iter = 0, n_iter_improved = 0;
+    double max_update = 1.;
+    Eigen::IOFormat MtxFmt(3, Eigen::DontAlignCols, "\t", "\n");
+    hmm_obj->forward();
+    hmm_obj->backward();
+    hmm_obj->update_matrix();
+    hmm_obj->leave_one_out();
+    hmm_obj->leave_one_out_composite_map();
+    double ll_old = hmm_obj->loo_map, ll_new = 0;
+    double ll_older = ll_old;
+    while ( n_iter < max_iter && max_update > tol ) {
+        // transition rate = arg max LOO composite likelihood
+        ArrayXd theta_org = hmm_obj->theta;
+        VectorXd theta = (hmm_obj->theta).inverse().matrix();
+        bool nm_success = optim::nm(theta, obj_map_wrap, hmm_obj);
+        printf("%d-th iteration. Nelder-Mead for theta exit %d.\n", n_iter, nm_success);
+        hmm_obj->viterbi();
+        hmm_obj->leave_one_out_composite_posterior();
+        ll_new = hmm_obj->loo_map;
+        History* rec = new History();
+        rec->iter = n_iter;
+        rec->failed = (ll_new > ll_old) ? 0 : 1;
+        rec->loo_map = hmm_obj->loo_map;
+        rec->loo_post = hmm_obj->loo_post;
+        rec->viterbi_ll = hmm_obj->viterbi_ll;
+        rec->theta = hmm_obj->theta;
+        hmm_obj->track.push_back(rec);
+        if (ll_new > ll_old) {
+            hmm_obj->update_matrix();
+            printf("Ascent succeed in the %d-th iteration - ll_new=%.3f, ll_old=%.3f, difference=%.2f\n", n_iter, ll_new, ll_old, ll_new-ll_old);
+            n_iter_improved++;
+            std::cout << "Emtx\n" << (hmm_obj->Emtx).format(MtxFmt) << '\n';
+            std::cout << "Amtx\n" << (hmm_obj->Amtx).format(MtxFmt) << '\n';
+            std::cout << "Scale(kb):\t" << ((hmm_obj->theta).inverse().transpose()).format(MtxFmt) << '\n';
+            hmm_obj->update_size(0) = (theta.array().inverse() - theta_org).abs().maxCoeff();
+            max_update = (hmm_obj->update_size).maxCoeff();
+            ll_old = ll_new;
+        } else {
+            printf("Ascent failed in the %d-th iteration - ll_new=%.3f, ll_old=%.3f, difference=%.2f\n", n_iter, ll_new, ll_old, ll_new-ll_old);
+            hmm_obj->theta = theta_org; // failed, roll back to previous state
+            hmm_obj->forward();
+            hmm_obj->backward();
+            hmm_obj->update_matrix();
+            max_update = 1.;
+        }
+        n_iter++;
+    }
+    printf("Finish %d iterations, %d increase LOO MAP - ll_new=%.3f, ll_original=%.3f, difference=%.2f\n", n_iter, n_iter_improved, ll_new, ll_older, ll_new-ll_older);
+};
+
+// Box constrain
+VectorXd constr_fn(const VectorXd& vals_inp, MatrixXd* jacob_out, void* constr_data) {
+    std::cout << "Box...\n";
+    Box* bound = (Box*) constr_data;
+    VectorXd box(vals_inp.rows());
+    for (int32_t i = 0; i < (int32_t) box.rows(); ++i) {
+        box(i) = (vals_inp(i)-bound->lower(i))*(bound->upper(i)-vals_inp(i));
+    }
+    return box;
 };

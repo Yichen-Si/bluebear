@@ -25,7 +25,8 @@ int32_t cpgHMM(int32_t argc, char** argv) {
     int32_t ac_column = 6, pos_column = 2;
     bool    output_full_likelihood = 1, output_viterbi = 1, output_leave_one_out = 1;
     double  dist_scale = 1e-3;
-    bool    optim_EM = 1;
+    bool    optim_EM = 0, optim_NM = 0;
+    int32_t mixed_optim_criterion = 0;
 
   paramList pl;
     BEGIN_LONG_PARAMS(longParameters)
@@ -45,7 +46,9 @@ int32_t cpgHMM(int32_t argc, char** argv) {
     LONG_DOUBLE_PARAM("tol-inner",&tol_inner,"Tolerance to declare convergence in nuemerical optimization transition rate (evaluated in scale, unit kb)")
     LONG_DOUBLE_PARAM("min-obs",&min_obs,"Minimum observation in a block")
     LONG_DOUBLE_PARAM("chunk-size",&chunk_size_double,"Maximun window to process at one time")
+    LONG_INT_PARAM("optim-NM",&optim_NM,"If use Nelder-Mead to (jointly) search for transition rates")
     LONG_INT_PARAM("optim-EM",&optim_EM,"If use EM as parameter learning method")
+    LONG_INT_PARAM("optim-likelihood-criterion",&mixed_optim_criterion,"Objective for non-EM optim. 0 (default) for LOO posterior mean, 1 for LOO MAP, 2 for viterbi ML")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -202,24 +205,33 @@ if (*(std::min_element(distance.begin(), distance.end())) < 0) {
 
 // Initialize HMM object
 notice("Initializing HMM object");
-cthmm hmm_obj(obs, distance, dist_scale, trans_scale, Amtx, Emtx, init_prob);
-// EM
+cthmm* hmm_obj = new cthmm(obs, distance, dist_scale, trans_scale, Amtx, Emtx, init_prob);
+// Optimization
 notice("Start parameter learning");
-if (optim_EM) {
-    hmm_obj.EM(max_iter_outer, max_iter_inner, tol_outer, tol_inner);
+if (optim_NM) {
+    nm_loo_map_optim(hmm_obj, max_iter_outer, tol_outer);
+} else if (optim_EM) {
+    hmm_obj->EM(max_iter_outer, max_iter_inner, tol_outer, tol_inner);
 } else {
-    hmm_obj.mixed_optim(max_iter_outer, max_iter_inner, tol_outer, tol_inner);
+    hmm_obj->mixed_optim(max_iter_outer, max_iter_inner, tol_outer, tol_inner, mixed_optim_criterion);
 }
 // Final
 notice("Finish parameter learning, start final LOO");
-hmm_obj.leave_one_out();
+hmm_obj->leave_one_out();
 notice("Finish LOO, start Viterbi");
-hmm_obj.viterbi();
+hmm_obj->viterbi();
 notice("Finish Viterbi");
+
+hmm_obj->leave_one_out_composite_map();
+hmm_obj->leave_one_out_composite_posterior();
+notice("(Composite) likelihood based on LOO MAP: %.3f\n", hmm_obj->loo_map);
+notice("(Composite) likelihood based on LOO posterior: %.3f\n", hmm_obj->loo_post);
+
 
 // Output
 std::ofstream mf;
 std::string outf;
+
 // Output parameters
 outf = out + ".transition.tsv";
 mf.open(outf.c_str(), std::ofstream::out);
@@ -230,9 +242,9 @@ for (int32_t i = 0; i < n_state; ++i) {
 mf << '\n';
 mf << std::setprecision(4) << std::fixed;
 for (int32_t i = 0; i < n_state; ++i) {
-    mf << std::to_string(i) << '\t' << 1./hmm_obj.theta(i)/dist_scale;
+    mf << std::to_string(i) << '\t' << 1./hmm_obj->theta(i)/dist_scale;
     for (int32_t j = 0; j < n_state; ++j) {
-        mf << '\t' << hmm_obj.Amtx(i, j);
+        mf << '\t' << hmm_obj->Amtx(i, j);
     }
     mf << '\n';
 }
@@ -245,9 +257,28 @@ for (auto & v : ac_cut) {
 }
 mf << '\n';
 for (int32_t i = 0; i < n_state; ++i) {
-    mf << i << '\t' << hmm_obj.Emtx.row(i).format(MtxTsvFmt) << '\n';
+    mf << i << '\t' << (hmm_obj->Emtx).row(i).format(MtxTsvFmt) << '\n';
 }
 mf.close();
+
+// Output LOO history
+outf = out + ".history.tsv";
+FILE *tf;
+tf = fopen(outf.c_str(), "w");
+fprintf(tf,"Iteration\tFailed\tLOO_map\tLOO_avg\tViterbi\tTheta\tScale_kb\n");
+for (auto & ptr : hmm_obj->track) {
+    std::stringstream ss;
+    ss << std::setprecision(5) << std::fixed << ptr->theta(0);
+    for (int32_t i = 1; i < n_state; ++i) {
+        ss << ',' << ptr->theta(i);
+    }
+    ss << '\t' << std::setprecision(1) << std::fixed << 1./(ptr->theta(0));
+    for (int32_t i = 1; i < n_state; ++i) {
+        ss << ',' << 1./(ptr->theta(i));
+    }
+    fprintf(tf, "%d\t%d\t%.2f\t%.2f\t%.2f\t%s\n",ptr->iter,ptr->failed,ptr->loo_map,ptr->loo_post,ptr->viterbi_ll,ss.str().c_str());
+}
+fclose(tf);
 
 // Output Viterbi path. chr,st,ed,state,n_obs,collapsed SFS
 if (output_viterbi) {
@@ -257,16 +288,16 @@ if (output_viterbi) {
     int32_t v_st = position[0] - 1;
     int32_t n_tot = 0;
     std::vector<int32_t> sfs_window(n_category, 0);
-    int8_t  v_state = hmm_obj.viterbi_path[0];
+    int8_t  v_state = hmm_obj->viterbi_path[0];
     for (int32_t i = 1; i < n_obs; ++i) {
-        if (hmm_obj.viterbi_path[i] != v_state) {
+        if (hmm_obj->viterbi_path[i] != v_state) {
             std::stringstream ss;
             ss << sfs_window[0];
             for (int32_t j = 1; j < n_category; ++j) {
                 ss << ',' << sfs_window[j];
             }
             fprintf(wf, "%s\t%d\t%d\t%d\t%d\t%s\n", chrom.c_str(), v_st, position[i-1], n_tot, v_state,ss.str().c_str());
-            v_state = hmm_obj.viterbi_path[i];
+            v_state = hmm_obj->viterbi_path[i];
             v_st = position[i] - 1;
             n_tot = 0;
             std::fill(sfs_window.begin(), sfs_window.end(), 0);
@@ -282,7 +313,7 @@ if (output_full_likelihood) {
     outf = out + ".likelihood";
     mf.open(outf.c_str(), std::ofstream::out);
     for (int32_t i = 0; i < n_obs; ++i) {
-        mf << position[i] << '\t' << hmm_obj.marginal.col(i).transpose().format(MtxTsvFmt) << '\n';
+        mf << position[i] << '\t' << hmm_obj->marginal.col(i).transpose().format(MtxTsvFmt) << '\n';
     }
     mf.close();
 }
@@ -292,7 +323,7 @@ if (output_leave_one_out) {
     outf = out + ".loo";
     mf.open(outf.c_str(), std::ofstream::out);
     for (int32_t i = 0; i < n_obs; ++i) {
-        mf << position[i] << '\t' << hmm_obj.loo.col(i).transpose().format(MtxTsvFmt) << '\n';
+        mf << position[i] << '\t' << hmm_obj->loo.col(i).transpose().format(MtxTsvFmt) << '\n';
     }
     mf.close();
 }

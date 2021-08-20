@@ -3,7 +3,11 @@ project(bluebear)
 
 
 find_package (Eigen3 REQUIRED NO_MODULE HINTS ${CMAKE_SOURCE_DIR}/../eigen/build/)
-include_directories(${CMAKE_SOURCE_DIR}/../htslib/include)
+
+include_directories(${CMAKE_SOURCE_DIR}/../htslib/include ${CMAKE_SOURCE_DIR}/../optim/build/include)
+
+add_library(optim SHARED IMPORTED)
+set_property(TARGET optim PROPERTY IMPORTED_LOCATION  ${CMAKE_SOURCE_DIR}/../optim/build/lib/liboptim.so)
 
 execute_process(COMMAND date OUTPUT_VARIABLE DATE OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND whoami OUTPUT_VARIABLE USER OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -16,6 +20,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pipe -no-pie -D__STDC_LIMIT_
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 set(bluebear_SOURCES src/bluebear.cpp
+    src/cthmm.cpp
+    src/cpghmm.cpp
     src/Error.cpp
     src/commands.cpp
     src/params.cpp
@@ -45,8 +51,7 @@ set(bluebear_SOURCES src/bluebear.cpp
     src/pbwt_suffix.cpp
     src/hap_ibd_pbwt.cpp
     src/ibd_around_pt.cpp
-    src/cthmm.cpp
-    src/cpghmm.cpp
+
     src/trio_phase.cpp
     src/ibs0.cpp
     src/cmd_vcf_ibs0_flanking.cpp
@@ -121,4 +126,4 @@ set(bluebear_HEADERS src/cramore.h
     src/rare_variant_config.h)
 
 add_executable(bluebear ${bluebear_SOURCES} ${bluebear_HEADERS})
-target_link_libraries(bluebear ${CMAKE_SOURCE_DIR}/../htslib/libhts.a Eigen3::Eigen dl pthread lzma z bz2 curl crypto)
+target_link_libraries(bluebear optim ${CMAKE_SOURCE_DIR}/../htslib/libhts.a Eigen3::Eigen dl pthread lzma z bz2 curl crypto)
