@@ -38,7 +38,7 @@ public:
     int32_t n_state, n_obs, n_category, record_freq;
     std::vector<int32_t>& obs;
     std::vector<float>& distance;
-    double dist_scale;
+    double dist_scale, max_scale, min_scale;
     ArrayXXd Amtx, Emtx;
     ArrayXXd alpha, beta, loo, marginal;
     ArrayXd theta, init_state_prob, max_ll;
@@ -62,12 +62,15 @@ public:
               for (int32_t i = 0; i < n_state; ++i) {
                   theta(i) = 1./_scale[i];
               }
+              min_scale = 20 * dist_scale;
+              max_scale = 3e6* dist_scale;
           }
     ~cthmm() {
         for (auto & v : track) {delete v;}
     }
     void forward();
     void backward();
+    void conditional_prob();
     void update_matrix();
     void EM( int32_t max_iter_EM = 20, int32_t max_iter_inner = 20, double tol_EM = 1e-8, double tol_inner = 1e-8, int32_t optim_method = 0);
     void mixed_optim( int32_t max_iter = 20, int32_t max_iter_inner = 20, double tol = 1e-8,  double tol_inner = 1e-3, int32_t criterion = 0);
@@ -84,7 +87,7 @@ public:
 
 // Functions for using optim library for updating \theta
 double obj_map_wrap(const VectorXd& vals_inp, VectorXd* grad_out, void* opt_data);
-void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol);
+void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, int32_t max_iter_inner, double tol, double bound_scale_lower=0.01, double bound_scale_upper=5e3);
 VectorXd constr_fn(const VectorXd& vals_inp, MatrixXd* jacob_out, void* constr_data);
 
 #endif

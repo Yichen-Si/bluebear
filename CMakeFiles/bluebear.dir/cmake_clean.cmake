@@ -66,8 +66,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/bluebear.dir/src/blocks_in_ibs0_info.cpp.o"
   "CMakeFiles/bluebear.dir/src/cmd_vcf_phase_outlier.cpp.o"
   "CMakeFiles/bluebear.dir/src/test_hts.cpp.o"
-  "/home/s.yichen.si/efs/tool/bluebear/bin/bluebear.pdb"
-  "/home/s.yichen.si/efs/tool/bluebear/bin/bluebear"
+  "bin/bluebear.pdb"
+  "bin/bluebear"
 )
 
 # Per-language clean rules from dependency scanning.

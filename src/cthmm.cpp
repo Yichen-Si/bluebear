@@ -26,6 +26,13 @@ void cthmm::backward() {
     }
 };
 
+void cthmm::conditional_prob() {
+    marginal = alpha * beta;
+    for (int32_t t = 0; t < n_obs; ++t) {
+        marginal.col(t) /= marginal.col(t).sum();
+    }
+}
+
 void cthmm::update_matrix() {
     marginal = alpha * beta;
     for (int32_t t = 0; t < n_obs; ++t) {
@@ -79,15 +86,17 @@ void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, do
         leave_one_out_composite_posterior();
         ll_old = loo_post;
     }
-    while ( n_iter < max_iter && max_update > tol ) {
+    double ll_older = ll_old;
+    int32_t n_iter_improved = 0, roll_failed = 0;
+    while ( n_iter < max_iter && max_update > tol && (roll_failed < 2 || n_iter_improved < 2) ) {
         printf("%d-th iteration.\n", n_iter);
         // transition rate = arg max LOO composite likelihood
         ArrayXd theta_org = theta;
         ArrayXd theta_new = theta;
         for (int32_t state_idx = 0; state_idx < n_state; ++state_idx) {
             double x1, x2;
-            x1 = 1./(5e6 * dist_scale);
-            x2 = 1./(1e1 * dist_scale);
+            x1 = 1./max_scale;
+            x2 = 1./min_scale;
             double v = 1., v_prev = 1.;
             BrentObj brent(x1,x2);
             double arg = brent.arg;
@@ -140,6 +149,8 @@ void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, do
         rec->theta = theta_new;
         track.push_back(rec);
         if (ll_new > ll_old) {
+            n_iter_improved++;
+            roll_failed=0;
             update_matrix();
             printf("Ascent succeed in the %d-th iteration - ll_new=%.3f, ll_old=%.3f, difference=%.2f\n", n_iter, ll_new, ll_old, ll_new-ll_old);
             std::cout << "Emtx\n" << Emtx.format(MtxFmt) << '\n';
@@ -149,6 +160,8 @@ void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, do
             max_update = update_size.maxCoeff();
             ll_old = ll_new;
         } else {
+            roll_failed++;
+            printf("Ascent failed (%d-th in a row).\n", roll_failed);
             theta = theta_org; // failed, roll back to previous state
             forward();
             backward();
@@ -157,6 +170,7 @@ void cthmm::mixed_optim(int32_t max_iter, int32_t max_iter_inner, double tol, do
         }
         n_iter++;
     }
+    printf("Finish %d iterations, %d increase likelihood - ll_new=%.3f, ll_original=%.3f, difference=%.2f\n", n_iter, n_iter_improved, ll_new, ll_older, ll_new-ll_older);
 };
 
 
@@ -185,8 +199,8 @@ double cthmm::optim_brent_theta_individual(int32_t state_idx, int32_t max_iter, 
     // Optimize a single transition rate
     double x1, x2;
     // Initial interval to search for local min
-    x1 = 1./(2e6 * dist_scale);
-    x2 = 1./(1e1 * dist_scale);
+    x1 = 1./max_scale;
+    x2 = 1./min_scale;
     double v = 1., v_prev = 1.;
     BrentObj brent(x1,x2);
     double arg = brent.arg;
@@ -228,8 +242,8 @@ void cthmm::min_obj_theta(ArrayXd x, ArrayXd& res) {
 
 void cthmm::optim_brent_theta(int32_t max_iter, double tol, ArrayXd& arg) {
     // Optimize a single transition rate
-    ArrayXd x1 = ArrayXd::Zero(n_state) + 1./(5e6*dist_scale);
-    ArrayXd x2 = ArrayXd::Zero(n_state) + 1./(1e2*dist_scale);
+    ArrayXd x1 = ArrayXd::Zero(n_state) + 1./max_scale;
+    ArrayXd x2 = ArrayXd::Zero(n_state) + 1./min_scale;
     ArrayXd v = ArrayXd::Zero(n_state) + 1.;
     ArrayXd v_prev = v;
     std::vector<BrentObj*> brent_v;
@@ -443,7 +457,6 @@ void cthmm::NewtonRaphson(int32_t max_iter_inner, double tol_inner, ArrayXd& the
 
 double obj_map_wrap(const VectorXd& vals_inp, VectorXd* grad_out, void* opt_data)
 {
-std::cout << "Evaluation...\t";
     cthmm* hmm = (cthmm*) opt_data;
     hmm->theta = vals_inp.array().inverse();
     hmm->forward();
@@ -451,13 +464,17 @@ std::cout << "Evaluation...\t";
     hmm->leave_one_out();
     hmm->leave_one_out_composite_map();
     double obj_val = hmm->loo_map;
-std::cout << obj_val << "\n";
     return -obj_val;
 }
 
-void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol) {
+void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, int32_t max_iter_inner, double tol, double bound_scale_lower, double bound_scale_upper) {
     // Use Nelder-Mead to optimize transition rate parameters
-    int32_t n_iter = 0, n_iter_improved = 0;
+    optim::algo_settings_t settings;
+    settings.iter_max = max_iter_inner;
+    settings.vals_bound = 1;
+    settings.lower_bounds = VectorXd::Constant(hmm_obj->n_state, bound_scale_lower);
+    settings.upper_bounds = VectorXd::Constant(hmm_obj->n_state, bound_scale_upper);
+    int32_t n_iter = 0, n_iter_improved = 0, roll_failed = 0;
     double max_update = 1.;
     Eigen::IOFormat MtxFmt(3, Eigen::DontAlignCols, "\t", "\n");
     hmm_obj->forward();
@@ -467,11 +484,11 @@ void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol) {
     hmm_obj->leave_one_out_composite_map();
     double ll_old = hmm_obj->loo_map, ll_new = 0;
     double ll_older = ll_old;
-    while ( n_iter < max_iter && max_update > tol ) {
+    while ( n_iter < max_iter && max_update > tol && (roll_failed < 2 || n_iter_improved < 2)) {
         // transition rate = arg max LOO composite likelihood
         ArrayXd theta_org = hmm_obj->theta;
         VectorXd theta = (hmm_obj->theta).inverse().matrix();
-        bool nm_success = optim::nm(theta, obj_map_wrap, hmm_obj);
+        bool nm_success = optim::nm(theta, obj_map_wrap, hmm_obj, settings);
         printf("%d-th iteration. Nelder-Mead for theta exit %d.\n", n_iter, nm_success);
         hmm_obj->viterbi();
         hmm_obj->leave_one_out_composite_posterior();
@@ -494,6 +511,7 @@ void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol) {
             hmm_obj->update_size(0) = (theta.array().inverse() - theta_org).abs().maxCoeff();
             max_update = (hmm_obj->update_size).maxCoeff();
             ll_old = ll_new;
+            roll_failed = 0;
         } else {
             printf("Ascent failed in the %d-th iteration - ll_new=%.3f, ll_old=%.3f, difference=%.2f\n", n_iter, ll_new, ll_old, ll_new-ll_old);
             hmm_obj->theta = theta_org; // failed, roll back to previous state
@@ -501,6 +519,7 @@ void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol) {
             hmm_obj->backward();
             hmm_obj->update_matrix();
             max_update = 1.;
+            roll_failed++;
         }
         n_iter++;
     }
@@ -509,7 +528,6 @@ void nm_loo_map_optim(cthmm* hmm_obj, int32_t max_iter, double tol) {
 
 // Box constrain
 VectorXd constr_fn(const VectorXd& vals_inp, MatrixXd* jacob_out, void* constr_data) {
-    std::cout << "Box...\n";
     Box* bound = (Box*) constr_data;
     VectorXd box(vals_inp.rows());
     for (int32_t i = 0; i < (int32_t) box.rows(); ++i) {

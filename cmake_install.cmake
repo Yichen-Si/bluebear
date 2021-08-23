@@ -1,4 +1,4 @@
-# Install script for directory: /home/s.yichen.si/efs/tool/bluebear
+# Install script for directory: /mnt/efs/users/yichen.si/tool/bluebear
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

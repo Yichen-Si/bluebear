@@ -57,7 +57,7 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/s.yichen.si/efs/tool/bluebear
+CMAKE_SOURCE_DIR = /mnt/efs/users/yichen.si/tool/bluebear
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /mnt/efs/users/yichen.si/tool/bluebear
