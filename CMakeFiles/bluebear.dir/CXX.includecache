@@ -1047,8 +1047,6 @@ cramore.h
 /mnt/efs/users/yichen.si/tool/bluebear/src/cramore.h
 tsv_reader.h
 /mnt/efs/users/yichen.si/tool/bluebear/src/tsv_reader.h
-hts_utils.h
-/mnt/efs/users/yichen.si/tool/bluebear/src/hts_utils.h
 utils.h
 /mnt/efs/users/yichen.si/tool/bluebear/src/utils.h
 cthmm.h

@@ -1,6 +1,5 @@
 #include "cramore.h"
 #include "tsv_reader.h"
-#include "hts_utils.h"
 #include "utils.h"
 #include "cthmm.h"
 #include <iomanip>
