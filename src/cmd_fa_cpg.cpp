@@ -85,7 +85,7 @@ int32_t cmdFaCpG(int32_t argc, char** argv) {
 			pos++;
 			word0=seq.substr(i-1,kmer0);
 			if (!if_cpg(word0,1,0)) {continue;}
-				word=seq.substr(i-kmer_pad_left,kmer);
+			word=seq.substr(i-kmer_pad_left,kmer);
 			if ( focal_base_set.find(word[kmer_pad_left]) == focal_base_set.end() ) {
 				word = reverse_complement(word, bpair);
 				word0= word.substr( kmer_pad_left-1, kmer0 );
@@ -191,7 +191,10 @@ int32_t cmdFaCpG_bed(int32_t argc, char** argv) {
 			word0=seq.substr(i-1,kmer0);
 			int32_t strand = which_cpg(word0,1);
 			if (strand == 0) {continue;}
-				word=seq.substr(i-kmer_pad_left,kmer);
+			word=seq.substr(i-kmer_pad_left,kmer);
+			if ( focal_base_set.find(word[kmer_pad_left]) == focal_base_set.end() ) {
+				word0 = reverse_complement(word0, bpair);
+			}
 			hprintf(wf, "%s\t%d\t%d\t%c\t%s\t%s\n", chrom.c_str(), pos, pos+1, strand_label[strand], word0.c_str(), word.c_str() );
 			verb += 1;
 		}

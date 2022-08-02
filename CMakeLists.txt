@@ -16,12 +16,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pipe -no-pie -D__STDC_LIMIT_
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-set(bluebear_SOURCES src/bluebear.cpp
-    src/cthmm.cpp
-    src/cpghmm.cpp
+set(bluebear_SOURCES 
+    src/bluebear.cpp
+    src/cmd_vcf_temp.cpp
+    
     src/Error.cpp
     src/commands.cpp
     src/params.cpp
+    src/utils.cpp
     src/hts_utils.cpp
     src/filter.cpp
     src/bcf_ordered_reader.cpp
@@ -32,10 +34,12 @@ set(bluebear_SOURCES src/bluebear.cpp
     src/interval_tree.cpp
     src/reference_sequence.cpp
     src/tsv_reader.cpp
+
     src/cmd_vcf_annotate_context.cpp
 	src/cmd_tsv_annotate_context.cpp
     src/cmd_fa_cpg.cpp
-    src/utils.cpp
+
+
     src/brent.cpp
     src/compact_matrix.cpp
     src/bp2cm.cpp
@@ -51,6 +55,7 @@ set(bluebear_SOURCES src/bluebear.cpp
 
     src/trio_phase.cpp
     src/ibs0.cpp
+    src/cmd_vcf_trio_denovo_mutation.cpp
     src/cmd_vcf_ibs0_flanking.cpp
     src/cmd_vcf_ibs0_pairwise.cpp
     src/cmd_vcf_ibs0_view.cpp
@@ -77,10 +82,10 @@ set(bluebear_SOURCES src/bluebear.cpp
     src/cmd_vcf_site_annotate_pm_posterior.cpp
     src/cmd_vcf_site_annotate_age.cpp
     src/cmd_vcf_annotate_ibd.cpp
+    src/cmd_vcf_anno_haplo_group.cpp
     src/cmd_vcf_snppairingene.cpp
     src/cmd_vcf_snppairinfo.cpp
     src/cmd_dge_shuffle.cpp
-    src/cmd_vcf_temp.cpp
     src/blocks_in_ibs0_info.cpp
     src/cmd_vcf_phase_outlier.cpp
     src/test_hts.cpp)
@@ -117,7 +122,6 @@ set(bluebear_HEADERS src/cramore.h
     src/compact_matrix.h
     src/pbwt_build.h
     src/bp2cm.h
-    src/cthmm.h
     src/ibs0.h
     src/rare_variant_ibs0.h
     src/rare_variant_config.h)

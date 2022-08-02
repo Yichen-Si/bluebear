@@ -101,5 +101,20 @@ int32_t binarySearch(std::vector<T> & arr, int32_t l, int32_t r, T x)
     return r;
 }
 
+/**
+ * Simple argsort of vector
+ */
+template<typename T>
+std::vector<int32_t> argsort(std::vector<T> &array);
+
+template<typename T, typename U>
+bool cmp_pair2(std::pair<T, U>& a, std::pair<T, U>& b)
+{
+  return a.second < b.second;
+}
+
+template<typename T, typename U>
+std::vector<std::pair<T, U> > sort_map_val(std::map<T,  U>& M);
+
 
 #endif

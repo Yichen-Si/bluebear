@@ -10,20 +10,30 @@
 #include <cmath>
 #include "brent.hpp"
 
+#include <Eigen/Dense>
+using Eigen::MatrixXd;
+using Eigen::VectorXd;
+using Eigen::ArrayXXd;
+
 int32_t test(int32_t argc, char** argv) {
 
-    double a = 0, b = 2, v = 0;
-    int32_t status = 0;
-    double arg = brent::local_min_rc (a,b,status,v);
-    v = arg*(arg-2);
-    int32_t max_iter = 100;
-    int32_t n_iter = 0;
-    while (status > 0 && n_iter < max_iter) {
-        arg = brent::local_min_rc (a,b,status,v);
-        v = arg*(arg-2);
-        n_iter++;
-    }
-    printf("After %d iterations. Final output: a=%.3f, b=%.3f, arg=%.3f, value=%.3f\n", n_iter, a, b, arg, v);
+    MatrixXd x(3,3);
+    std::cout << x.rows() << '\n';
+
+    // Test brent
+
+    // double a = 0, b = 2, v = 0;
+    // int32_t status = 0;
+    // double arg = brent::local_min_rc (a,b,status,v);
+    // v = arg*(arg-2);
+    // int32_t max_iter = 100;
+    // int32_t n_iter = 0;
+    // while (status > 0 && n_iter < max_iter) {
+    //     arg = brent::local_min_rc (a,b,status,v);
+    //     v = arg*(arg-2);
+    //     n_iter++;
+    // }
+    // printf("After %d iterations. Final output: a=%.3f, b=%.3f, arg=%.3f, value=%.3f\n", n_iter, a, b, arg, v);
 
 
 

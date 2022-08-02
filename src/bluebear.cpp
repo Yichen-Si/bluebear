@@ -22,6 +22,7 @@ int32_t AnnotateRefAC(int32_t argc, char** argv);
 int32_t cmdVcfSummerRefAC(int32_t argc, char** argv);
 int32_t AnnotateRareWithTotalAC(int32_t argc, char** argv);
 int32_t cmdVcfSingletonRefAC(int32_t argc, char** argv);
+int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv);
 
 int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
 int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
@@ -49,8 +50,6 @@ int32_t mapPt2Interval(int32_t argc, char** argv);
 int32_t pbwtBuildSuffix(int32_t argc, char** argv);
 int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 
-int32_t cpgHMM(int32_t argc, char** argv);
-
 int32_t IBS0PairwiseScan(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
 int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
@@ -60,6 +59,7 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv);
 int32_t hapIBDpairwise(int32_t argc, char** argv);
 int32_t HaplotypeChangeAtPt(int32_t argc, char** argv);
 int32_t HapibdVSnoibs0(int32_t argc, char** argv);
+int32_t trioDenovo(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
 int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
 int32_t IBS0PhaseForward(int32_t argc, char** argv);
@@ -105,6 +105,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("anno-ref-ac",&AnnotateRefAC, "Annotate a query dataset with the AC in a reference dataset (optional: annotate carrier ancestry info)")
     LONG_COMMAND("singleton-ref-ac",&cmdVcfSingletonRefAC, "Summarize the AC in a large ref. pop of singletons in a smaller sample")
     LONG_COMMAND("rare-ref-ac",&cmdVcfSummerRefAC, "Summarize the AC in a large ref. pop of (rare) variants in a smaller sample")
+    LONG_COMMAND("anno-haplo-group",&cmdVcfAnnoHapGroup, "Annotate carriers' Y haplotype group information")
 
     LONG_COMMAND("vcf-sample-summary",&cmdVcfSampleSummary, "Sample-level summary from BCF/VCF")
     LONG_COMMAND("vcf-count-singleton",&cmdVcfCountSingleton, "Count & list singletons from BCF/VCF")
@@ -166,6 +167,7 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
     LONG_COMMAND("rare-blip",&RareBlipOnlyForward, "Based on shared rare allele and haplotype matching, proceed froward to detect blip in phased BCF/VCF")
     LONG_COMMAND("rare-blip-stats",&RareBlipOnlyStats, "Statistics of ibd around rare variants for detecting blip in phased BCF/VCF")
 
+    LONG_COMMAND("trio-denovo",&trioDenovo, "Detect de novo mutation in trio-child")
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
     LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")
 
@@ -175,7 +177,6 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
     LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
 
     LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
-    LONG_COMMAND("cpg-cthmm",&cpgHMM, "HMM for cpg methylation status")
 
     LONG_COMMAND("test",&test, "Test")
     LONG_COMMAND("temp",&temp, "Temporary script")

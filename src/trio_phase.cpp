@@ -49,7 +49,7 @@ int32_t trioSwitchDetect(int32_t argc, char** argv) {
   pl.Status();
 
   // sanity check of input arguments
-  if ( childVCF.empty() || out.empty() || childVCF.empty() ) {
+  if ( childVCF.empty() || out.empty() || parentsVCF.empty() ) {
     error("[E:%s:%d %s] --child-vcf, --parents-vcf and --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
 
@@ -560,5 +560,3 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv) {
 
   return 0;
 }
-
-

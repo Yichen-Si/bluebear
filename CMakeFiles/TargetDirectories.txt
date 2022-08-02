@@ -1,3 +1,3 @@
-/mnt/efs/users/yichen.si/tool/bluebear/CMakeFiles/rebuild_cache.dir
-/mnt/efs/users/yichen.si/tool/bluebear/CMakeFiles/bluebear.dir
-/mnt/efs/users/yichen.si/tool/bluebear/CMakeFiles/edit_cache.dir
+/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir
+/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/edit_cache.dir
+/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/rebuild_cache.dir

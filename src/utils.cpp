@@ -255,12 +255,23 @@ void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::vector<int3
   }
 };
 
+template<typename T>
+std::vector<int32_t> argsort(std::vector<T> &array) {
+    std::vector<int32_t> indices(array.size());
+    std::iota(indices.begin(), indices.end(), 0);
+    sort(indices.begin(), indices.end(),
+      [&array](int32_t left, int32_t right) -> bool {
+          return array[left] <= array[right]; } );
+    return indices;
+};
 
-
-
-
-
-
-
-
-
+template<typename T, typename U>
+std::vector<std::pair<T, U> > sort_map_val(std::map<T,  U>& M)
+{
+    std::vector<std::pair<T, U> > A;
+    for (auto& it : M) {
+        A.push_back(it);
+    }
+    sort(A.begin(), A.end(), cmp_pair2<T, U>);
+    return A;
+};
