@@ -1,3 +1,0 @@
-/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/bluebear.dir
-/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/edit_cache.dir
-/net/wonderland/home/ycsi/tool/bluebear/CMakeFiles/rebuild_cache.dir

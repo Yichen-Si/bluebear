@@ -40,8 +40,6 @@ bin/*
 
 .deps/
 .deps/*
+*.Po 
 
-CMakeFiles 
-CMakeFiles/*
-CMakeCache.txt
-Makefile
+build
