@@ -74,7 +74,8 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 	while (std::getline(rf, line)) {
 			split(v, "\t", line);
 			if ((int32_t) v.size() < mlevel+2) {
-					error("Invalid --in-group.");
+					notice("Group info file may contain less information than --max-level.");
+					mlevel = v.size() - 2;
 			}
 			if (id_map.find(v[0]) == id_map.end()) {
 				continue;
@@ -119,10 +120,11 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 	// output
 	std::string out_table = out + ".count.cross_only.all_branch.tsv";
 	std::ofstream wf(out_table.c_str(), std::ios::out);
-	wf << "POS\tREF\tALT\tQTAL\tFILTER\tINFO";
+	wf << "POS\tREF\tALT\tAC\tFILTER";
 	for (auto & v : branch) {
 		wf << '\t' << v;
 	}
+	wf << '\n';
 	std::string out_vcf = out + ".sites.vcf.gz";
 	BCFOrderedWriter odw(out_vcf.c_str(),0);
 	bcf_hdr_t* hnull = bcf_hdr_subset(odr.hdr, 0, 0, 0);
@@ -183,7 +185,7 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 	int32_t* p_gt = NULL;
 	int32_t* info_ac = NULL;
 	int32_t* info_an = NULL;
-	int32_t n_gt = 0, n_ac = 0, n_an = 0;
+	int32_t n_gt = 0, n_ac = 0, n_an = 0, ac = 0, an = 0;
 	int32_t nVariant = 0;
 
 	for(int32_t k=0; odr.read(iv); ++k) {
@@ -211,14 +213,21 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 		}
 		if ( ! has_filter ) { continue; }
 
-		// extract genotype and apply genotype level filter
-		if ( bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0 ) {
-			error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
-		}
 		if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
 		if (info_ac[0] < min_ac) {continue;}
 		if (bcf_get_info_int32(odr.hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
 		if (info_an[0]-info_ac[0] < min_ac) {continue;}
+		if ( bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0 ) {
+			error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+		} else if (n_gt != n_samples && n_gt != 2*n_samples) {
+			notice("Inconsistent GT field from the VCF file at position %s:%d with %d GT but %d samples",bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, n_gt, n_samples);
+		}
+
+		uint8_t ploidy= 2;
+		if (n_gt == n_samples) {
+			ploidy = 1;
+		}
+
 		bcf1_t* nv = bcf_dup(iv);
 		bcf_subset(odw.hdr, nv, 0, 0);
 		bcf_unpack(nv, BCF_UN_STR);
@@ -226,23 +235,32 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 		std::vector<int32_t> count_ref (nbranch, 0);
 		std::vector<int32_t> count_alt (nbranch, 0);
 		std::vector<std::string> topycc{"", ""};
-
+		
+		ac = 0;
 		for (const auto & v : id_map) {
 			int32_t i = v.second;
-			int32_t g1 = p_gt[2*i];
-			int32_t g2 = p_gt[2*i+1];
-			int32_t geno;
-			if ( bcf_gt_is_missing(g1) || bcf_gt_is_missing(g2) ) {
+			int32_t g1 = p_gt[ploidy*i];
+			if ( bcf_gt_is_missing(g1) ) {
 				continue;
 			} else {
-				geno = ((bcf_gt_allele(g1) > 0) ? 1 : 0) + ((bcf_gt_allele(g2) > 0) ? 1 : 0);
-				if (geno >= 1) { // ALT
+				int32_t geno = bcf_gt_allele(g1);
+				an++;			
+				if (geno == 1) { // ALT				
 					count_alt[branch_map[id_info[v.first]]] += 1;
-				} else {
+					ac++;
+				} else if (geno == 0) {
 					count_ref[branch_map[id_info[v.first]]] += 1;
+				}
+				if (geno != 0 && geno != 1) {
+					// Should not happen if split multi-allelic sites
+					notice("Read genotype %d at position %s:%d", geno, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);	
 				}
 			}
 		} // Count alleles by group
+		// if (info_ac[0] != ac) {
+		// 	std::cout << info_ac[0] << '\t' << ac << '\n';			
+		// }
+		if (ac < min_ac || an-ac < min_ac) {continue;}
 		// Number of different group for each allele at each level
 		std::vector<int32_t> ngr(mlevel+1, 0);
 		std::vector<int32_t> nga(mlevel+1, 0);
@@ -351,6 +369,8 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 			}
 			top_groups.push_back(tpair);
 		}
+		bcf_update_info_int32(odw.hdr, nv, "AC", &ac, 1);
+		bcf_update_info_int32(odw.hdr, nv, "AN", &an, 1);
 		bcf_update_info_int32(odw.hdr, nv, "n_group_REF", &(ngr[0]), mlevel+1);
 		bcf_update_info_int32(odw.hdr, nv, "n_group_ALT", &(nga[0]), mlevel+1);
 		bcf_update_info_string(odw.hdr, nv, "YCCminor_1st", topycc[0].c_str());
@@ -368,7 +388,7 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv) {
 		if (iv->qual == iv->qual) {
 			qual = std::to_string((int) iv->qual);
 		}
-		wf << iv->pos << '\t' << ref << '\t' << alt << '\t' << qual << '\t';
+		wf << iv->pos << '\t' << ref << '\t' << alt << '\t' << ac << '\t';
 		if (iv->d.n_flt == 0) {
 			wf << '.';
 		}

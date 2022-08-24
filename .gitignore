@@ -41,5 +41,7 @@ bin/*
 .deps/
 .deps/*
 
+CMakeFiles 
+CMakeFiles/*
 CMakeCache.txt
 Makefile

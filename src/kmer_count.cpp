@@ -81,16 +81,17 @@ int32_t KmerCount(int32_t argc, char** argv) {
         notice("Potential incorrect shift in reading by kmer.");
         seq = "";
       }
-      verb++;
+    verb++;
     if ( verb % verbose == 0 )
       notice("Processed %d Mb", verb/1000000);
     }
   }
 
   outf = out + "_" + chrom + "_kmer_" + std::to_string(kmer) + "_count.txt";
+  notice("Writing to file %s", outf.c_str());
   htsFile *wf = hts_open(outf.c_str(), "w");
   for (auto const& v : kmerct) {
-    hprintf(wf, "%s\t%d\t%s\t%d\n", chrom.c_str(), v.first.c_str(), v.second);
+    hprintf(wf, "%s\t%d\t%s\t%d\n", chrom.c_str(), verb, v.first.c_str(), v.second);
   }
 
   hts_close(wf);
