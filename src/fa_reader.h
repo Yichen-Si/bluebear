@@ -13,12 +13,12 @@ class FaReader {
 
     public:
         std::map<std::string, Faival*> lookup;
-        faidx_t* fai;
         Faival*  val;
+        BGZF* fp;
         std::string inFa, inFai;
 
         FaReader(std::string _inFa, std::string _inFai="") : inFa(_inFa), inFai(_inFai) {
-            fai = fai_load(inFa.c_str());
+            fp = bgzf_open(inFa.c_str(), "rb");
             if (inFai == "") {
             	inFai = inFa + ".fai";
             }
@@ -45,7 +45,9 @@ class FaReader {
     bool FindFaiVal(std::string &chrom) {
         if (lookup.find(chrom) != lookup.end()) {
     		val = lookup[chrom];
-    		return 1;
+            int32_t ret = bgzf_useek(fp, val->offset, SEEK_SET);
+			return ret < 0 ? 0 : 1;
+            return 1;
         } else {
             return 0;
         }
@@ -60,7 +62,7 @@ class FaReader {
             if (ed < st) {
                 error("[FaReader::fa_get_seq] Invalid query region");
             }
-            int32_t ret = bgzf_useek(fai->bgzf, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
+            int32_t ret = bgzf_useek(fp, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
             if ( ret<0 ) {
                 error("Error: bgzf_useek failed at %d", st);
             }
@@ -68,7 +70,7 @@ class FaReader {
             int32_t l = 0;
             char c;
             std::string seq = "";
-            while ( (c=bgzf_getc(fai->bgzf))>=0 && l < seq_len ) {
+            while ( (c=bgzf_getc(fp))>=0 && l < seq_len ) {
                 if (isgraph(c)) {
                     c = toupper(c);
                     seq += c;
@@ -80,14 +82,14 @@ class FaReader {
 
 		std::string fa_kmer(int32_t pos, int32_t k) {
             int32_t st = pos - k/2;
-            int32_t ret = bgzf_useek(fai->bgzf, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
+            int32_t ret = bgzf_useek(fp, val->offset + st / val->line_blen * val->line_len + st % val->line_blen, SEEK_SET);
             if ( ret<0 ) {
                 error("Error: bgzf_useek failed.");
             }
             int32_t l = 0;
             char c;
             std::string seq = "";
-            while ( (c=bgzf_getc(fai->bgzf))>=0 && l < k ) {
+            while ( (c=bgzf_getc(fp))>=0 && l < k ) {
                 if (isgraph(c)) {
                     c = toupper(c);
                     seq += c;

@@ -32,7 +32,7 @@ int32_t KmerCount(int32_t argc, char** argv) {
   pl.Status();
 
   // Read .fa
-	FaReader findx(inFa);
+  FaReader findx(inFa);
   if (!findx.FindFaiVal(chrom)) {
     error("Cannot find fai index for this chromosome");
   }
@@ -42,26 +42,10 @@ int32_t KmerCount(int32_t argc, char** argv) {
   std::set<char> alphabet {'A','T','C','G'};
   std::map<std::string, int32_t> kmerct;
   char c;
-  int32_t l = 0;
-
-  l = 0;
-  while ( (c=bgzf_getc(findx.fai->bgzf))>=0 && l < kmer ) {
-    if (isgraph(c)) {
-      c = toupper(c);
-      if (alphabet.find(c) == alphabet.end()) {
-        l = 0;
-        seq = "";
-        continue;
-      }
-      seq += c;
-      l++;
-    }
-  }
-  kmerct[seq]++;
 
   int32_t verb = 0;
   // Read one base at a time
-  while ((c=bgzf_getc(findx.fai->bgzf))>=0) {
+  while ((c=bgzf_getc(findx.fp))>=0) {
     if (isgraph(c)) {
       if (c == '>') {
         break;
@@ -88,13 +72,13 @@ int32_t KmerCount(int32_t argc, char** argv) {
   }
 
   outf = out + "_" + chrom + "_kmer_" + std::to_string(kmer) + "_count.txt";
-  notice("Writing to file %s", outf.c_str());
-  htsFile *wf = hts_open(outf.c_str(), "w");
+	FILE* wf = fopen(outf.c_str(), "w");
+  notice("Writing to file %s", outf.c_str());	
   for (auto const& v : kmerct) {
-    hprintf(wf, "%s\t%d\t%s\t%d\n", chrom.c_str(), verb, v.first.c_str(), v.second);
+    fprintf(wf, "%s\t%d\t%s\t%d\n", chrom.c_str(), verb, v.first.c_str(), v.second);
   }
+  fclose(wf);
 
-  hts_close(wf);
   return 0;
 }
 

@@ -22,8 +22,11 @@
 */
 
 #include "hts_utils.h"
+extern "C" {
 #include "htslib/hfile.h"
+}
 #include "Error.h"
+#include <cassert>
 
 /********
  *General
@@ -31,6 +34,23 @@
 
 KHASH_MAP_INIT_STR(vdict, bcf_idinfo_t)
 typedef khash_t(vdict) vdict_t;
+
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
+//  int ks_resize2(kstring_t*, unsigned long);
+//#ifdef __cplusplus
+//}
+//#endif
+
+//struct faidx_t {
+//    BGZF *bgzf;
+//    int n, m;
+//    char **name;
+//    khash_t(s) *hash;
+//    enum fai_format_options format;
+//};
+
 
 /**********
  *FAI UTILS
@@ -41,37 +61,43 @@ typedef khash_t(vdict) vdict_t;
  */
 char *faidx_fetch_uc_seq(const faidx_t *fai, const char *c_name, int p_beg_i, int p_end_i, int *len)
 {
-    int l;
-    char c;
-    khiter_t iter;
-    faidx1_t val;
-    char *seq=NULL;
+  char* seq = faidx_fetch_seq(fai, c_name, p_beg_i, p_end_i, len);
+  if ( *len > 0 ) {
+    for(int i=0; i < *len; ++i)
+      if ( isgraph(seq[i]) ) seq[i] = toupper(seq[i]);
+  }
+  return seq;
+    // int l;
+    // char c;
+    // khiter_t iter;
+    // faidx1_t val;
+    // char *seq=NULL;
 
-    // Adjust position
-    iter = kh_get(s, fai->hash, c_name);
-    if(iter == kh_end(fai->hash)) return 0;
-    val = kh_value(fai->hash, iter);
-    if(p_end_i < p_beg_i) p_beg_i = p_end_i;
-    if(p_beg_i < 0) p_beg_i = 0;
-    else if(val.len <= p_beg_i) p_beg_i = val.len - 1;
-    if(p_end_i < 0) p_end_i = 0;
-    else if(val.len <= p_end_i) p_end_i = val.len - 1;
+    // // Adjust position
+    // iter = kh_get(s, fai->hash, c_name);
+    // if(iter == kh_end(fai->hash)) return 0;
+    // val = kh_value(fai->hash, iter);
+    // if(p_end_i < p_beg_i) p_beg_i = p_end_i;
+    // if(p_beg_i < 0) p_beg_i = 0;
+    // else if(val.len <= p_beg_i) p_beg_i = val.len - 1;
+    // if(p_end_i < 0) p_end_i = 0;
+    // else if(val.len <= p_end_i) p_end_i = val.len - 1;
 
-    // Now retrieve the sequence
-    int ret = bgzf_useek(fai->bgzf, val.offset + p_beg_i / val.line_blen * val.line_len + p_beg_i % val.line_blen, SEEK_SET);
-    if ( ret<0 )
-    {
-        *len = -1;
-        fprintf(stderr,"[fai_fetch_seq] Error: fai_fetch failed. (Seeking in a compressed, .gzi unindexed, file?)\n");
-        return NULL;
-    }
-    l = 0;
-    seq = (char*)malloc(p_end_i - p_beg_i + 2);
-    while ( (c=bgzf_getc(fai->bgzf))>=0 && l < p_end_i - p_beg_i + 1)
-        if (isgraph(c)) seq[l++] = toupper(c);
-    seq[l] = '\0';
-    *len = l;
-    return seq;
+    // // Now retrieve the sequence
+    // int ret = bgzf_useek(fai->bgzf, val.offset + p_beg_i / val.line_blen * val.line_len + p_beg_i % val.line_blen, SEEK_SET);
+    // if ( ret<0 )
+    // {
+    //     *len = -1;
+    //     fprintf(stderr,"[fai_fetch_seq] Error: fai_fetch failed. (Seeking in a compressed, .gzi unindexed, file?)\n");
+    //     return NULL;
+    // }
+    // l = 0;
+    // seq = (char*)malloc(p_end_i - p_beg_i + 2);
+    // while ( (c=bgzf_getc(fai->bgzf))>=0 && l < p_end_i - p_beg_i + 1)
+    //     if (isgraph(c)) seq[l++] = toupper(c);
+    // seq[l] = '\0';
+    // *len = l;
+    // return seq;
 }
 
 /**********
@@ -131,14 +157,14 @@ int32_t bam_get_end_pos1(bam1_t *s)
         for (int32_t i = 0; i < (int32_t)n_cigar_op; ++i)
         {
             int32_t opchr = bam_cigar_opchr(cigar[i]);
-
+            
             if (opchr=='M' || opchr=='D' || opchr=='N' || opchr=='=' || opchr=='X')
             {
                 end_pos1 += bam_cigar_oplen(cigar[i]);
             }
         }
     }
-
+    
     return end_pos1-1;
 }
 
@@ -318,7 +344,7 @@ void bam_get_base_and_qual_and_read_and_qual(bam1_t *srec, uint32_t pos, char& b
             rpos = BAM_READ_INDEX_NA;
         }
     }
-
+    
     if ( str.s ) free(str.s);
 
     if ( rpos >= rlen ) {
@@ -388,9 +414,11 @@ void bcf_hdr_transfer_contigs(const bcf_hdr_t *hsrc, bcf_hdr_t *hdest)
         if ( !kh_exist(d,k) ) continue;
         tid = kh_val(d,k).id;
         len[tid] = bcf_hrec_find_key(kh_val(d, k).hrec[0],"length");
-        int j;
-        if ( sscanf(kh_val(d, k).hrec[0]->vals[len[tid]],"%d",&j) )
+	if ( len[tid] >= 0 ) {
+	  int j;
+	  if ( sscanf(kh_val(d, k).hrec[0]->vals[len[tid]],"%d",&j) )
             len[tid] = j;
+	}
         names[tid] = kh_key(d,k);
     }
 
@@ -398,7 +426,10 @@ void bcf_hdr_transfer_contigs(const bcf_hdr_t *hsrc, bcf_hdr_t *hdest)
     for (tid=0; tid<m; tid++)
     {
         s.l = 0;
-        ksprintf(&s, "##contig=<ID=%s,length=%d>", names[tid], len[tid]);
+	if ( len[tid] < 0 )
+	  ksprintf(&s, "##contig=<ID=%s>", names[tid]);
+	else
+	  ksprintf(&s, "##contig=<ID=%s,length=%d>", names[tid], len[tid]);
         bcf_hdr_append(hdest, s.s);
     }
     if (s.m) free(s.s);
@@ -948,7 +979,7 @@ const char* bcf_get_chrom(bcf_hdr_t *h, bcf1_t *v)
       //return NULL;
     }
     else if ( v->rid < 0 ) return NULL;
-
+    
     return h->id[BCF_DT_CTG][v->rid].key;
 }
 
@@ -1051,7 +1082,8 @@ std::string bam_hdr_get_sample_name(bam_hdr_t* hdr) {
   if ( !hdr )
     error("[E:%s:%d %s] [E:%s:%d %s] Failed to read the BAM header",__FILE__,__LINE__,__FUNCTION__,__FILE__, __LINE__, __FUNCTION__);
 
-  const char *p = hdr->text;
+  char *ptext = strdup(hdr->text);  
+  const char *p = ptext; 
   const char *q, *r;
   int32_t n = 0;
   std::string sm;
@@ -1079,6 +1111,7 @@ std::string bam_hdr_get_sample_name(bam_hdr_t* hdr) {
   if ( sm.empty() ) {
     warning("[W:%s:%d %s] Sample ID information cannot be found",__FILE__,__LINE__,__FUNCTION__);
   }
+  free(ptext);
   return sm;
 }
 
@@ -1107,16 +1140,16 @@ int32_t bam_get_unclipped_end(bam1_t* b) {
     case BAM_CEQUAL:
     case BAM_CDIFF:
     case BAM_CDEL:
-    case BAM_CREF_SKIP:
+    case BAM_CREF_SKIP:      
     case BAM_CSOFT_CLIP:
-    case BAM_CHARD_CLIP:
+    case BAM_CHARD_CLIP:      
       y += l;
       //case BAM_CINS:
       //case BAM_CPAD:
       //case BAM_CBACK:
     }
   }
-  return ( c->pos + y );
+  return ( c->pos + y );  
 }
 
 int32_t bam_get_clipped_end(bam1_t* b) {
@@ -1130,16 +1163,16 @@ int32_t bam_get_clipped_end(bam1_t* b) {
     case BAM_CEQUAL:
     case BAM_CDIFF:
     case BAM_CDEL:
-    case BAM_CREF_SKIP:
+    case BAM_CREF_SKIP:      
       //case BAM_CSOFT_CLIP:
-      //case BAM_CHARD_CLIP:
+      //case BAM_CHARD_CLIP:      
       y += l;
       //case BAM_CINS:
       //case BAM_CPAD:
       //case BAM_CBACK:
     }
   }
-  return ( c->pos + y );
+  return ( c->pos + y );  
 }
 
 
@@ -1180,78 +1213,80 @@ char *samfaipath(const char *fn_ref)
     return fn_list;
 };
 
-// // Minimal sanitisation of a header to ensure.
-// // - null terminated string.
-// // - all lines start with @ (also implies no blank lines).
-// //
-// // Much more could be done, but currently is not, including:
-// // - checking header types are known (HD, SQ, etc).
-// // - syntax (eg checking tab separated fields).
-// // - validating n_targets matches @SQ records.
-// // - validating target lengths against @SQ records.
-// bam_hdr_t *sam_hdr_sanitise(bam_hdr_t *h) {
-//     if (!h)
-//         return NULL;
+/*
+// Minimal sanitisation of a header to ensure.
+// - null terminated string.
+// - all lines start with @ (also implies no blank lines).
+//
+// Much more could be done, but currently is not, including:
+// - checking header types are known (HD, SQ, etc).
+// - syntax (eg checking tab separated fields).
+// - validating n_targets matches @SQ records.
+// - validating target lengths against @SQ records.
+bam_hdr_t *sam_hdr_sanitise(bam_hdr_t *h) {
+    if (!h)
+        return NULL;
 
-//     // Special case for empty headers.
-//     if (h->l_text == 0)
-//         return h;
+    // Special case for empty headers.
+    if (h->l_text == 0)
+        return h;
 
-//     uint32_t i, lnum = 0;
-//     char *cp = h->text, last = '\n';
-//     for (i = 0; i < h->l_text; i++) {
-//         // NB: l_text excludes terminating nul.  This finds early ones.
-//         if (cp[i] == 0)
-//             break;
+    uint32_t i, lnum = 0;
+    char *cp = h->text, last = '\n';
+    for (i = 0; i < h->l_text; i++) {
+        // NB: l_text excludes terminating nul.  This finds early ones.
+        if (cp[i] == 0)
+            break;
 
-//         // Error on \n[^@], including duplicate newlines
-//         if (last == '\n') {
-//             lnum++;
-//             if (cp[i] != '@') {
-//                 error("Malformed SAM header at line %u", lnum);
-//                 bam_hdr_destroy(h);
-//                 return NULL;
-//             }
-//         }
+        // Error on \n[^@], including duplicate newlines
+        if (last == '\n') {
+            lnum++;
+            if (cp[i] != '@') {
+                error("Malformed SAM header at line %u", lnum);
+                bam_hdr_destroy(h);
+                return NULL;
+            }
+        }
 
-//         last = cp[i];
-//     }
+        last = cp[i];
+    }
 
-//     if (i < h->l_text) { // Early nul found.  Complain if not just padding.
-//         uint32_t j = i;
-//         while (j < h->l_text && cp[j] == '\0') j++;
-//         if (j < h->l_text)
-//             warning("Unexpected NUL character in header. Possibly truncated");
-//     }
+    if (i < h->l_text) { // Early nul found.  Complain if not just padding.
+        uint32_t j = i;
+        while (j < h->l_text && cp[j] == '\0') j++;
+        if (j < h->l_text)
+            warning("Unexpected NUL character in header. Possibly truncated");
+    }
 
-//     // Add trailing newline and/or trailing nul if required.
-//     if (last != '\n') {
-//         warning("Missing trailing newline on SAM header. Possibly truncated");
+    // Add trailing newline and/or trailing nul if required.
+    if (last != '\n') {
+        warning("Missing trailing newline on SAM header. Possibly truncated");
 
-//         if (h->l_text == UINT32_MAX) {
-//             error("No room for extra newline");
-//             bam_hdr_destroy(h);
-//             return NULL;
-//         }
+        if (h->l_text == UINT32_MAX) {
+            error("No room for extra newline");
+            bam_hdr_destroy(h);
+            return NULL;
+        }
 
-//         if (i >= h->l_text - 1) {
-// 	  cp = (char*)realloc(h->text, (size_t) h->l_text+2);
-//             if (!cp) {
-//                 bam_hdr_destroy(h);
-//                 return NULL;
-//             }
-//             h->text = cp;
-//         }
-//         cp[i++] = '\n';
+        if (i >= h->l_text - 1) {
+	  cp = (char*)realloc(h->text, (size_t) h->l_text+2);
+            if (!cp) {
+                bam_hdr_destroy(h);
+                return NULL;
+            }
+            h->text = cp;
+        }
+        cp[i++] = '\n';
 
-//         // l_text may be larger already due to multiple nul padding
-//         if (h->l_text < i)
-//             h->l_text = i;
-//         cp[h->l_text] = '\0';
-//     }
+        // l_text may be larger already due to multiple nul padding
+        if (h->l_text < i)
+            h->l_text = i;
+        cp[h->l_text] = '\0';
+    }
 
-//     return h;
-// }
+    return h;
+}
+*/
 
 /*
 bam_hdr_t* bam_hdr_merge(std::vector<bam_hdr_t*> hdrs) {
@@ -1281,6 +1316,6 @@ merged_header_t *merged_hdr;
     if (merged_hdr->pg_ids == NULL) goto fail;
 
     return merged_hdr;
-
+    
 }
 */

@@ -14,7 +14,7 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 
   bcf_vfilter_arg vfilt;
   bcf_gfilter_arg gfilt;
-
+  
   std::vector<int32_t> acThres;
   std::vector<double> afThres;
   bool posOnly = false;
@@ -29,34 +29,33 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 
     LONG_PARAM_GROUP("Analysis Options", NULL)
     LONG_MULTI_STRING_PARAM("sum-field",&sumFields, "Field values to calculate the sums")
-    LONG_PARAM("count-variants",&countVariants, "Flag to turn on counting variants")
+    LONG_PARAM("count-variants",&countVariants, "Flag to turn on counting variants")    
 
-    LONG_PARAM_GROUP("Variant Filtering Options", NULL)
-    LONG_INT_PARAM("min-dist-bp",&minDistBp, "Minimum distance from the previous variant in base-position")
+    LONG_PARAM_GROUP("Variant Filtering Options", NULL)    
+    LONG_INT_PARAM("min-dist-bp",&minDistBp, "Minimum distance from the previous variant in base-position")    
     LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
     LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
-    LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+    LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")    
 
-    LONG_PARAM_GROUP("Genotype Filtering Options", NULL)
+    LONG_PARAM_GROUP("Genotype Filtering Options", NULL)    
     LONG_MULTI_INT_PARAM("ac",&acThres,"Allele count threshold to count rare/common variants")
     LONG_MULTI_DOUBLE_PARAM("af",&afThres,"Allele frequency threshold to count rare/common variants")
     LONG_INT_PARAM("minDP",&gfilt.minDP,"Minimum depth threshold for counting genotypes")
-    LONG_INT_PARAM("minGQ",&gfilt.minGQ,"Minimum depth threshold for counting genotypes")
+    LONG_INT_PARAM("minGQ",&gfilt.minGQ,"Minimum depth threshold for counting genotypes") 
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output VCF file name")
-    LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
+    LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")    
   END_LONG_PARAMS();
-
+  
   pl.Add(new longParams("Available Options", longParameters));
   pl.Read(argc, argv);
   pl.Status();
-
+  
   // sanity check of input arguments
   if ( inVcf.empty() || out.empty() ) {
     error("[E:%s:%d %s] --in-vcf, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
-
 
 
   std::vector<GenomeInterval> intervals;
@@ -81,11 +80,11 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
   else {
     if ( vfilt.exclude_expr.empty() ) {
       filter_str = vfilt.include_expr;
-      filter_logic |= FLT_INCLUDE;
+      filter_logic |= FLT_INCLUDE;      
     }
     else {
       error("[E:%s:%d %s] Cannot use both --include-expr and --exclude-expr options",__FILE__,__LINE__,__FUNCTION__);
-    }
+    }    
   }
 
   filter_t* filt = NULL;
@@ -98,12 +97,12 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
     for(int32_t i=0; i < (int32_t)vfilt.required_filters.size(); ++i) {
       req_flt_ids.push_back(bcf_hdr_id2int(odr.hdr, BCF_DT_ID, vfilt.required_filters[i].c_str()));
     }
-  }
+  }  
 
   notice("Started Reading site information from VCF file");
 
   std::map< std::string, std::vector<int64_t> > mapFieldSums;
-  std::map< std::string, std::vector<int64_t> > mapFieldVars;
+  std::map< std::string, std::vector<int64_t> > mapFieldVars;  
   int32_t nVariant = 0;
   int32_t nsamples = bcf_hdr_nsamples(odr.hdr);
 
@@ -115,15 +114,15 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
   varFields.push_back("ALL.SNP");
   varFields.push_back("ALL.OTH");
   varFields.push_back("NREF.SNP");
-  varFields.push_back("NREF.OTH");
+  varFields.push_back("NREF.OTH");  
   varFields.push_back("REF.SNP");
-  varFields.push_back("REF.OTH");
+  varFields.push_back("REF.OTH");  
   varFields.push_back("HET.SNP");
   varFields.push_back("HET.OTH");
   varFields.push_back("ALT.SNP");
   varFields.push_back("ALT.OTH");
   varFields.push_back("MISS.SNP");
-  varFields.push_back("MISS.OTH");
+  varFields.push_back("MISS.OTH");    
 
   std::sort(acThres.begin(), acThres.end());
   for(int32_t i=0; i < (int32_t)acThres.size(); ++i) {
@@ -131,7 +130,7 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
     sprintf(buf, "AC_%d_%d.SNP", i == 0 ? 1 : acThres[i-1]+1, acThres[i]);
     varFields.push_back(buf);
     sprintf(buf, "AC_%d_%d.OTH", i == 0 ? 1 : acThres[i-1]+1, acThres[i]);
-    varFields.push_back(buf);
+    varFields.push_back(buf);    
   }
 
   std::sort(afThres.begin(), afThres.end());
@@ -140,11 +139,11 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
     sprintf(buf, "AF_%f_%f.SNP", i == 0 ? 0 : afThres[i-1], afThres[i]);
     varFields.push_back(buf);
     sprintf(buf, "AF_%f_%f.OTH", i == 0 ? 0 : afThres[i-1], afThres[i]);
-    varFields.push_back(buf);
+    varFields.push_back(buf);    
   }
-
+  
   for(int32_t i=0; i < (int32_t)varFields.size(); ++i) {
-    mapFieldVars[varFields[i]].resize(nsamples, (int64_t)0);
+    mapFieldVars[varFields[i]].resize(nsamples, (int64_t)0);    
   }
 
   std::vector<int32_t> varMasks(varFields.size());
@@ -152,7 +151,7 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 
   int32_t* p_gt = NULL;
   int32_t n_gt = 0;
-
+  
   int32_t* p_fld = NULL;
   int32_t n_fld = 0;
   int32_t prev_rid = -1, prev_pos = -1;
@@ -160,24 +159,24 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 
   int32_t an = 0, ac_alloc = 0, non_ref_ac = 0;
   int32_t* ac = NULL;
-
+    
   for(int32_t k=0; odr.read(iv); ++k) {  // read marker
     if ( k % verbose == 0 )
       notice("Processing %d markers at %s:%d. Skipped %d markers within %d-bp from the previous marker", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nskip, minDistBp);
 
     // if minimum distance is specified, skip the variant
-
+    
     if ( ( prev_rid == iv->rid ) && ( iv->pos - prev_pos < minDistBp ) ) {
       ++nskip;
       continue;
     }
 
     if ( ( !reg.empty() ) && posOnly && ( ( intervals[0].start1 > iv->pos+1 ) || ( intervals[0].end1 < iv->pos+1 ) ) ) {
-      notice("With --pos-only option, skipping variant at %s:%d", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+      notice("With --pos-only option, skipping variant at %s:%d", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);      
       ++nskip;
       continue;
     }
-
+    
     bcf_unpack(iv, BCF_UN_FLT);
 
     // check --apply-filters
@@ -203,7 +202,7 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
       else if ( ret ) { has_filter = false; }
     }
 
-    if ( ! has_filter ) { ++nskip; continue; }
+    if ( ! has_filter ) { ++nskip; continue; }    
 
     ++nVariant;
 
@@ -217,10 +216,10 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 	for (int32_t i=1; i<iv->n_allele; i++)
 	  non_ref_ac += ac[i];
 	for (int32_t i=0; i<iv->n_allele; i++)
-	  an += ac[i];
+	  an += ac[i];      
       }
-
-      // determine variant type : flags are   MISSING HOMALT HET HOMREF
+      
+      // determine variant type : flags are   MISSING HOMALT HET HOMREF 
       std::fill(varMasks.begin(), varMasks.end(), 0);
       if ( bcf_is_snp(iv) ) {
 	varMasks[0] = MASK_GT_ALL;
@@ -244,7 +243,7 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 	    varMasks[j] = MASK_GT_NONREF;
 	  }
 	  else {
-	    varMasks[j+1] = MASK_GT_NONREF;
+	    varMasks[j+1] = MASK_GT_NONREF;	    
 	  }
 	}
       }
@@ -254,11 +253,11 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 	    varMasks[j] = MASK_GT_NONREF;
 	  }
 	  else {
-	    varMasks[j+1] = MASK_GT_NONREF;
-	  }
+	    varMasks[j+1] = MASK_GT_NONREF;	    
+	  }	  
 	}
       }
-
+      
       // extract genotype and apply genotype level filter
       if ( bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0 ) {
 	error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
@@ -309,9 +308,9 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 	}
       }
       //if ( rand() % 100 == 0 ) abort();
-
+             
     }
-
+    
     // perform sumField tasks
     for(int32_t i=0; i < (int32_t)sumFields.size(); ++i) {
       if ( bcf_get_format_int32(odr.hdr, iv, sumFields[i].c_str(), &p_fld, &n_fld) < 0 ) {
@@ -335,22 +334,22 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
   }
 
   htsFile* wf = hts_open(out.c_str(), "w");
-
+  
   hprintf(wf, "ID\tN.VAR");
   for(int32_t i=0; i < (int32_t)varFields.size(); ++i) {
-    hprintf(wf, "\t%s",varFields[i].c_str());
+    hprintf(wf, "\t%s",varFields[i].c_str());    
   }
   for(int32_t i=0; i < (int32_t)sumFields.size(); ++i) {
     hprintf(wf, "\tSUM.%s",sumFields[i].c_str());
   }
   hprintf(wf,"\n");
-
+  
   for(int32_t i=0; i < nsamples; ++i) {
     hprintf(wf, "%s", odr.hdr->id[BCF_DT_SAMPLE][i].key);
     hprintf(wf, "\t%d", nVariant);
     for(int32_t j=0; j < (int32_t)varFields.size(); ++j) {
       hprintf(wf, "\t%lld", mapFieldVars[varFields[j]][i]);
-    }
+    }    
     for(int32_t j=0; j < (int32_t)sumFields.size(); ++j) {
       hprintf(wf, "\t%lld", mapFieldSums[sumFields[j]][i]);
     }
@@ -361,15 +360,6 @@ int32_t cmdVcfSampleSummary(int32_t argc, char** argv) {
 
   return 0;
 }
-
-
-
-
-
-
-
-
-
 
 
 
