@@ -1,3 +1,6 @@
+#ifndef PBWT_BUILD_H
+#define PBWT_BUILD_H
+
 class pbwtCursor
 {
 
@@ -158,5 +161,4 @@ public:
 
 };
 
-
-
+#endif
