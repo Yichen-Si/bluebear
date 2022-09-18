@@ -20,10 +20,11 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
   std::string inVcf, reg, out;
   std::string chrom = "chr20";
   int32_t verbose = 10000;
-  int32_t store_interval = 1000; // Store snapshot of pbwt
+  int32_t store_interval = 10000; // Store snapshot of pbwt
   int32_t nsamples=0, M=0;
   int32_t chunksize = 1000000;
   int32_t min_ac = 10;
+  bool    hyploid = false;
 
   paramList pl;
   BEGIN_LONG_PARAMS(longParameters)
@@ -35,6 +36,7 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("chunk-size",&chunksize, "Output by chunk")
     LONG_INT_PARAM("min-ac",&min_ac, "Minimum allele count to include")
+    EXCLUSIVE_PARAM("hyploid",&hyploid, "Assume input is hyploid coded in diploid vcf form and use only the first allele e.g. for chrY")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -57,7 +59,10 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
   BCFOrderedReader odr(inVcf, intervals);
   bcf1_t* iv = bcf_init();
   nsamples = bcf_hdr_nsamples(odr.hdr);
-  M = nsamples * 2;
+  M = nsamples;
+  if (!hyploid) {
+    M *= 2;
+  }
 
   // Initialize pbwt Cursor
   pbwtCursor pc(M, 1);
@@ -107,16 +112,24 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
     for (int32_t i = 0; i <  nsamples; ++i) {
       int32_t g1 = p_gt[2*i];
-      int32_t g2 = p_gt[2*i+1];
-      if (bcf_gt_is_missing(g1)) {
-        y[2*i] = 0;
+      if (hyploid) {
+        if (bcf_gt_is_missing(g1)) {
+          y[i] = 0;
+        } else {
+          y[i] = ((bcf_gt_allele(g1) > 0) ? 1 : 0);
+        }
       } else {
-        y[2*i] = ((bcf_gt_allele(g1) > 0) ? 1 : 0);
-      }
-      if (bcf_gt_is_missing(g2)) {
-        y[2*i+1] = 0;
-      } else {
-        y[2*i+1] = ((bcf_gt_allele(g2) > 0) ? 1 : 0);
+        int32_t g2 = p_gt[2*i+1];
+        if (bcf_gt_is_missing(g1)) {
+          y[2*i] = 0;
+        } else {
+          y[2*i] = ((bcf_gt_allele(g1) > 0) ? 1 : 0);
+        }
+        if (bcf_gt_is_missing(g2)) {
+          y[2*i+1] = 0;
+        } else {
+          y[2*i+1] = ((bcf_gt_allele(g2) > 0) ? 1 : 0);
+        }
       }
     }
     pc.ForwardsAD_prefix(y, iv->pos+1);
@@ -146,6 +159,3 @@ int32_t pbwtBuildPrefix(int32_t argc, char** argv) {
 
   return 0;
 }
-
-
-

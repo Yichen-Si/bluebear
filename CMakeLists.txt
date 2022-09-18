@@ -127,6 +127,7 @@ add_executable(bluebear
     src/cmd_vcf_info_cdf.cpp
     src/cmd_vcf_site_annotate_refsample_info.cpp
     src/cmd_vcf_sample_summary.cpp
+	src/cmd_vcf_sample_summary_window.cpp
     src/cmd_vcf_site_annotate_pm_posterior.cpp
     src/cmd_vcf_site_annotate_age.cpp
     src/cmd_vcf_annotate_ibd.cpp
@@ -436,7 +437,7 @@ add_executable(bluebear
 	Eigen/src/plugins/CommonCwiseBinaryOps.h
 	Eigen/src/plugins/CommonCwiseUnaryOps.h
 	Eigen/src/plugins/MatrixCwiseBinaryOps.h
-	Eigen/src/plugins/MatrixCwiseUnaryOps.h    
+	Eigen/src/plugins/MatrixCwiseUnaryOps.h
 )
 
 find_library(ZLIB z HINTS /usr/lib/x86_64-linux-gnu/ /usr/lib/ /usr/lib64/)
@@ -499,10 +500,10 @@ install(TARGETS bluebear RUNTIME DESTINATION bin)
 
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-# set(bluebear_SOURCES 
+# set(bluebear_SOURCES
 #     src/bluebear.cpp
 #     src/cmd_vcf_temp.cpp
-    
+
 #     src/Error.cpp
 #     src/commands.cpp
 #     src/params.cpp

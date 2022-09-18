@@ -20,10 +20,11 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
   std::string inVcf, reg, out;
   std::string chrom = "chr20";
   int32_t chunksize = 100000;   // Read genotype by chunk
-  int32_t store_interval = 500; // Store snapshot of pbwt
+  int32_t store_interval = 5000; // Store snapshot of pbwt
   int32_t nsamples=0, M=0;
   int32_t min_variant = 1;
   int32_t min_ac = 10;
+  bool    hyploid = false;
 
   paramList pl;
   BEGIN_LONG_PARAMS(longParameters)
@@ -35,6 +36,7 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("chunk-size",&chunksize, "Read, process and write by chunk")
     LONG_INT_PARAM("min-ac",&min_ac, "Minimum allele count to include")
+    EXCLUSIVE_PARAM("hyploid",&hyploid, "Assume input is hyploid coded in diploid vcf form and use only the first allele e.g. for chrY")
 
     LONG_PARAM_GROUP("Output Options", NULL)
     LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -71,12 +73,15 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
     bcf1_t* iv = bcf_init();
     if (odr.read(iv)) {
       nsamples = bcf_hdr_nsamples(odr.hdr);
-      M = nsamples * 2;
       break;
     }
   }
-  if (M == 0) {
+  if (nsamples == 0) {
     error("Invalid --region or unreadable --inVcf.");
+  }
+  M = nsamples;
+  if (!hyploid) {
+    M *= 2;
   }
 
   nchunk = ck;
@@ -119,16 +124,24 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
       y = new bool[M];
       for (int32_t i = 0; i <  nsamples; ++i) {
         int32_t g1 = p_gt[2*i];
-        int32_t g2 = p_gt[2*i+1];
-        if (bcf_gt_is_missing(g1)) {
-          y[2*i] = 0;
+        if (hyploid) {
+          if (bcf_gt_is_missing(g1)) {
+            y[i] = 0;
+          } else {
+            y[i] = ((bcf_gt_allele(g1) > 0) ? 1 : 0);
+          }
         } else {
-          y[2*i] = ((bcf_gt_allele(g1) > 0) ? 1 : 0);
-        }
-        if (bcf_gt_is_missing(g2)) {
-          y[2*i+1] = 0;
-        } else {
-          y[2*i+1] = ((bcf_gt_allele(g2) > 0) ? 1 : 0);
+          int32_t g2 = p_gt[2*i+1];
+          if (bcf_gt_is_missing(g1)) {
+            y[2*i] = 0;
+          } else {
+            y[2*i] = ((bcf_gt_allele(g1) > 0) ? 1 : 0);
+          }
+          if (bcf_gt_is_missing(g2)) {
+            y[2*i+1] = 0;
+          } else {
+            y[2*i+1] = ((bcf_gt_allele(g2) > 0) ? 1 : 0);
+          }
         }
       }
       gtmat.push_back(y);
@@ -195,19 +208,3 @@ int32_t pbwtBuildSuffix(int32_t argc, char** argv) {
 
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

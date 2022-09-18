@@ -35,7 +35,7 @@ class parsimonyTree
     parsimonyTree() {};
     ~parsimonyTree() {};
 
-    int32_t add_variable_site_vcf(bcf1_t* iv) {};
+    int32_t add_variable_site_vcf_hyploid(bcf1_t* iv) {};
     int32_t read_sequences() {};
     int32_t build_pbwt() {};
     int32_t run_greedy_parsimony() {};
