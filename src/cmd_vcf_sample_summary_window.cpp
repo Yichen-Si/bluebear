@@ -244,16 +244,19 @@ int32_t cmdVcfSampleSummaryWindow(int32_t argc, char** argv) {
 				}
 				for(int32_t j=0; j < (int32_t)sumFields.size(); ++j) {
 					hprintf(wf, "\t%lld", mapFieldSums[sumFields[j]][i]);
-					mapFieldSums[sumFields[j]][i] = 0;
 				}
 				hprintf(wf, "\n");
 				nnz_ct[i] = 0;
+			}
+			for(int32_t j=0; j < (int32_t)sumFields.size(); ++j) {
+				mapFieldSums[sumFields[j]][i] = 0;
 			}
 		}
 
 		hprintf(wfv, "%s\t%d\t%d\t%d", bcf_hdr_id2name(odr.hdr, iv->rid),nextST,nVariant,nSum);
 		for (int32_t i=0; i<varOffset; ++i) {
 			hprintf(wfv, "\t%d",mapFieldVars[varFields[i]][0]);
+			mapFieldVars[varFields[i]][0] = 0;
 		}
 		hprintf(wfv, "\n");
 

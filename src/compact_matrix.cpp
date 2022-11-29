@@ -1,7 +1,7 @@
 #include "compact_matrix.h"
 #include "Error.h"
 
-bitmatrix::bitmatrix(int32_t _ncol, int32_t _nrow_alloc) : nrow(0), ncol(_ncol), nrow_alloc(_nrow_alloc) {
+bitmatrix::bitmatrix(int32_t _ncol, int32_t _nrow_alloc, int32_t _max_row_step) : nrow(0), ncol(_ncol), nrow_alloc(_nrow_alloc), max_row_step(_max_row_step) {
   int32_t ncol_ceil8 = (ncol % 8 == 0) ? ncol : ( ncol + ( 8 - (ncol % 8) ) );
   nbytes_col = ncol_ceil8 >> 3;
   bytes = (uint8_t*)calloc(nrow_alloc * nbytes_col, sizeof(uint8_t));
@@ -9,10 +9,9 @@ bitmatrix::bitmatrix(int32_t _ncol, int32_t _nrow_alloc) : nrow(0), ncol(_ncol),
 
 int32_t bitmatrix::reserve(int32_t new_nrow_alloc) {
   if ( new_nrow_alloc == 0 )
-    new_nrow_alloc = 2 * nrow_alloc;
+    new_nrow_alloc = nrow_alloc + std::min(nrow_alloc, max_row_step);
 
-  //notice("reserve() called, from %d to %d", nrow_alloc, new_nrow_alloc);
-
+  notice("reserve() called, from %d to %d", nrow_alloc, new_nrow_alloc);
   uint8_t* new_bytes = (uint8_t*)calloc(new_nrow_alloc * nbytes_col, sizeof(uint8_t));
   memcpy(new_bytes, bytes, nrow * nbytes_col);
   free(bytes);
@@ -94,6 +93,23 @@ void bitmatrix::print(int32_t rbeg, int32_t rend, int32_t cbeg, int32_t cend) {
     }
     printf("\n");
   }
+}
+
+void bitmatrix::print_int(int32_t rbeg, int32_t rend, int32_t cbeg, int32_t cend) {
+  for(int32_t i=rbeg; i < rend; ++i) {
+    uint8_t* row = get_row_bits(i);
+    for(int32_t j=cbeg; j < cend; ++j) {
+      for (int32_t bi = 0; bi < 8; ++bi) {
+        printf("%d", row[j] >> (7-bi) & 0x01);
+      }
+      printf(" ");
+    }
+    printf("\n");
+  }
+}
+
+int32_t bitmatrix::inner_prod_and_bytes(int32_t i, int32_t j) {
+  return byte_pair_op.sum_and(get_row_bits(i), get_row_bits(j), nbytes_col);
 }
 
 byte_pair_operation byte_pair_op;

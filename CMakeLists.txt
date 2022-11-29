@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-result -O3")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
-find_path(HTS_INCLUDE_DIRS htslib/bgzf.h HINTS ${CMAKE_SOURCE_DIR}/../htslib/include)
+find_path(HTS_INCLUDE_DIRS htslib/bgzf.h HINTS ${CMAKE_SOURCE_DIR}/../htslib)
 if(NOT HTS_INCLUDE_DIRS )
     message(FATAL_ERROR "libhts HTS_INCLUDE_DIRS not found")
 endif()
 message(STATUS ${HTS_INCLUDE_DIRS})
 
-find_library(HTS_LIBRARIES hts HINTS${CMAKE_SOURCE_DIR}/../htslib/include)
+find_library(HTS_LIBRARIES libhts.a HINTS ${CMAKE_SOURCE_DIR}/../htslib)
 if(NOT HTS_LIBRARIES)
     message(FATAL_ERROR "libhts HTS_LIBRARIES not found")
 endif()
@@ -38,7 +38,11 @@ add_executable(bluebear
     src/pException.h
     src/commands.h
     src/params.h
-    src/bcf_filter_arg.h
+	src/genomeChunk.h
+	src/PhredHelper.h
+	src/bcf_filter_arg.h
+	src/bcf_filtered_reader.h
+	src/bcf_chunked_reader.h
     src/bcf_ordered_reader.h
     src/bcf_ordered_writer.h
     src/bcf_variant_key.h
@@ -78,6 +82,10 @@ add_executable(bluebear
     src/utils.cpp
     src/hts_utils.cpp
     src/filter.cpp
+	src/genomeChunk.cpp
+	src/PhredHelper.cpp
+    src/bcf_filtered_reader.cpp
+	src/bcf_chunked_reader.cpp
     src/bcf_ordered_reader.cpp
     src/bcf_ordered_writer.cpp
     src/genome_interval.cpp
@@ -134,6 +142,7 @@ add_executable(bluebear
     src/cmd_vcf_anno_haplo_group.cpp
     src/cmd_vcf_snppairingene.cpp
     src/cmd_vcf_snppairinfo.cpp
+	src/cmd_vcf_dprime.cpp
     src/cmd_dge_shuffle.cpp
     src/blocks_in_ibs0_info.cpp
     src/cmd_vcf_phase_outlier.cpp

@@ -16,13 +16,13 @@
 // Hyun's codes
 #include "params.h"
 #include "Error.h"
-// #include "PhredHelper.h"
+#include "PhredHelper.h"
 
 // Adrian's codes
-//#include "genome_interval.h"
-//#include "bcf_ordered_reader.h"
-//#include "bcf_chunked_reader.h"
-//#include "bcf_ordered_writer.h"
+// #include "genome_interval.h"
+// #include "bcf_ordered_reader.h"
+// #include "bcf_chunked_reader.h"
+// #include "bcf_ordered_writer.h"
 #include "hts_utils.h"
 
 extern "C" {
@@ -30,9 +30,9 @@ extern "C" {
 }
 
 // bcftools's code
-//#include "filter.h"
-//#include "genomeChunk.h"
-//#include "genomeLoci.h"
+#include "filter.h"
+#include "genomeChunk.h"
+#include "genomeLoci.h"
 
 // htslib's code
 

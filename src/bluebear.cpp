@@ -30,6 +30,7 @@ int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneCount(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneSummary(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneInfo(int32_t argc, char** argv);
+int32_t cmdVcfDprime(int32_t argc, char** argv);
 
 int32_t DoubletonBlockInfo(int32_t argc, char** argv);
 
@@ -114,6 +115,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("snp-pair-in-gene-info",&cmdVcfSnpPairInGeneCount, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-short",&cmdVcfSnpPairInGeneSummary, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-long",&cmdVcfSnpPairInGeneInfo, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
+    LONG_COMMAND("dprime",&cmdVcfDprime, "Compute Dprime from haploid/phased BCF/VCF")
 
 LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statistics of switch/blip blocks in doubleton pairs from BCF/VCF")
 
