@@ -117,6 +117,8 @@ add_executable(bluebear
     src/cmd_vcf_ibs0_view.cpp
     src/ibs0_pairwise_scan.cpp
     src/cmd_vcf_raresharing.cpp
+	src/cmd_vcf_rare_allele_carrier.cpp
+	src/cmd_vcf_collapse_variant.cpp
     src/ibs0_phase_backward.cpp
     src/ibs0_phase_forward.cpp
     src/ibs0rare.cpp

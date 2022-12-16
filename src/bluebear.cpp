@@ -26,6 +26,8 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv);
 
 int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
 int32_t cmdVcfSampleSummaryWindow(int32_t argc, char** argv);
+int32_t cmdVcfCarrier(int32_t argc, char** argv);
+int32_t cmdVcfCollapseVar(int32_t argc, char** argv);
 int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneCount(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneSummary(int32_t argc, char** argv);
@@ -111,6 +113,8 @@ int32_t main(int32_t argc, char** argv) {
 
     LONG_COMMAND("vcf-sample-summary",&cmdVcfSampleSummary, "Sample-level summary from BCF/VCF")
     LONG_COMMAND("vcf-sample-summary-window",&cmdVcfSampleSummaryWindow, "Sample-level summary by window from BCF/VCF")
+    LONG_COMMAND("vcf-rare-carrier",&cmdVcfCarrier, "Output rare allele carriers from BCF/VCF")
+    LONG_COMMAND("clps-var-config",&cmdVcfCollapseVar, "Collapse variants with identical carrier set from BCF/VCF")
     LONG_COMMAND("vcf-count-singleton",&cmdVcfCountSingleton, "Count & list singletons from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-info",&cmdVcfSnpPairInGeneCount, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-short",&cmdVcfSnpPairInGeneSummary, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
