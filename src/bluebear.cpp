@@ -27,6 +27,7 @@ int32_t cmdVcfAnnoHapGroup(int32_t argc, char** argv);
 int32_t cmdVcfSampleSummary(int32_t argc, char** argv);
 int32_t cmdVcfSampleSummaryWindow(int32_t argc, char** argv);
 int32_t cmdVcfCarrier(int32_t argc, char** argv);
+int32_t cmdVcfXXtRare(int32_t argc, char** argv);
 int32_t cmdVcfCollapseVar(int32_t argc, char** argv);
 int32_t cmdVcfCountSingleton(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneCount(int32_t argc, char** argv);
@@ -63,6 +64,7 @@ int32_t hapIBDpbwtRight(int32_t argc, char** argv);
 int32_t hapIBDpairwise(int32_t argc, char** argv);
 int32_t HaplotypeChangeAtPt(int32_t argc, char** argv);
 int32_t HapibdVSnoibs0(int32_t argc, char** argv);
+int32_t MDHaploidY(int32_t argc, char** argv);
 int32_t trioDenovo(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
 int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
@@ -114,6 +116,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("vcf-sample-summary",&cmdVcfSampleSummary, "Sample-level summary from BCF/VCF")
     LONG_COMMAND("vcf-sample-summary-window",&cmdVcfSampleSummaryWindow, "Sample-level summary by window from BCF/VCF")
     LONG_COMMAND("vcf-rare-carrier",&cmdVcfCarrier, "Output rare allele carriers from BCF/VCF")
+    LONG_COMMAND("vcf-allele-share-count-rare",&cmdVcfXXtRare, "Count shared rare alleles from BCF/VCF")
     LONG_COMMAND("clps-var-config",&cmdVcfCollapseVar, "Collapse variants with identical carrier set from BCF/VCF")
     LONG_COMMAND("vcf-count-singleton",&cmdVcfCountSingleton, "Count & list singletons from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-info",&cmdVcfSnpPairInGeneCount, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
@@ -175,6 +178,7 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
     LONG_COMMAND("rare-blip",&RareBlipOnlyForward, "Based on shared rare allele and haplotype matching, proceed froward to detect blip in phased BCF/VCF")
     LONG_COMMAND("rare-blip-stats",&RareBlipOnlyStats, "Statistics of ibd around rare variants for detecting blip in phased BCF/VCF")
 
+    LONG_COMMAND("md-chry",&MDHaploidY, "Mendelian discordance on chrY")
     LONG_COMMAND("trio-denovo",&trioDenovo, "Detect de novo mutation in trio-child")
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
     LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")

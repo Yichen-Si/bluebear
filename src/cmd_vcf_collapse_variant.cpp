@@ -13,14 +13,14 @@ int32_t cmdVcfCollapseVar(int32_t argc, char** argv) {
 
   std::string inVcf, reg, out, samples, info;
   int32_t verbose = 10000;
-  double minDprime = -1;
+  double minDprime = -1, maxMiss = 0.1;
   bool haploid = false;
   bool count_only = false;
   bool snp_only = false;
   bool anno_group = false;
   bool debug = false;
   double minAF = -1, maxAF = -1;
-  int32_t minAC = -1, maxAC = -1;
+  int32_t minAC = 1, maxAC = -1;
 
   bcf_vfilter_arg vfilt;
 
@@ -43,6 +43,7 @@ int32_t cmdVcfCollapseVar(int32_t argc, char** argv) {
     LONG_INT_PARAM("min-ac",&minAC,"Minimum minor allele count")
     LONG_INT_PARAM("max-ac",&maxAC,"Maximum minor allele count")
     LONG_PARAM("haploid",&haploid,"Input is haploid though vcf is read as diploid (?)")
+    LONG_DOUBLE_PARAM("max-missing",&maxMiss,"Maximum missingness")
 
 	LONG_PARAM_GROUP("Output Options", NULL)
 	LONG_STRING_PARAM("out", &out, "Output file prefix")
@@ -221,17 +222,19 @@ int32_t cmdVcfCollapseVar(int32_t argc, char** argv) {
         for (const auto & v : group_list) {
             group_count[v] = 0;
         }
-        int32_t ct = 0;
+        int32_t ct = 0, n_miss = 0;
         int32_t current_gt = 0;
         int32_t current_start = 0;
         if (haploid) {
             if (!bcf_gt_is_missing(p_gt[0])) {
                 current_gt = (bcf_gt_allele(p_gt[0]) > 0) ? 1 : 0;
+                n_miss++;
             }
             for(int32_t i=1; i < nsamples; ++i) {
                 uint8_t geno = 0;
                 if ( bcf_gt_is_missing(p_gt[i*2]) ) {
                     geno = 0;
+                    n_miss++;
                 } else {
                     geno = (bcf_gt_allele(p_gt[i*2]) > 0) ? 1 : 0;
                 }
@@ -260,11 +263,13 @@ int32_t cmdVcfCollapseVar(int32_t argc, char** argv) {
         } else {
             if (!bcf_gt_is_missing(p_gt[0]) && !bcf_gt_is_missing(p_gt[1])) {
                 current_gt = ((bcf_gt_allele(p_gt[0]) > 0) ? 1 : 0) + ((bcf_gt_allele(p_gt[1]) > 0) ? 1 : 0);
+                n_miss++;
             }
             for(int32_t i=1; i < nsamples; ++i) {
                 uint8_t geno = 0;
                 if ( bcf_gt_is_missing(p_gt[i*2]) | bcf_gt_is_missing(p_gt[i*2+1]) ) {
                     geno = 0;
+                    n_miss++;
                 } else {
                     geno = ((bcf_gt_allele(p_gt[i*2]) > 0) ? 1 : 0) + ((bcf_gt_allele(p_gt[i*2+1]) > 0) ? 1 : 0);
                 }
@@ -301,6 +306,8 @@ int32_t cmdVcfCollapseVar(int32_t argc, char** argv) {
                 }
             }
         }
+        if (n_miss > nsamples * maxMiss) {continue;}
+        if (ac < minAC || ac > maxAC) {continue;}
         std::string ckey = std::to_string(ac) + "_" + ss.str();
         auto it = clpsVars.find(ac);
         if (it == clpsVars.end()) {
@@ -337,6 +344,7 @@ int32_t cmdVcfCollapseVar(int32_t argc, char** argv) {
 
 
         ++nVariant;
+
 
         bcf1_t* nv = bcf_dup(iv);
         bcf_unpack(nv, BCF_UN_ALL);

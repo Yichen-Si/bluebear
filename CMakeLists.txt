@@ -111,6 +111,7 @@ add_executable(bluebear
     src/ibd_around_pt.cpp
     src/trio_phase.cpp
     src/ibs0.cpp
+	src/cmd_vcf_md.cpp
     src/cmd_vcf_trio_denovo_mutation.cpp
     src/cmd_vcf_ibs0_flanking.cpp
     src/cmd_vcf_ibs0_pairwise.cpp
@@ -118,6 +119,7 @@ add_executable(bluebear
     src/ibs0_pairwise_scan.cpp
     src/cmd_vcf_raresharing.cpp
 	src/cmd_vcf_rare_allele_carrier.cpp
+	src/cmd_vcf_shared_allele_count.cpp
 	src/cmd_vcf_collapse_variant.cpp
     src/ibs0_phase_backward.cpp
     src/ibs0_phase_forward.cpp

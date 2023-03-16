@@ -1,10 +1,12 @@
 #include "compact_matrix.h"
 #include "Error.h"
+#include <iostream>
 
 bitmatrix::bitmatrix(int32_t _ncol, int32_t _nrow_alloc, int32_t _max_row_step) : nrow(0), ncol(_ncol), nrow_alloc(_nrow_alloc), max_row_step(_max_row_step) {
   int32_t ncol_ceil8 = (ncol % 8 == 0) ? ncol : ( ncol + ( 8 - (ncol % 8) ) );
   nbytes_col = ncol_ceil8 >> 3;
   bytes = (uint8_t*)calloc(nrow_alloc * nbytes_col, sizeof(uint8_t));
+  notice("Initialization: %d x %d (%d)", _nrow_alloc, ncol_ceil8, nbytes_col);
 }
 
 int32_t bitmatrix::reserve(int32_t new_nrow_alloc) {
@@ -42,7 +44,7 @@ int32_t bitmatrix::add_row_bytes(uint8_t* bytearray) {
   if ( nrow == nrow_alloc) reserve();
   uint8_t* rowbytes = get_row_bits(nrow);
   for(i=0; i < ncol; i += 8) {
-    for(j=0, byte = 0; (j < 8) && (j < ncol); ++j) {
+    for(j=0, byte=0; (j < 8) && (j < ncol); ++j) {
       byte |= ((bytearray[i+j] != 0) << (7-j));
     }
     rowbytes[i >> 3] = byte;

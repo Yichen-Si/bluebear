@@ -7,20 +7,18 @@
 #include "bcf_ordered_reader.h"
 #include "bcf_ordered_writer.h"
 
-int32_t cmdVcfDprime(int32_t argc, char** argv) {
+#include <Eigen/Sparse>
+
+int32_t cmdVcfXXtCommon(int32_t argc, char** argv) {
 
   std::string inVcf, reg, out, samples;
   int32_t verbose = 10000;
-  double minDprime = -1;
-  bool debug = false;
   bool haploid = false;
-  bool count_only = false;
-  bool recode_minor = false;
-  bool all_pair_fail_fourgamete = false;
-  bool includeIndels = false;
+  bool count_alt = false;
+  bool snp_only = false;
+  bool annotate_carrier = false;
   double minAF = -1, maxAF = -1;
-  int32_t minAC = -1, maxAC = -1;
-  int32_t output_oneside_minAC = -1;
+  int32_t minAC = -1, maxAC = -1, anno_max_ac = 10;
 
   bcf_vfilter_arg vfilt;
 
@@ -36,23 +34,20 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
 	LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
 	LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
 	LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
-    LONG_PARAM("include-indels",&includeIndels,"Include indels")
-    LONG_DOUBLE_PARAM("min-af",&minAF,"Minimum minor allele frequency")
-    LONG_DOUBLE_PARAM("max-af",&maxAF,"Maximum minor allele frequency")
-    LONG_INT_PARAM("min-ac",&minAC,"Minimum minor allele count")
-    LONG_INT_PARAM("max-ac",&maxAC,"Maximum minor allele count")
-    LONG_INT_PARAM("out-oneside-min-ac",&output_oneside_minAC,"Only output pairs with at least one variant with minor allele count larger than")
+    LONG_PARAM("snp-only",&snp_only,"Ignore indels")
+    LONG_DOUBLE_PARAM("min-af",&minAF,"Minimum minor/alt allele frequency")
+    LONG_DOUBLE_PARAM("max-af",&maxAF,"Maximum minor/alt allele frequency")
+    LONG_INT_PARAM("min-ac",&minAC,"Minimum minor/alt allele count")
+    LONG_INT_PARAM("max-ac",&maxAC,"Maximum minor/alt allele count")
     LONG_PARAM("haploid",&haploid,"Input is haploid though vcf is read as diploid (?)")
 
 	LONG_PARAM_GROUP("Output Options", NULL)
 	LONG_STRING_PARAM("out", &out, "Output file prefix")
 	LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
-    LONG_DOUBLE_PARAM("minDprime",&minDprime,"Minimum Dprime of output pairs")
-    LONG_PARAM("count-only",&count_only,"If only compute genotype inner product without calculating statistics")
-    LONG_PARAM("recode-minor",&recode_minor,"If the number of overlapped carriers is always calculated for the minor alleles - cannot be used when only partial data is available")
-    LONG_PARAM("four-gamete",&all_pair_fail_fourgamete,"Output all and only pairs that fail four-gamete test")
+    LONG_PARAM("count-alt",&count_alt,"Count the shared alt allele instead of minor allele (default)")
+    LONG_PARAM("anno-carrier",&annotate_carrier,"Annotate carrier ID in an output vcf site file. Only for rare alleles")
+    LONG_INT_PARAM("anno-max-ac",&anno_max_ac,"")
 
-    LONG_INT_PARAM("debug",&debug,"")
 
   END_LONG_PARAMS();
 
@@ -65,9 +60,6 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
 	error("[E:%s:%d %s] --in-vcf, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
 
-    std::string outf = out + ".dprime.mtx.gz";
-    htsFile* wf = hts_open(outf.c_str(), "wg");
-
     std::vector<GenomeInterval> intervals;
     if ( !reg.empty() ) {
         parse_intervals(intervals, "", reg);
@@ -76,44 +68,42 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
     BCFOrderedReader odr(inVcf, intervals);
     bcf1_t* iv = bcf_init();
 
-    int32_t nsamples_full = bcf_hdr_nsamples(odr.hdr);
     if (!samples.empty()) {
         bcf_hdr_set_samples(odr.hdr, samples.c_str(), 1);
     }
     int32_t nsamples = bcf_hdr_nsamples(odr.hdr);
     notice("Detected %d samples.", nsamples);
 
-    outf = out + ".site.vcf.gz";
+    int32_t nalleles = 2*nsamples;
+    if (haploid) {nalleles = nsamples;}
+    if (minAF >= 0) {
+        minAC = (int32_t) minAF * nalleles;
+    }
+    if (maxAF >= 0 && maxAF <= 0.5) {
+        maxAC = (int32_t) maxAF * nalleles;
+    }
+    if (minAC < 0) { minAC = 1; }
+    if (maxAC < 0) { maxAC = (int32_t) (nalleles / 2); }
+    if (anno_max_ac < minAC) {annotate_carrier = false; }
+
+    std::string outf = out + ".site.vcf.gz";
     BCFOrderedWriter odw(outf.c_str(),0);
     bcf_hdr_t* hnull = bcf_hdr_subset(odr.hdr, 0, 0, 0);
     bcf_hdr_remove(hnull, BCF_HL_FMT, NULL);
     odw.set_hdr(hnull);
+    char buffer[65536];
+	if ( annotate_carrier && bcf_hdr_id2int(odw.hdr, BCF_DT_ID, "CarrierID") < 0 ) {
+		sprintf(buffer,"##INFO=<ID=CarrierID,Number=1,Type=String,Description=\"Minor allele carriers\">\n");
+		bcf_hdr_append(odw.hdr, buffer);
+	}
     odw.write_hdr();
 
     // handle filter string
     vfilt.init(odr.hdr);
-    if ( !includeIndels ) vfilt.snpOnly = true;
-    int32_t nalleles = 2*nsamples;
-    int32_t nalleles_full = 2*nsamples_full;
-    if (haploid) {
-        nalleles = nsamples;
-        nalleles_full = nsamples_full;
-    }
-    if (minAF >= 0) {
-        minAC = (int32_t) (minAF * nalleles_full);
-    }
-    if (maxAF >= 0 && maxAF <= 0.5) {
-        maxAC = (int32_t) (maxAF * nalleles_full);
-    }
-    if (minAC < 0) { minAC = 1; }
-    if (maxAC < 0) { maxAC = (int32_t) (nalleles_full / 2); }
-    if (output_oneside_minAC < 0) {output_oneside_minAC = minAC; }
-    if (debug) {
-        std::cout << minAC << '\t' << maxAC << '\n';
-    }
+    if ( snp_only ) vfilt.snpOnly = true;
 
     std::vector<int32_t> freq;
-    bitmatrix bmat(nalleles);
+    bitmatrix bmat(nsamples);
 
     int32_t n_gt = 0, n_ac = 0, n_an = 0;
     int32_t* p_gt = NULL;
@@ -124,7 +114,7 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
     for(int32_t k=0; odr.read(iv); ++k) {  // read marker
 
         if ( k % verbose == 0 )
-            notice("Processed %d markers at %s:%d.", nVariant, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+            notice("Processing %d markers at %s:%d.", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
 
         bcf_unpack(iv, BCF_UN_FLT);
         if ( vfilt.snpOnly && (!bcf_is_snp(iv)) ) {continue;}
@@ -152,20 +142,15 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
         }
         if (bcf_get_info_int32(odr.hdr, iv, "AC", &info_ac, &n_ac) < 0) {continue;}
         if (bcf_get_info_int32(odr.hdr, iv, "AN", &info_an, &n_an) < 0) {continue;}
-        // Filter based on original AC/AN in case of sub-sampling
-        int32_t minor_ac = info_ac[0];
-        bool flip = false;
-        if (info_an[0] > nalleles_full && haploid) {minor_ac = minor_ac / 2;}
-        if (minor_ac > info_an[0]/2) {
-            flip = true;
-            minor_ac = info_an[0] - minor_ac;
-        }
-        if (minor_ac < minAC || minor_ac > maxAC) {continue;}
-        ++nVariant;
-        if (debug) {
-            std::cout << info_an[0] << '\t' << minor_ac << '\t' << minor_ac*1./info_an[0] << '\n';
-        }
+        int32_t ac = info_ac[0];
+        if (info_an[0] > nalleles && haploid) {ac = ac / 2;}
+        if (ac > nalleles / 2) {ac = nalleles - ac;}
+        if (ac < minAC || ac > maxAC) {continue;}
 
+        ++nVariant;
+
+        bool flip = 0;
+        ac = 0;
         uint8_t gt[nalleles];
         if (haploid) {
             for(int32_t i=0; i < nsamples; ++i) {
@@ -177,6 +162,7 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
                     geno = (bcf_gt_allele(p_gt[i*2]) > 0) ? 1 : 0;
                 }
                 gt[i] = geno;
+                ac += geno;
             }
         } else {
             for(int32_t i=0; i < n_gt; ++i) {
@@ -188,15 +174,20 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
                     geno = (bcf_gt_allele(p_gt[i]) > 0) ? 1 : 0;
                 }
                 gt[i] = geno;
+                ac += geno;
             }
         }
-        if (recode_minor && flip) {
+        if ((!count_alt) && ac > nalleles / 2) {
+            flip = 1;
+            ac = nalleles - ac;
             for(int32_t i = 0; i < nalleles; ++i) {
                 gt[i] = 1 - gt[i];
             }
         }
-        freq.push_back(minor_ac);
+        // freq.push_back((double) ac/nalleles);
+        freq.push_back(ac);
         bmat.add_row_bytes(gt);
+
 
         bcf1_t* nv = bcf_dup(iv);
         bcf_unpack(nv, BCF_UN_ALL);
@@ -204,13 +195,17 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
         odw.write(nv);
         bcf_destroy(nv);
 
-        // if (debug && nVariant > 100) {exit(0);}
+        // char** alleles = bcf_get_allele(iv);
+        // hprintf(vwf, "%s\t%d\t%s\t%s\t%d\t%d\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, alleles[0], alleles[1], (int32_t) flip, ac);
     }
     odr.close();
     odw.close();
+    // hts_close(vwf);
 
     notice("Matrix: %d x %d.\n", bmat.nrow, bmat.ncol);
 
+    outf = out + ".count.mtx.gz";
+    htsFile* wf = hts_open(outf.c_str(), "wg");
     for (int32_t i = 0; i < bmat.nrow - 1; ++i) {
         bool rare = 0;
         if (freq[i] < output_oneside_minAC) {
@@ -221,18 +216,10 @@ int32_t cmdVcfDprime(int32_t argc, char** argv) {
                 continue;
             }
             int32_t mmt = bmat.inner_prod_and_bytes(i, j);
-            if (mmt < 1) {continue;} // Missing 11
+            if (mmt < 1) {continue;}
             if (count_only) {
                 hprintf(wf, "%d\t%d\t%d\n", i, j, mmt);
             } else {
-                if (all_pair_fail_fourgamete) {
-                    if (freq[i] == mmt || freq[j] == mmt) {
-                        continue; // Missing 10 or 01
-                    }
-                    if (freq[i]+freq[j]-mmt == nalleles) {
-                        continue; // Missing 00
-                    }
-                }
                 double xy = (double) mmt / nalleles;
                 double f1 = (double) freq[i] / nalleles;
                 double f2 = (double) freq[j] / nalleles;
