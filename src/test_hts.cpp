@@ -1,7 +1,9 @@
 #include "cramore.h"
 #include "hts_utils.h"
 #include "utils.h"
+#include <algorithm>
 #include <iostream>
+#include <cmath>
 #include "fstream"
 #include "sstream"
 
@@ -13,43 +15,57 @@
 // #include "fa_reader.h"
 // #include "seq_basics.h"
 
-#include "compact_matrix.h"
 #include "bcf_filter_arg.h"
 #include "bcf_ordered_reader.h"
 
 int32_t test(int32_t argc, char** argv) {
 
   std::string inVcf, reg, out, samples;
+  std::vector<std::string> test_samples, ctrl_samples;
+  std::vector<uint32_t> test_sample_idx, ctrl_sample_idx;
+  bool preview = false;
   int32_t verbose = 10000;
-  double minDprime = -1;
-  bool haploid = false;
-  bool count_only = false;
-  bool recode_minor = false;
+  int32_t min_ctrl_support = 1;
+  int32_t max_minor_adp_ctrl = 2;
+  double  max_minor_vaf_ctrl = .1;
+  double  min_minor_vaf_test = .2;
+  int32_t min_minor_adp_test = 5;
+  int32_t max_sum_minor_abq_ctrl = 60;
+  int32_t minDP = 8;
+  double  tol = 1e-8;
+  int32_t max_q = 80;
+  bool single_strand = false; // if true, only use reads from one strand
 
   bcf_vfilter_arg vfilt;
-  bcf_gfilter_arg gfilt;
 
   paramList pl;
-
   BEGIN_LONG_PARAMS(longParameters)
-	LONG_PARAM_GROUP("Input Sites", NULL)
+	LONG_PARAM_GROUP("Input Information", NULL)
 	LONG_STRING_PARAM("in-vcf",&inVcf, "Input VCF/BCF file")
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
 	LONG_STRING_PARAM("samples",&samples,"List of sample ID")
+    LONG_MULTI_STRING_PARAM("test-samples",&test_samples,"List of test sample ID")
+    LONG_MULTI_STRING_PARAM("ctrl-samples",&ctrl_samples,"List of reference sample ID")
+    LONG_MULTI_INT_PARAM("test-sample-index",&test_sample_idx,"List of test sample indices")
+    LONG_MULTI_INT_PARAM("ctrl-sample-index",&ctrl_sample_idx,"List of reference sample indices")
+    LONG_PARAM("single-strand",&single_strand,"Use only reads from one strand")
 
 	LONG_PARAM_GROUP("Variant Filtering Options", NULL)
 	LONG_MULTI_STRING_PARAM("apply-filter",&vfilt.required_filters, "Require at least one of the listed FILTER strings")
-	LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
-	LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+    LONG_STRING_PARAM("include-expr",&vfilt.include_expr, "Include sites for which expression is true")
+    LONG_STRING_PARAM("exclude-expr",&vfilt.exclude_expr, "Exclude sites for which expression is true")
+    LONG_INT_PARAM("minDP",&minDP,"Min DP for each sample")
+    LONG_INT_PARAM("min-ctrl-support",&min_ctrl_support,"Min number of reference samples with called homozygouse genotype to declare a potential test-specific allele")
+    LONG_INT_PARAM("max-minor-adp-ctrl",&max_minor_adp_ctrl,"")
+    LONG_DOUBLE_PARAM("max-minor-vaf-ctrl",&max_minor_vaf_ctrl,"")
+    LONG_INT_PARAM("max-sum-minor-abq-ctrl",&max_sum_minor_abq_ctrl,"")
 
 	LONG_PARAM_GROUP("Output Options", NULL)
 	LONG_STRING_PARAM("out", &out, "Output file prefix")
 	LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
-    LONG_DOUBLE_PARAM("minDprime",&minDprime,"Minimum Dprime of output pairs")
-    LONG_PARAM("haploid",&haploid,"Input is haploid though vcf is read as diploid (?)")
-    LONG_PARAM("count-only",&count_only,"If only compute genotype inner product without calculating statistics")
-    LONG_PARAM("recode-minor",&recode_minor,"If the number of overlapped carriers is always calculated for the minor alleles - cannot be used when only partial data is available")
-
+    LONG_PARAM("preview", &preview, "")
+    LONG_DOUBLE_PARAM("min-minor-vaf-test",&min_minor_vaf_test,"For preview only")
+    LONG_INT_PARAM("min-minor-adp-test",&min_minor_adp_test,"For preview only")
 
   END_LONG_PARAMS();
 
@@ -61,12 +77,12 @@ int32_t test(int32_t argc, char** argv) {
   if ( inVcf.empty() || out.empty() ) {
 	error("[E:%s:%d %s] --in-vcf, --out are required parameters",__FILE__,__LINE__,__FUNCTION__);
   }
+  if ( test_samples.empty() && test_sample_idx.empty() ) {
+    error("[E:%s:%d %s] --test-samples or --test-sample-index is required",__FILE__,__LINE__,__FUNCTION__);
+  }
 
-    std::string outf = out + ".var.tsv";
-    htsFile* vwf = hts_open(outf.c_str(), "w");
-    outf = out + ".dprime.mtx.gz";
-    htsFile* dwf = hts_open(outf.c_str(), "wg");
-
+    std::string outf = out + ".tsv.gz";
+    htsFile* wf = hts_open(outf.c_str(), "wg");
 
     std::vector<GenomeInterval> intervals;
     if ( !reg.empty() ) {
@@ -77,6 +93,55 @@ int32_t test(int32_t argc, char** argv) {
     if (!samples.empty()) {
         bcf_hdr_set_samples(odr.hdr, samples.c_str(), 1);
     }
+    // Parse input sample groups
+    int32_t nsamples = bcf_hdr_nsamples(odr.hdr);
+    if (test_sample_idx.empty() && !test_samples.empty()) {
+        // Translate input sample ID to sample indices
+        for (auto & v : test_samples) {
+            int idx = bcf_hdr_id2int(odr.hdr,BCF_DT_SAMPLE,v.c_str());
+            if (idx >= 0 && idx < nsamples) {
+                test_sample_idx.push_back(idx);
+            }
+            else {
+                warning("[W:%s:%d %s] Cannot find sample %s in the VCF header",__FILE__,__LINE__,__FUNCTION__,v.c_str());
+            }
+        }
+    }
+    if (ctrl_sample_idx.empty() && !ctrl_samples.empty()) {
+        for (auto & v : ctrl_samples) {
+            int idx = bcf_hdr_id2int(odr.hdr,BCF_DT_SAMPLE,v.c_str());
+            if (idx >= 0 && idx < nsamples) {
+                ctrl_sample_idx.push_back(idx);
+            }
+            else {
+                warning("[W:%s:%d %s] Cannot find sample %s in the VCF header",__FILE__,__LINE__,__FUNCTION__,v.c_str());
+            }
+        }
+    }
+    std::sort( test_sample_idx.begin(), test_sample_idx.end() );
+    test_sample_idx.erase( std::unique( test_sample_idx.begin(), test_sample_idx.end() ), test_sample_idx.end() );
+    if (!ctrl_sample_idx.empty()) {
+        std::sort( ctrl_sample_idx.begin(), ctrl_sample_idx.end() );
+        ctrl_sample_idx.erase( std::unique( ctrl_sample_idx.begin(), ctrl_sample_idx.end() ), ctrl_sample_idx.end() );
+    }
+    if (!test_sample_idx.empty() && ctrl_sample_idx.empty()) {
+        // Assume all other samples are reference samples
+        uint32_t j = 0;
+        for (auto & v : test_sample_idx) {
+            while (j < v) {
+                ctrl_sample_idx.push_back(j);
+                ++j;
+            }
+            ++j;
+        }
+        while (j < nsamples) {
+            ctrl_sample_idx.push_back(j);
+            ++j;
+        }
+    }
+    int32_t ntest = test_sample_idx.size();
+    int32_t nctrl = ctrl_sample_idx.size();
+    notice("Processing %d samples (%d test v.s. %d reference).", nsamples, ntest, nctrl);
 
     // handle filter string
     std::string filter_str;
@@ -110,23 +175,20 @@ int32_t test(int32_t argc, char** argv) {
         }
     }
 
-
-    int32_t nsamples = bcf_hdr_nsamples(odr.hdr);
-    notice("Processing %d samples.", nsamples);
-    int32_t nalleles = 2*nsamples;
-    if (haploid) {nalleles = nsamples;}
-
-    std::vector<double> freq;
-    bitmatrix bmat(nsamples);
-
-    int32_t* p_gt = NULL;
-    int32_t n_gt = 0;
+    int32_t* v_dp = NULL;
+    int32_t* v_rbq = NULL;
+    int32_t* v_abq = NULL;
+    int32_t* v_rdf = NULL;
+    int32_t* v_adf = NULL;
+    int32_t* v_rdr = NULL;
+    int32_t* v_adr = NULL;
+    int32_t n_fmt = 0;
     int32_t nVariant = 0;
 
     for(int32_t k=0; odr.read(iv); ++k) {  // read marker
 
-        if ( k % verbose == 0 )
-            notice("Processing %d markers at %s:%d.", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+        if ( k > 0 && k % verbose == 0 )
+            notice("Processing %d markers at %s:%d. Kept %d variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
 
         bcf_unpack(iv, BCF_UN_FLT);
         // check --apply-filters
@@ -148,85 +210,139 @@ int32_t test(int32_t argc, char** argv) {
         }
         if ( ! has_filter ) { continue; }
 
-        if ( bcf_get_genotypes(odr.hdr, iv, &p_gt, &n_gt) < 0 ) {
-        error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
+        if ( bcf_get_format_int32(odr.hdr, iv, "DP", &v_dp, &n_fmt) < 0 ) {
+            error("[E:%s:%d %s] Cannot find the field DP from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
         }
-        ++nVariant;
+        n_fmt = 0;
+        if ( bcf_get_format_int32(odr.hdr, iv, "RBQ", &v_rbq, &n_fmt) < 0 ) {continue;}
+        n_fmt = 0;
+        if ( bcf_get_format_int32(odr.hdr, iv, "ABQ", &v_abq, &n_fmt) < 0 ) {continue;}
+        n_fmt = 0;
+        if ( bcf_get_format_int32(odr.hdr, iv, "RDF", &v_rdf, &n_fmt) < 0 ) {continue;}
+        n_fmt = 0;
+        if ( bcf_get_format_int32(odr.hdr, iv, "ADF", &v_adf, &n_fmt) < 0 ) {continue;}
+        n_fmt = 0;
+        if ( bcf_get_format_int32(odr.hdr, iv, "RDR", &v_rdr, &n_fmt) < 0 ) {continue;}
+        n_fmt = 0;
+        if ( bcf_get_format_int32(odr.hdr, iv, "ADR", &v_adr, &n_fmt) < 0 ) {continue;}
+        n_fmt = 0;
 
-        bool flip = 0;
-        int32_t ac = 0;
-        uint8_t gt[nalleles];
-        if (haploid) {
-            for(int32_t i=0; i < nsamples; ++i) {
-                uint8_t geno = 0;
-                if ( bcf_gt_is_missing(p_gt[i*2]) ) {
-                    geno = 0;
+        // Decide which strand to use (?)
+        if (single_strand) {
+            int32_t DPF = 0, DPR = 0;
+            for (int32_t i=0; i < nsamples; ++i) {
+                if ( v_dp[i] == bcf_int32_missing ) { continue; }
+                DPF += v_rdf[i] + v_adf[i];
+                DPR += v_rdr[i] + v_adr[i];
+            }
+            int32_t strand = (DPF > DPR) ? 1 : 0;
+            for (int32_t i=0; i < nsamples; ++i) {
+                if ( v_dp[i] == bcf_int32_missing ) { continue; }
+                if ( strand == 0 ) {
+                    v_rdf[i] = v_rdr[i];
+                    v_adf[i] = v_adr[i];
                 }
-                else {
-                    geno = (bcf_gt_allele(p_gt[i*2]) > 0) ? 1 : 0;
-                }
-                gt[i] = geno;
-                ac += geno;
             }
         } else {
-            for(int32_t i=0; i < n_gt; ++i) {
-                uint8_t geno = 0;
-                if ( bcf_gt_is_missing(p_gt[i]) ) {
-                    geno = 0;
-                }
-                else {
-                    geno = (bcf_gt_allele(p_gt[i]) > 0) ? 1 : 0;
-                }
-                gt[i] = geno;
-                ac += geno;
+            for (int32_t i=0; i < nsamples; ++i) {
+                v_rdf[i] = v_rdf[i] + v_rdr[i];
+                v_adf[i] = v_adf[i] + v_adr[i];
             }
         }
-        if (recode_minor && ac > nalleles / 2) {
-            flip = 1;
-            ac = nalleles - ac;
-            for(int32_t i = 0; i < nalleles; ++i) {
-                gt[i] = 1 - gt[i];
-            }
-        }
-        freq.push_back((double) ac/nalleles);
-        bmat.add_row_bytes(gt);
 
-        char** alleles = bcf_get_allele(iv);
-        hprintf(vwf, "%s\t%d\t%s\t%s\t%d\t%d\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, alleles[0], alleles[1], (int32_t) flip, ac);
+        int32_t max_ctrl_rdp = 0;
+        int32_t max_ctrl_adp = 0;
+        double  max_raf_ctrl = 0;
+        double  max_aaf_ctrl = 0;
+        int32_t obs_ctrl = 0;
+        int32_t obs_test = 0;
+        int32_t max_sum_ctrl_rbq = 0;
+        int32_t max_sum_ctrl_abq = 0;
+        int32_t max_sum_test_rbq = 0;
+        int32_t max_sum_test_abq = 0;
+        double  sum_test_rdp = 0;
+        double  sum_test_adp = 0;
+        int32_t ctrl_homo = -1;
+        int32_t sum_ctrl_rdp = 0;
+        int32_t sum_ctrl_adp = 0;
+
+        std::string vtype = bcf_is_snp(iv) ? "SNP" : "INDEL";
+        std::stringstream ss_indiv;
+        for (auto & i : test_sample_idx) {
+            if ( v_dp[i] == bcf_int32_missing || v_dp[i] < minDP ) {
+                if (obs_test > 0) {ss_indiv << "\t";}
+                ss_indiv << "-1,-1";
+                continue;
+            }
+            sum_test_rdp += v_rdf[i];
+            sum_test_adp += v_adf[i];
+            if (max_sum_test_rbq < v_rbq[i] * v_rdf[i]) {
+                max_sum_test_rbq = v_rbq[i] * v_rdf[i];
+            }
+            if (max_sum_test_abq < v_abq[i] * v_adf[i]) {
+                max_sum_test_abq = v_abq[i] * v_adf[i];
+            }
+            if (obs_test > 0) {ss_indiv << "\t";}
+            ss_indiv << v_rdf[i] << "," << v_adf[i];
+            obs_test++;
+        }
+        for(auto & i : ctrl_sample_idx) {
+            if ( v_dp[i] == bcf_int32_missing || v_dp[i] < minDP ) {
+                ss_indiv << "\t-1,-1";
+                continue;
+            }
+            obs_ctrl++;
+            sum_ctrl_rdp += v_rdf[i];
+            sum_ctrl_adp += v_adf[i];
+            max_ctrl_rdp = max_ctrl_rdp < v_rdf[i] ? v_rdf[i] : max_ctrl_rdp;
+            max_ctrl_adp = max_ctrl_adp < v_adf[i] ? v_adf[i] : max_ctrl_adp;
+            int32_t rbq_sum = v_rbq[i] * v_rdf[i];
+            int32_t abq_sum = v_abq[i] * v_adf[i];
+            double  vaf = (double)v_adf[i] / (double)(v_rdf[i] + v_adf[i]);
+            if (max_sum_ctrl_rbq < rbq_sum) {
+                max_sum_ctrl_rbq = rbq_sum;
+            }
+            if (max_sum_ctrl_abq < abq_sum) {
+                max_sum_ctrl_abq = abq_sum;
+            }
+            if (max_raf_ctrl < 1.-vaf) {
+                max_raf_ctrl = 1.-vaf;
+            }
+            if (max_aaf_ctrl < vaf) {
+                max_aaf_ctrl = vaf;
+            }
+            ss_indiv << "\t" << v_rdf[i] << "," << v_adf[i];
+        }
+        if (obs_ctrl < 1 || obs_test < 1) {
+            continue;
+        }
+        if (obs_ctrl >= min_ctrl_support) {
+            if (max_raf_ctrl < max_minor_vaf_ctrl &&
+                max_ctrl_rdp < max_minor_adp_ctrl &&
+                max_sum_ctrl_rbq < max_sum_minor_abq_ctrl) {
+                ctrl_homo = 1;
+            } else if (max_aaf_ctrl < max_minor_vaf_ctrl &&
+                max_ctrl_adp < max_minor_adp_ctrl &&
+                max_sum_ctrl_abq < max_sum_minor_abq_ctrl) {
+                ctrl_homo = 0;
+            }
+        }
+        std::stringstream ss;
+        ss << ctrl_homo << "\t";
+        ss << obs_ctrl << ":" << max_ctrl_rdp << "," << max_ctrl_adp << "\t";
+        ss << obs_test << ":" << max_sum_test_rbq << "," << max_sum_test_abq;
+        ++nVariant;
+
+        if (preview && ctrl_homo != -1) {
+            double test_vaf = (double) sum_test_adp / (sum_test_adp + sum_test_rdp);
+            if ((ctrl_homo == 0 && sum_test_adp >= min_minor_adp_test && test_vaf >= min_minor_vaf_test) ||
+                (ctrl_homo == 1 && sum_test_rdp >= min_minor_adp_test && 1 - test_vaf > min_minor_vaf_test)) {
+                printf("%s\t%d\t%s\t%s\t%s\t%s\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, vtype.c_str(), bcf_hdr_int2id(odr.hdr,BCF_DT_ID,iv->d.flt[0]), ss.str().c_str(), ss_indiv.str().c_str() );
+            }
+        }
+
+        hprintf(wf, "%s\t%d\t%s\t%s\t%s\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, vtype.c_str(), ss.str().c_str(), ss_indiv.str().c_str() );
     }
-    odr.close();
-
-    notice("Matrix: %d x %d.", bmat.nrow, bmat.ncol);
-
-    for (int32_t i = 0; i < bmat.nrow - 1; ++i) {
-        for (int32_t j = i; j < bmat.nrow; ++j) {
-            int32_t mmt = bmat.inner_prod_and_bytes(i, j);
-            if (mmt < 1) {continue;}
-
-            if (count_only) {
-                hprintf(dwf, "%d\t%d\t%d\n", i, j, mmt);
-            } else {
-                double xy = (double) mmt / nalleles;
-                double d  = xy - freq[i] * freq[j];
-                double dmax = 1;
-                if (d < 0) {
-                    dmax = std::max( -freq[i]*freq[j], -(1-freq[i])*(1-freq[j]) ) ;
-                }
-                if (d > 0) {
-                    dmax = std::min( freq[i]*(1-freq[j]), (1-freq[i])*freq[j] ) ;
-                }
-                double rsq = d * d / freq[j] / (1-freq[i]) / freq[i] / (1-freq[j]);
-                d = d / dmax;
-                if (d < minDprime) {
-                    continue;
-                }
-                hprintf(dwf, "%d\t%d\t%d\t%.4f\t%.4f\n", i, j, mmt, d, rsq);
-            }
-        }
-    }
-
-    hts_close(dwf);
-    hts_close(vwf);
-
+    hts_close(wf);
     return 0;
 }
