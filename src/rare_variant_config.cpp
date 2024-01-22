@@ -51,12 +51,16 @@ void RareVariant::Organize(bp2cmMap& pgmap) {
   // Re-order the ibd matrix according to the planer order
   // sorted_cm: acxac matrix flatten by row as vector
   // upper triangle is right (downstream), lower trangle is left (upstream)
+  sorted_cm.resize(ac*ac, 0.);
+  sorted_pt.resize(ac*ac, 0);
   for (int32_t i = 0; i < ac-1; ++i) {
     for (int32_t j = i+1; j < ac; ++j) {
       int32_t irow = std::min(planer_order[i], planer_order[j]);
       int32_t icol = std::max(planer_order[i], planer_order[j]);
       sorted_cm[i*ac+j] = pgmap.bpinterval2cm(pos, ibs0mat[irow][icol]);
       sorted_cm[j*ac+i] = pgmap.bpinterval2cm(ibs0mat[icol][irow], pos);
+      sorted_pt[i*ac+j] = ibs0mat[irow][icol] - pos;
+      sorted_pt[j*ac+i] = pos - ibs0mat[icol][irow];
     }
   }
 
@@ -71,6 +75,7 @@ void RareVariant::Organize(bp2cmMap& pgmap) {
     }
   }
 
+  // Re-order the id_list according to the planer order
   std::vector<int32_t> tmpid(id_list.begin(), id_list.end());
   for ( int32_t i = 0; i < ac; ++i ) {
     id_list[i] = tmpid[planer_order[i]];
@@ -86,22 +91,29 @@ void RareVariant::Organize(bp2cmMap& pgmap) {
 
 }
 
-bool RareVariant::Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t direction) {
+bool RareVariant::AddHalf(int32_t id1, int32_t id2, int32_t pt, int32_t direction) {
   int32_t i = 0, j = 0, tmp = 0;
   try {
     i = id_index.at(id1);
     j = id_index.at(id2);
   }
   catch (const std::out_of_range& e) {
-    error("RareVariant::Add_half ID out of range");
+    // std::cout << "RareVariant::AddHalf error " << ac << " " << id_list.size() << " " << id_index.size() << " " << id1 << " " << id2 << std::endl;
+    // for (auto & v : id_index) {
+    //   std::cout << "id_index " << v.first << " " << v.second << std::endl;
+    // }
+    error("RareVariant::AddHalf ID out of range (%d, %d)",id1,id2);
   }
-  if (pt <= 0) {
-    notice("RareVariant::Add_half Potential wrong position added as %d",pt);
+  if (pt < 0) {
+    notice("RareVariant::AddHalf Potentially wrong position added as %d",pt);
   }
   if (i > j) {
     tmp=i; i=j; j=tmp;
   }
   if (direction == 1) {  // Left
+    if (pt > pos || ibs0mat[j][i] > 0) {
+      return 0;
+    }
     ibs0mat[j][i] = pt;
     if (ovst < 0)
       ovst = pt;
@@ -110,6 +122,9 @@ bool RareVariant::Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t directi
     if (ibs0mat[i][j] >= 0)
       finished ++;
   } else {              // Right
+    if (pt < pos || ibs0mat[i][j] > 0) {
+      return 0;
+    }
     ibs0mat[i][j] = pt;
     if (oved < 0)
       oved = pt;
@@ -118,6 +133,11 @@ bool RareVariant::Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t directi
     if (ibs0mat[j][i] >= 0)
       finished ++;
   }
+
+if (finished > (ac*(ac-1)/2) ) {
+std::cout << ac << " " << pos << " " << pt << " " << direction << std::endl;
+notice("RareVariant::AddHalf %d, %d",finished,ac*(ac-1)/2);
+}
 
   if ( finished >= (ac*(ac-1)/2) ) {
     return 1;
@@ -136,28 +156,33 @@ bool RareVariant::Add(int32_t id1, int32_t id2, int32_t st, int32_t ed) {
   catch (const std::out_of_range& e) {
     error("RareVariant::Add ID out of range");
   }
-  if (st <= 0 || ed <= 0) {
-    notice("RareVariant::Add_half Potential wrong position added as %d, %d",st,ed);
+  if (st < 0 || ed < 0) {
+    notice("RareVariant::AddHalf Potentially wrong position added as %d, %d",st,ed);
   }
   if (i > j) {
     tmp=i; i=j; j=tmp;
   }
-  ibs0mat[i][j] = ed;
-  ibs0mat[j][i] = st;
-  if (ovst < 0 || oved < 0) {
-    ovst = st; oved = ed;
-  } else {
-    ovst = std::max(ovst, st);
-    oved = std::min(oved, ed);
+  tmp = 0;
+  if (st <= pos) {
+    ibs0mat[j][i] = st;
+    if (ovst < 0 || ovst < st) {
+      ovst = st;
+    }
+    tmp ++;
   }
-  finished ++;
+  if (ed >= pos) {
+    ibs0mat[i][j] = ed;
+    if (oved < 0 || oved > ed) {
+      oved = ed;
+    }
+    tmp ++;
+  }
+  if (tmp == 2) {
+    finished ++;
+  }
   if ( finished >= (ac*(ac-1)/2) ) {
     return 1;
   } else {
     return 0;
   }
 }
-
-
-
-

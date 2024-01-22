@@ -8,20 +8,21 @@
 #include "bp2cm.h"
 #include "utils.h"
 
-class IndivRare
-{
+// For a sample with n individuals
+// store a list of rare variants (positions) carried by each individual
+class IndivRare {
 public:
-  int32_t n;
+  int32_t n; // Sample size (number of individuals)
   std::vector<std::vector<int32_t> > rarelist;
 
   IndivRare(int32_t _n) : n(_n) {
     rarelist.resize(n);
     for (int32_t it = 0; it < n; ++it) {
-      std::vector<int32_t> v;
-      rarelist[it] = v;
+      rarelist[it] = std::vector<int32_t>();
     }
   }
 
+  // Add a rare variant at pos to the list of individual i
   void RareCarryAdd(int32_t i, int32_t pos) {
     rarelist[i].push_back(pos); // Assume variants are always read forward
   }
@@ -37,12 +38,14 @@ public:
   std::string inVcf, reg;
   std::vector<bitmatrix*> bmatRR_que, bmatAA_que;
   std::vector<std::vector<int32_t>* > posvec_que;
-  std::vector<int32_t> start_que;
+  std::vector<int32_t> start_que; // First position of each block
   bp2cmMap pgmap;
-  double margin_cM;
+  double margin_cM; // Maximum distance to look for IBS0
   int32_t margin_bp;
   int32_t chunksize, min_hom_gts;
   bool by_bp = 0;
+  int32_t leftend, rightend;
+  bool reached_leftend = false, reached_rightend = false;
 
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
              const bp2cmMap &_pgmap, double _margin,
@@ -56,9 +59,12 @@ public:
 
   // Update to delete & add blocks to cover a new region
   int32_t Update (const std::string &_reg);
-  int32_t Update_Fixed (const std::string &_reg);
-  void Clear();
+  int32_t Update_Fixed (std::string &_reg);
 
+  // Helper
+  void HalfArmBound(int32_t start, int32_t end, int32_t &leftend, int32_t &rightend);
+
+  void Clear();
   ~IBS0lookup() {Clear(); notice("Cleared IBS0lookup object");}
 
 };

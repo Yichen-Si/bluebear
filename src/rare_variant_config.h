@@ -56,7 +56,8 @@ public:
   bcf1_t* iv = NULL;
   int32_t ac, pos;
   int32_t **ibs0mat; // ac x ac matrix of ibs0 pos; upper-right; lower-left
-  float *sorted_cm;  // ac x ac matrix in planer order, flatten by row as vector
+  std::vector<float> sorted_cm;  // ac x ac matrix in planer order, flatten by row as vector
+  std::vector<int32_t> sorted_pt;
   std::map<int32_t, uint32_t> id_index; // abs id -> index in ibs0mat
   std::vector<int32_t> id_list;         // Will be updated according to planer_order after building tree
   std::vector<int32_t> planer_order;
@@ -67,15 +68,14 @@ public:
   float   AvgDist_cm = 0.0, MedDist_cm = 0.0;
 
 RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
-  pos = iv->pos;
-  sorted_cm = new float[ac*ac]{0.0};
-  ibs0mat = new int32_t*[ac];
-  for (int32_t i = 0; i < ac; ++i) {
-    ibs0mat[i] = new int32_t[ac];
-    for (int32_t j = 0; j < ac; ++j) {
-      ibs0mat[i][j] = -1;
-    }
-  }
+  pos = iv->pos + 1;
+  InitPairs();
+}
+RareVariant(bcf1_t* _iv, std::vector<int32_t>& idvec) : iv(_iv) {
+  ac = idvec.size();
+  pos = iv->pos + 1;
+  InitPairs();
+  AddID(idvec);
 }
 ~RareVariant() {
   for (int32_t i = 0; i < ac; ++i) {
@@ -86,13 +86,23 @@ RareVariant(bcf1_t* _iv, int32_t _ac) : iv(_iv), ac(_ac) {
   }
 }
 
-void Add_id(int32_t id) { // Not robust!
+void InitPairs() {
+  ibs0mat = new int32_t*[ac];
+  for (int32_t i = 0; i < ac; ++i) {
+    ibs0mat[i] = new int32_t[ac];
+    for (int32_t j = 0; j < ac; ++j) {
+      ibs0mat[i][j] = -1;
+    }
+  }
+}
+void AddID(int32_t id) { // Not robust!
   id_list.push_back(id);
   id_index[id] = id_list.size()-1;
 }
-void Add_id(std::vector<int32_t>& idvec) {
-  int32_t ct = 0;
+void AddID(std::vector<int32_t>& idvec) {
+  uint32_t ct = 0;
   id_list.clear();
+  id_index.clear();
   for (auto & v : idvec) {
     id_list.push_back(v);
     id_index[v] = ct;
@@ -101,7 +111,7 @@ void Add_id(std::vector<int32_t>& idvec) {
 }
 
 bool Add(int32_t id1, int32_t id2, int32_t st, int32_t ed);
-bool Add_half(int32_t id1, int32_t id2, int32_t pt, int32_t direction);
+bool AddHalf(int32_t id1, int32_t id2, int32_t pt, int32_t direction);
 
 bool IfDone() {
   return ( finished >= (ac*(ac-1)/2) );

@@ -37,14 +37,6 @@ int32_t cmdVcfDprime(int32_t argc, char** argv);
 
 int32_t DoubletonBlockInfo(int32_t argc, char** argv);
 
-// int32_t tmpUpdateCMInfo(int32_t argc, char** argv); // tmp
-int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
-// int32_t cmdVcfIBS0Baseline(int32_t argc, char** argv); // zz
-// int32_t cmdVcfIBS0Unconditional(int32_t argc, char** argv); // zz
-int32_t cmdVcfIBS0View(int32_t argc, char** argv);
-int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
-// int32_t cmdVcfIBS0full(int32_t argc, char** argv); // zz
-int32_t RandomPairIBS0(int32_t argc, char** argv);
 int32_t VCFInsertPM(int32_t argc, char** argv);
 int32_t CDFInfoInt(int32_t argc, char** argv);
 int32_t CDFInfoFloatByKmer(int32_t argc, char** argv);
@@ -55,9 +47,8 @@ int32_t mapPt2Interval(int32_t argc, char** argv);
 int32_t pbwtBuildSuffix(int32_t argc, char** argv);
 int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 
-int32_t IBS0PairwiseScan(int32_t argc, char** argv);
-int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
 int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
+int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
 int32_t hapIBDpbwtLeft(int32_t argc, char** argv);
 int32_t hapIBDpbwtRight(int32_t argc, char** argv);
@@ -68,20 +59,24 @@ int32_t MDHaploidY(int32_t argc, char** argv);
 int32_t trioDenovo(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
 int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
-int32_t IBS0PhaseForward(int32_t argc, char** argv);
-int32_t IBS0PhaseBackward(int32_t argc, char** argv);
-int32_t RareIBS0PhaseForward(int32_t argc, char** argv);
-int32_t RareIBS0PhaseBackward(int32_t argc, char** argv);
-int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv);
-int32_t RareOnlyIBS0PhaseBackward(int32_t argc, char** argv);
 
-int32_t RareBlipOnlyForward(int32_t argc, char** argv);
-int32_t RareBlipOnlyStats(int32_t argc, char** argv);
-
-int32_t IBS0AddPMDistr(int32_t argc, char** argv);
-int32_t IBS0AddNoncarrierControl(int32_t argc, char** argv);
-int32_t IBS0AddOutgroupControl(int32_t argc, char** argv);
-int32_t IBS0Triallelic(int32_t argc, char** argv);
+// int32_t IBS0PairwiseScan(int32_t argc, char** argv); // zz
+// int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
+// int32_t cmdVcfIBS0View(int32_t argc, char** argv);
+// int32_t cmdVcfIBS0Flank(int32_t argc, char** argv);
+// int32_t RandomPairIBS0(int32_t argc, char** argv);
+// // int32_t IBS0PhaseForward(int32_t argc, char** argv); // zz
+// // int32_t IBS0PhaseBackward(int32_t argc, char** argv); // zz
+// int32_t RareIBS0PhaseForward(int32_t argc, char** argv);
+// int32_t RareIBS0PhaseBackward(int32_t argc, char** argv);
+// int32_t RareOnlyIBS0PhaseForward(int32_t argc, char** argv);
+// int32_t RareOnlyIBS0PhaseBackward(int32_t argc, char** argv);
+// int32_t RareBlipOnlyForward(int32_t argc, char** argv);
+// int32_t RareBlipOnlyStats(int32_t argc, char** argv);
+// int32_t IBS0AddPMDistr(int32_t argc, char** argv);
+// int32_t IBS0AddNoncarrierControl(int32_t argc, char** argv);
+// int32_t IBS0AddOutgroupControl(int32_t argc, char** argv);
+// int32_t IBS0Triallelic(int32_t argc, char** argv);
 
 int32_t cmdDgeShuffle(int32_t argc, char** argv);
 
@@ -124,18 +119,8 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("snp-pair-in-gene-long",&cmdVcfSnpPairInGeneInfo, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("dprime",&cmdVcfDprime, "Compute Dprime from haploid/phased BCF/VCF")
 
-LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statistics of switch/blip blocks in doubleton pairs from BCF/VCF")
+    LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statistics of switch/blip blocks in doubleton pairs from BCF/VCF")
 
-    // Temperary ibs0 tests
-    // LONG_COMMAND("vcf-ibs0-correct-cm",&tmpUpdateCMInfo, "Update genetic distance bug")
-    LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
-    // LONG_COMMAND("vcf-ibs0-baseline",&cmdVcfIBS0Baseline, "Pairwise IBS0 without rare alleles from BCF/VCF")
-    // LONG_COMMAND("vcf-ibs0-unconditional",&cmdVcfIBS0Unconditional, "Pairwise unconditional IBS0 from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length from BCF/VCF")
-    // LONG_COMMAND("vcf-ibs0",&cmdVcfIBS0full, "Unconditional no-IBS0 length, full output from BCF/VCF")
-    LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
-    LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
     LONG_COMMAND("insert-pm",&VCFInsertPM, "Merge nearby rare variants to create artificial parallel mutation from & to BCF/VCF")
     LONG_COMMAND("info-int-cdf",&CDFInfoInt, "Summarize empirical CDF from VCF INFO")
     LONG_COMMAND("info-flt-cdf",&CDFInfoFloatByKmer, "Summarize empirical CDF from VCF INFO (by kmer)")
@@ -146,8 +131,6 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
 
     LONG_COMMAND("anno-ibd",&AnnotateIBDAroundRare, "Annotate pairwise IBD among rare allele carriers from input BCF/VCF")
     LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Small, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
-
-    // LONG_COMMAND("ibs0-bridge",&cmdIBS0Bridge, "Connecting unconditional boundary output for long-range no-IBS0")
 
     LONG_COMMAND("pt-to-interval",&mapPt2Interval, "Map points to intervals, both indexed by the carriers.")
 
@@ -165,28 +148,32 @@ LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statist
 
     LONG_COMMAND("ibd-ibs",&HapibdVSnoibs0, "Haplotype & ibs0 based IBD around given positions from BCF/VCF")
 
-    // LONG_COMMAND("ibs0-phase",&IBS0Phase, "Find switch error in phased BCF/VCF")
-    LONG_COMMAND("ibs0-phase-forward",&IBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
-    LONG_COMMAND("ibs0-phase-backward",&IBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
 
-    LONG_COMMAND("rare-ibs0-phase-forward",&RareIBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
-    LONG_COMMAND("rare-ibs0-phase-backward",&RareIBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
-
-    LONG_COMMAND("rare-phase-forward",&RareOnlyIBS0PhaseForward, "Based on shared rare allele, proceed froward to find switch error in phased BCF/VCF")
-    LONG_COMMAND("rare-phase-backward",&RareOnlyIBS0PhaseBackward, "Based on shared rare allele, proceed backward to find switch error in phased BCF/VCF")
-
-    LONG_COMMAND("rare-blip",&RareBlipOnlyForward, "Based on shared rare allele and haplotype matching, proceed froward to detect blip in phased BCF/VCF")
-    LONG_COMMAND("rare-blip-stats",&RareBlipOnlyStats, "Statistics of ibd around rare variants for detecting blip in phased BCF/VCF")
+    // // Temperary ibs0 tests
+    // LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0-flank",&cmdVcfIBS0Flank, "Flanking IBS0 length from BCF/VCF")
+    // LONG_COMMAND("vcf-ibs0-pos",&RandomPairIBS0, "Given a list of positions, randomly sample a pair of individuals for each, and get flanking ibs0 loci from BCF/VCF")
+    // // LONG_COMMAND("ibs0-phase-forward",&IBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
+    // // LONG_COMMAND("ibs0-phase-backward",&IBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
+    // LONG_COMMAND("rare-ibs0-phase-forward",&RareIBS0PhaseForward, "Starting from an arbitrary position, proceed froward to find switch error in phased BCF/VCF")
+    // LONG_COMMAND("rare-ibs0-phase-backward",&RareIBS0PhaseBackward, "Starting from an arbitrary position, proceed backward to find switch error in phased BCF/VCF")
+    // LONG_COMMAND("rare-phase-forward",&RareOnlyIBS0PhaseForward, "Based on shared rare allele, proceed froward to find switch error in phased BCF/VCF")
+    // LONG_COMMAND("rare-phase-backward",&RareOnlyIBS0PhaseBackward, "Based on shared rare allele, proceed backward to find switch error in phased BCF/VCF")
+    // LONG_COMMAND("rare-blip",&RareBlipOnlyForward, "Based on shared rare allele and haplotype matching, proceed froward to detect blip in phased BCF/VCF")
+    // LONG_COMMAND("rare-blip-stats",&RareBlipOnlyStats, "Statistics of ibd around rare variants for detecting blip in phased BCF/VCF")
+    // LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
+    // LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
+    // LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
+    // LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
 
     LONG_COMMAND("md-chry",&MDHaploidY, "Mendelian discordance on chrY")
     LONG_COMMAND("trio-denovo",&trioDenovo, "Detect de novo mutation in trio-child")
     LONG_COMMAND("trio-switch",&trioSwitchDetect, "Detect switch errors in trio-child")
     LONG_COMMAND("trio-switch-full",&trioSwitchDetect_onepass, "Detect switch errors & blips in trio-child")
 
-    LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
-    LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
-    LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
-    LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
+
 
     LONG_COMMAND("dge-shuffle",&cmdDgeShuffle, "Shuffle digital expression matrix")
 

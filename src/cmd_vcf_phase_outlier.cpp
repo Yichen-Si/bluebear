@@ -142,7 +142,7 @@ int32_t HaplotypeChangeAtPt(int32_t argc, char** argv) {
           pre_allele = y[pc.a[i]];
         }
       }
-      fprintf(wf,"%s\t%ld\t%d\t%d\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, ac, switch_ct);
+      fprintf(wf,"%s\t%d\t%d\t%d\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, ac, switch_ct);
       nVariant++;
     }
     // Update pbwt cursor

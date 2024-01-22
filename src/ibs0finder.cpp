@@ -248,16 +248,3 @@ int32_t IBS0Finder::Update_Fixed(const std::string &_reg) {
   }
   return (int32_t) start_que.size();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

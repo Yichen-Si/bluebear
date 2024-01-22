@@ -17,7 +17,7 @@ void UpdateInfo_IBD(bcf_hdr_t *hdr, bcf1_t *nv, RareVariant *rare) {
   bcf_update_info_float(hdr, nv, "MedDist_cM", &(rare->MedDist_cm), 1);
   bcf_update_info_int32(hdr, nv, "BiCluster", &bc, 2);
   bcf_update_info_int32(hdr, nv, "CarrierID", &(rare->id_list[0]), ac);
-  bcf_update_info_float(hdr, nv, "Matrix_cM", rare->sorted_cm, ac*ac);
+  bcf_update_info_float(hdr, nv, "Matrix_cM", &(rare->sorted_cm[0]), ac*ac);
 }
 
 // goal -- get all pairwise ibd regions covering shared
@@ -180,7 +180,7 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
     bcf_unpack(nv, BCF_UN_INFO);
     bcf_subset(odw.hdr, nv, 0, 0);
     RareVariant* rare = new RareVariant(nv, ac);
-    rare->Add_id(carry);
+    rare->AddID(carry);
     snplist.push_back(rare);
     nVariant++;
   }
@@ -238,7 +238,7 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
             for (int32_t j = i+1; j < ac; j++) {
               h2 = rvec[ rv->id_list[j] * 2 + hapcarry[j]];
               int32_t l = std::max(min_pos, pc.Dist_pref(h1,h2));
-              fin = rv->Add_half( rv->id_list[i], rv->id_list[j], l, 1);
+              fin = rv->AddHalf( rv->id_list[i], rv->id_list[j], l, 1);
             }
           }
         }
@@ -375,7 +375,7 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
               for (int32_t j = i+1; j < ac; j++) {
                 h2 = rvec[ rv->id_list[j] * 2 + hapcarry[j]];
                 int32_t r = std::min(max_pos, pc.Dist_suff(h1,h2));
-                fin = rv->Add_half( rv->id_list[i], rv->id_list[j], r, 2);
+                fin = rv->AddHalf( rv->id_list[i], rv->id_list[j], r, 2);
               }
             }
           }
@@ -415,13 +415,3 @@ int32_t AnnotateIBDAroundRare(int32_t argc, char** argv) {
 
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
