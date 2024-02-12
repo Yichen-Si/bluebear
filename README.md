@@ -1,3 +1,3 @@
-ibs0 & phasing
 # bluebear
 
+A bunch of scripts to process and analyze sequencing data.

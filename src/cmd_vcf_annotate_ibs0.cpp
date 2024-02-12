@@ -34,8 +34,10 @@ void OutputRecord(BCFOrderedWriter& odw, RareVariant* rare, htsFile* wf, bp2cmMa
       for (int32_t j = i+1; j < ac; ++j) {
         int32_t r = rare->sorted_pt[i*ac+j] + rare->pos;
         int32_t l = rare->pos - rare->sorted_pt[j*ac+i];
+        int32_t id1 = rare->id_list[i] < rare->id_list[j] ? rare->id_list[i] : rare->id_list[j];
+        int32_t id2 = rare->id_list[i] < rare->id_list[j] ? rare->id_list[j] : rare->id_list[i];
         if (r - l + 1 >= min_bp) {
-          hprintf(wf, "%d\t%d\t%d\t%d\t%.5f\n", rare->id_list[i], rare->id_list[j], l, r, pgmap.bpinterval2cm(l, r));
+          hprintf(wf, "%d\t%d\t%d\t%d\t%.5f\n", id1, id2, l, r, pgmap.bpinterval2cm(l, r));
         }
       }
     }
@@ -72,7 +74,8 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   int32_t cst = -1, ced = -1;
   int32_t ck_len = 500000;
   int32_t bp_limit = 5000000;
-  double output_min_ibs0 = 5e5;
+  int32_t minpos = -1, maxpos = -1;
+  double output_min_ibs0 = 1e4;
   bool rm_info = false;
   bool snp_only = false;
   std::vector<std::string> kept_info = {"AC","AN"};
@@ -83,7 +86,7 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   paramList pl;
 
   BEGIN_LONG_PARAMS(longParameters)
-    LONG_PARAM_GROUP("Input Sites", NULL)
+    LONG_PARAM_GROUP("Input", NULL)
     LONG_STRING_PARAM("in-vcf",&in_vcf, "Input VCF/BCF file")
     LONG_STRING_PARAM("region",&reg,"Genomic region to focus on")
     LONG_STRING_PARAM("map",&in_map, "Map file for genetic distance")
@@ -95,6 +98,8 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
     LONG_PARAM("snp-only",&snp_only, "Only consider SNPs")
     LONG_INT_PARAM("centromere-st",&cst, "Start position of centromere")
     LONG_INT_PARAM("centromere-ed",&ced, "End position of centromere")
+    LONG_INT_PARAM("min-pos",&minpos, "Start position of the sequenced chromosome")
+    LONG_INT_PARAM("max-pos",&maxpos, "End position of the sequenced chromosome")
 
     LONG_PARAM_GROUP("Additional Options", NULL)
     LONG_INT_PARAM("min-hom",&min_hom_gts, "Minimum number of homozygous genotypes to be counted for IBS0")
@@ -140,6 +145,7 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   if (!str2int32(v[1], start) || !str2int32(v[2], end)) {
     error("Invalid region.");
   }
+  int32_t  margin_init = std::max((ck_len - (end - start)) / 2, 10);
 
   // bcf reader
   // TODO: currently assume a small enough region.
@@ -243,7 +249,7 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   notice("Input VCF file contains %d samples", nsamples);
 
   // Initialize IBS0lookup object surrounding the input region
-  IBS0lookup ibs0finder(in_vcf, reg, pgmap, ck_len, ck_len, 1);
+  IBS0lookup ibs0finder(in_vcf, reg, pgmap, margin_init, ck_len, min_hom_gts, minpos, maxpos);
   if (ibs0finder.start_que.size() < 1) {
     notice("Not enough variants in the given region. Stopped without output.");
     return 0;
@@ -269,7 +275,6 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
     // periodic message to user
     if ( k % verbose == 0 )
       notice("Processing %d markers at %s:%d. Recorded %d rare variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
-
     // unpack FILTER column
     bcf_unpack(iv, BCF_UN_SHR);
     if (snp_only && !bcf_is_snp(iv)) { continue; }
@@ -348,46 +353,6 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
         idpair_l[kpair].push_back(rare);
       }
     }
-
-//     // Previous version, will find ibs0 repeatedly if involved in multiple rare vairants
-//     // Find pairwise ibs0 w/in a short limit
-//     int32_t fin = 0;
-//     for (int32_t i = 0; i < n_carry-1; ++i) {
-//       for (int32_t j = i+1; j < n_carry; ++j) {
-//         int32_t r = ibs0finder.FindIBS0(carry[i],carry[j],pos,0);
-//         int32_t l = ibs0finder.FindIBS0(carry[i],carry[j],pos,1);
-//         if (l > 0 && r > 0) {
-//           fin = rare->Add(carry[i], carry[j], l, r);
-//         } else {
-//           std::pair<int32_t, int32_t> kpair(carry[i],carry[j]);
-//           if (l > 0) {
-//             fin = rare->AddHalf(carry[i], carry[j], l, 1);
-//             idpair_r[kpair].push_back(rare);
-//           } else if (r > 0) {
-//             fin = rare->AddHalf(carry[i], carry[j], r, 2);
-//             idpair_l[kpair].push_back(rare);
-//           } else {
-//             idpair_r[kpair].push_back(rare);
-//             idpair_l[kpair].push_back(rare);
-//           }
-//         }
-//       }
-//     }
-//     if (fin) {
-//       // Build tree
-//       rare->Organize(pgmap);
-// // std::cout << "Organized" << std::endl;
-//       // Output this variant
-//       UpdateInfo_IBS0(odw.hdr, rare);
-// // std::cout << "Edit info" << std::endl;
-//       bcf_write(odw.file, odw.hdr, nv);
-// // std::cout << "Write record" << std::endl;
-//       delete rare;
-//       rare = NULL;
-//       nFinished++;
-//     } else { // Need to look further
-//       snplist[pos] = rare;
-//     }
     nVariant++;
   }
 
@@ -416,24 +381,20 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   // Find left ibs0 end points
   kv = idpair_l.begin();
   while (kv != idpair_l.end()) {
-    auto itr = kv->second.end();
     while(kv->second.size() > 0) {
       // Start from the right most focal rare variant
-      itr--;
-      int32_t l = ibs0finder.FindIBS0(kv->first.first,kv->first.second,(*itr)->pos,1);
+      int32_t l = ibs0finder.FindIBS0(kv->first.first,kv->first.second,kv->second.back()->pos,1);
       if (l < 0) {
         break;
       }
-      int32_t fin = (*itr)->AddHalf(kv->first.first,kv->first.second,l,1);
-      itr = kv->second.erase(itr);
+      int32_t fin = kv->second.back()->AddHalf(kv->first.first,kv->first.second,l,1);
+      kv->second.pop_back();
       while(kv->second.size() > 0) {
-        itr--;
-        if ((*itr)->pos < l) {
-          itr++;
+        if (kv->second.back()->pos < l) {
           break;
         }
-        fin = (*itr)->AddHalf(kv->first.first,kv->first.second,l,1);
-        itr = kv->second.erase(itr);
+        fin = kv->second.back()->AddHalf(kv->first.first,kv->first.second,l,1);
+        kv->second.pop_back();
       }
     }
     if (kv->second.size() == 0) {
@@ -604,3 +565,44 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   hts_close(wf);
   return 0;
 }
+
+
+//     // Previous version for first pass, will find ibs0 repeatedly if involved in multiple rare vairants
+//     // Find pairwise ibs0 w/in a short limit
+//     int32_t fin = 0;
+//     for (int32_t i = 0; i < n_carry-1; ++i) {
+//       for (int32_t j = i+1; j < n_carry; ++j) {
+//         int32_t r = ibs0finder.FindIBS0(carry[i],carry[j],pos,0);
+//         int32_t l = ibs0finder.FindIBS0(carry[i],carry[j],pos,1);
+//         if (l > 0 && r > 0) {
+//           fin = rare->Add(carry[i], carry[j], l, r);
+//         } else {
+//           std::pair<int32_t, int32_t> kpair(carry[i],carry[j]);
+//           if (l > 0) {
+//             fin = rare->AddHalf(carry[i], carry[j], l, 1);
+//             idpair_r[kpair].push_back(rare);
+//           } else if (r > 0) {
+//             fin = rare->AddHalf(carry[i], carry[j], r, 2);
+//             idpair_l[kpair].push_back(rare);
+//           } else {
+//             idpair_r[kpair].push_back(rare);
+//             idpair_l[kpair].push_back(rare);
+//           }
+//         }
+//       }
+//     }
+//     if (fin) {
+//       // Build tree
+//       rare->Organize(pgmap);
+// // std::cout << "Organized" << std::endl;
+//       // Output this variant
+//       UpdateInfo_IBS0(odw.hdr, rare);
+// // std::cout << "Edit info" << std::endl;
+//       bcf_write(odw.file, odw.hdr, nv);
+// // std::cout << "Write record" << std::endl;
+//       delete rare;
+//       rare = NULL;
+//       nFinished++;
+//     } else { // Need to look further
+//       snplist[pos] = rare;
+//     }

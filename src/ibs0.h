@@ -45,14 +45,17 @@ public:
   int32_t chunksize, min_hom_gts;
   bool by_bp = 0;
   int32_t leftend, rightend;
+  int32_t minpos, maxpos;
   bool reached_leftend = false, reached_rightend = false;
 
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
              const bp2cmMap &_pgmap, double _margin,
-             int32_t _ck = 1000000, int32_t _mh = 1);
+             int32_t _ck = 1000000, int32_t _mh = 1,
+             int32_t _minpos = -1, int32_t _maxpos = -1);
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
              const bp2cmMap &_pgmap, int32_t _margin,
-             int32_t _ck = 1000000, int32_t _mh = 1);
+             int32_t _ck = 1000000, int32_t _mh = 1,
+             int32_t _minpos = -1, int32_t _maxpos = -1);
 
   // Find IBS0 for a pair of individuals to one direction starting from pos
   int32_t FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse = 0);

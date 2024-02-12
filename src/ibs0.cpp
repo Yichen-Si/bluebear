@@ -183,10 +183,12 @@ int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
 
 IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
                        const bp2cmMap &_pgmap, double _margin,
-                       int32_t _ck, int32_t _mh) :
+                       int32_t _ck, int32_t _mh, int32_t _minpos, int32_t _maxpos) :
   inVcf(_inVcf), reg(_reg), pgmap(_pgmap), margin_cM(_margin),
-  chunksize(_ck), min_hom_gts(_mh) {
+  chunksize(_ck), min_hom_gts(_mh), minpos(_minpos), maxpos(_maxpos) {
 
+  minpos = minpos < 0 ? pgmap.minpos : minpos;
+  maxpos = maxpos < 0 ? pgmap.maxpos : maxpos;
   int32_t start, end, mid;
   int32_t ibs_st, ibs_ed;
   std::vector<std::string> v;
@@ -227,10 +229,12 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
 
 IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
                        const bp2cmMap &_pgmap, int32_t _margin,
-                       int32_t _ck, int32_t _mh) :
+                       int32_t _ck, int32_t _mh, int32_t _minpos, int32_t _maxpos) :
   inVcf(_inVcf), reg(_reg), pgmap(_pgmap), margin_bp(_margin),
-  chunksize(_ck), min_hom_gts(_mh) {
+  chunksize(_ck), min_hom_gts(_mh), minpos(_minpos), maxpos(_maxpos) {
 
+  minpos = minpos < 0 ? pgmap.minpos : minpos;
+  maxpos = maxpos < 0 ? pgmap.maxpos : maxpos;
   by_bp = 1;
   int32_t start, end, mid;
   int32_t ibs_st, ibs_ed;
@@ -298,6 +302,8 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
       (!reverse && posvec_que.back()->back() < pos)) {
     return -1;
   }
+  int32_t left0, right0;
+  HalfArmBound(pos, pos, left0, right0);
   int32_t k = (int32_t) start_que.size() - 1;
   while (start_que[k] > pos && k > 0) {k--;} // Locate the block covering pos
   int32_t ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
@@ -307,19 +313,30 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
       k--; // mover left
       ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
                             i, j, reverse);
+      if (start_que[k] < left0) {
+        break;
+      }
     }
-    // if (ibs0 < 0 && start_que[0] )
-    if (ibs0 > 0 && pgmap.centromere_ed < pos && pgmap.centromere_ed > ibs0) {
-      ibs0 = pgmap.centromere_ed;
+    if (ibs0 < 0 && (reached_leftend || start_que[0] < left0)) {
+      ibs0 = left0;
+    }
+    if (ibs0 >= 0 && left0 > ibs0) {
+      ibs0 = left0;
     }
   } else {
     while(ibs0 < 0 && k < (int32_t) start_que.size() - 1) {
       k++; // move right
       ibs0 = IBS0inOneBlock(bmatRR_que[k], bmatAA_que[k], posvec_que[k],
                             i, j, reverse);
+      if (posvec_que[k]->back() > right0) {
+        break;
+      }
     }
-    if (ibs0 >= 0 && pgmap.centromere_st > pos && pgmap.centromere_st < ibs0) {
-      ibs0 = pgmap.centromere_st;
+    if (ibs0 < 0 && (reached_rightend || posvec_que[k]->back() > right0)) {
+      ibs0 = right0;
+    }
+    if (ibs0 >= 0 && right0 < ibs0) {
+      ibs0 = right0;
     }
   }
   return ibs0;
@@ -480,15 +497,15 @@ int32_t IBS0lookup::Update_Fixed(std::string &_reg) {
   return (int32_t) start_que.size();
 }
 
-void IBS0lookup::HalfArmBound(int32_t start, int32_t end, int32_t &leftend, int32_t &rightend) {
+void IBS0lookup::HalfArmBound(int32_t start, int32_t end, int32_t &_l, int32_t &_r) {
   if (start < pgmap.centromere_ed) {
-    leftend = 0;
+    _l = minpos;
   } else {
-    leftend = pgmap.centromere_ed;
+    _l = pgmap.centromere_ed;
   }
   if (end > pgmap.centromere_st) {
-    rightend = pgmap.maxpos;
+    _r = maxpos;
   } else {
-    rightend = pgmap.centromere_st;
+    _r = pgmap.centromere_st;
   }
 }
