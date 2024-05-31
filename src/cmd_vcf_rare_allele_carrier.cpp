@@ -67,9 +67,9 @@ int32_t cmdVcfCarrier(int32_t argc, char** argv) {
 	notice("VCF contain %d samples", n_samples);
 
 	// output
-	std::string outf = out + ".max_ac_" + std::to_string(max_ac) + ".tsv";
-	std::ofstream wf(outf.c_str(), std::ios::out);
-	wf << "#CHROM\tPOS\tALLELE\tAC\tMAJOR\tMINOR\tFILTER\tCARRIERS\n";
+	std::string outf = out + ".ac_" + std::to_string(min_ac) + "_" + std::to_string(max_ac) + ".tsv.gz";
+	htsFile* wf = hts_open(outf.c_str(), "wz");
+	hprintf(wf, "#CHROM\tPOS\tALLELE\tAC\tMAJOR\tMINOR\tFILTER\tCARRIERS\n");
 
 	// handle filter string
 	vfilt.init(odr.hdr);
@@ -130,43 +130,45 @@ int32_t cmdVcfCarrier(int32_t argc, char** argv) {
 			error("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1);
 		}
 
-
-		wf << bcf_hdr_id2name(odr.hdr, iv->rid) << '\t' << iv->pos+1 << '\t' << ref << ','<< alt << '\t' << ac << '\t' << major << '\t' << minor << '\t';
+		// output
+		// CHROM, POS, ALLELE, AC, MAJOR, MINOR,
+		hprintf(wf, "%s\t%ld\t%s,%s\t%d\t%s\t%s\t", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, ref.c_str(), alt.c_str(), ac, major.c_str(), minor.c_str());
+		// FILTER
 		if (iv->d.n_flt == 0) {
-			wf << ".\t";
+			hprintf(wf, ".\t");
 		}
 		else {
-			wf << std::string( bcf_hdr_int2id(odr.hdr, BCF_DT_ID, iv->d.flt[0]) );
+			hprintf(wf, "%s", bcf_hdr_int2id(odr.hdr, BCF_DT_ID, iv->d.flt[0]) );
 			if (iv->d.n_flt > 1) {
 				for(int32_t i=1; i < iv->d.n_flt; ++i) {
-					wf << ',' << std::string( bcf_hdr_int2id(odr.hdr, BCF_DT_ID, iv->d.flt[i]) );
+					hprintf(wf, ",%s", bcf_hdr_int2id(odr.hdr, BCF_DT_ID, iv->d.flt[i]) );
 				}
 			}
-			wf << '\t';
+			hprintf(wf, "\t");
 		}
-
+		// CARRIERS
 		for (int32_t i = 0; i < n_samples; ++i) {
-			int32_t g1 = p_gt[2*i];
-			int32_t g2 = p_gt[2*i+1];
-			int32_t geno;
-			if ( bcf_gt_is_missing(g1) || bcf_gt_is_missing(g2) ) {
+			if ( bcf_gt_is_missing(p_gt[2*i]) || bcf_gt_is_missing(p_gt[2*i+1]) ) {
 				continue;
-			} else {
-				geno = (int32_t) ((bcf_gt_allele(g1) > 0) && (bcf_gt_allele(g2) > 0));
-				if (flip) {
-					geno = 1 - geno;
-				}
-				if (geno >= 1) { // MINOR
-					wf << i << ',';
-				}
+			}
+			int32_t g1 = bcf_gt_allele(p_gt[2*i]);
+			int32_t g2 = bcf_gt_allele(p_gt[2*i+1]);
+			int32_t geno;
+			if (flip) {
+				if (g1 > 0 && g2 > 0) {continue;}
+				g1 = 1 - g1;
+				g2 = 1 - g2;
+			}
+			if (g1 + g2 >= 1) { // Contain minor allele
+				hprintf(wf, "%s,%d%d;", sample_id[i].c_str(), g1, g2);
 			}
 		}
-		wf << '\n';
+		hprintf(wf, "\n");
 		nVariant ++;
 		// periodic message to user
 		if ( k % verbose == 0 )
 			notice("Processing %d markers at %s:%d. Recorded %d rare variants", k, bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, nVariant);
 	}
-	wf.close();
+	hts_close(wf);
 	return 0;
 }

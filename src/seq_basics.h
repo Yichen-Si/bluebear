@@ -9,6 +9,7 @@
 #include <map>
 #include <cmath>
 #include <cfloat>
+#include <sstream>
 
 inline bool if_cpg (const std::string& seq, int32_t indx, bool one_side=1) {
 	if (one_side) {

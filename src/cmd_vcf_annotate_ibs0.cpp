@@ -18,6 +18,7 @@ void UpdateInfo_IBS0(bcf_hdr_t *hdr, RareVariant *rare) {
   bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(rare->AvgDist), 1);
   bcf_update_info_float(hdr, nv, "AvgDist_cM", &(rare->AvgDist_cm), 1);
   bcf_update_info_float(hdr, nv, "MedDist_cM", &(rare->MedDist_cm), 1);
+  bcf_update_info_float(hdr, nv, "MedDist_bp", &(rare->MedDist), 1);
   bcf_update_info_int32(hdr, nv, "BiCluster", &bc, 2);
   bcf_update_info_int32(hdr, nv, "CarrierID", &(rare->id_list[0]), ac);
   bcf_update_info_float(hdr, nv, "Matrix_cM", &(rare->sorted_cm[0]), ac*ac);
@@ -115,7 +116,7 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
     LONG_PARAM("rm-info",&rm_info, "Remove all INFO fields from the output except for those specified by --keep-info-tag")
     LONG_MULTI_STRING_PARAM("keep-info-tag",&kept_info, "Info tags to carry over to the output file")
     LONG_STRING_PARAM("out-vcf", &out_vcf, "Output VCF file name")
-    LONG_STRING_PARAM("out-pair", &out_pair, "Output VCF file name")
+    LONG_STRING_PARAM("out-pair", &out_pair, "Output tsv file name")
     LONG_DOUBLE_PARAM("output-min-ibs0", &output_min_ibs0, "Minimum length of IBS0 to output separately (bp)")
     LONG_INT_PARAM("verbose",&verbose,"Frequency of verbose output (1/n)")
 
@@ -200,6 +201,10 @@ int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv) {
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "MedDist_cM" ) < 0 ) {
     sprintf(buffer,"##INFO=<ID=MedDist_cM,Number=1,Type=Float,Description=\"Median no-IBS0 length between two clusters, in cM\">\n");
+    bcf_hdr_append(odw.hdr, buffer);
+  }
+  if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "MedDist_bp" ) < 0 ) {
+    sprintf(buffer,"##INFO=<ID=MedDist_bp,Number=1,Type=Float,Description=\"Median no-IBS0 length between two clusters, in bp\">\n");
     bcf_hdr_append(odw.hdr, buffer);
   }
   if ( bcf_hdr_id2int(odr.hdr, BCF_DT_ID, "Matrix_cM" ) < 0 ) {

@@ -103,7 +103,8 @@ int32_t cmdVcfSFS(int32_t argc, char** argv) {
       max_ac = nsamples;
   }
 
-  int32_t sfs[max_ac+1] = {0};
+  int32_t sfs[max_ac+1];
+  memset(sfs, 0, max_ac+1);
 
   int32_t* p_gt = NULL;
   int32_t  n_gt = 0;
@@ -456,7 +457,7 @@ int32_t KmerSFS(int32_t argc, char** argv) {
 
   notice("Finished Processing %d markers. Skipping %d filtered markers and %d uninformative markers", nVariant, nskip, nmono);
 
-  outf = out+".ctx.kmer."+std::to_string(kmer)+".sfs";
+  outf = out+".sfs_kmer_"+std::to_string(kmer)+".tsv";
   std::ofstream wf(outf.c_str(), std::ios::out);
 
   // Merge equivalent mutation types

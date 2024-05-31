@@ -19,8 +19,9 @@
 #include <map>
 #include <set>
 #include <queue>
-
 #include <random>
+#include <algorithm>
+#include "Error.h"
 #include "htslib/kstring.h"
 #include "htslib/khash.h"
 #include "htslib/hts.h"
@@ -75,6 +76,11 @@ int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::strin
  */
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rng, int32_t base = 1);
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::vector<int32_t> & avoid, std::mt19937& rng, int32_t base = 1);
+
+/**
+ * Generate random & even partitions of indices.
+*/
+void generatePartitions(int32_t totalIndices, std::vector<std::vector<size_t>>& partitions, std::mt19937& rng);
 
 /**
  * Check if file exists.

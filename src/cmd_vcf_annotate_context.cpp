@@ -77,7 +77,7 @@ int32_t cmdVcfAddContext(int32_t argc, char** argv) {
       notice("Processing %d markers at %s:%d.", k, bcf_hdr_id2name(odr->hdr, iv->rid), iv->pos+1);
 
     bcf1_t* nv = bcf_dup(iv);
-    bcf_unpack(nv, BCF_UN_ALL);
+    bcf_unpack(nv, BCF_UN_SHR);
     if (!withGT)
       bcf_subset(odw.hdr, nv, 0, 0);
     ctx = findx.fa_kmer(iv->pos, kmer);

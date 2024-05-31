@@ -203,57 +203,73 @@ int32_t AllConfig(std::vector<char>& alphabet, int32_t k, std::vector<std::strin
  * Sample without replacement.
  */
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::mt19937& rng, int32_t base) {
-  if (base == 0) {
-    if (N == k) {
-      for (int32_t r = 0; r < N; ++r) {chosen.insert(r);}
+    if (N < 3 * k) {
+      if (N == k) {
+        for (int32_t r = base; r < N; ++r) {
+          chosen.emplace_hint(chosen.end(), r);
+        }
+      }
+      std::vector<int32_t> v(N);
+      std::iota(v.begin(), v.end(), base);
+      std::shuffle(v.begin(), v.end(), rng);
+      for (int32_t r = 0; r < k; ++r) {
+        chosen.insert(v[r]);
+      }
     } else {
-      for (int32_t r = N - k - 1; r < N-1; ++r) {
-        int32_t v = std::uniform_int_distribution<>(0, r)(rng);
+      for (int32_t r = N - k - 1 + base ; r < N - 1 + base; ++r) {
+        int32_t v = std::uniform_int_distribution<>(base, r)(rng);
         if (!chosen.insert(v).second) {
           chosen.insert(r+1);
         }
       }
     }
-  } else {
-    if (N == k) {
-      for (int32_t r = 1; r <= N; ++r) {chosen.insert(r);}
-    } else {
-      for (int32_t r = N - k; r < N; ++r) {
-        int32_t v = std::uniform_int_distribution<>(1, r)(rng);
-        if (!chosen.insert(v).second) {
-          chosen.insert(r+1);
-        }
-      }
-    }
-  }
 };
 
 void NchooseK(int32_t N, int32_t k, std::set<int32_t> & chosen, std::vector<int32_t> & avoid, std::mt19937& rng, int32_t base) {
-  if (base == 0) {
-    for (int32_t r = N - k - 1; r < N-((int32_t) avoid.size())-1; ++r) {
-      int32_t v = std::uniform_int_distribution<>(0, r)(rng);
-      if (!chosen.insert(v).second) {
-        chosen.insert(r+1);
-      }
+  int32_t n = N, k0 = 0, i = 0;
+  std::vector<int32_t> v(N);
+  std::iota(v.begin(), v.end(), base);
+  for (auto a : avoid) {
+    if (a < base || a >= N + base) {
+      continue;
     }
-  } else {
-    for (int32_t r = N - k; r < N; ++r) {
-      int32_t v = std::uniform_int_distribution<>(1, r)(rng);
-      if (!chosen.insert(v).second) {
-        chosen.insert(r+1);
-      }
-    }
+    v[a] = -1;
+    n--;
   }
-  int32_t ct = 1 - base;
-  for (auto & v : avoid) {
-    auto it = chosen.find(v);
-    if (it != chosen.end()) {
-      chosen.erase(it);
-      chosen.insert(N-ct);
+  if (n < k) {
+    error("NchooseK: not enough elements to choose from");
+  }
+  std::shuffle(v.begin(), v.end(), rng);
+  while (k0 < k) {
+    if (v[i] < 0) {
+      continue;
     }
-    ct++;
+    chosen.emplace_hint(chosen.end(), v[i]);
+    k0++;
   }
 };
+
+/**
+ * Generate random & even partitions of indices.
+*/
+void generatePartitions(int32_t totalIndices, int32_t nPartitions, std::vector<std::vector<size_t>>& partitions, std::mt19937& rng) {
+  std::vector<size_t> indices(totalIndices);
+  for (size_t i = 0; i < totalIndices; ++i) {
+      indices[i] = i;
+  }
+  std::shuffle(indices.begin(), indices.end(), rng);
+  // Divide shuffled indices into nearly even partitions
+  partitions.clear();
+  partitions.resize(nPartitions);
+  size_t perPartition = totalIndices /nPartitions;
+  size_t extra = totalIndices % nPartitions;
+  size_t start = 0, end = 0;
+  for (int i = 0; i < nPartitions; ++i) {
+      end += perPartition + (i < extra ? 1 : 0);
+      partitions[i] = std::vector<size_t>(indices.begin() + start, indices.begin() + end);
+      start = end;
+  }
+}
 
 template<typename T>
 std::vector<int32_t> argsort(std::vector<T> &array) {

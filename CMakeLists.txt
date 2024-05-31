@@ -17,8 +17,21 @@ if(NOT HTS_LIBRARIES)
 endif()
 message(STATUS ${HTS_LIBRARIES})
 
+find_path(QGEN_INCLUDE_DIRS qgenlib/qgen_error.h  HINTS /usr/lib/x86_64-linux-gnu/ /usr/lib/ /usr/lib64/ ${CMAKE_SOURCE_DIR}/../qgenlib)
+if(NOT QGEN_INCLUDE_DIRS )
+    message(FATAL_ERROR "libqgen QGEN_INCLUDE_DIRS not found")
+endif()
+message(STATUS ${QGEN_INCLUDE_DIRS})
+
+find_library(QGEN_LIBRARIES libqgen.a  HINTS /usr/lib/x86_64-linux-gnu/ /usr/lib/ /usr/lib64/ ${CMAKE_SOURCE_DIR}/../qgenlib/lib/)
+if(NOT QGEN_LIBRARIES)
+    message(FATAL_ERROR "libqgen QGEN_LIBRARIES not found")
+endif()
+message(STATUS ${QGEN_LIBRARIES})
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${HTS_INCLUDE_DIRS}
+					${QGEN_INCLUDE_DIRS}
                     ${CMAKE_CURRENT_SOURCE_DIR}/src
 					${CMAKE_CURRENT_SOURCE_DIR}/src/ibs0 )
 
@@ -74,11 +87,14 @@ add_executable(bluebear
     src/fa_reader.h
     src/seq_basics.h
 
+	src/byte_operation.h
+	src/byte_operation.cpp
+	src/compact_matrix.h
+	src/compact_matrix.cpp
+	src/haploid_hash.h
+    src/pbwt_build.h
 
     src/cm2bp.h
-    src/compact_matrix.h
-	src/compact_matrix.cpp
-    src/pbwt_build.h
     src/bp2cm.h
 	src/bp2cm.cpp
     src/ibs0.h
@@ -129,6 +145,8 @@ add_executable(bluebear
 	src/cmd_vcf_md.cpp
 	src/cmd_vcf_dprime.cpp
 	src/blocks_in_ibs0_info.cpp
+
+	src/ibs0/cmd_vcf_ibs0_approx_pm.cpp
 
     # src/ibs0/ibs0_flanking.cpp
     # src/ibs0/ibs0_pairwise.cpp
@@ -472,6 +490,11 @@ else()
     set(LZMA ${LZMA_LIBRARIES})
 endif()
 
+find_library(DEFLATELIB libdeflate.a deflate HINTS /usr/lib/x86_64-linux-gnu/ /usr/lib/ /usr/lib64/ ../libdeflate/)
+if(NOT DEFLATELIB)
+    message(FATAL_ERROR "libdeflate library not found")
+endif()
+
 find_library(CRYPTOLIB crypto HINTS /usr/lib/x86_64-linux-gnu/ /usr/lib/ /usr/lib64/)
 if(NOT CRYPTOLIB)
     message(FATAL_ERROR "libcrypto library not found")
@@ -480,7 +503,7 @@ endif()
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 
-target_link_libraries(bluebear ${HTS_LIBRARIES} ${ZLIB} ${BZIP2} ${LZMA} ${CURLLIB} ${CRYPTOLIB} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(bluebear ${QGEN_LIBRARIES} ${HTS_LIBRARIES} ${ZLIB} ${BZIP2} ${LZMA} ${CURLLIB} ${DEFLATELIB} ${CRYPTOLIB} ${CMAKE_THREAD_LIBS_INIT})
 
 
 install(TARGETS bluebear RUNTIME DESTINATION bin)

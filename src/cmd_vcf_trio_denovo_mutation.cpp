@@ -218,7 +218,7 @@ int32_t trioDenovo(int32_t argc, char** argv) {
         }
         if (delta != 0) {
             char** alleles = bcf_get_allele(iv_c);
-            fprintf(wf, "%s\t%d\t%d\t%s\t%s\t%d\t%s\t%d\t%d\t%d\t%d\n", bcf_hdr_id2name(odr_c.hdr, iv_c->rid), iv_c->pos, iv_c->pos+1, alleles[0], alleles[1], ac, rec.family_id.c_str(), delta, dgt[1], dgt[2], dgt[0]);
+            fprintf(wf, "%s\t%ld\t%ld\t%s\t%s\t%d\t%s\t%d\t%d\t%d\t%d\n", bcf_hdr_id2name(odr_c.hdr, iv_c->rid), iv_c->pos, iv_c->pos+1, alleles[0], alleles[1], ac, rec.family_id.c_str(), delta, dgt[1], dgt[2], dgt[0]);
             rec.denovo_total++;
             n_denovo++;
         }

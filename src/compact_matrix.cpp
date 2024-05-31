@@ -30,7 +30,7 @@ int32_t bitmatrix::add_row_ints(int32_t* intarray) {
   if ( nrow == nrow_alloc) reserve();
   uint8_t* rowbytes = get_row_bits(nrow);
   for(i=0; i < ncol; i += 8) {
-    for(j=0, byte = 0; (j < 8) && (j < ncol); ++j) {
+    for(j=0, byte = 0; (j < 8) && (i+j < ncol); ++j) {
       byte |= ((intarray[i+j] != 0) << (7-j));
     }
     rowbytes[i >> 3] = byte;
@@ -44,7 +44,7 @@ int32_t bitmatrix::add_row_bytes(uint8_t* bytearray) {
   if ( nrow == nrow_alloc) reserve();
   uint8_t* rowbytes = get_row_bits(nrow);
   for(i=0; i < ncol; i += 8) {
-    for(j=0, byte=0; (j < 8) && (j < ncol); ++j) {
+    for(j=0, byte=0; (j < 8) && (i+j < ncol); ++j) {
       byte |= ((bytearray[i+j] != 0) << (7-j));
     }
     rowbytes[i >> 3] = byte;
@@ -113,5 +113,3 @@ void bitmatrix::print_int(int32_t rbeg, int32_t rend, int32_t cbeg, int32_t cend
 int32_t bitmatrix::inner_prod_and_bytes(int32_t i, int32_t j) {
   return byte_pair_op.sum_and(get_row_bits(i), get_row_bits(j), nbytes_col);
 }
-
-byte_pair_operation byte_pair_op;

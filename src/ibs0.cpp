@@ -117,7 +117,7 @@ int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
                    std::vector<bitmatrix*>& bmatRR_que,
                    std::vector<bitmatrix*>& bmatAA_que,
                    std::vector<std::vector<int32_t>* >& posvec_que,
-                   int32_t min_hom_gts, bool add_to_front) {
+                   int32_t min_hom_gts, bool add_to_front, int32_t minac) {
 
   std::vector<GenomeInterval> ibs0interval;
   parse_intervals(ibs0interval, "", reg);
@@ -130,12 +130,28 @@ int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
   uint8_t* gtRR = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
   uint8_t* gtAA = (uint8_t*)calloc(nsamples, sizeof(uint8_t));
   int32_t* p_gt = NULL;
-  int32_t  n_gt = 0;
+  int32_t* ac = NULL;
+  int32_t  n_gt = 0, n_ac = 0;
   for(int32_t k=0; ibs0odr.read(ibs0iv); ++k) {  // read markers
+
+    bcf_unpack(ibs0iv, BCF_UN_SHR);
+    if ( bcf_get_info_int32(ibs0odr.hdr, ibs0iv, "AC", &ac, &n_ac) < 0 ) {
+      notice("[E:%s:%d %s] Cannot find INFO/AC from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(ibs0odr.hdr, ibs0iv->rid), ibs0iv->pos+1);
+      continue;
+    }
+    if (n_ac < 1) {
+      continue;
+    }
+    if (ac[0] < minac) {
+      continue;
+    }
+
+    bcf_unpack(ibs0iv, BCF_UN_ALL);
     if ( bcf_get_genotypes(ibs0odr.hdr, ibs0iv, &p_gt, &n_gt) < 0 ) {
       notice("[E:%s:%d %s] Cannot find the field GT from the VCF file at position %s:%d",__FILE__,__LINE__,__FUNCTION__, bcf_hdr_id2name(ibs0odr.hdr, ibs0iv->rid), ibs0iv->pos+1);
       return 0;
     }
+
     memset(gtRR, 0, nsamples);
     memset(gtAA, 0, nsamples);
     int32_t gcs[3] = {0,0,0};
@@ -158,6 +174,10 @@ int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
       posvec->push_back(ibs0iv->pos+1);
     }
   }
+  free(p_gt);
+  p_gt = NULL;
+  n_gt = 0;
+
   free(gtRR);
   free(gtAA);
   bmatRR->transpose();
@@ -183,9 +203,9 @@ int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
 
 IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
                        const bp2cmMap &_pgmap, double _margin,
-                       int32_t _ck, int32_t _mh, int32_t _minpos, int32_t _maxpos) :
+                       int32_t _ck, int32_t _mh, int32_t _minpos, int32_t _maxpos, int32_t _minac) :
   inVcf(_inVcf), reg(_reg), pgmap(_pgmap), margin_cM(_margin),
-  chunksize(_ck), min_hom_gts(_mh), minpos(_minpos), maxpos(_maxpos) {
+  chunksize(_ck), min_hom_gts(_mh), minpos(_minpos), maxpos(_maxpos), minac(_minac) {
 
   minpos = minpos < 0 ? pgmap.minpos : minpos;
   maxpos = maxpos < 0 ? pgmap.maxpos : maxpos;
@@ -211,12 +231,13 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
   if (ibs_st <= leftend) {
     reached_leftend = true;
     ibs_st = leftend;
+    ibs_ed = ibs_st + chunksize;
   }
 
   // Moving forward, read common variants in chunks
   while (ibs_ed < rightend && pgmap.bp2cm(ibs_st)-pgmap.bp2cm(end) < margin_cM) {
     reg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-    if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0) > 0) {
+    if (ReadIBS0Block(reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0, minac) > 0) {
       start_que.push_back((*posvec_que.back())[0]);
     }
     ibs_st = ibs_ed + 1;
@@ -229,9 +250,9 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
 
 IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
                        const bp2cmMap &_pgmap, int32_t _margin,
-                       int32_t _ck, int32_t _mh, int32_t _minpos, int32_t _maxpos) :
+                       int32_t _ck, int32_t _mh, int32_t _minpos, int32_t _maxpos, int32_t _minac) :
   inVcf(_inVcf), reg(_reg), pgmap(_pgmap), margin_bp(_margin),
-  chunksize(_ck), min_hom_gts(_mh), minpos(_minpos), maxpos(_maxpos) {
+  chunksize(_ck), min_hom_gts(_mh), minpos(_minpos), maxpos(_maxpos), minac(_minac) {
 
   minpos = minpos < 0 ? pgmap.minpos : minpos;
   maxpos = maxpos < 0 ? pgmap.maxpos : maxpos;
@@ -266,13 +287,14 @@ IBS0lookup::IBS0lookup(const std::string &_inVcf, const std::string &_reg,
   if (ibs_st <= leftend) {
     reached_leftend = true;
     ibs_st = leftend;
+    ibs_ed = ibs_st + chunksize;
   }
 
   // Moving forward
   while (ibs_ed < rightend && ibs_st - end < margin_bp + off_right) {
     std::string breg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
     notice("IBS0lookup read chunk %s", breg.c_str());
-    if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0) > 0) {
+    if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0, minac) > 0) {
       start_que.push_back((*posvec_que.back())[0]);
     }
     ibs_st = ibs_ed + 1;
@@ -296,11 +318,11 @@ void IBS0lookup::Clear() {
 }
 
 // Find IBS0 for a pair of individuals starting from pos
-int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
+int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse, bool force) {
 
   if ((reverse && (*posvec_que[0])[0] > pos) ||
       (!reverse && posvec_que.back()->back() < pos)) {
-    return -1;
+    return -2;
   }
   int32_t left0, right0;
   HalfArmBound(pos, pos, left0, right0);
@@ -323,6 +345,9 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
     if (ibs0 >= 0 && left0 > ibs0) {
       ibs0 = left0;
     }
+    if (ibs0 < 0 && force) {
+      ibs0 = start_que[0];
+    }
   } else {
     while(ibs0 < 0 && k < (int32_t) start_que.size() - 1) {
       k++; // move right
@@ -337,6 +362,9 @@ int32_t IBS0lookup::FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse) {
     }
     if (ibs0 >= 0 && right0 < ibs0) {
       ibs0 = right0;
+    }
+    if (ibs0 < 0 && force) {
+      ibs0 = posvec_que.back()->back();
     }
   }
   return ibs0;
@@ -385,7 +413,7 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
       ibs_st = ibs_ed + 1;
       ibs_ed = ibs_st + chunksize;
       std::string breg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts) > 0) {
+      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0, minac) > 0) {
         start_que.push_back((*posvec_que.back())[0]);
       }
     }
@@ -402,7 +430,7 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
       ibs_ed = ibs_st - 1;
       ibs_st = ibs_ed - chunksize;
       std::string breg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts,1) > 0) {
+      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 1, minac) > 0) {
         start_que.push_back((*posvec_que[0])[0]);
       }
     }
@@ -439,7 +467,7 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
       ibs_st = ibs_ed + 1;
       ibs_ed = ibs_st + chunksize;
       std::string breg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts) > 0){
+      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0, minac) > 0){
         start_que.push_back((*posvec_que.back())[0]);
       }
     }
@@ -456,7 +484,7 @@ int32_t IBS0lookup::Update(const std::string &_reg) {
       ibs_ed = ibs_st - 1;
       ibs_st = ibs_ed - chunksize;
       std::string breg = chrom + ":" + std::to_string(ibs_st) + "-" + std::to_string(ibs_ed);
-      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts,1) > 0){
+      if (ReadIBS0Block(breg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 1, minac) > 0){
         start_que.push_back((*posvec_que[0])[0]);
       }
     }
@@ -489,7 +517,7 @@ int32_t IBS0lookup::Update_Fixed(std::string &_reg) {
   if (start > rightend || end < leftend) {
     return -1;
   }
-  if (ReadIBS0Block(_reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts) > 0) {
+  if (ReadIBS0Block(_reg, inVcf, bmatRR_que, bmatAA_que, posvec_que, min_hom_gts, 0, minac) > 0) {
     start_que.push_back((*posvec_que.back())[0]);
   } else {
     notice("IBS0lookup::Update_Fixed Empty region %s", _reg.c_str());

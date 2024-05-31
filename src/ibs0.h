@@ -3,6 +3,7 @@
 #define IBS0_H
 
 #include "cramore.h"
+#include "bcf_filter_arg.h"
 #include "bcf_ordered_reader.h"
 #include "compact_matrix.h"
 #include "bp2cm.h"
@@ -47,18 +48,26 @@ public:
   int32_t leftend, rightend;
   int32_t minpos, maxpos;
   bool reached_leftend = false, reached_rightend = false;
+  // bcf_vfilter_arg vfilt;
+  int32_t minac;
 
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
              const bp2cmMap &_pgmap, double _margin,
              int32_t _ck = 1000000, int32_t _mh = 1,
-             int32_t _minpos = -1, int32_t _maxpos = -1);
+             int32_t _minpos = -1, int32_t _maxpos = -1,
+             int32_t _minac = 20);
   IBS0lookup(const std::string &_inVcf, const std::string &_reg,
              const bp2cmMap &_pgmap, int32_t _margin,
              int32_t _ck = 1000000, int32_t _mh = 1,
-             int32_t _minpos = -1, int32_t _maxpos = -1);
+             int32_t _minpos = -1, int32_t _maxpos = -1,
+             int32_t _minac = 20);
 
-  // Find IBS0 for a pair of individuals to one direction starting from pos
-  int32_t FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse = 0);
+  /** Find IBS0 for a pair of individuals to one direction starting from pos
+   * Return -2 if request is out of range
+   * Return -1 if no IBS0 is found and force is false
+   * Return the first position in current blocks if no IBS0 is found and force is true
+   */
+  int32_t FindIBS0 (int32_t i, int32_t j, int32_t pos, bool reverse = 0, bool force = 0);
 
   // Update to delete & add blocks to cover a new region
   int32_t Update (const std::string &_reg);
@@ -126,7 +135,8 @@ int32_t ReadIBS0Block(std::string& reg, std::string& inVcf,
                    std::vector<bitmatrix*>& bmatRR_que,
                    std::vector<bitmatrix*>& bmatAA_que,
                    std::vector<std::vector<int32_t>* >& posvec_que,
-                   int32_t min_hom_gts=1, bool add_to_front=0);
+                   int32_t min_hom_gts=1, bool add_to_front=0,
+                   int32_t minac=20);
 
 int32_t ReadRareIBS0Block(std::string& reg, std::string& inVcf,
                    std::vector<bitmatrix*>& bmatRR_que,

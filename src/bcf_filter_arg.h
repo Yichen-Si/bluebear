@@ -58,7 +58,7 @@ struct _bcf_vfilter_arg {
     minMAF = 0;
     maxAF = 1.;
     maxMAF = 1.;
-    
+
     minAN = 0;
     minCallRate = 0;
 
@@ -69,7 +69,7 @@ struct _bcf_vfilter_arg {
 
     filt = NULL;
     filter_logic = 0;
-    
+
     require_GT = false;
     require_PL = false;
 
@@ -91,11 +91,11 @@ struct _bcf_vfilter_arg {
     else {
       if ( exclude_expr.empty() ) {
 	filter_str = include_expr;
-	filter_logic |= FLT_INCLUDE;      
+	filter_logic |= FLT_INCLUDE;
       }
       else {
 	error("[E:%s:%d %s] Cannot use both --include-expr and --exclude-expr options",__FILE__,__LINE__,__FUNCTION__);
-      }    
+      }
     }
 
     if ( filter_logic != 0 )
@@ -112,6 +112,38 @@ struct _bcf_vfilter_arg {
 	 ( minAN > 0 ) || ( minCallRate > 0 ) )
       require_GT = true;
   }
+
+
+  bool pass_vfilter(bcf1_t* iv) {
+      bcf_unpack(iv, BCF_UN_FLT);
+      if ( snpOnly && (!bcf_is_snp(iv)) ) {
+          return false;
+      }
+      // check --apply-filters
+      bool has_filter = req_flt_ids.empty() ? true : false;
+      if ( ! has_filter ) {
+          for(int32_t i=0; i < iv->d.n_flt; ++i) {
+              for(int32_t j=0; j < (int32_t)req_flt_ids.size(); ++j) {
+                  if ( req_flt_ids[j] == iv->d.flt[i] )
+                      has_filter = true;
+              }
+          }
+      }
+      if ( ! has_filter ) {
+          return false;
+      }
+      // check filter logic
+      if ( filt != NULL ) {
+          int32_t ret = filter_test(filt, iv, NULL);
+          if ( filter_logic == FLT_INCLUDE ) { if ( !ret)  has_filter = false; }
+          else if ( ret ) { has_filter = false; }
+      }
+      if ( ! has_filter ) {
+          return false;
+      }
+      return true;
+  }
+
 };
 
 struct _bcf_gfilter_arg {

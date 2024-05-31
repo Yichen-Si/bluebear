@@ -337,7 +337,7 @@ int32_t test(int32_t argc, char** argv) {
             double test_vaf = (double) sum_test_adp / (sum_test_adp + sum_test_rdp);
             if ((ctrl_homo == 0 && sum_test_adp >= min_minor_adp_test && test_vaf >= min_minor_vaf_test) ||
                 (ctrl_homo == 1 && sum_test_rdp >= min_minor_adp_test && 1 - test_vaf > min_minor_vaf_test)) {
-                printf("%s\t%d\t%s\t%s\t%s\t%s\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, vtype.c_str(), bcf_hdr_int2id(odr.hdr,BCF_DT_ID,iv->d.flt[0]), ss.str().c_str(), ss_indiv.str().c_str() );
+                printf("%s\t%ld\t%s\t%s\t%s\t%s\n", bcf_hdr_id2name(odr.hdr, iv->rid), iv->pos+1, vtype.c_str(), bcf_hdr_int2id(odr.hdr,BCF_DT_ID,iv->d.flt[0]), ss.str().c_str(), ss_indiv.str().c_str() );
             }
         }
 

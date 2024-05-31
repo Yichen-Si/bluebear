@@ -65,9 +65,11 @@ void RareVariant::Organize(bp2cmMap& pgmap) {
   }
 
   std::vector<float> btwDist;
+  std::vector<int32_t> btwDist_bp;
   for (auto & u : nodelist[0]->leaves ) {
     for (auto & v : nodelist[1]->leaves ) {
       int32_t irow = std::min(u,v), icol = std::max(u,v);
+      btwDist_bp.push_back(ibs0mat[irow][icol] - ibs0mat[icol][irow]);
       AvgDist += (ibs0mat[irow][icol] - ibs0mat[icol][irow]);
       float d = pgmap.bpinterval2cm(ibs0mat[icol][irow], ibs0mat[irow][icol]);
       btwDist.push_back(d);
@@ -84,6 +86,7 @@ void RareVariant::Organize(bp2cmMap& pgmap) {
   uint32_t ctbtw = btwDist.size();
   std::sort(btwDist.begin(), btwDist.end());
   MedDist_cm = btwDist[ ctbtw/2 ];
+  MedDist = btwDist_bp[ ctbtw/2 ];
   AvgDist /= ctbtw;
   AvgDist_cm /= ctbtw;
 

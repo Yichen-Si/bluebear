@@ -62,7 +62,7 @@ public:
   std::vector<int32_t> id_list;         // Will be updated according to planer_order after building tree
   std::vector<int32_t> planer_order;
   int32_t left_size;
-  int32_t AvgDist = 0;
+  int32_t AvgDist = 0, MedDist = 0;
   int32_t ovst = -1, oved = -1; // st & ed of the overlap region
   int32_t finished = 0;         // Count number of pairs with both ibs0 found
   float   AvgDist_cm = 0.0, MedDist_cm = 0.0;

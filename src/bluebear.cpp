@@ -60,6 +60,7 @@ int32_t trioDenovo(int32_t argc, char** argv);
 int32_t trioSwitchDetect(int32_t argc, char** argv);
 int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
 
+int32_t IBS0ApproxPMdistr(int32_t argc, char** argv);
 // int32_t IBS0PairwiseScan(int32_t argc, char** argv); // zz
 // int32_t cmdVcfIBS0Pairwise(int32_t argc, char** argv); // zz
 // int32_t cmdVcfIBS0View(int32_t argc, char** argv);
@@ -73,7 +74,6 @@ int32_t trioSwitchDetect_onepass(int32_t argc, char** argv);
 // int32_t RareOnlyIBS0PhaseBackward(int32_t argc, char** argv);
 // int32_t RareBlipOnlyForward(int32_t argc, char** argv);
 // int32_t RareBlipOnlyStats(int32_t argc, char** argv);
-// int32_t IBS0AddPMDistr(int32_t argc, char** argv);
 // int32_t IBS0AddNoncarrierControl(int32_t argc, char** argv);
 // int32_t IBS0AddOutgroupControl(int32_t argc, char** argv);
 // int32_t IBS0Triallelic(int32_t argc, char** argv);
@@ -150,6 +150,7 @@ int32_t main(int32_t argc, char** argv) {
 
 
     // // Temperary ibs0 tests
+    LONG_COMMAND("ibs0-approx-pm-distr",&IBS0ApproxPMdistr, "Reference distribution for parallel mutations")
     // LONG_COMMAND("ibs0-scan",&IBS0PairwiseScan, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     // LONG_COMMAND("vcf-ibs0-pairwise",&cmdVcfIBS0Pairwise, "Pairwise IBS0 and rare allele sharing from BCF/VCF")
     // LONG_COMMAND("vcf-ibs0-view",&cmdVcfIBS0View, "Dichotomized IBS0 length distribution from BCF/VCF")
@@ -163,7 +164,6 @@ int32_t main(int32_t argc, char** argv) {
     // LONG_COMMAND("rare-phase-backward",&RareOnlyIBS0PhaseBackward, "Based on shared rare allele, proceed backward to find switch error in phased BCF/VCF")
     // LONG_COMMAND("rare-blip",&RareBlipOnlyForward, "Based on shared rare allele and haplotype matching, proceed froward to detect blip in phased BCF/VCF")
     // LONG_COMMAND("rare-blip-stats",&RareBlipOnlyStats, "Statistics of ibd around rare variants for detecting blip in phased BCF/VCF")
-    // LONG_COMMAND("btw-carrier-sets",&IBS0AddPMDistr, "Reference distribution for parallel mutations")
     // LONG_COMMAND("add-null-by-site",&IBS0AddNoncarrierControl, "Add no-IBS0 length between non-carriers. Currently only for doubletons")
     // LONG_COMMAND("sample-outgroup-by-site",&IBS0AddOutgroupControl, "Add average no-IBS0 length between a randomly sampled non-carriers and the carriers. Currently only tested for doubletons")
     // LONG_COMMAND("ibs0-tri-allelic",&IBS0Triallelic, "No-IBS0 between carriers of different alleles at tri-allelic sites")
