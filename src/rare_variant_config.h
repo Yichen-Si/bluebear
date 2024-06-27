@@ -120,6 +120,21 @@ bool IfDone() {
 // Build a tree
 void Organize(bp2cmMap& pgmap);
 
+// Write info to vcf record
+void UpdateInfo_IBD(bcf_hdr_t *hdr, bcf1_t *nv) {
+  int32_t bc[2];
+  bc[0] = left_size;
+  bc[1] = ac - bc[0];
+  bcf_update_info_int32(hdr, nv, "AvgDist_bp", &(AvgDist), 1);
+  bcf_update_info_float(hdr, nv, "AvgDist_cM", &(AvgDist_cm), 1);
+  bcf_update_info_float(hdr, nv, "MedDist_cM", &(MedDist_cm), 1);
+  bcf_update_info_int32(hdr, nv, "BiCluster", &bc, 2);
+  bcf_update_info_int32(hdr, nv, "CarrierID", &(id_list[0]), ac);
+  bcf_update_info_float(hdr, nv, "Matrix_cM", &(sorted_cm[0]), ac*ac);
+}
+
 };
+
+
 
 #endif

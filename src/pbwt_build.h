@@ -6,12 +6,18 @@ class pbwtCursor
 
 protected:
   bool *y;
-  int32_t *b, *e;
+  int32_t* b; // temporary storage for a;
+  int32_t* e; // temporary storage for d;
 
 public:
-  int32_t M;
-  int32_t *a, *d;
+  int32_t M;  // Number of haplotypes
+  int32_t* a; // a[i]: original index [M] of the haplotype for i-th prefix
+  int32_t* d; // Start of prefix matching between a[i] and a[i-1]
 
+  /**
+   * For prefix, k is the first (leftmost) position
+   * For suffix, k is the last (rightmost) position
+   */
   pbwtCursor(int32_t _M, int32_t k) {
     M = _M;
     a = new int32_t[M];
@@ -59,6 +65,9 @@ public:
     }
   }
 
+  /**
+   * Should be called backward - from larger positions to smaller positions
+   */
   void ForwardsAD_suffix(bool *y, int32_t k) {
     int32_t u = 0, v = 0;
     int32_t p = k-1, q = k-1;
@@ -115,30 +124,36 @@ public:
     }
   }
 
+  /**
+   * Start position (inclusive) of the prefix matching between i and j
+   */
   int32_t Dist_pref(int32_t i, int32_t j) {
     if (i > j) {
       int32_t tmp = j; j = i; i = tmp;
     }
-    int32_t dist = d[i+1];
+    int32_t st = d[i+1];
     for (int32_t it = i+1; it <= j; ++it) {
-      if (d[it] > dist) {
-        dist = d[it];
+      if (d[it] > st) {
+        st = d[it];
       }
     }
-    return dist;
+    return st;
   }
 
+  /**
+   *
+  */
   int32_t Dist_suff(int32_t i, int32_t j) {
     if (i > j) {
       int32_t tmp = j; j = i; i = tmp;
     }
-    int32_t dist = d[i+1];
+    int32_t ed = d[i+1];
     for (int32_t it = i+1; it <= j; ++it) {
-      if (d[it] < dist) {
-        dist = d[it];
+      if (d[it] < ed) {
+        ed = d[it];
       }
     }
-    return dist;
+    return ed;
   }
 
   void SwitchIndex_OnePair(int32_t x, int32_t y) {

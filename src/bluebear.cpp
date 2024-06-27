@@ -34,6 +34,7 @@ int32_t cmdVcfSnpPairInGeneCount(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneSummary(int32_t argc, char** argv);
 int32_t cmdVcfSnpPairInGeneInfo(int32_t argc, char** argv);
 int32_t cmdVcfDprime(int32_t argc, char** argv);
+int32_t cmdDprimeFromBinaryStorage(int32_t argc, char** argv);
 
 int32_t DoubletonBlockInfo(int32_t argc, char** argv);
 
@@ -47,7 +48,7 @@ int32_t mapPt2Interval(int32_t argc, char** argv);
 int32_t pbwtBuildSuffix(int32_t argc, char** argv);
 int32_t pbwtBuildPrefix(int32_t argc, char** argv);
 
-int32_t AnnotateIBDAroundRare(int32_t argc, char** argv);
+int32_t AnnotateIBSAroundRareFull(int32_t argc, char** argv);
 int32_t AnnotateIBS0AroundRare_Small(int32_t argc, char** argv);
 int32_t cmdVcfRareShare(int32_t argc, char** argv);
 int32_t hapIBDpbwtLeft(int32_t argc, char** argv);
@@ -118,6 +119,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("snp-pair-in-gene-short",&cmdVcfSnpPairInGeneSummary, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("snp-pair-in-gene-long",&cmdVcfSnpPairInGeneInfo, "Get genotype information of pairs of SNPs in gene regions from BCF/VCF")
     LONG_COMMAND("dprime",&cmdVcfDprime, "Compute Dprime from haploid/phased BCF/VCF")
+    LONG_COMMAND("dprime-from-binary",&cmdDprimeFromBinaryStorage, "Compute Dprime from the custom binary format")
 
     LONG_COMMAND("doubleton-block-info",&DoubletonBlockInfo, "Get sufficient statistics of switch/blip blocks in doubleton pairs from BCF/VCF")
 
@@ -129,7 +131,7 @@ int32_t main(int32_t argc, char** argv) {
     LONG_COMMAND("info-flt-cdf-simu",&CDFInfoFloatSimu, "Summarize empirical CDF from VCF INFO")
 
 
-    LONG_COMMAND("anno-ibd",&AnnotateIBDAroundRare, "Annotate pairwise IBD among rare allele carriers from input BCF/VCF")
+    LONG_COMMAND("anno-ibd-full",&AnnotateIBSAroundRareFull, "Annotate pairwise IBD among rare allele carriers from input BCF/VCF")
     LONG_COMMAND("anno-ibs0-small",&AnnotateIBS0AroundRare_Small, "Annotate pairwise IBS0 among rare allele carriers from input BCF/VCF")
 
     LONG_COMMAND("pt-to-interval",&mapPt2Interval, "Map points to intervals, both indexed by the carriers.")

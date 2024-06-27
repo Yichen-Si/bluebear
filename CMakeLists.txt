@@ -92,6 +92,8 @@ add_executable(bluebear
 	src/compact_matrix.h
 	src/compact_matrix.cpp
 	src/haploid_hash.h
+	src/binary_variant_compress.h
+	src/binary_variant_compress.cpp
     src/pbwt_build.h
 
     src/cm2bp.h
@@ -139,6 +141,7 @@ add_executable(bluebear
     src/cmd_vcf_site_annotate_pm_posterior.cpp
     src/cmd_vcf_site_annotate_age.cpp
     src/cmd_vcf_annotate_ibd.cpp
+	src/cmd_vcf_annotate_ibd_small.cpp
     src/cmd_vcf_anno_haplo_group.cpp
     src/cmd_vcf_snppairingene.cpp
     src/cmd_vcf_snppairinfo.cpp

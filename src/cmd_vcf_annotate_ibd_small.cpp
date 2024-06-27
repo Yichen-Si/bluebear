@@ -7,9 +7,9 @@
 #include "bp2cm.h"
 #include "rare_variant_config.h"
 
-// goal -- get all pairwise haploid ibs segment covering a shared rare allele
-//         using pbwt snapshots
-int32_t AnnotateIBSAroundRare(int32_t argc, char** argv) {
+// goal -- get all pairwise ibd regions covering a shared
+//         rare allele from the given region (for smaller data, all-in-one)
+int32_t AnnotateIBSAroundRareFull(int32_t argc, char** argv) {
 
   std::string inVcf, inMap, chrom, reg, oreg;
   std::string out;
